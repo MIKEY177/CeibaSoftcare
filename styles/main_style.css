@@ -6,7 +6,7 @@
 
 
 
-main, footer, .modal-recuperar-contrasena, .modal-recuperar-contrasena{
+main, footer, .modal-recuperar-contrasena, .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar{
     border: 3px solid black;
     margin-bottom: 15px;
     padding: 15px;
