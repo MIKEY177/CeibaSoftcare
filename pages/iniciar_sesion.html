@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="">
+    <link rel="stylesheet" href="../styles/main_style.css">
     <title>Iniciar Sesión - Softcare</title>
 </head>
 <body>
@@ -68,5 +68,53 @@
             </div> -->
         </section>
     </footer>
+    <aside class="modal-recuperar-contrasena">
+        <a href="">
+            <img class="volver_icono" src="" alt="">
+            <h2>Volver</h2>
+        </a>
+        <section class="modal-rc-area">
+            <h1 class="modal-rc-titulo">Recuperar contraseña - 1er paso</h1>
+            <h3 class="modal-rc-mensaje">Le enviaremos un código al correo electrónico con el que está registrado en el sistema.</h3>
+            <form class="rc-form" action="" method=""> <!-- Formulario -->
+                <label class="rc-label" for="">Correo electrónico</label>
+                <input class="rc-input1" type="text" placeholder="ejemplo@email.com" name="rc-correo">
+                <input class="rc-btn" type="submit" value="Enviar Código">
+            </form> 
+        </section>
+    </aside>
+    <aside class="modal-recuperar-contrasena">
+        <a href="">
+            <img class="volver_icono" src="" alt="">
+            <h2>Volver</h2>
+        </a>
+        <section class="modal-rc-area">
+            <h1 class="modal-rc-titulo">Recuperar contraseña - 2do paso</h1>
+            <h3 class="modal-rc-mensaje">Por favor, digite a continuación el código que le enviamos a su correo, si no lo encuentra, revise la carpeta de Spam.</h3>
+            <form class="rc-form" action="" method=""> <!-- Formulario -->
+                <label class="rc-label" for="">Código</label>
+                <input class="rc-input2" type="text" name="rc-codigo">
+                <input class="rc-btn" type="submit" value="Siguiente">
+            </form> 
+        </section>
+    </aside>
+    <aside class="modal-recuperar-contrasena">
+        <a href="">
+            <img class="volver_icono" src="" alt="">
+            <h2>Volver</h2>
+        </a>
+        <section class="modal-rc-area">
+            <h1 class="modal-rc-titulo">Recuperar contraseña - 3er paso</h1>
+            <h3 class="modal-rc-mensaje">El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.</h3>
+            <form class="rc-form" action="" method=""> <!-- Formulario -->
+                <label class="rc-label" for="">Nueva Contraseña</label>
+                <input class="rc-input3" type="text" name="rc-contrasena1">
+                <!---->
+                <label class="rc-label" for="">Confirmar Contraseña</label>
+                <input class="rc-input4" type="text" name="rc-contrasena2">
+                <input class="rc-btn" type="submit" value="Cambiar Contraseña">
+            </form> 
+        </section>
+    </aside>
 </body>
 </html>
