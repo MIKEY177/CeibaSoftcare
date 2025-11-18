@@ -1,3 +1,18 @@
+<?php
+// Verificar si el usuario ha iniciado sesión
+session_start();
+function VerificarInicioSesion($usuario_id){
+    if(empty($usuario_id)){
+        // Redirigir al usuario a la página de inicio de sesión si no ha iniciado sesión
+        header("Location: iniciar_sesion.php");
+        exit();
+    }
+}
+VerificarInicioSesion($_SESSION['usuario_id']);
+$id = $_SESSION['usuario_id'];
+$nombre = $_SESSION['usuario_nombre'];
+$rol = $_SESSION['usuario_rol'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,16 +28,20 @@
                 <figure class="avatar">
                     <img class="avatar-img" src="" alt=""> <!-- Variable -->
                 </figure>
-                <h1 class="perfil-nombre">[Username...]</h1> <!-- Variable -->
+                <h1 class="perfil-nombre"><?php echo $nombre; ?></h1> <!-- Variable -->
                 <figure class="perfil-rol">
                     <img class="perfil-rol-img" src="" alt="">
-                    <h1 class="perfil-rol-texto">[Rol]</h1> <!-- Variable -->
+                    <h1 class="perfil-rol-texto"><?php echo $rol; ?></h1> <!-- Variable -->
                 </figure>
             </div>
             <div class="contenedor-nav">
                 <a href=""><h2 class="opcion-nav">Inicio</h2></a>
+                <?php if($rol == 'administrador' || $rol == 'farmacéutico'): ?>
                 <a href=""><h2 class="opcion-nav">Farmacia</h2></a>
+                <?php endif; ?>
+                <?php if($rol == 'administrador' || $rol == 'veterinario'): ?>
                 <a href=""><h2 class="opcion-nav">Refugio</h2></a>
+                <?php endif; ?>
             </div>
             <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
         </aside>
@@ -47,6 +66,7 @@
             <section class="seccion2-modulos">
                 <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
                 <section class="area-modulos">
+                    <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                     <a href="">
                         <div class="modulo-farmacia">
                             <h4 class="titulo-modulo-farmacia">Farmacia</h4>
@@ -55,6 +75,8 @@
                             </figure>
                         </div>
                     </a>
+                    <?php endif; ?>
+                    <?php if($rol == 'administrador' || $rol == 'veterinario'): ?>
                     <a href="">
                         <div class="modulo-refugio">
                             <h4 class="titulo-modulo-refugio">Refugio</h4>
@@ -63,6 +85,8 @@
                             </figure>
                         </div>
                     </a>
+                    <?php endif; ?>
+                    <?php if($rol == 'administrador'): ?>
                     <a href="">
                         <div class="modulo-usuarios">
                             <h4 class="titulo-modulo-usuarios">Usuarios</h4>
@@ -70,7 +94,8 @@
                                 <img class="modulo-usuarios-img" src="" alt="">
                             </figure>
                         </div>
-                    </a>   
+                    </a>
+                    <?php endif; ?>
                 </section>
             </section>
         </section>

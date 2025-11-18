@@ -84,9 +84,7 @@
                 if (password_verify($contrasena, $row['contrasena'])) {
                     // Inicio de sesión exitoso
                     session_start();
-                    $_SESSION['usuario_id'] = $row['id'];
-                    $_SESSION['usuario_correo'] = $row['correo'];
-                    // Redirigir al usuario a la página principal o dashboard
+                    
                 } else {
                     // Contraseña incorrecta
                     //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
@@ -95,13 +93,24 @@
                 // Usuario no encontrado
                 //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
             }
-            if (!isset($error)){
+            if (empty($error)){
                 $contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
                 $sql_insert = "INSERT INTO inicio_sesion (correo, contrasena, id_usuario1) VALUES (?, ?, ?)";
                 $stmt_insert = mysqli_prepare($conn, $sql_insert);
                 mysqli_stmt_bind_param($stmt_insert, "ssi", $correo, $contrasena, $row['id_usuario']);
                 if (mysqli_stmt_execute($stmt_insert)) {
                     // Registro de sesión exitoso
+                    $_SESSION['usuario_id'] = $row['id_usuario'];
+                    $_SESSION['usuario_nombre'] = $row['nombre'];
+                    $sql_rol = "SELECT nombre FROM roles WHERE id_rol = ?";
+                    $stmt_rol = mysqli_prepare($conn, $sql_rol);
+                    mysqli_stmt_bind_param($stmt_rol, "i", $row['id_rol1']);
+                    mysqli_stmt_execute($stmt_rol);
+                    $result_rol = mysqli_stmt_get_result($stmt_rol);
+                    if (($rol_row = mysqli_fetch_assoc($result_rol))> 0) {
+                        // Obtener el nombre del rol
+                        $_SESSION['usuario_rol'] = $rol_row['nombre'];
+                    }   
                     header("Location: inicio.php"); // Redirigir al usuario al dashboard u otra página
                     exit();
                 } else {
