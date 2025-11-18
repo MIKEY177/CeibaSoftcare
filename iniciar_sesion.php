@@ -31,9 +31,90 @@
                 </figure>
             </div>
         </section>
+        <?php
+        require_once 'conexion.php';
+        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $correo = $_POST['correo'];
+            $contrasena = $_POST['contrasena'];
+
+            if (empty($correo) || empty($contrasena)) {
+                //Si los campos están vacíos
+                //$error['empty'] = "<script>alert('Por favor, complete todos los campos');</script>";
+                //exit();
+            }
+
+            if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
+                // Si el correo no es válido
+                //$error['invalid_email'] = "<script>alert('Por favor, ingrese un correo electrónico válido');</script>";
+                //exit();
+            }
+
+            if (!preg_match('/[A-Za-z]/', $contrasena) || !preg_match('/[0-9]/', $contrasena) || !preg_match('/[\W]/', $contrasena) || strlen($contrasena) < 8) {
+                // Si la contraseña no contiene letras, números y simbolos
+                if (!preg_match('/[A-Z]/', $contrasena)) {
+                    //Si no tiene mayúsculas
+                    //$error["uppercase"] = "<script>alert('La contraseña debe contener al menos una letra mayúscula');</script>";
+                }
+                if (!preg_match('/[a-z]/', $contrasena)) {
+                    //Si no tiene minúsculas
+                    //$error["lowercase"] = "<script>alert('La contraseña debe contener al menos una letra minúscula');</script>";
+                }
+                if (!preg_match('/[0-9]/', $contrasena)) {
+                    //Si no tiene números
+                    //$error["number"] = "<script>alert('La contraseña debe contener al menos un número');</script>";
+                }
+                if (!preg_match('/[\W]/', $contrasena)) {
+                    //Si no tiene símbolos
+                    //$error["symbol"] = "<script>alert('La contraseña debe contener al menos un símbolo especial');</script>";
+                }
+                if (strlen($contrasena) < 8) {
+                    //Si es menor a 8 caracteres
+                    //$error["length"] = "<script>alert('La contraseña debe tener al menos 8 caracteres');</script>";
+                }
+            }
+
+            // Consulta para verificar las credenciales del usuario
+            $sql = "SELECT * FROM usuarios WHERE correo = ?";
+            $stmt = mysqli_prepare($conn, $sql);
+            mysqli_stmt_bind_param($stmt, "s", $correo);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            if ($row = mysqli_fetch_assoc($result)) {
+                // Verificar la contraseña
+                if (password_verify($contrasena, $row['contrasena'])) {
+                    // Inicio de sesión exitoso
+                    session_start();
+                    $_SESSION['usuario_id'] = $row['id'];
+                    $_SESSION['usuario_correo'] = $row['correo'];
+                    // Redirigir al usuario a la página principal o dashboard
+                } else {
+                    // Contraseña incorrecta
+                    //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
+                }
+            } else {
+                // Usuario no encontrado
+                //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
+            }
+            if (!isset($error)){
+                $contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
+                $sql_insert = "INSERT INTO inicio_sesion (correo, contrasena, id_usuario1) VALUES (?, ?, ?)";
+                $stmt_insert = mysqli_prepare($conn, $sql_insert);
+                mysqli_stmt_bind_param($stmt_insert, "ssi", $correo, $contrasena, $row['id_usuario']);
+                if (mysqli_stmt_execute($stmt_insert)) {
+                    // Registro de sesión exitoso
+                    header("Location: inicio.php"); // Redirigir al usuario al dashboard u otra página
+                    exit();
+                } else {
+                    // Error al registrar la sesión
+                    //$error['session_error'] = "<script>alert('Error al registrar la sesión. Por favor, intente nuevamente.');</script>";
+                }
+
+            }
+        }
+        ?>
         <aside class="inicio-sesion-vertical-navbar">
             <h1 class="titulo-inicio-sesion">Ingrese los siguientes datos y acceda a la plataforma</h1>
-            <form class="iniciar-sesion-form" action="" method=""> <!-- Formulario -->
+            <form class="iniciar-sesion-form" action="iniciar_sesion.php" method="post"> <!-- Formulario -->
                 <label class="iniciar-sesion-label" for="">Correo Electrónico</label>
                 <input class="iniciar-sesion-input1" type="text" placeholder="ejemplo@email.com" name="correo">
                 <!---->
