@@ -36,10 +36,8 @@ $rol = $_SESSION['usuario_rol'];
             </div>
             <div class="contenedor-nav">
                 <a href=""><h2 class="opcion-nav">Inicio</h2></a>
-                <?php if($rol == 'administrador' || $rol == 'farmacéutico'): ?>
                 <a href=""><h2 class="opcion-nav">Farmacia</h2></a>
-                <?php endif; ?>
-                <?php if($rol == 'administrador' || $rol == 'veterinario'): ?>
+                <?php if($rol == 'administrador' || $rol == 'Veterinario'): ?>
                 <a href=""><h2 class="opcion-nav">Refugio</h2></a>
                 <?php endif; ?>
             </div>
@@ -74,7 +72,7 @@ $rol = $_SESSION['usuario_rol'];
                             </figure>
                         </div>
                     </a>
-                    <?php if($rol == 'administrador' || $rol == 'veterinario'): ?>
+                    <?php if($rol == 'administrador' || $rol == 'Veterinario'): ?>
                     <a href="">
                         <div class="modulo-refugio">
                             <h4 class="titulo-modulo-refugio">Refugio</h4>
