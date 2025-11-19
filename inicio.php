@@ -66,7 +66,6 @@ $rol = $_SESSION['usuario_rol'];
             <section class="seccion2-modulos">
                 <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
                 <section class="area-modulos">
-                    <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                     <a href="">
                         <div class="modulo-farmacia">
                             <h4 class="titulo-modulo-farmacia">Farmacia</h4>
@@ -75,7 +74,6 @@ $rol = $_SESSION['usuario_rol'];
                             </figure>
                         </div>
                     </a>
-                    <?php endif; ?>
                     <?php if($rol == 'administrador' || $rol == 'veterinario'): ?>
                     <a href="">
                         <div class="modulo-refugio">
@@ -86,7 +84,7 @@ $rol = $_SESSION['usuario_rol'];
                         </div>
                     </a>
                     <?php endif; ?>
-                    <?php if($rol == 'administrador'): ?>
+                    <?php if($rol  == 'administrador'): ?>
                     <a href="">
                         <div class="modulo-usuarios">
                             <h4 class="titulo-modulo-usuarios">Usuarios</h4>
