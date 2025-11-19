@@ -1,3 +1,18 @@
+<?php
+        session_start();
+        function VerificarSesion(){
+            if(empty($_SESSION['usuario_id'])){
+                // Redirigir al usuario a la página de inicio de sesión si no ha iniciado sesión
+                header("Location: iniciar_sesion.php");
+                exit();
+            }else  if($_SESSION['usuario_rol'] != 'administrador' && $_SESSION['usuario_rol'] != 'farmacéutico'){
+                // Redirigir al usuario a la página de inicio si no tiene el rol adecuado
+                header("Location: inicio.php");
+                exit();
+            }
+        }
+        VerificarSesion();
+?>  
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,10 +29,10 @@
                 <figure class="avatar">
                     <img class="avatar-img" src="" alt="">
                 </figure>
-                <h1 class="perfil-nombre">[Username...]</h1>
+                <h1 class="perfil-nombre"><?php echo $_SESSION['usuario_nombre']; ?></h1>
                 <figure class="perfil-rol">
                     <img class="perfil-rol-img" src="" alt="">
-                    <h1 class="perfil-rol-texto">[Rol]</h1>
+                    <h1 class="perfil-rol-texto"><?php echo $_SESSION['usuario_rol']; ?></h1>
                 </figure>
             </div>
             <div class="contenedor-nav">
