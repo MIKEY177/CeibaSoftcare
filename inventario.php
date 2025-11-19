@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/main_style.css">
+    <title>Inventario - SoftCare</title>
+</head>
+<body>
+    <main>
+        <aside class="vertical-navbar">
+            <div class="perfil">
+                <figure class="avatar">
+                    <img class="avatar-img" src="" alt=""> <!-- Variable -->
+                </figure>
+                <h1 class="perfil-nombre">[Username...]</h1> <!-- Variable -->
+                <figure class="perfil-rol">
+                    <img class="perfil-rol-img" src="" alt="">
+                    <h1 class="perfil-rol-texto">[Rol]</h1> <!-- Variable -->
+                </figure>
+            </div>
+            <div class="contenedor-nav">
+                <a href=""><h2 class="opcion-nav">Inventario</h2></a>
+                <a href=""><h2 class="opcion-nav">Salidas Productos</h2></a>
+                <a href=""><h2 class="opcion-nav">Entradas Productos</h2></a>
+                <a href=""><h2 class="opcion-nav">Brigadas</h2></a>
+            </div>
+            <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
+        </aside>
+        <section class="secciones-area-gestion">
+            <section class="seccion1-busqueda-agregar">
+                <form class="busqueda-form" action="" method=""> <!-- FORMULARIO -->
+                    <input class="busqueda-input1" type="text" name="busqueda" placeholder="Busca un producto" id="">
+                    <button class="busqueda-icono" type="submit">
+                        <img class="busqueda-icono-img" src="" alt="">
+                    </button>
+                    <a href="">
+                        <figure class="busqueda-barras-icono">
+                            <img class="busqueda-barras-icono-img" src="" alt="">
+                        </figure>
+                    </a>
+                </form>
+                <a href="">
+                    <button class="registrar-btn">Registrar Producto</button>
+                </a>
+            </section>
+            <table class="tabla-inventario">
+                <thead class="header-tabla-inventario">
+                    <tr>
+                        <td>Producto</td>
+                        <td>Descripción</td>
+                        <td>Unidad de Medida</td>
+                        <td>Registró</td>
+                        <td>Editar | Eliminar</td>
+                    </tr>
+                </thead>
+                <tbody class="body-tabla-inventario">
+                    <tr> <!-- Este tr es el que se repite en Backend -->
+                        <td>[Producto]</td> <!-- Variable -->
+                        <td>[Descripción]</td> <!-- Variable -->
+                        <td>[#]</td> <!-- Variable -->
+                        <td>[Nombre_mediante_id]</td> <!-- Variable -->
+                        <td>
+                            <a href="">
+                                <figure class="editar-icono">
+                                    <img class="editar-icono-img" src="" alt="">
+                                </figure>
+                            </a>
+                            <a href="">
+                                <figure class="eliminar-icono">
+                                    <img class="eliminar-icono-img" src="" alt="">
+                                </figure>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+    <footer>
+        <p>Derechos Reservados(menos a GatitoFeroz).</p> <!-- No sé que va acá exactamente -->
+        <section class="asociaciones">
+            <div class="softcare">
+                <figure class="softcare-logo">
+                    <img class="softcare-logo-img" src="" alt="">
+                </figure>
+                <h6 class="softcare-titulo">SoftCare</h6>
+            </div>
+            <div class="ceiba">
+                <figure class="ceiba-logo">
+                    <img class="ceiba-logo-img" src="" alt="">
+                </figure>
+                <h6 class="ceiba-titulo">Ceiba</h6>
+            </div>
+            <!-- <div class="sena">
+                <figure class="sena-logo">
+                    <img class="sena-logo-img" src="" alt="">
+                </figure>
+                <h6 class="sena-titulo">Sena</h6>
+            </div> -->
+        </section>
+    </footer>
+    <aside class="modal-inventario-registrar">
+        <a href="">
+            <img class="volver-icono" src="" alt="">
+            <h2>Volver</h2>
+        </a>
+        <h1 class="modal-ir-titulo">
+            Registre un nuevo Producto
+        </h1>
+        <a href="">
+            <h2>Escanear con Lector de Barras</h2>
+            <figure class="codigo-barras-icono">
+                <img class="codigo-barras-icono-img" src="" alt="">
+            </figure>
+        </a>
+        <form class="ir-form" action="" method=""> <!-- Formulario -->
+            <section class="ir-form-inputs-area">
+                <label class="ir-label" for="">Nombre del Producto<h6 class="obligatorio">*</h6></label>
+                <input class="ir-input1" type="text" name="ir-nombre">
+                <!---->
+                <label class="ir-label" for="">Descripción del Producto</label>
+                <textarea class="ir-input2" name="ir-descripcion" id=""></textarea>
+                <!---->
+                <label class="ir-label" for="">Unidad de Medida</label>
+                <input class="ir-input3" type="text" name="ir-unidad_medida">
+                <!---->
+                <label class="ir-label" for="">Usuario que Registra</label>
+                <div class="union-input-icono">
+                    <input class="ir-input4" type="text" name="ir-id_usuario" value="[Usuario_registrado]"> <!--En el value="" va el nombre del usuario registrado-->
+                    <figure class="candado-icono">
+                        <img class="candado-icono-img" src="" alt="">
+                    </figure>
+                </div>
+            </section>
+            <input class="ir-btn" type="submit" value="Registrar Producto">
+        </form>
+    </aside>
+    <aside class="modal-inventario-editar">
+        <a href="">
+            <img class="volver-icono" src="" alt="">
+            <h2>Volver</h2>
+        </a>
+        <h1 class="modal-ied-titulo">
+            Editar Producto Registrado
+        </h1>
+        <form class="ied-form" action="" method=""> <!-- Formulario -->
+            <section class="ied-form-inputs-area">
+                <label class="ied-label" for="">Nombre del Producto<h6 class="obligatorio">*</h6></label>
+                <input class="ied-input1" type="text" name="ied-nombre" value="[Nombre_ya_registrado]"> <!--El value="" es VARIABLE-->
+                <!---->
+                <label class="ied-label" for="">Descripción del Producto</label>
+                <textarea class="ied-input2" name="ied-descripcion" id="">[Descripcion_ya_registrada]</textarea> <!-- text area es VARIABLE-->
+                <!---->
+                <label class="ied-label" for="">Unidad de Medida</label>
+                <input class="ied-input3" type="text" name="ied-unidad_medida" value="[Unidad_ya_registrada]"> <!--El value="" es VARIABLE-->
+                <!---->
+                <label class="ied-label" for="">Usuario que Registra</label>
+                <div class="union-input-icono">
+                    <input class="ied-input4" type="text" name="ied-id_usuario" value="[Usuario_registrado]"> <!--En el value="" va el nombre del usuario registrado-->
+                    <figure class="candado-icono">
+                        <img class="candado-icono-img" src="" alt="">
+                    </figure>
+                </div>
+            </section>
+            <input class="ied-btn" type="submit" value="Realizar Cambios">
+        </form>
+    </aside>
+    <aside class="modal-inventario-eliminar">
+        <h1 class="modal-iel-titulo">Eliminar Producto Registrado</h1>
+        <h3 class="modal-iel-mensaje">¿Desea eliminar <h6 class="subrayar">[Nombre Producto]</h6>?</h3> <!-- [Nombre Producto] es Variable-->
+        <section class="modal-buttons">
+            <a href=""><button class="eliminar-btn">Eliminar</button></a>
+            <a href=""><button class="cancelar-btn">Cancelar</button></a>
+        </section>
+    </aside>
+</body>
+</html>
