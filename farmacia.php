@@ -55,15 +55,31 @@
                             <td><!-- acción --></td>
                         </tr>
                     </thead>
+                    <?php
+                       require_once 'conexion.php';
+                       $sql = "CALL ActividadReciente()";
+                       $stmt = mysqli_prepare($conn, $sql);
+                       mysqli_stmt_execute($stmt);
+                       $resultado = mysqli_stmt_get_result($stmt);
+                       for ($i = 0; $i < 10; $i++){
+                           $fila = mysqli_fetch_assoc($resultado);
+                           if ($fila): 
+                    ?>
                     <tbody class="body-tabla-actividad-reciente">
                         <tr> <!-- Este tr es el que se repite en Backend -->
-                            <td>[Producto]</td> <!-- Variable -->
-                            <td>[dd/mm/aaaa]</td> <!-- Variable -->
-                            <td>[#]</td> <!-- Variable -->
-                            <td>[Actividad]</td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['producto']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['fecha']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['cantidad']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['actividad']); ?></td> <!-- Variable -->
                             <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
                         </tr>
                     </tbody>
+                    <?php
+                           endif;
+                       }
+                       mysqli_stmt_close($stmt);
+                       mysqli_close($conn);
+                    ?>
                 </table>
             </section>
             <section class="seccion2-modulos">
