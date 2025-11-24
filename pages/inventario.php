@@ -12,7 +12,7 @@ $descripcion   = isset($_GET['descripcion'])   ? $_GET['descripcion']   : "";
 $unidad_medida = isset($_GET['unidad_medida']) ? $_GET['unidad_medida'] : "";
 $id_usuario    = isset($_GET['id_usuario'])    ? $_GET['id_usuario']    : "";
 
-require_once "../conexion.php";
+require_once "conexion.php";
 
 $sqlUsuarios = "SELECT id_usuario, nombre FROM usuarios";
 $resultusuarios = mysqli_query($conn, $sqlUsuarios);

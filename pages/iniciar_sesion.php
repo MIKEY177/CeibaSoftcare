@@ -206,7 +206,7 @@ try {
     $mail->Port       = 587;
 
     // Remitente y destinatario
-    $mail->setFrom('ceibasoftcare@gmail.com', 'CEIBA SOFTCARE');
+    $mail->setFrom('ceibasoftcare@ceiba.com', 'CEIBA SOFTCARE');
     $mail->addAddress($email);
 
     // Contenido
@@ -282,6 +282,8 @@ endif;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rc-contrasena1'], $_POST['rc-contrasena2'])) {
     if (session_status() !== PHP_SESSION_ACTIVE) session_start();
     require_once 'conexion.php'; // Asegura la conexión $conn
+
+
 
     $pass1 = trim($_POST['rc-contrasena1']);
     $pass2 = trim($_POST['rc-contrasena2']);
