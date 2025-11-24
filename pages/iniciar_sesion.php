@@ -1,3 +1,8 @@
+<?php
+        use PHPMailer\PHPMailer\PHPMailer;
+        use PHPMailer\PHPMailer\Exception;
+        session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -33,15 +38,9 @@
         </section>
         <?php
         require_once 'conexion.php';
-        if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['correo']) && isset($_POST['contrasena'])) {
             $correo = $_POST['correo'];
             $contrasena = $_POST['contrasena'];
-
-            if (empty($correo) || empty($contrasena)) {
-                //Si los campos están vacíos
-                //$error['empty'] = "<script>alert('Por favor, complete todos los campos');</script>";
-                //exit();
-            }
 
             if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
                 // Si el correo no es válido
@@ -87,11 +86,11 @@
                     
                 } else {
                     // Contraseña incorrecta
-                    //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
+                    $error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
                 }
             } else {
                 // Usuario no encontrado
-                //$error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
+                $error['invalid_credentials'] = "<script>alert('Correo o contraseña incorrectos');</script>";
             }
             if (empty($error)){
                 $contrasena = password_hash($contrasena, PASSWORD_DEFAULT);
@@ -119,6 +118,10 @@
                 }
 
             }
+        }else{
+            //Si los campos están vacíos
+                //$error['empty'] = "<script>alert('Por favor, complete todos los campos');</script>";
+                //exit();
         }
         ?>
         <aside class="inicio-sesion-vertical-navbar">
@@ -166,13 +169,62 @@
         <section class="modal-rc-area">
             <h1 class="modal-rc-titulo">Recuperar contraseña - 1er paso</h1>
             <h3 class="modal-rc-mensaje">Le enviaremos un código al correo electrónico con el que está registrado en el sistema.</h3>
-            <form class="rc-form" action="" method=""> <!-- Formulario -->
+            <form class="rc-form" action="iniciar_sesion.php" method="post"> <!-- Formulario -->
                 <label class="rc-label" for="">Correo electrónico</label>
                 <input class="rc-input1" type="text" placeholder="ejemplo@email.com" name="rc-correo">
                 <input class="rc-btn" type="submit" value="Enviar Código">
             </form> 
         </section>
     </aside>
+    <?php
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rc-correo'])) {
+        
+
+        require 'lib/vendor/autoload.php';
+
+        $email = trim($_POST['rc-correo']);
+
+// Generar código seguro
+       $code = bin2hex(random_bytes(4)); // 8 caracteres hex
+       $_SESSION['reset_code'] = $code;
+       $_SESSION['reset_email'] = $email;
+       $_SESSION['reset_expiration'] = time() + (15 * 60); // 15 minutos
+       // Regenera id para evitar fijación y fuerza guardar la sesión
+       session_regenerate_id(true);
+       session_write_close();
+       $mail = new PHPMailer(true);
+
+try {
+    // Configuración SMTP (ejemplo con Gmail)
+    $mail->isSMTP();
+    $mail->Host       = 'smtp.gmail.com';
+    $mail->SMTPAuth   = true;
+    $mail->Username   = 'ceibasoftcare@gmail.com'; // tu correo
+    $mail->Password   = 'qtfggrwoqwlrefxl';     // contraseña de aplicación
+    $mail->SMTPSecure = 'tls';
+    $mail->Port       = 587;
+
+    // Remitente y destinatario
+    $mail->setFrom('ceibasoftcare@gmail.com', 'CEIBA SOFTCARE');
+    $mail->addAddress($email);
+
+    // Contenido
+    $mail->isHTML(true);
+    $mail->Subject = 'Recuperación de contraseña';
+    $mail->Body    = "<fieldset><legend>Tu código de recuperación es:</legend> <b>$code</b><br></fieldset>Expira en 15 minutos.";
+
+    $mail->send();
+    echo "Código enviado a tu correo.";
+} catch (Exception $e) {
+    echo "Error al enviar: {$mail->ErrorInfo}";
+}
+    }
+
+    if(isset($mail)):
+
+?>
+
     <aside class="modal-recuperar-contrasena">
         <a href="">
             <img class="volver-icono" src="" alt="">
@@ -181,13 +233,31 @@
         <section class="modal-rc-area">
             <h1 class="modal-rc-titulo">Recuperar contraseña - 2do paso</h1>
             <h3 class="modal-rc-mensaje">Por favor, digite a continuación el código que le enviamos a su correo, si no lo encuentra, revise la carpeta de Spam.</h3>
-            <form class="rc-form" action="" method=""> <!-- Formulario -->
+            <form class="rc-form" action="iniciar_sesion.php" method="post"> <!-- Formulario -->
                 <label class="rc-label" for="">Código</label>
                 <input class="rc-input2" type="text" name="rc-codigo">
                 <input class="rc-btn" type="submit" value="Siguiente">
             </form> 
         </section>
     </aside>
+<?php 
+endif; 
+if($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rc-codigo'])){
+    $code = trim($_POST['rc-codigo']);
+if(isset($_SESSION['reset_code']) && isset($_SESSION['reset_expiration'])){
+    if($code === $_SESSION['reset_code'] && time() < $_SESSION['reset_expiration']){
+        echo "Código válido. Ahora puedes cambiar tu contraseña.";
+        $code_verification = true;
+    } else {
+        echo "Código inválido o expirado.";
+    }
+} else {
+    echo "No hay código generado.";
+}
+}
+
+if(isset($code_verification)):
+?>
     <aside class="modal-recuperar-contrasena">
         <a href="">
             <img class="volver-icono" src="" alt="">
@@ -196,7 +266,7 @@
         <section class="modal-rc-area">
             <h1 class="modal-rc-titulo">Recuperar contraseña - 3er paso</h1>
             <h3 class="modal-rc-mensaje">El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.</h3>
-            <form class="rc-form" action="" method=""> <!-- Formulario -->
+            <form class="rc-form" action="iniciar_sesion.php" method="post"> <!-- Formulario -->
                 <label class="rc-label" for="">Nueva Contraseña</label>
                 <input class="rc-input3" type="text" name="rc-contrasena1">
                 <!---->
@@ -206,5 +276,55 @@
             </form> 
         </section>
     </aside>
+<?php
+endif;
+// Manejo envío de nueva contraseña (3er paso)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rc-contrasena1'], $_POST['rc-contrasena2'])) {
+    if (session_status() !== PHP_SESSION_ACTIVE) session_start();
+    require_once 'conexion.php'; // Asegura la conexión $conn
+
+    $pass1 = trim($_POST['rc-contrasena1']);
+    $pass2 = trim($_POST['rc-contrasena2']);
+    $email = $_SESSION['reset_email'] ?? null;
+
+    if (!$email) {
+        echo "No se puede identificar el usuario. Inicie el proceso de recuperación nuevamente.";
+    } elseif ($pass1 === '' || $pass2 === '') {
+        echo "Complete ambos campos de contraseña.";
+    } elseif ($pass1 !== $pass2) {
+        echo "Las contraseñas no coinciden.";
+    } else {
+        // Validaciones de seguridad
+        $errors = [];
+        if (strlen($pass1) < 8) $errors[] = "La contraseña debe tener al menos 8 caracteres.";
+        if (!preg_match('/[A-Z]/', $pass1)) $errors[] = "Debe contener al menos una letra mayúscula.";
+        if (!preg_match('/[a-z]/', $pass1)) $errors[] = "Debe contener al menos una letra minúscula.";
+        if (!preg_match('/[0-9]/', $pass1)) $errors[] = "Debe contener al menos un número.";
+        if (!preg_match('/[\W_]/', $pass1)) $errors[] = "Debe contener al menos un símbolo especial.";
+
+        if (!empty($errors)) {
+            foreach ($errors as $e) echo $e . "<br>";
+        } else {
+            $hashed = password_hash($pass1, PASSWORD_DEFAULT);
+            $sql = "UPDATE usuarios SET contrasena = ? WHERE correo = ?";
+            if ($stmt = mysqli_prepare($conn, $sql)) {
+                mysqli_stmt_bind_param($stmt, "ss", $hashed, $email);
+                if (mysqli_stmt_execute($stmt)) {
+                    // Limpieza de sesión de recuperación
+                    unset($_SESSION['reset_code'], $_SESSION['reset_expiration'], $_SESSION['reset_email']);
+                    // Redirigir a la página de inicio de sesión con mensaje de éxito
+                    echo "contraseña actualizada correctamente.";
+                    exit;
+                } else {
+                    echo "Error al actualizar la contraseña. Intente nuevamente.";
+                }
+                mysqli_stmt_close($stmt);
+            } else {
+                echo "Error interno. Contacte al administrador.";
+            }
+        }
+    }
+}
+?>
 </body>
 </html>
