@@ -5,7 +5,7 @@
 }
 
 main, footer, .modal-recuperar-contrasena, 
-              .modal-registrar, .modal-editar, .modal-eliminar, 
+              .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
               .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-eliminar,
               .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-eliminar {
     border: 3px solid black;
