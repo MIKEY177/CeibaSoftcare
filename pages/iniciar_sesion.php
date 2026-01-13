@@ -212,7 +212,9 @@ try {
     // Contenido
     $mail->isHTML(true);
     $mail->Subject = 'Recuperación de contraseña';
-    $mail->Body    = "<fieldset><legend>Tu código de recuperación es:</legend> <b>$code</b><br></fieldset>Expira en 15 minutos.";
+    ob_start();
+    include 'mail-body.php';
+    $mail->Body    = ob_get_clean(); // Cuerpo del correo con el código
 
     $mail->send();
     echo "Código enviado a tu correo.";
