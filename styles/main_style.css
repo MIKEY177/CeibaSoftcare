@@ -38,7 +38,264 @@ main{
     border: none;
 }
 
+.vertical-navbar{
+    width: 350px;
+    height: 675px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0094A4;
+    border-radius: 30px;
+}
 
+.vertical-navbar::before{
+    content: '';
+    width: 350px;
+    height: 675px;
+    border-radius: 30px;
+    background-color: #0094A4;
+    position: absolute;
+    opacity: 0.2;
+    z-index: -1;
+    transform: translate(-10px, 10px);
+}
+
+.avatar{
+    border: 2px solid #43AAB7;
+    margin: 30px auto 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    align-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar::before{
+    content: '';
+    width: 118px;
+    height: 118px;
+    background-color: white;
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.avatar-img{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.perfil-nombre{
+    color: #212427;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 15px auto 0;
+}
+
+.perfil-rol{
+    margin: 10px auto 0;
+    color: white;
+    font-size: 0.6rem;
+    width: 188px;
+    height: 38px;
+}
+
+.perfil-rol-texto, .perfil-rol-img{
+    position: absolute;
+}
+
+.perfil-rol-texto{
+    font-weight: 400;
+    justify-self: center;
+    transform: translatey(2px);
+}
+
+.contenedor-nav{
+    height: 240px;
+    margin: 50px auto 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.contenedor-nav a{
+    all: unset;
+}
+
+.opcion-nav{
+    justify-self: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.cerrar-sesion-btn{
+    margin: 50px auto 0;
+    height: 40px;
+    width: 200px;
+    background-color: #e66377ec;
+    color: #740000;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.secciones-dashboard, .secciones-area-gestion{
+    /* border: 2px solid red; */
+    width: 1200px;
+    height: 675px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .titulo-dashboard, .seccion1-proximas-brigadas, .seccion2-modulos{
+    border: 2px solid red;
+} */
+
+.titulo-dashboard{
+    color: #048F9F;
+    font-size: 2rem;
+}
+
+.seccion1-proximas-brigadas{
+    width: 100%;
+    height: 300px;
+}
+
+.seccion2-modulos{
+    width: 100%;
+    height: 260px;
+}
+
+.subtitulo-dashboard{
+    color: #048F9F;
+    font-size: 1.6rem;
+    margin: 0 0 10px;
+}
+
+.area-brigadas{
+    width: 100%;
+    height: 260px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-family: "Lato";
+    display: flex;
+}
+
+.fecha{
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.articulo-brigada{
+    width: 290px;
+    height: 190px;
+    background-color: #EFEFEF;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 0;
+}
+
+.detalles-brigada{
+    font-size: 1.05rem;
+}
+
+.articulo-brigada h5{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #048F9F;
+    text-align: center;
+}
+
+.articulo-brigada h6{
+    margin: 15px 0 0;
+    font-size: 1.05rem;
+}
+
+.articulo-brigada p{
+    font-size: 1.05rem;
+    overflow-wrap: break-word;
+}
+
+.separador-vertical{
+    margin: 5px 20px 0;
+    width: 3px;
+    height: 220px;
+    background-color: #BDEDF3;
+}
+
+.area-modulos{
+    width: 100%;
+    height: 220px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+}
+
+.area-modulos a{
+    all: unset;
+}
+
+.modulo-farmacia, .modulo-refugio, .modulo-usuarios{
+    border-radius: 20px;
+    width: 220px;
+    height: 130px;
+    margin: 0 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4{
+    font-family: "Ubuntu";
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.modulo-farmacia{
+    border: 2px solid #0094A4;
+    background-color: #0094a42c;
+    color: #0094A4;
+}
+
+.modulo-refugio{
+    border: 2px solid #D49538;
+    background-color: #D495382c;
+    color: #D49538;
+}
+
+.modulo-usuarios{
+    border: 2px solid #5779FF;
+    background-color: #5779FF2c;
+    color: #5779FF;
+}
+
+.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono{
+    width: 50px;
+    height: 50px;
+}
+
+.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img{
+    width: 100%;
+    height: 100%;
+}
+
+
+/* Mostly iniciar_sesion from here */
 
 .area-grafica{
     width: 650px;
@@ -141,7 +398,7 @@ main{
     transition: transform 0.1s ease-in-out;
 }
 
-.iniciar-sesion-btn:hover{
+.iniciar-sesion-btn:hover, .cerrar-sesion-btn:hover{
     transform: scale(1.05);
     transition: transform 0.1s ease-in-out;
 }
