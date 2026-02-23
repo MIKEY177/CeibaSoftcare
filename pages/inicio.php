@@ -41,7 +41,7 @@ $rol = $_SESSION['usuario_rol'];
                 <a href=""><h2 class="opcion-nav">Refugio</h2></a>
                 <?php endif; ?>
             </div>
-            <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
+            <a href="cerrar_sesion.php"><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
         </aside>
         <section class="secciones-dashboard">
             <h2 class="titulo-dashboard">¡Bienvenido al Dashboard!</h2>

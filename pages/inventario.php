@@ -48,7 +48,7 @@ $resultusuarios = mysqli_query($conn, $sqlUsuarios);
                 <a href=""><h2 class="opcion-nav">Brigadas</h2></a>
             </div>
 
-            <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
+            <a href="cerrar_sesion.php"><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
         </aside>
 
         <section class="secciones-area-gestion">
