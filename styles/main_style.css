@@ -156,7 +156,7 @@ main{
     align-items: center;
 }
 
-/* .titulo-dashboard, .seccion1-proximas-brigadas, .seccion2-modulos{
+/* .titulo-dashboard, .seccion1-proximas-brigadas, .seccion1-actividad-reciente, .seccion2-modulos{
     border: 2px solid red;
 } */
 
@@ -170,12 +170,22 @@ main{
     height: 300px;
 }
 
-.seccion2-modulos{
+.seccion1-actividad-reciente{
+    width: 100%;
+    height: 340px;
+}
+
+.seccion2-modulos-i{
     width: 100%;
     height: 260px;
 }
 
-.subtitulo-dashboard{
+.seccion2-modulos{
+    width: 100%;
+    height: 220px;
+}
+
+.subtitulo-dashboard, .titulo-area-gestion{
     color: #048F9F;
     font-size: 1.6rem;
     margin: 0 0 10px;
@@ -234,7 +244,7 @@ main{
     background-color: #BDEDF3;
 }
 
-.area-modulos{
+.area-modulos-i{
     width: 100%;
     height: 220px;
     background-color: white;
@@ -244,11 +254,21 @@ main{
     display: flex;
 }
 
-.area-modulos a{
+.area-modulos{
+    width: 100%;
+    height: 180px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+}
+
+.area-modulos a, .area-modulos-i a{
     all: unset;
 }
 
-.modulo-farmacia, .modulo-refugio, .modulo-usuarios{
+.modulo-farmacia, .modulo-refugio, .modulo-usuarios, .modulo-brigadas, .modulo-inventario, .modulo-salidas-productos, .modulo-entradas-productos{
     border-radius: 20px;
     width: 220px;
     height: 130px;
@@ -260,13 +280,17 @@ main{
     cursor: pointer;
 }
 
-.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4{
+.modulo-salidas-productos, .modulo-entradas-productos{
+    width: 270px;
+}
+
+.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4, .modulo-brigadas h4, .modulo-inventario h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
     font-family: "Ubuntu";
     font-size: 1.6rem;
     font-weight: 400;
 }
 
-.modulo-farmacia{
+.modulo-farmacia, .modulo-brigadas{
     border: 2px solid #0094A4;
     background-color: #0094a42c;
     color: #0094A4;
@@ -284,16 +308,108 @@ main{
     color: #5779FF;
 }
 
-.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono{
+.modulo-inventario{
+    border: 2px solid #D47438;
+    background-color: #D474382c;
+    color: #D47438;
+}
+
+.modulo-salidas-productos{
+    border: 2px solid #740000;
+    background-color: #7400002c;
+    color: #740000;
+}
+
+.modulo-entradas-productos{
+    border: 2px solid #108F36;
+    background-color: #108F362c;
+    color: #108F36;
+}
+
+.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono, .modulo-brigadas-icono, .modulo-inventario-icono, .modulo-salidas-productos-icono, .modulo-entradas-productos-icono{
     width: 50px;
     height: 50px;
 }
 
-.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img{
+.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img, .modulo-brigadas-img, .modulo-inventario-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
     width: 100%;
     height: 100%;
 }
 
+.tabla-actividad-reciente{
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border: 3px solid #D49538;
+    border-radius: 25px;
+    font-family: "Lato";
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    table-layout: fixed;
+}
+
+.header-tabla-actividad-reciente{
+    background-color: #FFF8E2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    height: 50px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-tabla-actividad-reciente td, .body-tabla-actividad-reciente td{
+    border-bottom: 3px solid #D49538;
+}
+
+.body-tabla-actividad-reciente tr:last-child td{
+    border-bottom: 0;
+}
+
+.body-tabla-actividad-reciente{
+    display: block;
+    width: 100%;
+    height: 250px; /* adjust if header height changes */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar {
+  width: 8px; /* Set a width for vertical scrollbar */
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar-track {
+  background: #FFF8E2; /* Style the track (e.g., set a background color) */
+  /* Add any other desired styles like border-radius or box-shadow */
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar-thumb {
+  background-color: #D49538;
+}
+
+.body-tabla-actividad-reciente tr{
+    display: table;
+    width: 100%;
+    max-height: 50px; 
+    table-layout: fixed;
+}
+
+.body-tabla-actividad-reciente td{
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+.tabla-actividad-reciente-btn{
+    background-color: #D49538;
+    padding: 5px 30px;
+    font-size: 1rem;
+    font-weight: 550;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
 
 /* Mostly iniciar_sesion from here */
 
