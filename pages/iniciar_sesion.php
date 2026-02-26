@@ -1,7 +1,15 @@
 <?php
 session_start();
+// Ajusta la ruta según donde hayas puesto el prefijo en el comando anterior
+require '../vendor/phpmailer/src/Exception.php';
+require '../vendor/phpmailer/src/PHPMailer.php';
+require '../vendor/phpmailer/src/SMTP.php';
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
+
+
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rc-correo'])) {
     require_once 'conexion.php';
@@ -25,7 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['rc-correo'])) {
     }
 
     if (empty($mailErrors ?? [])) {
-        require 'lib/vendor/autoload.php';
 
         $code = bin2hex(random_bytes(4));
         $_SESSION['reset_code'] = $code;
