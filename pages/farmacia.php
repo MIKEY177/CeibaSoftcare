@@ -1,3 +1,15 @@
+<?php
+    function VerificarSesion(){
+        session_start();
+        if(!isset($_SESSION['usuario_id']) || empty($_SESSION['usuario_id'])){
+            header("Location:iniciar_sesion.php");
+            exit();
+        }
+    }
+    
+    VerificarSesion();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,16 +25,18 @@
                 <figure class="avatar">
                     <img class="avatar-img" src="" alt=""> <!-- Variable -->
                 </figure>
-                <h1 class="perfil-nombre">[Username...]</h1> <!-- Variable -->
+                <h1 class="perfil-nombre"><?php echo $_SESSION['usuario_nombre']; ?></h1> <!-- Variable -->
                 <figure class="perfil-rol">
                     <img class="perfil-rol-img" src="" alt="">
-                    <h1 class="perfil-rol-texto">[Rol]</h1> <!-- Variable -->
+                    <h1 class="perfil-rol-texto"><?php echo $_SESSION['usuario_rol']; ?></h1> <!-- Variable -->
                 </figure>
             </div>
             <div class="contenedor-nav">
+              <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                 <a href=""><h2 class="opcion-nav">Inventario</h2></a>
                 <a href=""><h2 class="opcion-nav">Salidas Productos</h2></a>
                 <a href=""><h2 class="opcion-nav">Entradas Productos</h2></a>
+              <?php endif; ?>
                 <a href=""><h2 class="opcion-nav">Brigadas</h2></a>
             </div>
             <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
@@ -41,20 +55,37 @@
                             <td><!-- acción --></td>
                         </tr>
                     </thead>
+                    <?php
+                       require_once 'conexion.php';
+                       $sql = "CALL ActividadReciente()";
+                       $stmt = mysqli_prepare($conn, $sql);
+                       mysqli_stmt_execute($stmt);
+                       $resultado = mysqli_stmt_get_result($stmt);
+                       for ($i = 0; $i < 10; $i++){
+                           $fila = mysqli_fetch_assoc($resultado);
+                           if ($fila): 
+                    ?>
                     <tbody class="body-tabla-actividad-reciente">
                         <tr> <!-- Este tr es el que se repite en Backend -->
-                            <td>[Producto]</td> <!-- Variable -->
-                            <td>[dd/mm/aaaa]</td> <!-- Variable -->
-                            <td>[#]</td> <!-- Variable -->
-                            <td>[Actividad]</td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['producto']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['fecha']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['cantidad']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['actividad']); ?></td> <!-- Variable -->
                             <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
                         </tr>
                     </tbody>
+                    <?php
+                           endif;
+                       }
+                       mysqli_stmt_close($stmt);
+                       mysqli_close($conn);
+                    ?>
                 </table>
             </section>
             <section class="seccion2-modulos">
                 <h3 class="titulo-area-gestion">Sub-Módulos de Gestión</h3>
                 <section class="area-modulos">
+                    <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                     <a href="">
                         <div class="modulo-inventario">
                             <h4 class="titulo-modulo-inventario">Inventario</h4>
@@ -79,6 +110,7 @@
                             </figure>
                         </div>
                     </a>
+                    <?php endif; ?>
                     <a href="">
                         <div class="modulo-brigadas">
                             <h4 class="titulo-modulo-brigadas">Brigadas</h4>
