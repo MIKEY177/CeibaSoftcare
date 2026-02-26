@@ -1,5 +1,5 @@
 <?php
-// Capturar errores enviados por GET
+
 $nombre_error      = isset($_GET['nombre_error']) ? $_GET['nombre_error'] : "";
 $descripcion_error = isset($_GET['descripcion_error']) ? $_GET['descripcion_error'] : "";
 $unidad_error      = isset($_GET['unidad_error']) ? $_GET['unidad_error'] : "";
@@ -17,6 +17,19 @@ require_once "conexion.php";
 $sqlUsuarios = "SELECT id_usuario, nombre FROM usuarios";
 $resultusuarios = mysqli_query($conn, $sqlUsuarios);
 
+session_start();
+function VerificarSesion(){
+    if(empty($_SESSION['usuario_id'])){
+        // Redirigir al usuario a la página de inicio de sesión si no ha iniciado sesión
+        header("Location: iniciar_sesion.php");
+        exit();
+    }else  if($_SESSION['usuario_rol'] != 'administrador' && $_SESSION['usuario_rol'] != 'farmacéutico'){
+        // Redirigir al usuario a la página de inicio si no tiene el rol adecuado
+        header("Location: inicio.php");
+        exit();
+    }
+}
+VerificarSesion();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,15 +45,14 @@ $resultusuarios = mysqli_query($conn, $sqlUsuarios);
         <aside class="vertical-navbar">
             <div class="perfil">
                 <figure class="avatar">
-                    <img class="avatar-img" src="" alt="">
+                    <img class="avatar-img" src="" alt=""> <!-- Variable -->
                 </figure>
-                <h1 class="perfil-nombre">[Username...]</h1>
+                <h1 class="perfil-nombre"><?php echo $_SESSION['usuario_nombre']; ?></h1> <!-- Variable -->
                 <figure class="perfil-rol">
                     <img class="perfil-rol-img" src="" alt="">
-                    <h1 class="perfil-rol-texto">[Rol]</h1>
+                    <h1 class="perfil-rol-texto"><?php echo $_SESSION['usuario_rol']; ?></h1> <!-- Variable -->
                 </figure>
             </div>
-
             <div class="contenedor-nav">
                 <a href=""><h2 class="opcion-nav">Inventario</h2></a>
                 <a href=""><h2 class="opcion-nav">Salidas Productos</h2></a>
