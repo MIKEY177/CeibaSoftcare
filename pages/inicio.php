@@ -19,6 +19,9 @@ $rol = $_SESSION['usuario_rol'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/main_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <title>Inicio - Softcare</title>
 </head>
 <body>
@@ -30,7 +33,7 @@ $rol = $_SESSION['usuario_rol'];
                 </figure>
                 <h1 class="perfil-nombre"><?php echo $nombre; ?></h1> <!-- Variable -->
                 <figure class="perfil-rol">
-                    <img class="perfil-rol-img" src="" alt="">
+                    <img class="perfil-rol-img" src="../images/rol_stand.png" alt="">
                     <h1 class="perfil-rol-texto"><?php echo $rol; ?></h1> <!-- Variable -->
                 </figure>
             </div>
@@ -53,22 +56,22 @@ $rol = $_SESSION['usuario_rol'];
                         <article class="articulo-brigada">
                             <h5 class="detalles-brigada">[Nombre brigada]</h5> <!-- Variable -->
                             <h6 class="detalles-brigada">Lugar:</h6>
-                            <p class="detalles-brigada">[contenido]</p> <!-- Variable -->
-                            <h6 class="detalles-brigada">Descrpción:</h6>
-                            <p class="detalles-brigada">[contenido]</p> <!-- Variable -->
+                            <p class="detalles-brigada">[contenidooooooooooooooooooo]</p> <!-- Variable -->
+                            <h6 class="detalles-brigada">Descripción:</h6>                                            <!-- cap en el back-end -->
+                            <p class="detalles-brigada">[contenidooooooooooooooooooooooooooooooooooooooooooooooo]</p> <!-- Variable -->
                         </article>
                     </div>
                     <div class="separador-vertical"></div> <!-- Este div también se repite -->
                 </section>
             </section>
-            <section class="seccion2-modulos">
+            <section class="seccion2-modulos-i">
                 <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
-                <section class="area-modulos">
+                <section class="area-modulos-i">
                     <a href="">
                         <div class="modulo-farmacia">
                             <h4 class="titulo-modulo-farmacia">Farmacia</h4>
                             <figure class="modulo-farmacia-icono">
-                                <img class="modulo-farmacia-img" src="" alt="">
+                                <img class="modulo-farmacia-img" src="../images/icons/farmacia-icon.png" alt="">
                             </figure>
                         </div>
                     </a>
@@ -77,7 +80,7 @@ $rol = $_SESSION['usuario_rol'];
                         <div class="modulo-refugio">
                             <h4 class="titulo-modulo-refugio">Refugio</h4>
                             <figure class="modulo-refugio-icono">
-                                <img class="modulo-refugio-img" src="" alt="">
+                                <img class="modulo-refugio-img" src="../images/icons/refugio-icon.png" alt="">
                             </figure>
                         </div>
                     </a>
@@ -87,7 +90,7 @@ $rol = $_SESSION['usuario_rol'];
                         <div class="modulo-usuarios">
                             <h4 class="titulo-modulo-usuarios">Usuarios</h4>
                             <figure class="modulo-usuarios-icono">
-                                <img class="modulo-usuarios-img" src="" alt="">
+                                <img class="modulo-usuarios-img" src="../images/icons/usuarios.png" alt="">
                             </figure>
                         </div>
                     </a>
@@ -101,13 +104,13 @@ $rol = $_SESSION['usuario_rol'];
         <section class="asociaciones">
             <div class="softcare">
                 <figure class="softcare-logo">
-                    <img class="softcare-logo-img" src="" alt="">
+                    <img class="softcare-logo-img" src="../images/softcare_logo.png" alt="">
                 </figure>
                 <h6 class="softcare-titulo">SoftCare</h6>
             </div>
             <div class="ceiba">
                 <figure class="ceiba-logo">
-                    <img class="ceiba-logo-img" src="" alt="">
+                    <img class="ceiba-logo-img" src="../images/ceiba_logo.png" alt="">
                 </figure>
                 <h6 class="ceiba-titulo">Ceiba</h6>
             </div>

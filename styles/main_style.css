@@ -4,14 +4,23 @@
     margin: 0;
 }
 
+body{
+    font-family: "Ubuntu";
+    background-color: #EEFDFF;
+}
 
+.softcare-logo-img, .ceiba-logo-img, .logo-softcare-img, .diseno-principal-img{
+    width: 100%;
+    height: 100%;
+}
 
-main, footer, .modal-recuperar-contrasena, 
+.modal-recuperar-contrasena, 
               .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
               .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-eliminar,
               .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-eliminar {
     border: 3px solid black;
-    margin-bottom: 15px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     padding: 15px;
     width: max-content;
 }
@@ -51,4 +60,538 @@ main, footer, .modal-recuperar-contrasena,
     font-size: 14px;
     margin-top: 4px;
     display: block;
+}
+main{
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    height: 90vh;
+    padding: 0;
+    margin-bottom: 0;
+    border: none;
+}
+
+.vertical-navbar{
+    width: 350px;
+    height: 675px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0094A4;
+    border-radius: 30px;
+}
+
+.vertical-navbar::before{
+    content: '';
+    width: 350px;
+    height: 675px;
+    border-radius: 30px;
+    background-color: #0094A4;
+    position: absolute;
+    opacity: 0.2;
+    z-index: -1;
+    transform: translate(-10px, 10px);
+}
+
+.avatar{
+    border: 2px solid #43AAB7;
+    margin: 30px auto 0;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    align-content: center;
+    overflow: hidden;
+    position: relative;
+}
+
+.avatar::before{
+    content: '';
+    width: 118px;
+    height: 118px;
+    background-color: white;
+    position: absolute;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+.avatar-img{
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.perfil-nombre{
+    color: #212427;
+    font-size: 1.8rem;
+    font-weight: 500;
+    margin: 15px auto 0;
+}
+
+.perfil-rol{
+    margin: 10px auto 0;
+    color: white;
+    font-size: 0.6rem;
+    width: 188px;
+    height: 38px;
+}
+
+.perfil-rol-texto, .perfil-rol-img{
+    position: absolute;
+}
+
+.perfil-rol-texto{
+    font-weight: 400;
+    justify-self: center;
+    transform: translatey(2px);
+}
+
+.contenedor-nav{
+    height: 240px;
+    margin: 50px auto 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.contenedor-nav a{
+    all: unset;
+}
+
+.opcion-nav{
+    justify-self: center;
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.cerrar-sesion-btn{
+    margin: 50px auto 0;
+    height: 40px;
+    width: 200px;
+    background-color: #e66377ec;
+    color: #740000;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.secciones-dashboard, .secciones-area-gestion{
+    /* border: 2px solid red; */
+    width: 1200px;
+    height: 675px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* .titulo-dashboard, .seccion1-proximas-brigadas, .seccion1-actividad-reciente, .seccion2-modulos{
+    border: 2px solid red;
+} */
+
+.titulo-dashboard{
+    color: #048F9F;
+    font-size: 2rem;
+}
+
+.seccion1-proximas-brigadas{
+    width: 100%;
+    height: 300px;
+}
+
+.seccion1-actividad-reciente{
+    width: 100%;
+    height: 340px;
+}
+
+.seccion2-modulos-i{
+    width: 100%;
+    height: 260px;
+}
+
+.seccion2-modulos{
+    width: 100%;
+    height: 220px;
+}
+
+.subtitulo-dashboard, .titulo-area-gestion{
+    color: #048F9F;
+    font-size: 1.6rem;
+    margin: 0 0 10px;
+}
+
+.area-brigadas{
+    width: 100%;
+    height: 260px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-family: "Lato";
+    display: flex;
+}
+
+.fecha{
+    font-size: 1.3rem;
+    font-weight: 500;
+}
+
+.articulo-brigada{
+    width: 290px;
+    height: 190px;
+    background-color: #EFEFEF;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 0;
+}
+
+.detalles-brigada{
+    font-size: 1.05rem;
+}
+
+.articulo-brigada h5{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #048F9F;
+    text-align: center;
+}
+
+.articulo-brigada h6{
+    margin: 15px 0 0;
+    font-size: 1.05rem;
+}
+
+.articulo-brigada p{
+    font-size: 1.05rem;
+    overflow-wrap: break-word;
+}
+
+.separador-vertical{
+    margin: 5px 20px 0;
+    width: 3px;
+    height: 220px;
+    background-color: #BDEDF3;
+}
+
+.area-modulos-i{
+    width: 100%;
+    height: 220px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+}
+
+.area-modulos{
+    width: 100%;
+    height: 180px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 20px;
+    display: flex;
+}
+
+.area-modulos a, .area-modulos-i a{
+    all: unset;
+}
+
+.modulo-farmacia, .modulo-refugio, .modulo-usuarios, .modulo-brigadas, .modulo-inventario, .modulo-salidas-productos, .modulo-entradas-productos{
+    border-radius: 20px;
+    width: 220px;
+    height: 130px;
+    margin: 0 20px 0 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.modulo-salidas-productos, .modulo-entradas-productos{
+    width: 270px;
+}
+
+.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4, .modulo-brigadas h4, .modulo-inventario h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
+    font-family: "Ubuntu";
+    font-size: 1.6rem;
+    font-weight: 400;
+}
+
+.modulo-farmacia, .modulo-brigadas{
+    border: 2px solid #0094A4;
+    background-color: #0094a42c;
+    color: #0094A4;
+}
+
+.modulo-refugio{
+    border: 2px solid #D49538;
+    background-color: #D495382c;
+    color: #D49538;
+}
+
+.modulo-usuarios{
+    border: 2px solid #5779FF;
+    background-color: #5779FF2c;
+    color: #5779FF;
+}
+
+.modulo-inventario{
+    border: 2px solid #D47438;
+    background-color: #D474382c;
+    color: #D47438;
+}
+
+.modulo-salidas-productos{
+    border: 2px solid #740000;
+    background-color: #7400002c;
+    color: #740000;
+}
+
+.modulo-entradas-productos{
+    border: 2px solid #108F36;
+    background-color: #108F362c;
+    color: #108F36;
+}
+
+.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono, .modulo-brigadas-icono, .modulo-inventario-icono, .modulo-salidas-productos-icono, .modulo-entradas-productos-icono{
+    width: 50px;
+    height: 50px;
+}
+
+.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img, .modulo-brigadas-img, .modulo-inventario-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
+    width: 100%;
+    height: 100%;
+}
+
+.tabla-actividad-reciente{
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border: 3px solid #D49538;
+    border-radius: 25px;
+    font-family: "Lato";
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    table-layout: fixed;
+}
+
+.header-tabla-actividad-reciente{
+    background-color: #FFF8E2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    height: 50px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-tabla-actividad-reciente td, .body-tabla-actividad-reciente td{
+    border-bottom: 3px solid #D49538;
+}
+
+.body-tabla-actividad-reciente tr:last-child td{
+    border-bottom: 0;
+}
+
+.body-tabla-actividad-reciente{
+    display: block;
+    width: 100%;
+    height: 250px; /* adjust if header height changes */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar {
+  width: 8px; /* Set a width for vertical scrollbar */
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar-track {
+  background: #FFF8E2; /* Style the track (e.g., set a background color) */
+  /* Add any other desired styles like border-radius or box-shadow */
+}
+
+.body-tabla-actividad-reciente::-webkit-scrollbar-thumb {
+  background-color: #D49538;
+}
+
+.body-tabla-actividad-reciente tr{
+    display: table;
+    width: 100%;
+    max-height: 50px; 
+    table-layout: fixed;
+}
+
+.body-tabla-actividad-reciente td{
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+.tabla-actividad-reciente-btn{
+    background-color: #D49538;
+    padding: 5px 30px;
+    font-size: 1rem;
+    font-weight: 550;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+/* Mostly iniciar_sesion from here */
+
+.area-grafica{
+    width: 650px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.logo-softcare{
+    width: 550px;
+    height: 200px;
+}
+
+.diseno-principal{
+    width: 450px;
+    height: 450px;
+}
+
+.inicio-sesion-vertical-navbar{
+    width: 500px;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    padding: 50px 0px;
+    background-color: #0190A0;
+    border-radius: 30px;
+}
+
+.titulo-inicio-sesion{
+    width: 75%;
+    font-size: 1.7rem;
+    color: white;
+    text-align: center;
+    align-self: center;
+    text-shadow: 3px 3px 4px #00000065;
+}
+
+.iniciar-sesion-form{
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    width: 75%;
+    margin-top: 80px;
+}
+
+.iniciar-sesion-label{
+    padding-left: 15px;
+    font-size: 1.5rem;
+    color: white;
+}
+
+.iniciar-sesion-input1, .iniciar-sesion-input2{
+    margin-top: 15px;
+    margin-bottom: 70px;
+    height: 40px;
+    border-radius: 10px;
+    border: 0;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    box-shadow: 3px 3px 4px #00000065;
+    text-decoration: none;
+}
+
+.iniciar-sesion-input2{
+    margin-bottom: 10px;
+}
+
+.iniciar-sesion-input1::placeholder, .iniciar-sesion-input2::placeholder{
+    font-size: 1rem;
+    color: #0190a057;
+    transform: translate(0px, 3px);
+    transition: font-size 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.iniciar-sesion-input1:focus::placeholder, .iniciar-sesion-input2:focus::placeholder{
+    transform: translate(0px, 0px);
+    font-size: 1.15rem;
+    transition: font-size 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.olvido-contra{
+    color: #740000;
+    font-size: 1rem;
+    margin-bottom: 80px;
+}
+
+.iniciar-sesion-btn{
+    margin: 0 90px;
+    height: 50px;
+    background-color: #eaaa49de;
+    color: #875000;
+    border-radius: 10px;
+    border: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.iniciar-sesion-btn:hover, .cerrar-sesion-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+}
+
+footer{
+    font-family: "Lato";
+    width: 100%;
+    height: 10vh;
+    background-color: #0190A0;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    font-size: 1rem;
+    padding: 15px;
+}
+
+.asociaciones, .softcare, .ceiba{
+    display: flex;
+    flex-direction: row;
+}
+
+.softcare-logo{
+    width: 60px;
+    height: 60px;
+}
+
+.ceiba-logo{
+    width: 60px;
+    height: 60px;
+}
+
+.softcare{
+    margin-right: 50px;
+}
+
+.softcare-titulo, .ceiba-titulo{
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 400;
+    align-self: center;
 }
