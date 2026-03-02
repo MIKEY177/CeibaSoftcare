@@ -1,3 +1,64 @@
+<?php
+session_start();
+include 'conexion.php';
+
+// Manejar registro de un detalle de salida desde este formulario
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'registrar_detalle') {
+    $producto = isset($_POST['edpr-producto']) ? (int)$_POST['edpr-producto'] : 0;
+    $cantidad = isset($_POST['edpr-cantidad']) ? (int)$_POST['edpr-cantidad'] : 0;
+    $fecha_venc = isset($_POST['edpr-fecha_vencimiento']) && $_POST['edpr-fecha_vencimiento'] !== '' ? $_POST['edpr-fecha_vencimiento'] : null;
+    $motivo = isset($_POST['edpr-motivo']) ? $_POST['edpr-motivo'] : '';
+    $id_salida = isset($_POST['edpr-id_salida']) ? (int)$_POST['edpr-id_salida'] : (isset($_GET['id_salida']) ? (int)$_GET['id_salida'] : 0);
+
+    if ($producto && $cantidad && $id_salida) {
+        $sql = "INSERT INTO detalles_salidas_pro (cantidad, fecha_vencimiento, motivo, id_producto1, id_salida1) VALUES (?, ?, ?, ?, ?)";
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "issii", $cantidad, $fecha_venc, $motivo, $producto, $id_salida);
+        if (mysqli_stmt_execute($stmt)) {
+            $msg = "Detalle agregado";
+            $msg_type = "success";
+        } else {
+            $msg = "Error al agregar detalle: " . mysqli_error($conn);
+            $msg_type = "error";
+        }
+        mysqli_stmt_close($stmt);
+    }
+}
+
+// Obtener id_salida desde GET para mostrar detalles
+$id_salida = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// Obtener detalles de la salida (si hay id)
+$detalles = array();
+if ($id_salida) {
+    $sql_det = "SELECT d.*, p.nombre AS producto_nombre FROM detalles_salidas_pro d LEFT JOIN productos p ON d.id_producto1 = p.id_producto WHERE d.id_salida1 = ? ORDER BY d.id_detalle_salida ASC";
+    $stmt = mysqli_prepare($conn, $sql_det);
+    if ($stmt) {
+        mysqli_stmt_bind_param($stmt, "i", $id_salida);
+        mysqli_stmt_execute($stmt);
+        $res = mysqli_stmt_get_result($stmt);
+        if ($res) {
+            while ($row = mysqli_fetch_assoc($res)) {
+                $detalles[] = $row;
+            }
+            mysqli_free_result($res);
+        }
+        mysqli_stmt_close($stmt);
+    }
+}
+
+// Obtener productos para selects
+$productos = array();
+$sql_prod = "SELECT id_producto, nombre FROM productos ORDER BY nombre";
+$result_prod = mysqli_query($conn, $sql_prod);
+if ($result_prod) {
+    while ($row = mysqli_fetch_assoc($result_prod)) {
+        $productos[] = $row;
+    }
+}
+?>
+
+<!DOCTYPE html>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -29,7 +90,8 @@
             <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
         </aside>
         <section class="secciones-area-gestion">
-            <h2 class="titulo-dashboard">Detalles de la salida N°[id_salida]</h2> <!-- Variable -->
+            <h2 class="titulo-dashboard">Detalles de la salida N°<?php echo $id_salida; ?> <!-- Variable --></h2>
+            </h2> <!-- Variable -->
             <section class="seccion1-busqueda-agregar">
                 <form class="busqueda-form" action="" method=""> <!-- FORMULARIO -->
                     <input class="busqueda-input1" type="text" name="busqueda" placeholder="Busca un producto" id="">
@@ -52,11 +114,12 @@
                     </tr>
                 </thead>
                 <tbody class="body-tabla-salidas-detalles">
+                    <?php foreach ($detalles as $detalle): ?>
                     <tr><!-- Este tr es el que se repite en Backend -->
-                        <td>[Producto]</td>
-                        <td>[#]</td>
-                        <td>[mm/dd/aaaa]</td>
-                        <td>[Motivo]</td>
+                        <td><?php echo htmlspecialchars($detalle['producto_nombre']); ?></td>
+                        <td><?php echo htmlspecialchars($detalle['cantidad']); ?></td>
+                        <td><?php echo htmlspecialchars($detalle['fecha_vencimiento']); ?></td>
+                        <td><?php echo htmlspecialchars($detalle['motivo']); ?></td>
                         <td>
                             <a href="">
                                 <button class="editar-btn">
@@ -70,6 +133,7 @@
                             </a>
                         </td>
                     </tr>
+                    <?php endforeach; ?>
                 </tbody>    
             </table>
         </section>
