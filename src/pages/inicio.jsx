@@ -1,5 +1,7 @@
 // Imports Base
 import React from 'react'
+import { Link } from 'react-router-dom'
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
@@ -19,7 +21,7 @@ export const Inicio = () => {
         <title>Inicio - Softcare</title>
       </head>
       <main>
-      <Navbar/>
+        <Navbar menu={MenuAdmin}/>
         <section class="secciones-dashboard">
           <h2 class="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
           <section class="seccion1-proximas-brigadas">
@@ -41,30 +43,30 @@ export const Inicio = () => {
           <section class="seccion2-modulos-i">
             <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
             <section class="area-modulos-i">
-              <a href="">
+              <Link to="/farmacia">
                 <div class="modulo-farmacia">
                   <h4 class="titulo-modulo-farmacia">Farmacia</h4>
                   <figure class="modulo-farmacia-icono">
                     <img class="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
+              </Link>
+              <Link to="/refugio">
                 <div class="modulo-refugio">
                   <h4 class="titulo-modulo-refugio">Refugio</h4>
                   <figure class="modulo-refugio-icono">
                     <img class="modulo-refugio-img" src={refugioIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
+              </Link>
+              <Link to="/usuarios">
                 <div class="modulo-usuarios">
                   <h4 class="titulo-modulo-usuarios">Usuarios</h4>
                   <figure class="modulo-usuarios-icono">
                     <img class="modulo-usuarios-img" src={usuariosIcon} alt=""/>
                   </figure>
                 </div>
-              </a>   
+              </Link>   
             </section>
           </section>
         </section>
