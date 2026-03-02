@@ -9,10 +9,10 @@ body{
     background-color: #EEFDFF;
 }
 
-.softcare-logo-img, .ceiba-logo-img, .logo-softcare-img, .diseno-principal-img{
+/* .softcare-logo-img, .ceiba-logo-img, .logo-softcare-img, .diseno-principal-img{
     width: 100%;
     height: 100%;
-}
+} */
 
 .modal-recuperar-contrasena, 
               .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
@@ -38,7 +38,7 @@ main{
     border: none;
 }
 
-.vertical-navbar{
+/* .vertical-navbar{
     width: 350px;
     height: 675px;
     display: flex;
@@ -146,7 +146,7 @@ main{
     cursor: pointer;
     transform: scale(1);
     transition: transform 0.1s ease-in-out;
-}
+} */
 
 .secciones-dashboard, .secciones-area-gestion{
     /* border: 2px solid red; */
@@ -521,7 +521,7 @@ main{
     transition: transform 0.1s ease-in-out;
 }
 
-footer{
+/* footer{
     font-family: "Lato";
     width: 100%;
     height: 10vh;
@@ -560,4 +560,4 @@ footer{
     font-size: 1.2rem;
     font-weight: 400;
     align-self: center;
-}
+} */
