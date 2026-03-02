@@ -3,7 +3,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 
 // Estilos e imágenes
-import "../styles/Navbar.css"
+import "../styles/compsStyles/Navbar.css"
 import rolStand from "../images/rol_stand.png"
 
 export const Navbar = () => {

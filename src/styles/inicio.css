@@ -1,0 +1,100 @@
+main{
+    position: relative;
+    display: flex;
+    /*
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly; */
+    width: 100%;
+    height: 100vh;
+    /* padding: 0;
+    margin-bottom: 0; */
+    /* border: none; */
+}
+
+.seccion1-proximas-brigadas{
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+}
+
+.seccion1-actividad-reciente{
+    width: 100%;
+    height: 340px;
+}
+
+.area-brigadas{
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-family: "Lato";
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.fecha{
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.articulo-brigada{
+    width: 290px;
+    height: 220px;
+    background-color: #EFEFEF;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 0;
+}
+
+.detalles-brigada{
+    font-size: 1.05rem;
+}
+
+.articulo-brigada h5{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #048F9F;
+    text-align: center;
+}
+
+.articulo-brigada h6{
+    margin: 15px 0 0;
+    font-size: 1.05rem;
+}
+
+.articulo-brigada p{
+    font-size: 1.05rem;
+    overflow-wrap: break-word;
+}
+
+.separador-vertical{
+    margin: 5px 20px 0;
+    width: 3px;
+    height: 250px;
+    background-color: #BDEDF3;
+    flex-shrink: 0;
+}
+
+/* Scrollbar */
+
+.area-brigadas::-webkit-scrollbar {
+    width: 6px;
+}
+
+.area-brigadas::-webkit-scrollbar-track {
+    background: #BDEDF3;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.area-brigadas::-webkit-scrollbar-thumb {
+    background-color: #0094A4;
+    border-radius: 100px;
+}
+
+/* Fin Scrollbar */

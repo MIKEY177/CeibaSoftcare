@@ -2,7 +2,7 @@
 import React from 'react'
 
 // Estilos
-import "../styles/globalStyles.css"
+import "../styles/global_styles.css"
 
 // Componentes
 import { Navbar } from '../components/Navbar'

@@ -3,7 +3,7 @@ import React from 'react'
 // import { Link } from 'react-router-dom'
 
 // Estilos e imágenes
-import "../styles/Footer.css"
+import "../styles/compsStyles/Footer.css"
 import softcareLogo from "../images/ceiba_logo.png"
 import ceibaLogo from "../images/softcare_logo.png"
 
