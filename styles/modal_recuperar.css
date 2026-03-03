@@ -1,0 +1,44 @@
+.modal-recuperar-contrasena1,
+.modal-recuperar-contrasena2,
+.modal-recuperar-contrasena3 {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none; /* Esto las mantiene ocultas */
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.55); /* Fondo oscuro */
+    z-index: 999;
+}
+.modal-rc-area {
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Mostrar modal */
+.show-modal {
+    display: flex;
+}
+.error-msg {
+    color: #e74c3c;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    display: block;
+}
+
+.success-msg {
+    color: #27ae60;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.input-error {
+    border: 1.5px solid #e74c3c;
+}

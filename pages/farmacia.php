@@ -1,9 +1,24 @@
+<?php
+    function VerificarSesion(){
+        session_start();
+        if(!isset($_SESSION['usuario_id']) || empty($_SESSION['usuario_id'])){
+            header("Location:iniciar_sesion.php");
+            exit();
+        }
+    }
+    
+    VerificarSesion();
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../styles/main_style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <title>Farmacia - Softcare</title>
 </head>
 <body>
@@ -13,16 +28,18 @@
                 <figure class="avatar">
                     <img class="avatar-img" src="" alt=""> <!-- Variable -->
                 </figure>
-                <h1 class="perfil-nombre">[Username...]</h1> <!-- Variable -->
+                <h1 class="perfil-nombre"><?php echo $_SESSION['usuario_nombre']; ?></h1> <!-- Variable -->
                 <figure class="perfil-rol">
-                    <img class="perfil-rol-img" src="" alt="">
-                    <h1 class="perfil-rol-texto">[Rol]</h1> <!-- Variable -->
+                    <img class="perfil-rol-img" src="../images/rol_stand.png" alt="">
+                    <h1 class="perfil-rol-texto"><?php echo $_SESSION['usuario_rol']; ?></h1> <!-- Variable -->
                 </figure>
             </div>
             <div class="contenedor-nav">
+              <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                 <a href=""><h2 class="opcion-nav">Inventario</h2></a>
                 <a href=""><h2 class="opcion-nav">Salidas Productos</h2></a>
                 <a href=""><h2 class="opcion-nav">Entradas Productos</h2></a>
+              <?php endif; ?>
                 <a href=""><h2 class="opcion-nav">Brigadas</h2></a>
             </div>
             <a href=""><button class="cerrar-sesion-btn">Cerrar Sesión</button></a>
@@ -41,25 +58,42 @@
                             <td><!-- acción --></td>
                         </tr>
                     </thead>
+                    <?php
+                       require_once 'conexion.php';
+                       $sql = "CALL ActividadReciente()";
+                       $stmt = mysqli_prepare($conn, $sql);
+                       mysqli_stmt_execute($stmt);
+                       $resultado = mysqli_stmt_get_result($stmt);
+                       for ($i = 0; $i < 10; $i++){
+                           $fila = mysqli_fetch_assoc($resultado);
+                           if ($fila): 
+                    ?>
                     <tbody class="body-tabla-actividad-reciente">
                         <tr> <!-- Este tr es el que se repite en Backend -->
-                            <td>[Producto]</td> <!-- Variable -->
-                            <td>[dd/mm/aaaa]</td> <!-- Variable -->
-                            <td>[#]</td> <!-- Variable -->
-                            <td>[Actividad]</td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['producto']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['fecha']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['cantidad']); ?></td> <!-- Variable -->
+                            <td><?php echo htmlspecialchars($fila['actividad']); ?></td> <!-- Variable -->
                             <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
                         </tr>
                     </tbody>
+                    <?php
+                           endif;
+                       }
+                       mysqli_stmt_close($stmt);
+                       mysqli_close($conn);
+                    ?>
                 </table>
             </section>
             <section class="seccion2-modulos">
                 <h3 class="titulo-area-gestion">Sub-Módulos de Gestión</h3>
                 <section class="area-modulos">
+                    <?php if($_SESSION['usuario_rol'] == 'administrador' || $_SESSION['usuario_rol'] == 'farmacéutico'): ?>
                     <a href="">
                         <div class="modulo-inventario">
                             <h4 class="titulo-modulo-inventario">Inventario</h4>
                             <figure class="modulo-inventario-icono">
-                                <img class="modulo-inventario-img" src="" alt="">
+                                <img class="modulo-inventario-img" src="../images/icons/inventario-icon.png" alt="">
                             </figure>
                         </div>
                     </a>
@@ -67,7 +101,7 @@
                         <div class="modulo-salidas-productos">
                             <h4 class="titulo-modulo-salidas-productos">Salidas Productos</h4>
                             <figure class="modulo-salidas-productos-icono">
-                                <img class="modulo-salidas-productos-img" src="" alt="">
+                                <img class="modulo-salidas-productos-img" src="../images/icons/salida-icon.png" alt="">
                             </figure>
                         </div>
                     </a>
@@ -75,15 +109,16 @@
                         <div class="modulo-entradas-productos">
                             <h4 class="titulo-modulo-entradas-productos">Entradas Productos</h4>
                             <figure class="modulo-entradas-productos-icono">
-                                <img class="modulo-entradas-productos-img" src="" alt="">
+                                <img class="modulo-entradas-productos-img" src="../images/icons/entrada-icon.png" alt="">
                             </figure>
                         </div>
                     </a>
+                    <?php endif; ?>
                     <a href="">
                         <div class="modulo-brigadas">
                             <h4 class="titulo-modulo-brigadas">Brigadas</h4>
                             <figure class="modulo-brigadas-icono">
-                                <img class="modulo-brigadas-img" src="" alt="">
+                                <img class="modulo-brigadas-img" src="../images/icons/brigadas-icon.png" alt="">
                             </figure>
                         </div>
                     </a>    
@@ -96,13 +131,13 @@
         <section class="asociaciones">
             <div class="softcare">
                 <figure class="softcare-logo">
-                    <img class="softcare-logo-img" src="" alt="">
+                    <img class="softcare-logo-img" src="../images/softcare_logo.png" alt="">
                 </figure>
                 <h6 class="softcare-titulo">SoftCare</h6>
             </div>
             <div class="ceiba">
                 <figure class="ceiba-logo">
-                    <img class="ceiba-logo-img" src="" alt="">
+                    <img class="ceiba-logo-img" src="../images/ceiba_logo.png" alt="">
                 </figure>
                 <h6 class="ceiba-titulo">Ceiba</h6>
             </div>
