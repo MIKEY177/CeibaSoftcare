@@ -1,47 +1,67 @@
-// Imports Base
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import { MenuAdmin } from "../utils/menu.jsx"
 
-// Estilos e imágenes
 import "../styles/global_styles.css"
 import "../styles/inicio.css"
 import farmaciaIcon from "../images/icons/farmacia-icon.png"
 import refugioIcon from "../images/icons/refugio-icon.png"
 import usuariosIcon from "../images/icons/usuarios-icon.png"
 
-// Componentes
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
 export const Inicio = () => {
+
+  const [brigadas, setBrigadas] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost/Ceibasoftcare/backend/api/brigadas.php", {
+    credentials: "include"
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        setBrigadas(response.data);
+      } else {
+        console.error(response.error);
+      }
+    })
+    .catch(error => console.error(error));
+  }, []);
   return (
     <>
-      <head>
-        <title>Inicio - Softcare</title>
-      </head>
       <main>
         <Navbar menu={MenuAdmin}/>
-        <section class="secciones-dashboard">
-          <h2 class="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
-          <section class="seccion1-proximas-brigadas">
-            <h3 class="subtitulo-dashboard">Próximas Brigadas</h3>
-            <section class="area-brigadas">
-              <div class="subarea-brigada">
-                <h4 class="fecha">08 de Abril del 2025</h4>
-                <article class="articulo-brigada">
-                  <h5 class="detalles-brigada">[Nombre brigada]</h5>
-                  <h6 class="detalles-brigada">Lugar:</h6>
-                  <p class="detalles-brigada">[contenidooooooooooooooooooo]</p>
-                  <h6 class="detalles-brigada">Descripción:</h6>                                           
-                  <p class="detalles-brigada">[contenidoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo]</p>
-                </article>
-              </div>
-              <div class="separador-vertical"></div>
+        <section className="secciones-dashboard">
+          <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
+          <section className="seccion1-proximas-brigadas">
+            <h3 className="subtitulo-dashboard">Próximas Brigadas</h3>
+            <section className="area-brigadas">
+              {brigadas.length === 0 ? (
+                <p>No hay brigadas programadas.</p>
+              ) : (
+                brigadas.map((brigada) => (
+                  <>
+                    <div className="subarea-brigada" key={brigada.id_brigada}>
+                      <h4 className="fecha">{brigada.fecha_hora}</h4>
+                      <article className="articulo-brigada">
+                        <h5 className="detalles-brigada">{brigada.nombre}</h5>
+                        <h6 className="detalles-brigada">Lugar:</h6>
+                        <p className="detalles-brigada">{brigada.lugar}</p>
+                        <h6 className="detalles-brigada">Descripción:</h6>
+                        <p className="detalles-brigada">{brigada.descripcion}</p>
+                      </article>
+                    </div>
+                    <div className="separador-vertical"></div>
+                  </>
+                ))
+              )}
             </section>
           </section>
-          <section class="seccion2-modulos-i">
-            <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
+          <section className="seccion2-modulos-i">
+            <h3 className="subtitulo-dashboard">Módulos de Gestión</h3>
+
             <section class="area-modulos-i">
               <Link to="/farmacia">
                 <div class="modulo-farmacia">

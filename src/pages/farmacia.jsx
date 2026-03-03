@@ -1,5 +1,5 @@
 // Imports Base
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
@@ -15,6 +15,23 @@ import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
 export const Farmacia = () => {
+  
+    const [actividad, setActividad] = useState([]);
+  
+    useEffect(() => {
+      fetch("http://localhost/Ceibasoftcare/backend/api/actividad_reciente.php", {
+      credentials: "include"
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          setActividad(response.data);
+        } else {
+          console.error(response.error);
+        }
+      })
+      .catch(error => console.error(error));
+    }, []);
   return (
     <>
       <head>
@@ -37,13 +54,19 @@ export const Farmacia = () => {
                 </tr>
               </thead>
               <tbody class="body-tabla-actividad-reciente">
+                 {actividad.length === 0 ? (
+                <p>No hay actividad reciente.</p>
+              ) : (
+                actividad.map((activity) => (
                 <tr> 
-                  <td>[Producto]</td> 
-                  <td>[dd/mm/aaaa]</td> 
-                  <td>[#]</td>
-                  <td>[Actividad]</td>
+                  <td>{activity.producto}</td> 
+                  <td>{activity.fecha}</td> 
+                  <td>{activity.cantidad}</td>
+                  <td>{activity.actividad}</td>
                   <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
                 </tr>
+                ))
+              )}
               </tbody>
             </table>
           </section>
