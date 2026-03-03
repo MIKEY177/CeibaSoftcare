@@ -82,11 +82,11 @@ VerificarSesion();
             <table class="tabla-inventario">
                 <thead class="header-tabla-inventario">
                     <tr>
-                        <td>Producto</td>
-                        <td>Descripción</td>
-                        <td>Unidad de Medida</td>
-                        <td>Nombre Usuario</td>
-                        <td>Editar | Eliminar </td>
+                        <td>Producto |</td>
+                        <td>Descripción |</td>
+                        <td>Unidad de Medida |</td>
+                        <td>Nombre Usuario |</td>
+                        <td>Acciones </td>
                     </tr>
                 </thead>
                 <tbody class="body-tabla-inventario">

@@ -206,30 +206,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['correo'], $_POST['cont
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+   <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/main_style.css">
+    <link rel="stylesheet" href="../styles/iniciar_sesion_style.css">
     <link rel="stylesheet" href="../styles/modal_recuperar.css">
-    <link rel="stylesheet" href="../styles/main_style.css"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <title>Iniciar Sesión - Softcare</title>
 </head>
 <body>
     <main>
-        <section class="area-grafica">
-            <div class="area-grafica-softcare">
-                <figure class="logo-softcare">
-                    <img class="logo-softcare-img" src="" alt="">
-                </figure>
-                <h1 class="titulo-area-grafica-softcare"></h1>
-            </div>
-            <div class="area-grafica-animales">
-                <figure class="diseño1"><img class="diseño1-img" src="" alt=""></figure>
-                <figure class="diseño2"><img class="diseño2-img" src="" alt=""></figure>
-                <figure class="diseño3"><img class="diseño3-img" src="" alt=""></figure>
-                <figure class="diseño-animales">
-                    <img class="diseño-animal1-img" src="" alt="">
-                    <img class="diseño-animal2-img" src="" alt="">
-                </figure>
-            </div>
+       <section class="area-grafica">
+            <figure class="logo-softcare">
+                <img class="logo-softcare-img" src="../images/logo_softcare.png" alt="">
+            </figure>
+            <figure class="diseno-principal">
+                <img class="diseno-principal-img" src="../images/diseno_principal.png" alt="">
+            </figure>
         </section>
 
         <aside class="inicio-sesion-vertical-navbar">
@@ -267,16 +262,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['correo'], $_POST['cont
     </main>
 
     <footer>
-        <p>Derechos Reservados(menos a GatitoFeroz).</p>
+        <p>Derechos Reservados(menos a GatitoFeroz).</p> <!-- No sé que va acá exactamente -->
         <section class="asociaciones">
             <div class="softcare">
-                <figure class="softcare-logo"><img class="softcare-logo-img" src="" alt=""></figure>
+                <figure class="softcare-logo">
+                    <img class="softcare-logo-img" src="../images/softcare_logo.png" alt="">
+                </figure>
                 <h6 class="softcare-titulo">SoftCare</h6>
             </div>
             <div class="ceiba">
-                <figure class="ceiba-logo"><img class="ceiba-logo-img" src="" alt=""></figure>
+                <figure class="ceiba-logo">
+                    <img class="ceiba-logo-img" src="../images/ceiba_logo.png" alt="">
+                </figure>
                 <h6 class="ceiba-titulo">Ceiba</h6>
             </div>
+            <!-- <div class="sena">
+                <figure class="sena-logo">
+                    <img class="sena-logo-img" src="" alt="">
+                </figure>
+                <h6 class="sena-titulo">Sena</h6>
+            </div> -->
         </section>
     </footer>
 
