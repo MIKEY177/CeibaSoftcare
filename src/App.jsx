@@ -1,10 +1,11 @@
 // Imports Base
 import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 
-import { LandingPage } from './pages/landing_page'
-import { Inicio } from './pages/inicio'
-import { Farmacia } from './pages/farmacia'
-import { IniciarSesion } from './pages/iniciar_sesion'
+import { LandingPage } from './pages/landing_page.jsx'
+import { Inicio } from './pages/inicio.jsx'
+import { Farmacia } from './pages/farmacia.jsx'
+import { IniciarSesion } from './pages/iniciar_sesion.jsx'
+import { Inventario } from './pages/inventario.jsx'
 
 // Estilos
 // import "./styles/main_style.css" NO DEBERÍA HABER NINGÚN ESTILO ACÁ
@@ -27,6 +28,10 @@ function App(){
                 <Route path="/inicio" element={<Inicio/>}/>
                 <Route path="/farmacia" element={<Farmacia/>}/>
                 <Route path="/iniciar_sesion" element={<IniciarSesion/>}/>
+                <Route path="/inventario" element={<Inventario/>}/>
+                <Route path="/entradas_prod" element={<idk/>}/>
+                <Route path="/salidas_prod" element={<idk/>}/>
+                <Route path="/eventos" element={<idk/>}/>
             </Routes>
         </Router>
     </>

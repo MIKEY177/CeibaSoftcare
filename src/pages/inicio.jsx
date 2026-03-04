@@ -14,7 +14,10 @@ import usuariosIcon from "../images/icons/usuarios-icon.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
+export const indexSelector = 0;
+
 export const Inicio = () => {
+
   return (
     <>
       <head>

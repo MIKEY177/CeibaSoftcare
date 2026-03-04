@@ -66,8 +66,9 @@
 }
 
 .perfil-rol-texto{
+    width: 188px;
+    text-align: center;
     font-weight: 400;
-    justify-self: center;
     transform: translatey(2px);
 }
 
@@ -97,11 +98,26 @@
     font-size: 1.6rem;
     font-weight: 400;
     cursor: pointer;
+    height: 40px;
+    padding: 4px 10px 0;
+}
+
+.op-text{
+    display: inline-block;
     transition: transform 0.2s ease-in-out;
 }
 
-.opcion-nav:hover{
-    transform: translatex(10px);
+.opcion-nav:hover .op-text{
+    transform: translateX(10px);
+}
+
+.selector{
+    width: 280px;
+    height: 40px;
+    background-color: #ffffff3a;
+    border-radius: 10px;
+    z-index: 0;
+    display: inline-block;
 }
 
 .cerrar-sesion-btn{

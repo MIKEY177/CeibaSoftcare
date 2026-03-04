@@ -14,6 +14,8 @@ import brigadasIcon from "../images/icons/brigadas-icon.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
+export const indexSelector = 1;
+
 export const Farmacia = () => {
   return (
     <>
@@ -50,38 +52,38 @@ export const Farmacia = () => {
           <section className="seccion2-modulos">
             <h3 className="titulo-area-gestion">Sub-Módulos de Gestión</h3>
             <section className="area-modulos">
-              <a href="">
+              <Link to="/inventario">
                 <div className="modulo-inventario">
                   <h4 className="titulo-modulo-inventario">Inventario</h4>
                   <figure className="modulo-inventario-icono">
                     <img className="modulo-inventario-img" src={inventarioIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
+              </Link>
+              <Link to="/salidas_prod">
                 <div className="modulo-salidas-productos">
                   <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
                   <figure className="modulo-salidas-productos-icono">
                     <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
+              </Link>
+              <Link to="/entradas_prod">
                 <div className="modulo-entradas-productos">
                   <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
                   <figure className="modulo-entradas-productos-icono">
                     <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
+              </Link>
+              <Link to="/eventos">
                 <div className="modulo-brigadas">
                   <h4 className="titulo-modulo-brigadas">Brigadas</h4>
                   <figure className="modulo-brigadas-icono">
                     <img className="modulo-brigadas-img" src={brigadasIcon} alt=""/>
                   </figure>
                 </div>
-              </a>    
+              </Link>    
             </section>
           </section>
         </section>
