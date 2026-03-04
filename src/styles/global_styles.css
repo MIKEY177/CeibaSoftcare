@@ -11,11 +11,6 @@ body{
     width: 100%;
 }
 
-/* #root{
-    display: flex;
-    flex-direction: row;
-} */
-
 .secciones-dashboard, .secciones-area-gestion{
     width: calc(100vw - 400px);
     height: calc(100vh - 80px);

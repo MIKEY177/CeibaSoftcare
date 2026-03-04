@@ -14,7 +14,7 @@ body{
     height: 100%;
 } */
 
-.modal-recuperar-contrasena, 
+/* .modal-recuperar-contrasena, 
               .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
               .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-eliminar,
               .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-eliminar {
@@ -23,7 +23,7 @@ body{
     margin-bottom: 10px;
     padding: 15px;
     width: max-content;
-}
+} */
 
 main{
     position: relative;
@@ -148,8 +148,8 @@ main{
     transition: transform 0.1s ease-in-out;
 } */
 
-.secciones-dashboard, .secciones-area-gestion{
-    /* border: 2px solid red; */
+/* .secciones-dashboard, .secciones-area-gestion{
+
     width: 1200px;
     height: 675px;
     display: flex;
@@ -157,10 +157,6 @@ main{
     justify-content: space-between;
     align-items: center;
 }
-
-/* .titulo-dashboard, .seccion1-proximas-brigadas, .seccion1-actividad-reciente, .seccion2-modulos{
-    border: 2px solid red;
-} */
 
 .titulo-dashboard{
     color: #048F9F;
@@ -372,18 +368,17 @@ main{
 .body-tabla-actividad-reciente{
     display: block;
     width: 100%;
-    height: 250px; /* adjust if header height changes */
+    height: 250px;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 .body-tabla-actividad-reciente::-webkit-scrollbar {
-  width: 8px; /* Set a width for vertical scrollbar */
+  width: 8px;
 }
 
 .body-tabla-actividad-reciente::-webkit-scrollbar-track {
-  background: #FFF8E2; /* Style the track (e.g., set a background color) */
-  /* Add any other desired styles like border-radius or box-shadow */
+  background: #FFF8E2;
 }
 
 .body-tabla-actividad-reciente::-webkit-scrollbar-thumb {
@@ -411,11 +406,11 @@ main{
     border: none;
     border-radius: 15px;
     cursor: pointer;
-}
+} */
 
 /* Mostly iniciar_sesion from here */
 
-.area-grafica{
+/* .area-grafica{
     width: 650px;
     height: 650px;
     display: flex;
@@ -519,7 +514,7 @@ main{
 .iniciar-sesion-btn:hover, .cerrar-sesion-btn:hover{
     transform: scale(1.05);
     transition: transform 0.1s ease-in-out;
-}
+} */
 
 /* footer{
     font-family: "Lato";

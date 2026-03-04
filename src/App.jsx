@@ -4,6 +4,7 @@ import { HashRouter as Router, Routes, Route } from 'react-router-dom'
 import { LandingPage } from './pages/landing_page'
 import { Inicio } from './pages/inicio'
 import { Farmacia } from './pages/farmacia'
+import { IniciarSesion } from './pages/iniciar_sesion'
 
 // Estilos
 // import "./styles/main_style.css" NO DEBERÍA HABER NINGÚN ESTILO ACÁ
@@ -25,6 +26,7 @@ function App(){
                 <Route path="/" element={<LandingPage/>}/>
                 <Route path="/inicio" element={<Inicio/>}/>
                 <Route path="/farmacia" element={<Farmacia/>}/>
+                <Route path="/iniciar_sesion" element={<IniciarSesion/>}/>
             </Routes>
         </Router>
     </>

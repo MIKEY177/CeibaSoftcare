@@ -22,48 +22,48 @@ export const Inicio = () => {
       </head>
       <main>
         <Navbar menu={MenuAdmin}/>
-        <section class="secciones-dashboard">
-          <h2 class="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
-          <section class="seccion1-proximas-brigadas">
-            <h3 class="subtitulo-dashboard">Próximas Brigadas</h3>
-            <section class="area-brigadas">
-              <div class="subarea-brigada">
-                <h4 class="fecha">08 de Abril del 2025</h4>
-                <article class="articulo-brigada">
-                  <h5 class="detalles-brigada">[Nombre brigada]</h5>
-                  <h6 class="detalles-brigada">Lugar:</h6>
-                  <p class="detalles-brigada">[contenidooooooooooooooooooo]</p>
-                  <h6 class="detalles-brigada">Descripción:</h6>                                           
-                  <p class="detalles-brigada">[contenidoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo]</p>
+        <section className="secciones-dashboard">
+          <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
+          <section className="seccion1-proximas-brigadas">
+            <h3 className="subtitulo-dashboard">Próximas Brigadas</h3>
+            <section className="area-brigadas">
+              <div className="subarea-brigada">
+                <h4 className="fecha">08 de Abril del 2025</h4>
+                <article className="articulo-brigada">
+                  <h5 className="detalles-brigada">[Nombre brigada]</h5>
+                  <h6 className="detalles-brigada">Lugar:</h6>
+                  <p className="detalles-brigada">[contenidooooooooooooooooooo]</p>
+                  <h6 className="detalles-brigada">Descripción:</h6>                                           
+                  <p className="detalles-brigada">[contenidoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo]</p>
                 </article>
               </div>
-              <div class="separador-vertical"></div>
+              <div className="separador-vertical"></div>
             </section>
           </section>
-          <section class="seccion2-modulos-i">
-            <h3 class="subtitulo-dashboard">Módulos de Gestión</h3>
-            <section class="area-modulos-i">
+          <section className="seccion2-modulos-i">
+            <h3 className="subtitulo-dashboard">Módulos de Gestión</h3>
+            <section className="area-modulos-i">
               <Link to="/farmacia">
-                <div class="modulo-farmacia">
-                  <h4 class="titulo-modulo-farmacia">Farmacia</h4>
-                  <figure class="modulo-farmacia-icono">
-                    <img class="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
+                <div className="modulo-farmacia">
+                  <h4 className="titulo-modulo-farmacia">Farmacia</h4>
+                  <figure className="modulo-farmacia-icono">
+                    <img className="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
               <Link to="/refugio">
-                <div class="modulo-refugio">
-                  <h4 class="titulo-modulo-refugio">Refugio</h4>
-                  <figure class="modulo-refugio-icono">
-                    <img class="modulo-refugio-img" src={refugioIcon} alt=""/>
+                <div className="modulo-refugio">
+                  <h4 className="titulo-modulo-refugio">Refugio</h4>
+                  <figure className="modulo-refugio-icono">
+                    <img className="modulo-refugio-img" src={refugioIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
               <Link to="/usuarios">
-                <div class="modulo-usuarios">
-                  <h4 class="titulo-modulo-usuarios">Usuarios</h4>
-                  <figure class="modulo-usuarios-icono">
-                    <img class="modulo-usuarios-img" src={usuariosIcon} alt=""/>
+                <div className="modulo-usuarios">
+                  <h4 className="titulo-modulo-usuarios">Usuarios</h4>
+                  <figure className="modulo-usuarios-icono">
+                    <img className="modulo-usuarios-img" src={usuariosIcon} alt=""/>
                   </figure>
                 </div>
               </Link>   
