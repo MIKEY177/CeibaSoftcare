@@ -230,7 +230,7 @@ body{
 .body-tabla-actividad-reciente{
     display: block;
     width: 100%;
-    height: 250px; /* adjust if header height changes */
+    height: 284px; /* adjust if header height changes */
     overflow-y: auto;
     overflow-x: hidden;
 }
