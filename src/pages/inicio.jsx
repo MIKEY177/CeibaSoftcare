@@ -13,16 +13,16 @@ import { Footer } from '../components/Footer'
 
 export const Inicio = () => {
 
-  const [brigadas, setBrigadas] = useState([]);
+  const [eventos, setEventos] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost/Ceibasoftcare/backend/api/brigadas.php", {
+    fetch("http://localhost/Ceibasoftcare/backend/api/eventos.php", {
     credentials: "include"
     })
     .then(res => res.json())
     .then(response => {
       if (response.success) {
-        setBrigadas(response.data);
+        setEventos(response.data);
       } else {
         console.error(response.error);
       }
@@ -36,21 +36,21 @@ export const Inicio = () => {
         <section className="secciones-dashboard">
           <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
           <section className="seccion1-proximas-brigadas">
-            <h3 className="subtitulo-dashboard">Próximas Brigadas</h3>
+            <h3 className="subtitulo-dashboard">Próximos Eventos</h3>
             <section className="area-brigadas">
-              {brigadas.length === 0 ? (
-                <p>No hay brigadas programadas.</p>
+              {eventos.length === 0 ? (
+                <p>No hay eventos programados.</p>
               ) : (
-                brigadas.map((brigada) => (
+                eventos.map((evento) => (
                   <>
-                    <div className="subarea-brigada" key={brigada.id_brigada}>
-                      <h4 className="fecha">{brigada.fecha_hora}</h4>
+                    <div className="subarea-brigada" key={evento.id_evento}>
+                      <h4 className="fecha">{evento.fecha_hora}</h4>
                       <article className="articulo-brigada">
-                        <h5 className="detalles-brigada">{brigada.nombre}</h5>
+                        <h5 className="detalles-brigada">{evento.nombre}</h5>
                         <h6 className="detalles-brigada">Lugar:</h6>
-                        <p className="detalles-brigada">{brigada.lugar}</p>
+                        <p className="detalles-brigada">{evento.lugar}</p>
                         <h6 className="detalles-brigada">Descripción:</h6>
-                        <p className="detalles-brigada">{brigada.descripcion}</p>
+                        <p className="detalles-brigada">{evento.descripcion}</p>
                       </article>
                     </div>
                     <div className="separador-vertical"></div>

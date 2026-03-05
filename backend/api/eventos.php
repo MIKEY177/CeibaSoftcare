@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 
 $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'development'));
 
-$sql = "SELECT id_brigada, nombre, lugar, descripcion, fecha_hora FROM brigadas ORDER BY fecha_hora ASC LIMIT 5";
+$sql = "SELECT id_evento, nombre, lugar, descripcion, fecha_hora FROM eventos ORDER BY fecha_hora ASC LIMIT 5";
 $result = mysqli_query($conn, $sql);
 
 if (!$result) {
@@ -19,15 +19,15 @@ if (!$result) {
     exit;
 }
 
-$brigadas = [];
+$eventos = [];
 
 while ($row = mysqli_fetch_assoc($result)) {
-    $brigadas[] = $row;
+    $eventos[] = $row;
 }
 
 echo json_encode([
     "success" => true,
-    "data" => $brigadas
+    "data" => $eventos
 ], JSON_UNESCAPED_UNICODE);
 
 if (isset($result) && $result) mysqli_free_result($result);
