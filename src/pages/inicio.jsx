@@ -11,6 +11,8 @@ import usuariosIcon from "../images/icons/usuarios-icon.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
+export const indexSelector = 0;
+
 export const Inicio = () => {
 
   const [eventos, setEventos] = useState([]);
@@ -61,29 +63,28 @@ export const Inicio = () => {
           </section>
           <section className="seccion2-modulos-i">
             <h3 className="subtitulo-dashboard">Módulos de Gestión</h3>
-
-            <section class="area-modulos-i">
+            <section className="area-modulos-i">
               <Link to="/farmacia">
-                <div class="modulo-farmacia">
-                  <h4 class="titulo-modulo-farmacia">Farmacia</h4>
-                  <figure class="modulo-farmacia-icono">
-                    <img class="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
+                <div className="modulo-farmacia">
+                  <h4 className="titulo-modulo-farmacia">Farmacia</h4>
+                  <figure className="modulo-farmacia-icono">
+                    <img className="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
               <Link to="/refugio">
-                <div class="modulo-refugio">
-                  <h4 class="titulo-modulo-refugio">Refugio</h4>
-                  <figure class="modulo-refugio-icono">
-                    <img class="modulo-refugio-img" src={refugioIcon} alt=""/>
+                <div className="modulo-refugio">
+                  <h4 className="titulo-modulo-refugio">Refugio</h4>
+                  <figure className="modulo-refugio-icono">
+                    <img className="modulo-refugio-img" src={refugioIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
               <Link to="/usuarios">
-                <div class="modulo-usuarios">
-                  <h4 class="titulo-modulo-usuarios">Usuarios</h4>
-                  <figure class="modulo-usuarios-icono">
-                    <img class="modulo-usuarios-img" src={usuariosIcon} alt=""/>
+                <div className="modulo-usuarios">
+                  <h4 className="titulo-modulo-usuarios">Usuarios</h4>
+                  <figure className="modulo-usuarios-icono">
+                    <img className="modulo-usuarios-img" src={usuariosIcon} alt=""/>
                   </figure>
                 </div>
               </Link>   

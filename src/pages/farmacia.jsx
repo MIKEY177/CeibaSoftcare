@@ -14,6 +14,8 @@ import brigadasIcon from "../images/icons/brigadas-icon.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
+export const indexSelector = 1;
+
 export const Farmacia = () => {
   
     const [actividad, setActividad] = useState([]);
@@ -39,12 +41,12 @@ export const Farmacia = () => {
       </head>
       <main>
         <Navbar menu={MenuAdminFarmacia}/>
-        <section class="secciones-area-gestion">
-          <h2 class="titulo-dashboard">Módulo Farmacia</h2>
-          <section class="seccion1-actividad-reciente">
-            <h3 class="titulo-area-gestion">Actividad Reciente</h3>
-            <table class="tabla-actividad-reciente">
-              <thead class="header-tabla-actividad-reciente">
+        <section className="secciones-area-gestion">
+          <h2 className="titulo-dashboard">Módulo Farmacia</h2>
+          <section className="seccion1-actividad-reciente">
+            <h3 className="titulo-area-gestion">Actividad Reciente</h3>
+            <table className="tabla-actividad-reciente">
+              <thead className="header-tabla-actividad-reciente">
                 <tr>
                   <td>Producto</td>
                   <td>Fecha</td>
@@ -70,41 +72,41 @@ export const Farmacia = () => {
               </tbody>
             </table>
           </section>
-          <section class="seccion2-modulos">
-            <h3 class="titulo-area-gestion">Sub-Módulos de Gestión</h3>
-            <section class="area-modulos">
-              <a href="">
-                <div class="modulo-inventario">
-                  <h4 class="titulo-modulo-inventario">Inventario</h4>
-                  <figure class="modulo-inventario-icono">
-                    <img class="modulo-inventario-img" src={inventarioIcon} alt=""/>
+          <section className="seccion2-modulos">
+            <h3 className="titulo-area-gestion">Sub-Módulos de Gestión</h3>
+            <section className="area-modulos">
+              <Link to="/inventario">
+                <div className="modulo-inventario">
+                  <h4 className="titulo-modulo-inventario">Inventario</h4>
+                  <figure className="modulo-inventario-icono">
+                    <img className="modulo-inventario-img" src={inventarioIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
-                <div class="modulo-salidas-productos">
-                  <h4 class="titulo-modulo-salidas-productos">Salidas Productos</h4>
-                  <figure class="modulo-salidas-productos-icono">
-                    <img class="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
+              </Link>
+              <Link to="/salidas_prod">
+                <div className="modulo-salidas-productos">
+                  <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
+                  <figure className="modulo-salidas-productos-icono">
+                    <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
-                <div class="modulo-entradas-productos">
-                  <h4 class="titulo-modulo-entradas-productos">Entradas Productos</h4>
-                  <figure class="modulo-entradas-productos-icono">
-                    <img class="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
+              </Link>
+              <Link to="/entradas_prod">
+                <div className="modulo-entradas-productos">
+                  <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
+                  <figure className="modulo-entradas-productos-icono">
+                    <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
                   </figure>
                 </div>
-              </a>
-              <a href="">
-                <div class="modulo-brigadas">
-                  <h4 class="titulo-modulo-brigadas">Brigadas</h4>
-                  <figure class="modulo-brigadas-icono">
-                    <img class="modulo-brigadas-img" src={brigadasIcon} alt=""/>
+              </Link>
+              <Link to="/eventos">
+                <div className="modulo-brigadas">
+                  <h4 className="titulo-modulo-brigadas">Brigadas</h4>
+                  <figure className="modulo-brigadas-icono">
+                    <img className="modulo-brigadas-img" src={brigadasIcon} alt=""/>
                   </figure>
                 </div>
-              </a>    
+              </Link>    
             </section>
           </section>
         </section>

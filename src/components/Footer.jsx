@@ -7,23 +7,23 @@ import "../styles/compsStyles/Footer.css"
 import softcareLogo from "../images/ceiba_logo.png"
 import ceibaLogo from "../images/softcare_logo.png"
 
-export const Footer = () => {
+export const Footer = (props) => {
   return (
     <>
-    <footer>
+    <footer {...props}>
         <p>© Derechos Reservados.</p>
-        <section class="asociaciones">
-            <div class="softcare">
-                <figure class="softcare-logo">
-                    <img class="softcare-logo-img" src={softcareLogo} alt=""/>
+        <section className="asociaciones">
+            <div className="softcare">
+                <figure className="softcare-logo">
+                    <img className="softcare-logo-img" src={softcareLogo} alt=""/>
                 </figure>
-                <h6 class="softcare-titulo">SoftCare</h6>
+                <h6 className="softcare-titulo">SoftCare</h6>
             </div>
-            <div class="ceiba">
-                <figure class="ceiba-logo">
-                    <img class="ceiba-logo-img" src={ceibaLogo} alt=""/>
+            <div className="ceiba">
+                <figure className="ceiba-logo">
+                    <img className="ceiba-logo-img" src={ceibaLogo} alt=""/>
                 </figure>
-                <h6 class="ceiba-titulo">Ceiba</h6>
+                <h6 className="ceiba-titulo">Ceiba</h6>
             </div>
         </section>
     </footer>

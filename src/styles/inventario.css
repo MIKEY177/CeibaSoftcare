@@ -1,0 +1,447 @@
+.seccion1-busqueda-agregar{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.busqueda-form{
+    display: flex;
+}
+
+.busqueda-input1{
+    width: 400px;
+    height: 40px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 2px solid #048F9F;
+    border-right: none;
+    outline: none;
+    padding: 4px 0px 2px 10px;
+    font-size: 1.2rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #FFFFFF;
+}
+
+.busqueda-input1::placeholder{
+    color: #0190a059;
+}
+
+.busqueda-icono{
+    width: 50px;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    border: 2px solid #048F9F;
+    border-right: none;
+    border-left: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.busqueda-icono::after{
+    content: '';
+    width: 2px;
+    height: 27px;
+    background-color: #04909f7c;
+    position: absolute;
+    z-index: 2;
+    transform: translatex(10px);
+}
+
+.busqueda-icono-img{
+    width: 22px;
+    margin-top: 3px;
+}
+
+.busqueda-barras-icono-img{
+    width: 30px;
+    margin-top: 8px;
+}
+
+.busqueda-barras-icono{
+    width: 50px;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 2px solid #048F9F;
+    border-left: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.registrar-btn{
+    width: 200px;
+    height: 40px;
+    font-size: 1.3rem;
+    font-family: "ubuntu";
+    background-color: #0094A4;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.registrar-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+}
+
+.editar-icono, .eliminar-icono{
+    width: 25px;
+}
+
+.editar-icono-img, .eliminar-icono-img, .candado-icono-img, .codigo-barras-icono-img{
+    width: 100%;
+    height: 100%;
+}
+
+/* Scrollbar */
+
+.body-tabla-inventario::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body-tabla-inventario::-webkit-scrollbar-track {
+  background: #FFF8E2;
+}
+
+.body-tabla-inventario::-webkit-scrollbar-thumb {
+  background-color: #D49538;
+}
+
+/* Fin Scrollbar */
+/* Tablas */
+
+.tabla-inventario{
+    width: 100%;
+    height: 600px;
+    background-color: white;
+    border: 3px solid #D49538;
+    border-radius: 25px;
+    font-family: "Lato";
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    table-layout: fixed;
+}
+
+.header-tabla-inventario{
+    background-color: #FFF8E2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    height: 50px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-tabla-inventario td, .body-tabla-inventario td{
+    border-bottom: 3px solid #D49538;
+}
+
+.body-tabla-inventario td:last-child{
+    display: flex;
+    
+    justify-content: space-evenly;
+}
+
+.header-tabla-inventario:after{
+    content: '';
+    width: 3px;
+    height: 546px;
+    background-color: #D49538;
+    position: absolute;
+    z-index: 2;
+    transform: translate(990px);
+}
+
+.body-tabla-inventario tr:last-child td{
+    border-bottom: 0;
+}
+
+.body-tabla-inventario{
+    display: block;
+    width: 100%;
+    height: 545px; /* adjust if header height changes */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body-tabla-inventario tr{
+    display: table;
+    width: 100%;
+    max-height: 50px; 
+    table-layout: fixed;
+}
+
+.body-tabla-inventario td{
+    word-wrap: break-word;
+    padding: 10px;
+}
+
+.tabla-inventario-btn{
+    background-color: #D49538;
+    padding: 5px 30px;
+    font-size: 1rem;
+    font-weight: 550;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+/* Fin Tablas */
+/* Modales */
+
+.modales-inventario{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    background-color: #00000065;
+}
+
+.modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 1000px;
+    height: 650px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;   
+}
+
+.modal-inventario-eliminar{
+    width: 500px;
+    height: 300px;
+}
+
+.modal-inventario-registrar a:first-child, .modal-inventario-editar a:first-child{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    padding: 5px 12px;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translate(-420px, -30px); 
+}
+
+.volver-icono{
+    height: 14px;
+    width: 9px;
+    align-self: center;
+    margin-right: 10px;
+    transform: scale(1);
+}
+
+.modal-ir-titulo, .modal-ied-titulo, .modal-iel-titulo{
+    color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 30px;
+}
+
+.ir-form, .ied-form{
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    height: 400px;
+}
+
+.ir-form-inputs-area, .ied-form-inputs-area{
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-template-rows: 100px 1fr;
+    grid-template-areas:
+    "divInpt1 divInpt4"
+    "divInpt2 divInpt3";
+}
+
+.ir-label, .ied-label{
+    color: #212427;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    display: flex;
+}
+
+.label-and-input-container{
+    /* margin-top: 100px; */
+    margin-left: 100px;
+}
+
+.link-codigo-barras{
+    height: 40px;
+    width: 400px;
+    transform: translate(200px, 100px);
+    border: 3px solid #0094A4;
+    border-radius: 10px;
+    padding: 10px;
+    display: flex;
+    align-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: #212427;
+    background-color: #F8F8F8;
+}
+
+.link-codigo-barras h2{
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-right: 10px;
+    transform: translatey(-38px);
+}
+
+.codigo-barras-icono{
+    width: 36px;
+    transform: translate(45px,2px);
+}
+
+.obligatorio{
+    color: red;
+    font-size: 1rem;
+}
+
+.ir-input1, .ir-input2, .ir-input3, .ir-input4, .ied-input1, .ied-input2, .ied-input3, .ied-input4{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 50px;
+}
+
+.ir-input2, .ied-input2{
+    resize: none;
+    height: 140px;
+    padding: 5px 10px;
+    font-family: "ubuntu";
+}
+
+.ir-input4, .ied-input4{
+    background-color: rgba(214, 214, 214, 0.658);
+}
+
+.union-input-icono{
+    display: flex;
+}
+
+.candado-icono{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    transform: translate(-40px, 4px);
+}
+
+.ir-btn, .ied-btn, .cancelar-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 20px;
+    background-color: #eaaa49de;
+    color: #875000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cancelar-btn{
+    transform: scale(1.15);
+}
+
+.eliminar-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 25px;
+    background-color: #e66377d7;
+    color: #740000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1.15);
+    transition: transform 0.2s ease-in-out;
+}
+
+.ir-btn:hover, .ied-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cancelar-btn:hover, .eliminar-btn:hover{
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 320px;
+}
+
+.modal-iel-mensaje{
+    display: flex;
+    color: #212427;
+    font-size: 1.3rem;
+}
+
+.subrayar{
+    font-size: 1.3rem;
+    text-decoration: underline;
+}
+
+
+
+
+
+
+
+
+
+.modal-inventario-registrar{
+    display: none;
+}
+
+.modal-inventario-editar{
+    display: none;
+}
+
+.modal-inventario-eliminar{
+    display: none;
+}
+
+.modales-inventario{
+    display: none;
+}
+
+/* Fin Modales */
