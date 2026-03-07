@@ -259,3 +259,11 @@ body{
 }
 
 /* Fin Tablas */
+.error-mensaje {
+    color: #c0392b;
+    font-size: 0.85rem;
+    margin-top: -5px;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    display: block; 
+}
