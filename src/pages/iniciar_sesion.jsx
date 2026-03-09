@@ -29,6 +29,7 @@ export const IniciarSesion = () => {
         const navigate = useNavigate();
 
         const [errores, setErrores] = useState({})
+        const [loadingCodigo, setLoadingCodigo] = useState(false);
 
         const abrirModal = (num) => {
             setErrores({})
@@ -77,19 +78,26 @@ export const IniciarSesion = () => {
                         setErrores({correoRecuperar: "El correo es obligatorio"})
                         return
                     }
-                    const respuesta = await fetch("http://localhost/Ceibasoftcare/backend/api/recuperar.php",{
-                        method:"POST",
-                        headers:{
-                            "Content-Type":"application/json"
-                        },
-                        credentials: "include",
-                        body: JSON.stringify({ correoModal: correoRecuperar }) 
-                    })
-                    const data = await respuesta.json()
-                    if(data.success){
-                        abrirModal(2)
-                    }else{
-                        setErrores({correoRecuperar: data.errors?.correoModal || data.error || "Error al enviar el código"})
+                    setLoadingCodigo(true);
+                    try {
+                        const respuesta = await fetch("http://localhost/Ceibasoftcare/backend/api/recuperar.php",{
+                            method:"POST",
+                            headers:{
+                                "Content-Type":"application/json"
+                            },
+                            credentials: "include",
+                            body: JSON.stringify({ correoModal: correoRecuperar }) 
+                        })
+                        const data = await respuesta.json()
+                        if(data.success){
+                            abrirModal(2)
+                        }else{
+                            setErrores({correoRecuperar: data.errors?.correoModal || data.error || "Error al enviar el código"})
+                        }
+                    } catch (error) {
+                        setErrores({correoRecuperar: "No se pudo conectar al servidor"})
+                    } finally {
+                        setLoadingCodigo(false);
                     }
                 }
 
@@ -171,14 +179,19 @@ export const IniciarSesion = () => {
                                     <label className="rc-label" htmlfor="correoRecuperar">Correo electrónico</label>
                                     <input className="rc-input1" type="text" id="correoRecuperar" placeholder="ejemplo@email.com" value={correoRecuperar} onChange={(e) => setCorreoRecuperar(e.target.value)} />
                                     {errores.correoRecuperar && <span className="error-mensaje">{errores.correoRecuperar}</span>}
-                                    <input className="rc-btn" type="submit" value="Enviar Código" />
+                                    <input
+                                        className="rc-btn"
+                                        type="submit"
+                                        value={loadingCodigo ? "Enviando..." : "Enviar Código"}
+                                        disabled={loadingCodigo}
+                                    />
                                 </form> 
                             </section>
                         </aside>
                     )}
                     {modalActiva === 2 && (
                         <aside className="modal-recuperar-contrasena mdc2">
-                            <a href="">
+                            <a href="#" onClick={(e) => {e.preventDefault(); cerrarModal();}}>
                                 <img className="volver-icono" src={flecha} alt=""/>
                                 <h2>Volver</h2>
                             </a>
@@ -196,7 +209,7 @@ export const IniciarSesion = () => {
                     )}
                     {modalActiva === 3 && (
                         <aside className="modal-recuperar-contrasena mdc3">
-                            <a href="">
+                            <a href="#" onClick={(e) => { e.preventDefault(); cerrarModal(); }}>
                                 <img className="volver-icono" src={flecha} alt=""/>
                                 <h2>Volver</h2>
                             </a>
