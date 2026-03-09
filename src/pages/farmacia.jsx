@@ -44,6 +44,9 @@ export const Farmacia = () => {
         console.log("Datos de sesión:", data);
         if (data.status === "ok") {
           setUser({ nombre: data.usuario, rol: data.rol });
+          if (data.rol !== "administrador" && data.rol !== "farmacéutico") {
+            navigate("/inicio");
+          }
         } else {
           navigate("/iniciar_sesion");
         }
@@ -60,8 +63,6 @@ export const Farmacia = () => {
             return MenuAdminFarmacia;
           case "farmacéutico":
             return MenuAdminFarmacia;
-          case "Veterinario":
-            return MenuVeterinarioFarmacia;
           default:
             return {};
         }
@@ -108,14 +109,17 @@ export const Farmacia = () => {
           <section className="seccion2-modulos">
             <h3 className="titulo-area-gestion">Sub-Módulos de Gestión</h3>
             <section className="area-modulos">
-              <Link to="/inventario">
-                <div className="modulo-inventario">
-                  <h4 className="titulo-modulo-inventario">Inventario</h4>
-                  <figure className="modulo-inventario-icono">
-                    <img className="modulo-inventario-img" src={inventarioIcon} alt=""/>
+              {user.rol === "administrador" || user.rol === "farmacéutico" ? (
+                <Link to="/inventario">
+                  <div className="modulo-inventario">
+                    <h4 className="titulo-modulo-inventario">Inventario</h4>
+                    <figure className="modulo-inventario-icono">
+                      <img className="modulo-inventario-img" src={inventarioIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
+              ): ''}
+              {user.rol === "administrador" || user.rol === "farmacéutico" ? (
               <Link to="/salidas_prod">
                 <div className="modulo-salidas-productos">
                   <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
@@ -123,15 +127,18 @@ export const Farmacia = () => {
                     <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
                   </figure>
                 </div>
-              </Link>
-              <Link to="/entradas_prod">
-                <div className="modulo-entradas-productos">
-                  <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
-                  <figure className="modulo-entradas-productos-icono">
-                    <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
+              </Link>) : ''}
+              {user.rol === "administrador" || user.rol === "farmacéutico" ? (
+                <Link to="/entradas_prod">
+                  <div className="modulo-entradas-productos">
+                    <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
+                    <figure className="modulo-entradas-productos-icono">
+                      <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
+              ) : ''}
+              {user.rol === "administrador" ? (
               <Link to="/eventos">
                 <div className="modulo-brigadas">
                   <h4 className="titulo-modulo-brigadas">Brigadas</h4>
@@ -139,7 +146,8 @@ export const Farmacia = () => {
                     <img className="modulo-brigadas-img" src={brigadasIcon} alt=""/>
                   </figure>
                 </div>
-              </Link>    
+              </Link> 
+              ) : ''}   
             </section>
           </section>
         </section>

@@ -101,6 +101,7 @@ fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
           <section className="seccion2-modulos-i">
             <h3 className="subtitulo-dashboard">Módulos de Gestión</h3>
             <section className="area-modulos-i">
+            {user.rol === "administrador" || user.rol === "farmacéutico" ? (
               <Link to="/farmacia">
                 <div className="modulo-farmacia">
                   <h4 className="titulo-modulo-farmacia">Farmacia</h4>
@@ -109,6 +110,8 @@ fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
                   </figure>
                 </div>
               </Link>
+              ) : ''}
+              {user.rol === "administrador" || user.rol === "Veterinario" ? (
               <Link to="/refugio">
                 <div className="modulo-refugio">
                   <h4 className="titulo-modulo-refugio">Refugio</h4>
@@ -117,14 +120,17 @@ fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
                   </figure>
                 </div>
               </Link>
-              <Link to="/usuarios">
-                <div className="modulo-usuarios">
-                  <h4 className="titulo-modulo-usuarios">Usuarios</h4>
-                  <figure className="modulo-usuarios-icono">
-                    <img className="modulo-usuarios-img" src={usuariosIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link>   
+              ) : ''}
+              {user.rol === "administrador" ? (
+                <Link to="/usuarios">
+                  <div className="modulo-usuarios">
+                    <h4 className="titulo-modulo-usuarios">Usuarios</h4>
+                    <figure className="modulo-usuarios-icono">
+                      <img className="modulo-usuarios-img" src={usuariosIcon} alt=""/>
+                    </figure>
+                  </div>
+                </Link>
+              ): ''}
             </section>
           </section>
         </section>
