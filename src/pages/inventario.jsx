@@ -1,6 +1,6 @@
 // Imports Base
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { Link,useNavigate } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -20,13 +20,53 @@ import { Footer } from '../components/Footer'
 export const indexSelector = 2;
 
 export const Inventario = () => {
+    const [user, setUser] = useState({ nombre: "", rol: "" });
+    const navigate = useNavigate();
+  
+    useEffect(() => {
+        // consultar sesión
+        fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
+          credentials: "include"
+        })
+        .then(res => res.json())
+        .then(data => {
+          console.log("Datos de sesión:", data);
+          if (data.status === "ok") {
+            setUser({ nombre: data.usuario, rol: data.rol });
+            if (data.rol === "Veterinario") {
+              navigate("/farmacia");
+            }
+          } else {
+            navigate("/iniciar_sesion");
+          }
+        })
+        .catch(error => {
+          console.error("Error al obtener sesión:", error);
+          navigate("/iniciar_sesion");
+        });
+      }, []);
+  
+       const menuObj = (() => {
+          switch (user.rol) {
+            case "administrador":
+              return MenuAdminFarmacia;
+            case "farmacéutico":
+              return MenuAdminFarmacia;
+            case "Veterinario":
+              return MenuVeterinarioFarmacia;
+            default:
+              return {};
+          }
+        })();
+  
+
   return (
     <>
       <head>
         <title>Inventario - Softcare</title>
       </head>
       <main>
-        <Navbar menu={MenuAdminFarmacia}/>
+        <Navbar user={user} menu={menuObj} />
         <section class="secciones-area-gestion">
           <h2 className="titulo-dashboard">Productos</h2>
           <section class="seccion1-busqueda-agregar">

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
-import { MenuAdmin } from "../utils/menu.jsx"
+import { data, Link, useNavigate } from 'react-router-dom'
 
 import "../styles/global_styles.css"
 import "../styles/inicio.css"
@@ -10,16 +9,19 @@ import usuariosIcon from "../images/icons/usuarios-icon.png"
 
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { MenuAdmin, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 export const indexSelector = 0;
 
 export const Inicio = () => {
-
   const [eventos, setEventos] = useState([]);
+  const [user, setUser] = useState({ nombre: "", rol: "" });
+  const navigate = useNavigate();
 
   useEffect(() => {
+    // consultar eventos
     fetch("http://localhost/Ceibasoftcare/backend/api/eventos.php", {
-    credentials: "include"
+      credentials: "include"
     })
     .then(res => res.json())
     .then(response => {
@@ -30,11 +32,46 @@ export const Inicio = () => {
       }
     })
     .catch(error => console.error(error));
+
+    // consultar sesión
+fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
+  credentials: "include"
+})
+.then(res => res.json())
+.then(data => {
+  console.log("Datos de sesión:", data);
+  if (data.status === "ok") {
+    setUser({ nombre: data.usuario, rol: data.rol });
+  } else {
+    navigate("/iniciar_sesion");
+  }
+})
+.catch(error => {
+  console.error("Error al obtener sesión:", error);
+  navigate("/iniciar_sesion");
+});
+
   }, []);
+
+  // compute menu object based on user role
+  const menuObj = (() => {
+    switch (user.rol) {
+      case "administrador":
+        return MenuAdmin;
+      case "farmacéutico":
+        return MenuFarmaceutico;
+      case "Veterinario":
+        return MenuVeterinario;
+      default:
+        return {};
+    }
+  })();
+
   return (
     <>
       <main>
-        <Navbar menu={MenuAdmin}/>
+        {/* determine menu based on role */}
+        <Navbar user={user} menu={menuObj} />
         <section className="secciones-dashboard">
           <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
           <section className="seccion1-proximas-brigadas">
@@ -44,8 +81,8 @@ export const Inicio = () => {
                 <p>No hay eventos programados.</p>
               ) : (
                 eventos.map((evento) => (
-                  <>
-                    <div className="subarea-brigada" key={evento.id_evento}>
+                  <React.Fragment key={evento.id_evento}>
+                    <div className="subarea-brigada">
                       <h4 className="fecha">{evento.fecha_hora}</h4>
                       <article className="articulo-brigada">
                         <h5 className="detalles-brigada">{evento.nombre}</h5>
@@ -56,7 +93,7 @@ export const Inicio = () => {
                       </article>
                     </div>
                     <div className="separador-vertical"></div>
-                  </>
+                  </React.Fragment>
                 ))
               )}
             </section>

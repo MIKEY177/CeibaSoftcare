@@ -57,6 +57,7 @@ export const IniciarSesion = () => {
                         headers: {
                             "Content-Type": "application/json"
                         },
+                        credentials: "include",
                         body:JSON.stringify({
                         correo: correo,
                         contrasena: contrasena
