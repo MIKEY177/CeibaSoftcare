@@ -31,7 +31,7 @@ if(mysqli_num_rows($resultado) > 0){
             'domain' => 'localhost',
             'secure' => false,       // en desarrollo, sin HTTPS
             'httponly' => true,
-            'samesite' => 'None'     // clave: permite enviar cookie en cross-origin
+            'samesite' => 'Lax'     // cambiado de 'None' para desarrollo sin HTTPS
         ]);
 
         session_start();

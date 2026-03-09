@@ -9,7 +9,7 @@ session_set_cookie_params([
     'domain' => 'localhost',
     'secure' => false,
     'httponly' => true,
-    'samesite' => 'None'
+    'samesite' => 'Lax'
 ]);
 
 session_start();
