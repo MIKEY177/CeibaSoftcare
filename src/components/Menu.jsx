@@ -5,6 +5,9 @@ import { Link, useLocation } from 'react-router-dom'
 import { indexSelector as inicioIndex } from "../pages/inicio.jsx"
 import { indexSelector as farmaciaIndex} from "../pages/farmacia.jsx"
 import { indexSelector as inventarioIndex} from "../pages/inventario.jsx"
+import { indexSelector as entradasIndex } from '../pages/entradas_prod.jsx'
+import { indexSelector as salidasIndex} from "../pages/salidas_prod.jsx"
+import { indexSelector as brigadasIndex } from '../pages/brigadas.jsx'
 
 export const Menu = (props) => {
 
@@ -15,6 +18,9 @@ export const Menu = (props) => {
   if (pathname === '/' || pathname === '/inicio') indexSelector = inicioIndex
   else if (pathname === '/farmacia') indexSelector = farmaciaIndex
   else if (pathname === '/inventario') indexSelector = inventarioIndex
+  else if (pathname === '/entradas_prod') indexSelector = entradasIndex
+  else if (pathname === '/salidas_prod') indexSelector = salidasIndex
+  else if (pathname === '/brigadas') indexSelector = brigadasIndex
   
 
   return (

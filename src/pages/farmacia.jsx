@@ -60,19 +60,19 @@ export const Farmacia = () => {
                   </figure>
                 </div>
               </Link>
-              <Link to="/salidas_prod">
-                <div className="modulo-salidas-productos">
-                  <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
-                  <figure className="modulo-salidas-productos-icono">
-                    <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link>
               <Link to="/entradas_prod">
                 <div className="modulo-entradas-productos">
                   <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
                   <figure className="modulo-entradas-productos-icono">
                     <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
+                  </figure>
+                </div>
+              </Link>
+              <Link to="/salidas_prod">
+                <div className="modulo-salidas-productos">
+                  <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
+                  <figure className="modulo-salidas-productos-icono">
+                    <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
                   </figure>
                 </div>
               </Link>
