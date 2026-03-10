@@ -6,7 +6,7 @@ header("Content-Type: application/json");
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
-    'domain' => 'localhost',
+    'domain' => '',  // Dejar vacío para que funcione en localhost
     'secure' => false,
     'httponly' => true,
     'samesite' => 'Lax'

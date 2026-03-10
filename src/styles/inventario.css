@@ -272,7 +272,8 @@
     grid-template-rows: 100px 1fr;
     grid-template-areas:
     "divInpt1 divInpt4"
-    "divInpt2 divInpt3";
+    "divInpt2 divInpt3"
+    "divInpt5 divInpt6";
 }
 
 .ir-label, .ied-label{
@@ -321,7 +322,7 @@
     font-size: 1rem;
 }
 
-.ir-input1, .ir-input2, .ir-input3, .ir-input4, .ied-input1, .ied-input2, .ied-input3, .ied-input4{
+.ir-input1, .ir-input2, .ir-input3, .ir-input4, .ied-input1, .ied-input2, .ied-input3, .ied-input4,.ir-input5, .ied-input5, .ir-input6, .ied-input6{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -342,7 +343,7 @@
     font-family: "ubuntu";
 }
 
-.ir-input4, .ied-input4{
+.ir-input6, .ied-input6{
     background-color: rgba(214, 214, 214, 0.658);
 }
 
@@ -418,30 +419,6 @@
 .subrayar{
     font-size: 1.3rem;
     text-decoration: underline;
-}
-
-
-
-
-
-
-
-
-
-.modal-inventario-registrar{
-    display: none;
-}
-
-.modal-inventario-editar{
-    display: none;
-}
-
-.modal-inventario-eliminar{
-    display: none;
-}
-
-.modales-inventario{
-    display: none;
 }
 
 /* Fin Modales */

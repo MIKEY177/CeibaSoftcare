@@ -3,13 +3,15 @@ require_once __DIR__ . '/../config/cors.php';
 require_once __DIR__ . '/../config/conexion.php';
 
 header("Content-Type: application/json"); 
+
+// Configuración de sesión para localhost
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
-    'domain' => 'localhost',
-    'secure' => false,       // en desarrollo, sin HTTPS
+    'domain' => '',  // Dejar vacío para que funcione en localhost
+    'secure' => false,
     'httponly' => true,
-    'samesite' => 'Lax'     // cambiado de 'None' para desarrollo sin HTTPS
+    'samesite' => 'Lax'
 ]);
 
 session_start();
