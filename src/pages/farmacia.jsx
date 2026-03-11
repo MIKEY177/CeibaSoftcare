@@ -76,7 +76,7 @@ export const Farmacia = () => {
                   </figure>
                 </div>
               </Link>
-              <Link to="/eventos">
+              <Link to="/brigadas">
                 <div className="modulo-brigadas">
                   <h4 className="titulo-modulo-brigadas">Brigadas</h4>
                   <figure className="modulo-brigadas-icono">

@@ -196,56 +196,61 @@ export const EntradasProd = () => {
             <a href=""><button className="cancelar-btn">Cancelar</button></a>
           </section>
         </aside>
-        {/* <aside className="modal-entrada-detalle-registrar">
+        <aside className="modal-entrada-detalle-registrar">
           <a href="">
-            <img className="volver-icono" src="" alt=""/>
+            <img className="volver-icono" src={flecha} alt=""/>
             <h2>Volver</h2>
           </a>
           <h1 className="modal-edpr-titulo">
             Registre un Producto en la Entrada N°[Id_entrada]
           </h1>
-          <a href="">
+          {/* <a href="">
             <h2>Escanear con Lector de Barras</h2>
             <figure className="codigo-barras-icono">
               <img className="codigo-barras-icono-img" src="" alt=""/>
             </figure>
-          </a>
+          </a> */}
           <form className="edpr-form" action="" method="">
             <section className="edpr-form-inputs-area">
-              <label className="edpr-label" for="">Producto que ingresó<h6 className="obligatorio">*</h6></label>
-              <select className="edpr-input1" name="edpr-producto">
-                <option value="seleccionar" default> - Seleccionar - </option> 
-              </select>
-            
-              <label className="edpr-label" for="">Motivo de Entrada</label>
-              <textarea className="edpr-input2" name="edpr-motivo" id=""></textarea>
-            
-              <label className="edpr-label" for="">Cantidad<h6 className="obligatorio">*</h6></label>
-              <input className="edpr-input3" type="text" name="edpr-cantidad"/>
-            
-              <label className="edpr-label" for="">Fecha de Vencimiento</label>
-              <input className="edpr-input4" type="date" name="edpr-fecha_vencimiento"/>
-      
-              <label className="edpr-label" for="">N° de Entrada</label>
-              <div className="union-input-icono">
-                <input className="edpr-input5" type="text" name="edpr-id_entrada" value="[id_entrada]"/>
-                <figure className="candado-icono">
-                  <img className="candado-icono-img" src="" alt=""/>
-                </figure>
+              <div style={{gridArea: "divInpt1"}}>
+                <label className="edpr-label" for="">Producto que ingresó<h6 className="obligatorio">*</h6></label>
+                <select className="edpr-input1" name="edpr-producto">
+                  <option value="seleccionar" default> - Seleccionar - </option> 
+                </select>
               </div>
-      
+              <div style={{gridArea: "divInpt2"}}>
+                <label className="edpr-label" for="">Motivo de Entrada</label>
+                <textarea className="edpr-input2" name="edpr-motivo" id=""></textarea>
+              </div>
+              <div style={{gridArea: "divInpt3"}}>
+                <label className="edpr-label" for="">Cantidad<h6 className="obligatorio">*</h6></label>
+                <input className="edpr-input3" type="text" name="edpr-cantidad"/>
+              </div>
+              <div style={{gridArea: "divInpt4"}}>
+                <label className="edpr-label" for="">Fecha de Vencimiento</label>
+                <input className="edpr-input4" type="date" name="edpr-fecha_vencimiento"/>
+              </div>
+              <div className="edpr-div5" style={{gridArea: "divInpt5"}}>
+                <label className="edpr-label" for="">N° de Entrada</label>
+                <div className="union-input-icono">
+                  <input className="edpr-input5" type="text" name="edpr-id_entrada" value="[id_entrada]"/>
+                  <figure className="candado-icono">
+                    <img className="candado-icono-img" src={campoRestringido} alt=""/>
+                  </figure>
+                </div>
+              </div>
             </section>
             <input className="edpr-btn" type="submit" value="Registrar Producto en la Entrada"/>
           </form>
         </aside>
         <aside className="modal-entrada-detalle-eliminar">
           <h1 className="modal-edpel-titulo">Eliminar Producto de la Entrada</h1>
-          <h3 className="modal-edpel-mensaje">¿Desea eliminar <h6 className="subrayar">[Nombre Producto]</h6> de la Entrada?</h3>
+          <h3 className="modal-edpel-mensaje">¿Desea eliminar &nbsp;<h6 className="subrayar">[Nombre Producto]</h6>&nbsp; de la Entrada N° &nbsp;<h6 className="subrayar">[id_entrada]</h6>?</h3>
           <section className="modal-buttons">
             <a href=""><button className="eliminar-btn">Eliminar</button></a>
             <a href=""><button className="cancelar-btn">Cancelar</button></a>
           </section>
-        </aside> */}
+        </aside>
       </div>
     </>
   )
