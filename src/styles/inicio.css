@@ -5,13 +5,13 @@ main{
     height: 100vh;
 }
 
-.seccion1-proximas-brigadas{
+.seccion1-proximas-eventos{
     width: 100%;
     height: 340px;
     overflow: hidden;
 }
 
-.area-brigadas{
+.area-eventos{
     width: 100%;
     height: 300px;
     background-color: white;
@@ -30,7 +30,7 @@ main{
     margin-left: 10px;
 }
 
-.articulo-brigada{
+.articulo-evento{
     width: 290px;
     height: 220px;
     background-color: #EFEFEF;
@@ -39,23 +39,23 @@ main{
     margin: 10px 0 0;
 }
 
-.detalles-brigada{
+.detalles-evento{
     font-size: 1.05rem;
 }
 
-.articulo-brigada h5{
+.articulo-evento h5{
     font-size: 1.3rem;
     font-weight: 500;
     color: #048F9F;
     text-align: center;
 }
 
-.articulo-brigada h6{
+.articulo-evento h6{
     margin: 15px 0 0;
     font-size: 1.05rem;
 }
 
-.articulo-brigada p{
+.articulo-evento p{
     font-size: 1.05rem;
     overflow-wrap: break-word;
 }
@@ -70,17 +70,17 @@ main{
 
 /* Scrollbar */
 
-.area-brigadas::-webkit-scrollbar {
+.area-eventos::-webkit-scrollbar {
     width: 6px;
 }
 
-.area-brigadas::-webkit-scrollbar-track {
+.area-eventos::-webkit-scrollbar-track {
     background: #BDEDF3;
     border-bottom-left-radius: 25px;
     border-bottom-right-radius: 25px;
 }
 
-.area-brigadas::-webkit-scrollbar-thumb {
+.area-eventos::-webkit-scrollbar-thumb {
     background-color: #0094A4;
     border-radius: 100px;
 }

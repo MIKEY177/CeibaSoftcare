@@ -1,13 +1,13 @@
 // Imports Base
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
 import "../styles/inicio.css"
 import farmaciaIcon from "../images/icons/farmacia-icon.png"
-import refugioIcon from "../images/icons/refugio-icon.png"
+import albergueIcon from "../images/icons/albergue-icon.png"
 import usuariosIcon from "../images/icons/usuarios-icon.png"
 
 // Componentes
@@ -27,17 +27,17 @@ export const Inicio = () => {
         <Navbar menu={MenuAdmin}/>
         <section className="secciones-dashboard">
           <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
-          <section className="seccion1-proximas-brigadas">
-            <h3 className="subtitulo-dashboard">Próximas Brigadas</h3>
-            <section className="area-brigadas">
-              <div className="subarea-brigada">
+          <section className="seccion1-proximas-eventos">
+            <h3 className="subtitulo-dashboard">Próximas eventos</h3>
+            <section className="area-eventos">
+              <div className="subarea-evento">
                 <h4 className="fecha">08 de Abril del 2025</h4>
-                <article className="articulo-brigada">
-                  <h5 className="detalles-brigada">[Nombre brigada]</h5>
-                  <h6 className="detalles-brigada">Lugar:</h6>
-                  <p className="detalles-brigada">[contenidooooooooooooooooooo]</p>
-                  <h6 className="detalles-brigada">Descripción:</h6>                                           
-                  <p className="detalles-brigada">[contenidoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo]</p>
+                <article className="articulo-evento">
+                  <h5 className="detalles-evento">[Nombre evento]</h5>
+                  <h6 className="detalles-evento">Lugar:</h6>
+                  <p className="detalles-evento">[contenidooooooooooooooooooo]</p>
+                  <h6 className="detalles-evento">Descripción:</h6>                                           
+                  <p className="detalles-evento">[contenidoooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo]</p>
                 </article>
               </div>
               <div className="separador-vertical"></div>
@@ -54,11 +54,11 @@ export const Inicio = () => {
                   </figure>
                 </div>
               </Link>
-              <Link to="/refugio">
-                <div className="modulo-refugio">
-                  <h4 className="titulo-modulo-refugio">Refugio</h4>
-                  <figure className="modulo-refugio-icono">
-                    <img className="modulo-refugio-img" src={refugioIcon} alt=""/>
+              <Link to="/albergue">
+                <div className="modulo-albergue">
+                  <h4 className="titulo-modulo-albergue">Albergue</h4>
+                  <figure className="modulo-albergue-icono">
+                    <img className="modulo-albergue-img" src={albergueIcon} alt=""/>
                   </figure>
                 </div>
               </Link>

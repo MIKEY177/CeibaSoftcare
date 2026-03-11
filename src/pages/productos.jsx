@@ -1,29 +1,29 @@
 // Imports Base
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
-import "../styles/inventario.css"
+import "../styles/productos.css"
 import editarIcon from "../images/icons/editar.png"
-import eliminarIcon from "../images/icons/eliminar.png"
+import desactivarIcon from "../images/icons/desactivar.png"
 import lupaBusqueda from "../images/lupa_busqueda.png"
 import barrasBusqueda from "../images/codigo_barras.png"
 import campoRestringido from "../images/candado.png"
 import flecha from "../images/flecha_salir.png"
 
 // Componentes
-import { Navbar } from '../components/Navbar'
-import { Footer } from '../components/Footer'
+import { Navbar } from '../components/Navbar.jsx'
+import { Footer } from '../components/Footer.jsx'
 
 export const indexSelector = 2;
 
-export const Inventario = () => {
+export const Productos = () => {
   return (
     <>
       <head>
-        <title>Inventario - Softcare</title>
+        <title>Productos - Softcare</title>
       </head>
       <main>
         <Navbar menu={MenuAdminFarmacia}/>
@@ -45,17 +45,17 @@ export const Inventario = () => {
               <button className="registrar-btn">Registrar Producto</button>
             </a>
           </section>
-          <table className="tabla-inventario">
-            <thead className="header-tabla-inventario">
+          <table className="tabla-productos">
+            <thead className="header-tabla-productos">
               <tr>
                 <td>Producto</td>
                 <td>Descripción</td>
                 <td>Unidad de Medida</td>
                 <td>Registró</td>
-                <td>Editar | Eliminar</td>
+                <td>Editar | Desactivar</td>
               </tr>
             </thead>
-            <tbody className="body-tabla-inventario">
+            <tbody className="body-tabla-productos">
               <tr>
                 <td>[Producto]</td> 
                 <td>[Descripción]</td> 
@@ -68,8 +68,8 @@ export const Inventario = () => {
                     </figure>
                   </a>
                   <a href="">
-                    <figure className="eliminar-icono">
-                      <img className="eliminar-icono-img" src={eliminarIcon} alt=""/>
+                    <figure className="desactivar-icono">
+                      <img className="desactivar-icono-img" src={desactivarIcon} alt=""/>
                     </figure>
                   </a>
                 </td>
@@ -79,8 +79,8 @@ export const Inventario = () => {
         </section>
       </main>
       <Footer/>
-      <div className="modales-inventario">
-        <aside className="modal-inventario-registrar">
+      <div className="modales-productos">
+        <aside className="modal-productos-registrar">
           <a href="">
             <img className="volver-icono" src={flecha} alt=""/>
             <h2>Volver</h2>
@@ -88,12 +88,6 @@ export const Inventario = () => {
           <h1 className="modal-ir-titulo">
             Registre un nuevo Producto
           </h1>
-          {/* <a href="" className="link-codigo-barras">
-            <h2>Escanear con Lector de Barras</h2>
-            <figure className="codigo-barras-icono">
-              <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
-            </figure>
-          </a> */}
           <form className="ir-form" action="" method="">
             <section className="ir-form-inputs-area">
               <div style={{gridArea: "divInpt1"}}>
@@ -117,11 +111,22 @@ export const Inventario = () => {
                   </figure>
                 </div>
               </div>
+              <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
+                <label className="ir-label" for="">Cantidad por Unidad</label>
+                <input className="ir-input5" type="text" name="ir-cantidad_por_unidad"/>
+              </div>
+              <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
+                <label className="ir-label" for=""> Código de Barras</label>
+                <input className="ir-input6" type="text" name="ir-codigo_barras"/>
+                <figure className="codigo-barras-icono">
+                  <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
+                </figure>
+              </div>
             </section>
             <input className="ir-btn" type="submit" value="Registrar Producto"/>
           </form>
         </aside>
-        <aside className="modal-inventario-editar">
+        <aside className="modal-productos-editar">
           <a href="">
             <img className="volver-icono" src={flecha} alt=""/>
             <h2>Volver</h2>
@@ -152,15 +157,26 @@ export const Inventario = () => {
                   </figure>
                 </div>
               </div>
+              <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
+                <label className="ir-label" for="">Cantidad por Unidad</label>
+                <input className="ir-input5" type="text" name="ir-cantidad_por_unidad" defaultValue="[Cantidad_por_unidad_ya_registrada]"/>
+              </div>
+              <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
+                <label className="ir-label" for=""> Código de Barras</label>
+                <input className="ir-input6" type="text" name="ir-codigo_barras" defaultValue="[Codigo_barras_ya_registrado]"/>
+                <figure className="codigo-barras-icono">
+                  <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
+                </figure>
+              </div>
             </section>
             <input className="ied-btn" type="submit" value="Realizar Cambios"/>
           </form>
         </aside>
-        <aside className="modal-inventario-eliminar">
-          <h1 className="modal-iel-titulo">Eliminar Producto Registrado</h1>
-          <h3 className="modal-iel-mensaje">¿Desea eliminar &nbsp;<h6 className="subrayar">[Nombre Producto]</h6>?</h3>
+        <aside className="modal-productos-desactivar">
+          <h1 className="modal-iel-titulo">Desactivar Producto Registrado</h1>
+          <h3 className="modal-iel-mensaje">¿Desea desactivar &nbsp;<h6 className="subrayar">[Nombre Producto]</h6>?</h3>
           <section className="modal-buttons">
-            <a href=""><button className="eliminar-btn">Eliminar</button></a>
+            <a href=""><button className="desactivar-btn">Desactivar</button></a>
             <a href=""><button className="cancelar-btn">Cancelar</button></a>
           </section>
         </aside> 

@@ -15,9 +15,9 @@ body{
 } */
 
 /* .modal-recuperar-contrasena, 
-              .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
-              .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-eliminar,
-              .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-eliminar {
+              .modal-productos-registrar, .modal-productos-editar, .modal-productos-desactivar, 
+              .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-desactivar,
+              .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-desactivar {
     border: 3px solid black;
     margin-top: 10px;
     margin-bottom: 10px;
@@ -163,7 +163,7 @@ main{
     font-size: 2rem;
 }
 
-.seccion1-proximas-brigadas{
+.seccion1-proximas-eventos{
     width: 100%;
     height: 300px;
 }
@@ -189,7 +189,7 @@ main{
     margin: 0 0 10px;
 }
 
-.area-brigadas{
+.area-eventos{
     width: 100%;
     height: 260px;
     background-color: white;
@@ -205,7 +205,7 @@ main{
     font-weight: 500;
 }
 
-.articulo-brigada{
+.articulo-evento{
     width: 290px;
     height: 190px;
     background-color: #EFEFEF;
@@ -214,23 +214,23 @@ main{
     margin: 10px 0 0;
 }
 
-.detalles-brigada{
+.detalles-evento{
     font-size: 1.05rem;
 }
 
-.articulo-brigada h5{
+.articulo-evento h5{
     font-size: 1.3rem;
     font-weight: 500;
     color: #048F9F;
     text-align: center;
 }
 
-.articulo-brigada h6{
+.articulo-evento h6{
     margin: 15px 0 0;
     font-size: 1.05rem;
 }
 
-.articulo-brigada p{
+.articulo-evento p{
     font-size: 1.05rem;
     overflow-wrap: break-word;
 }
@@ -266,7 +266,7 @@ main{
     all: unset;
 }
 
-.modulo-farmacia, .modulo-refugio, .modulo-usuarios, .modulo-brigadas, .modulo-inventario, .modulo-salidas-productos, .modulo-entradas-productos{
+.modulo-farmacia, .modulo-albergue, .modulo-usuarios, .modulo-eventos, .modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos{
     border-radius: 20px;
     width: 220px;
     height: 130px;
@@ -282,19 +282,19 @@ main{
     width: 270px;
 }
 
-.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4, .modulo-brigadas h4, .modulo-inventario h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
+.modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
     font-family: "Ubuntu";
     font-size: 1.6rem;
     font-weight: 400;
 }
 
-.modulo-farmacia, .modulo-brigadas{
+.modulo-farmacia, .modulo-eventos{
     border: 2px solid #0094A4;
     background-color: #0094a42c;
     color: #0094A4;
 }
 
-.modulo-refugio{
+.modulo-albergue{
     border: 2px solid #D49538;
     background-color: #D495382c;
     color: #D49538;
@@ -306,7 +306,7 @@ main{
     color: #5779FF;
 }
 
-.modulo-inventario{
+.modulo-productos{
     border: 2px solid #D47438;
     background-color: #D474382c;
     color: #D47438;
@@ -324,12 +324,12 @@ main{
     color: #108F36;
 }
 
-.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono, .modulo-brigadas-icono, .modulo-inventario-icono, .modulo-salidas-productos-icono, .modulo-entradas-productos-icono{
+.modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono, .modulo-salidas-productos-icono, .modulo-entradas-productos-icono{
     width: 50px;
     height: 50px;
 }
 
-.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img, .modulo-brigadas-img, .modulo-inventario-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
+.modulo-farmacia-img, .modulo-albergue-img, .modulo-usuarios-img, .modulo-eventos-img, .modulo-productos-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
     width: 100%;
     height: 100%;
 }

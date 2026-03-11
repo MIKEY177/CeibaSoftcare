@@ -24,7 +24,7 @@ export const Navbar = (props) => {
         {/* <div className="contenedor-nav">
             <Link to="/inicio"><h2 className="opcion-nav">Inicio</h2></Link>
             <Link to="/farmacia"><h2 className="opcion-nav">Farmacia</h2></Link>
-            <Link to="/refugio"><h2 className="opcion-nav">Refugio</h2></Link>
+            <Link to="/albergue"><h2 className="opcion-nav">Albergue</h2></Link>
             <Link to="/usuarios"><h2 className="opcion-nav">Usuarios</h2></Link>
         </div> */}
         <Menu menu={props.menu}/>

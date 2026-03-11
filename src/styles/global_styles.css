@@ -74,7 +74,7 @@ body{
     all: unset;
 }
 
-.modulo-brigadas, .modulo-inventario, .modulo-salidas-productos, .modulo-entradas-productos{
+.modulo-eventos, .modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos{
     border-radius: 20px;
     width: 250px;
     height: 125px;
@@ -87,7 +87,7 @@ body{
     transition: transform 0.2s ease-in-out;
 }
 
-.modulo-farmacia, .modulo-refugio, .modulo-usuarios{
+.modulo-farmacia, .modulo-albergue, .modulo-usuarios{
     border-radius: 20px;
     width: 290px;
     height: 155px;
@@ -100,7 +100,7 @@ body{
     transition: transform 0.2s ease-in-out;
 }
 
-.modulo-farmacia:hover, .modulo-refugio:hover, .modulo-usuarios:hover, .modulo-brigadas:hover, .modulo-inventario:hover, .modulo-salidas-productos:hover, .modulo-entradas-productos:hover{
+.modulo-farmacia:hover, .modulo-albergue:hover, .modulo-usuarios:hover, .modulo-eventos:hover, .modulo-productos:hover, .modulo-salidas-productos:hover, .modulo-entradas-productos:hover{
     transform: scale(1.05);
 }
 
@@ -108,24 +108,24 @@ body{
     width: 270px;
 }
 
-.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4, .modulo-brigadas h4, .modulo-inventario h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
+.modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
     font-family: "Ubuntu";
     font-size: 1.6rem;
     font-weight: 400;
 }
 
-.modulo-farmacia h4, .modulo-refugio h4, .modulo-usuarios h4{
+.modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4{
     font-size: 2rem;
     font-weight: 300;
 }
 
-.modulo-farmacia, .modulo-brigadas{
+.modulo-farmacia, .modulo-eventos{
     border: 2px solid #0094A4;
     background-color: #0094a41c;
     color: #0094A4;
 }
 
-.modulo-refugio{
+.modulo-albergue{
     border: 2px solid #D49538;
     background-color: #D495381c;
     color: #D49538;
@@ -137,7 +137,7 @@ body{
     color: #5779FF;
 }
 
-.modulo-inventario{
+.modulo-productos{
     border: 2px solid #D47438;
     background-color: #D474381c;
     color: #D47438;
@@ -158,12 +158,12 @@ body{
 /* Fin Módulos y sub-módulos de gestión  */
 /* Imágenes e Iconos */
 
-.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono, .modulo-brigadas-icono, .modulo-inventario-icono{
+.modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono{
     width: 50px;
     height: 50px;
 }
 
-.modulo-farmacia-icono, .modulo-refugio-icono, .modulo-usuarios-icono{
+.modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono{
     width: 60px;
     height: 60px;
 }
@@ -173,7 +173,7 @@ body{
     height: 60px;
 }
 
-.modulo-farmacia-img, .modulo-refugio-img, .modulo-usuarios-img, .modulo-brigadas-img, .modulo-inventario-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
+.modulo-farmacia-img, .modulo-albergue-img, .modulo-usuarios-img, .modulo-eventos-img, .modulo-productos-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{
     width: 100%;
     height: 100%;
 }

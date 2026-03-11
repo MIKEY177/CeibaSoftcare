@@ -1,13 +1,13 @@
 // Imports Base
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
 import "../styles/entradas_prod.css"
 import editarIcon from "../images/icons/editar.png"
-import eliminarIcon from "../images/icons/eliminar.png"
+import desactivarIcon from "../images/icons/desactivar.png"
 import lupaBusqueda from "../images/lupa_busqueda.png"
 import campoRestringido from "../images/candado.png"
 import flecha from "../images/flecha_salir.png"
@@ -45,7 +45,7 @@ export const EntradasProd = () => {
                 <td>Fecha y Hora</td>
                 <td>Observaciones</td>
                 <td>Detalles del Registro</td>
-                <td>Editar | Eliminar</td>
+                <td>Editar | Desactivar</td>
               </tr>
             </thead>
             <tbody className="body-tabla-entradas">
@@ -64,8 +64,8 @@ export const EntradasProd = () => {
                     </figure>
                   </a>
                   <a href="">
-                    <figure className="eliminar-icono">
-                      <img className="eliminar-icono-img" src={eliminarIcon} alt=""/>
+                    <figure className="desactivar-icono">
+                      <img className="desactivar-icono-img" src={desactivarIcon} alt=""/>
                     </figure>
                  </a>
                 </td>
@@ -108,7 +108,7 @@ export const EntradasProd = () => {
                       <td>Cantidad</td>
                       <td>Fecha de Vencimiento</td>
                       <td>Motivo</td>
-                      <td>Eliminar</td>
+                      <td>Desactivar</td>
                     </tr>
                   </thead>
                   <tbody className="body-tabla-epr-detalles">
@@ -119,8 +119,8 @@ export const EntradasProd = () => {
                       <td>[Motivo]</td> 
                       <td>
                         <a href="">
-                          <figure className="eliminar-icono"> 
-                            <img className="eliminar-icono-img" src={eliminarIcon} alt=""/>
+                          <figure className="desactivar-icono"> 
+                            <img className="desactivar-icono-img" src={desactivarIcon} alt=""/>
                           </figure>
                         </a>
                       </td>
@@ -164,7 +164,7 @@ export const EntradasProd = () => {
                       <td>Cantidad</td>
                       <td>Fecha de Vencimiento</td>
                       <td>Motivo</td>
-                      <td>Eliminar</td>
+                      <td>Desactivar</td>
                     </tr>
                   </thead>
                   <tbody className="body-tabla-eped-detalles">
@@ -175,8 +175,8 @@ export const EntradasProd = () => {
                       <td>[Motivo]</td> 
                       <td>
                         <a href=""> 
-                          <figure className="eliminar-icono"> 
-                            <img className="eliminar-icono-img" src={eliminarIcon} alt=""/>
+                          <figure className="desactivar-icono"> 
+                            <img className="desactivar-icono-img" src={desactivarIcon} alt=""/>
                           </figure>
                         </a>
                       </td>
@@ -188,11 +188,11 @@ export const EntradasProd = () => {
             <input className="eped-btn" type="submit" value="Realizar cambios"/>
           </form>
         </aside>
-        <aside className="modal-entrada-eliminar">
-          <h1 className="modal-epel-titulo">Eliminar Entrada Registrada</h1>
-          <h3 className="modal-epel-mensaje">¿Desea eliminar la Entrada N°<h6 className="subrayar">[id_entrada]</h6>?</h3>
+        <aside className="modal-entrada-desactivar">
+          <h1 className="modal-epel-titulo">Desactivar Entrada Registrada</h1>
+          <h3 className="modal-epel-mensaje">¿Desea desactivar la Entrada N°<h6 className="subrayar">[id_entrada]</h6>?</h3>
           <section className="modal-buttons">
-            <a href=""><button className="eliminar-btn">Eliminar</button></a>
+            <a href=""><button className="desactivar-btn">Desactivar</button></a>
             <a href=""><button className="cancelar-btn">Cancelar</button></a>
           </section>
         </aside>
@@ -243,11 +243,11 @@ export const EntradasProd = () => {
             <input className="edpr-btn" type="submit" value="Registrar Producto en la Entrada"/>
           </form>
         </aside>
-        <aside className="modal-entrada-detalle-eliminar">
-          <h1 className="modal-edpel-titulo">Eliminar Producto de la Entrada</h1>
-          <h3 className="modal-edpel-mensaje">¿Desea eliminar &nbsp;<h6 className="subrayar">[Nombre Producto]</h6>&nbsp; de la Entrada N° &nbsp;<h6 className="subrayar">[id_entrada]</h6>?</h3>
+        <aside className="modal-entrada-detalle-desactivar">
+          <h1 className="modal-edpel-titulo">Desactivar Producto de la Entrada</h1>
+          <h3 className="modal-edpel-mensaje">¿Desea desactivar &nbsp;<h6 className="subrayar">[Nombre Producto]</h6>&nbsp; de la Entrada N° &nbsp;<h6 className="subrayar">[id_entrada]</h6>?</h3>
           <section className="modal-buttons">
-            <a href=""><button className="eliminar-btn">Eliminar</button></a>
+            <a href=""><button className="desactivar-btn">Desactivar</button></a>
             <a href=""><button className="cancelar-btn">Cancelar</button></a>
           </section>
         </aside>

@@ -5,10 +5,10 @@ import { LandingPage } from './pages/landing_page.jsx'
 import { Inicio } from './pages/inicio.jsx'
 import { Farmacia } from './pages/farmacia.jsx'
 import { IniciarSesion } from './pages/iniciar_sesion.jsx'
-import { Inventario } from './pages/inventario.jsx'
+import { Productos } from './pages/productos.jsx'
 import { EntradasProd } from './pages/entradas_prod.jsx'
 import { SalidasProd } from './pages/salidas_prod.jsx'
-import { Brigadas } from './pages/brigadas.jsx'
+import { Eventos } from './pages/eventos.jsx'
 
 function App(){
     return(
@@ -26,10 +26,10 @@ function App(){
                 <Route path="/inicio" element={<Inicio/>}/>
                 <Route path="/farmacia" element={<Farmacia/>}/>
                 <Route path="/iniciar_sesion" element={<IniciarSesion/>}/>
-                <Route path="/inventario" element={<Inventario/>}/>
+                <Route path="/productos" element={<Productos/>}/>
                 <Route path="/entradas_prod" element={<EntradasProd/>}/>
                 <Route path="/salidas_prod" element={<SalidasProd/>}/>
-                <Route path="/brigadas" element={<Brigadas/>}/>
+                <Route path="/eventos" element={<Eventos/>}/>
             </Routes>
         </Router>
     </>
