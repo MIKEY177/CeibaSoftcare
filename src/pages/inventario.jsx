@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MenuAdminFarmacia } from "../utils/menu.jsx"
 
@@ -43,6 +43,11 @@ export const Inventario = () => {
   });
 
   const [busqueda, setBusqueda] = useState("");
+
+  const scanTimeoutRef = useRef(null);
+  const scannedCodeRef = useRef("");
+  const lastKeyTimeRef = useRef(0); // timestamp of previous keystroke
+  const isScanningRef = useRef(false); // whether current sequence is treated as scanned input
 
   // ─── Helpers ────────────────────────────────────────────────────────────────
 
@@ -117,6 +122,123 @@ export const Inventario = () => {
   }, []);
 
   useEffect(() => { cargarProductos(); }, []);
+
+  useEffect(() => {
+
+  const applyScannedCode = () => {
+
+    // Ignorar si no es escaneo real
+    if (!isScanningRef.current || scannedCodeRef.current.length < 6) {
+      scannedCodeRef.current = "";
+      return;
+    }
+
+    const code = scannedCodeRef.current;
+
+    console.log("Código escaneado automáticamente:", code);
+
+    if (modalActiva === 1) {
+      setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
+    } 
+    else if (modalActiva === 2) {
+      setFormEditar(prev => ({ ...prev, codigo_barras: code }));
+    } 
+    else {
+      setBusqueda(code);
+    }
+
+    scannedCodeRef.current = "";
+    isScanningRef.current = false;
+  };
+
+
+  const handleKeyDown = (e) => {
+    
+    const now = Date.now();
+    const interval = now - lastKeyTimeRef.current;
+    lastKeyTimeRef.current = now;
+
+    // Si la velocidad es lenta se considera humano
+    if (interval > 80) {
+      scannedCodeRef.current = "";
+      isScanningRef.current = false;
+
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+        scanTimeoutRef.current = null;
+      }
+    }
+
+    if (e.key === "Enter") {
+
+      if (isScanningRef.current) {
+        e.preventDefault(); // 🚫 evita enviar formularios
+      }
+
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+        scanTimeoutRef.current = null;
+      }
+
+      applyScannedCode();
+      return;
+    }
+
+    if (/^[0-9]$/.test(e.key)) {
+
+      if (scannedCodeRef.current === "") {
+        isScanningRef.current = interval < 80;
+      }
+
+      if (isScanningRef.current) {
+
+        // 🚫 Evita que el escáner escriba en otros inputs
+        e.preventDefault();
+
+        scannedCodeRef.current += e.key;
+
+        if (scanTimeoutRef.current) {
+          clearTimeout(scanTimeoutRef.current);
+        }
+
+        scanTimeoutRef.current = setTimeout(() => {
+          applyScannedCode();
+        }, 120);
+      }
+
+    } 
+    else if (e.key === "Backspace") {
+
+      if (isScanningRef.current) {
+        e.preventDefault();
+        scannedCodeRef.current = scannedCodeRef.current.slice(0, -1);
+      }
+
+    } 
+    else {
+
+      scannedCodeRef.current = "";
+      isScanningRef.current = false;
+
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+        scanTimeoutRef.current = null;
+      }
+    }
+  };
+
+
+  document.addEventListener("keydown", handleKeyDown);
+
+  return () => {
+    document.removeEventListener("keydown", handleKeyDown);
+
+    if (scanTimeoutRef.current) {
+      clearTimeout(scanTimeoutRef.current);
+    }
+  };
+
+}, [modalActiva]);
 
   // ─── Menú ────────────────────────────────────────────────────────────────────
 
@@ -193,7 +315,7 @@ export const Inventario = () => {
           <h2 className="titulo-dashboard">Productos</h2>
           <section className="seccion1-busqueda-agregar">
             <form className="busqueda-form" onSubmit={handleBusqueda}>
-              <input className="busqueda-input1" type="text" name="busqueda" placeholder="Busca un producto" value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
+              <input className="busqueda-input1 scan-capture" type="text" name="busqueda" placeholder="Busca un producto" value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
               <button className="busqueda-icono" type="submit">
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
@@ -264,8 +386,8 @@ export const Inventario = () => {
 
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ir-label">Código de barras <h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input1" type="text"
-                    value={formRegistrar.codigo_barras} onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
+                  <input className="ir-input1 scan-capture" type="text"
+                    value={formRegistrar.codigo_barras} onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
                   {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}
                 </div>
 
@@ -335,8 +457,8 @@ export const Inventario = () => {
               <section className="ied-form-inputs-area">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ied-label">Código de Barras <h6 className="obligatorio">*</h6></label>
-                  <input className="ied-input1" type="text"
-                    value={formEditar.codigo_barras} onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
+                  <input className="ied-input1 scan-capture" type="text"
+                    value={formEditar.codigo_barras} onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
                   {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}
                 </div>
 
