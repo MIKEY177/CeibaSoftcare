@@ -16,6 +16,7 @@ import flecha from "../images/flecha_salir.png"
 // Componentes
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Menu } from '../components/Menu.jsx'
 
 const API = "http://localhost/Ceibasoftcare/backend/api/inventario.php";
 export const indexSelector = 2;
@@ -113,7 +114,7 @@ export const Productos = () => {
         .then(data => {
           if (data.status === "ok") {
             setUser({ nombre: data.usuario, rol: data.rol });
-            if (data.rol === "Veterinario") navigate("/farmacia");
+            if (data.rol === "veterinario") navigate("/farmacia");
           } else {
             navigate("/iniciar_sesion");
           }
@@ -245,7 +246,7 @@ export const Productos = () => {
     const menuObj = (() => {
       switch (user.rol) {
         case "administrador": return MenuAdminFarmacia;
-        case "farmacéutico":  return MenuAdminFarmacia;
+        case "farmacéutico":  return MenuFarmaceutico;
         default:              return {};
       }
     })();

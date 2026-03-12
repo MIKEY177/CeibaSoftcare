@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
 
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario, MenuVeterinarioFarmacia } from "../utils/menu.jsx"
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos
 import "../styles/global_styles.css"
@@ -63,7 +63,7 @@ export const Farmacia = () => {
           case "administrador":
             return MenuAdminFarmacia;
           case "farmacéutico":
-            return MenuAdminFarmacia;
+            return MenuFarmaceutico;
           default:
             return {};
         }

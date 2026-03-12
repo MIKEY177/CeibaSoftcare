@@ -1,6 +1,6 @@
 // Imports Base
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { data, Link, useNavigate } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -19,13 +19,45 @@ import { Footer } from '../components/Footer'
 export const indexSelector = 3;
 
 export const EntradasProd = () => {
+  const [user, setUser] = useState({ nombre: "", rol: "" });
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // consultar sesión
+    fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
+      credentials: "include"
+    })
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "ok") {
+        setUser({ nombre: data.usuario, rol: data.rol });
+        if (data.rol !== "administrador" && data.rol !== "farmacéutico") {
+          navigate("/inicio");
+        }
+      } else {
+        navigate("/iniciar_sesion");
+      } 
+    })
+    .catch(() => navigate("/iniciar_sesion"));
+  }, []);
+  
+  const menuObj = (() => {
+  switch (user.rol) {
+    case "administrador":
+      return MenuAdminFarmacia;
+    case "farmacéutico":
+      return MenuFarmaceutico;
+    default:
+      return {};
+  }
+  })();
   return (
     <>
       <head>
           <title>Entradas de Productos - Softcare</title>
       </head>
       <main>
-        <Navbar menu={MenuAdminFarmacia}/>
+        <Navbar menu={menuObj} user={user}/>
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Entradas de Productos</h2>
           <section className="seccion1-busqueda-agregar">

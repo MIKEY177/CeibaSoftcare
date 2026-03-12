@@ -79,6 +79,24 @@ if ($method === 'POST') {
     $codigo_barras = trim($body['codigo_barras'] ?? '');
     $cantidad_por_unidad = trim($body['cantidad_por_unidad'] ?? '');
 
+    $sql_check = "SELECT id_producto FROM productos WHERE nombre = ? AND codigo_barras = ? AND activo = 1";
+    $stmt_check = mysqli_prepare($conn, $sql_check);
+    mysqli_stmt_bind_param($stmt_check, "ss", $nombre, $codigo_barras);
+    mysqli_stmt_execute($stmt_check);
+    mysqli_stmt_store_result($stmt_check);
+    $check_nombre = mysqli_stmt_num_rows($stmt_check) > 0;
+
+    $sql_check_codigo = "SELECT id_producto FROM productos WHERE codigo_barras = ? AND activo = 1";
+    $stmt_check_codigo = mysqli_prepare($conn, $sql_check_codigo);
+    mysqli_stmt_bind_param($stmt_check_codigo, "s", $codigo_barras);
+    mysqli_stmt_execute($stmt_check_codigo);
+    mysqli_stmt_store_result($stmt_check_codigo);
+    $check_codigo_barras = mysqli_stmt_num_rows($stmt_check_codigo) > 0;
+     
+    if ($check_nombre) {
+        $errores['nombre'] = "Ya existe un producto activo con el mismo nombre y código de barras.";
+    }
+
     $errores = [];
 
 
@@ -87,6 +105,8 @@ if ($method === 'POST') {
         $errores['nombre'] = "El nombre del producto es obligatorio.";
     } elseif (strlen($nombre) > 150) {
         $errores['nombre'] = "El nombre no puede superar los 150 caracteres.";
+    } elseif (mysqli_stmt_num_rows($stmt_check) > 0) {
+        $errores['nombre'] = "Ya existe un producto activo con el mismo nombre y código de barras.";
     }
 
     if (strlen($descripcion) > 500) {
@@ -98,6 +118,8 @@ if ($method === 'POST') {
     }
     if ($codigo_barras ===''){
         $errores['codigo_barras'] = "El código de barras es obligatorio.";
+    }else if ($check_codigo_barras) {
+        $errores['codigo_barras'] = "Ya existe un producto activo con el mismo código de barras.";
     }
     if ($cantidad_por_unidad ===''){
         $errores['cantidad_por_unidad'] = "La cantidad por unidad es obligatoria.";
@@ -143,6 +165,25 @@ if ($method === 'PUT') {
 
     $errores = [];
 
+    $sql_check_codigo = "SELECT id_producto FROM productos WHERE codigo_barras = ? AND activo = 1";
+    $stmt_check_codigo = mysqli_prepare($conn, $sql_check_codigo);
+    mysqli_stmt_bind_param($stmt_check_codigo, "s", $codigo_barras);
+    mysqli_stmt_execute($stmt_check_codigo);
+    mysqli_stmt_store_result($stmt_check_codigo);
+    $check_codigo_barras = mysqli_stmt_num_rows($stmt_check_codigo) > 0;
+
+    $sql_codigo_barras = "SELECT codigo_barras FROM productos WHERE nombre = ? AND id_producto != ? AND activo = 1";
+    $stmt_codigo_barras = mysqli_prepare($conn, $sql_codigo_barras);
+    mysqli_stmt_bind_param($stmt_codigo_barras, "si", $nombre, $id_producto);
+    mysqli_stmt_execute($stmt_codigo_barras);
+    $datos_codigo_barras = mysqli_stmt_get_result($stmt_codigo_barras);
+    $row_codigo_barras = mysqli_fetch_assoc($datos_codigo_barras);
+
+    if(!isset($row_codigo_barras['codigo_barras'])){
+        $row_codigo_barras['codigo_barras'] = '';
+    }
+    
+
     if ($nombre === '') {
         $errores['nombre'] = "El nombre del producto es obligatorio.";
     } elseif (strlen($nombre) > 150) {
@@ -158,6 +199,8 @@ if ($method === 'PUT') {
     }
     if ($codigo_barras ===''){
         $errores['codigo_barras'] = "El código de barras es obligatorio.";
+    }elseif ($check_codigo_barras && $row_codigo_barras['codigo_barras'] != $codigo_barras) {
+        $errores['codigo_barras'] = "Ya existe un producto activo con el mismo código de barras.";
     }
     if ($cantidad_por_unidad ===''){
         $errores['cantidad_por_unidad'] = "La cantidad por unidad es obligatoria.";

@@ -60,7 +60,7 @@ export const Inicio = () => {
         return MenuAdmin;
       case "farmacéutico":
         return MenuFarmaceutico;
-      case "Veterinario":
+      case "veterinario":
         return MenuVeterinario;
       default:
         return {};
@@ -111,7 +111,7 @@ export const Inicio = () => {
                   </div>
                 </Link>
               ) : ''}
-              {user.rol === "administrador" || user.rol === "Veterinario" ? (
+              {user.rol === "administrador" || user.rol === "veterinario" ? (
                 <Link to="/albergue">
                   <div className="modulo-albergue">
                     <h4 className="titulo-modulo-albergue">Albergue</h4>
