@@ -4,7 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../images/foto_refugio.png');
+    background-image: url('../images/foto_albergue.png');
     background-size: 100% 100%;
     background-repeat: no-repeat;
     position: absolute;
@@ -22,9 +22,9 @@
 }
 
 /* .modal-recuperar-contrasena, 
-              .modal-inventario-registrar, .modal-inventario-editar, .modal-inventario-eliminar, 
-              .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-eliminar,
-              .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-eliminar {
+              .modal-productos-registrar, .modal-productos-editar, .modal-productos-desactivar, 
+              .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-desactivar,
+              .modal-entrada-detalle-registrar, .modal-entrada-detalle-editar, .modal-entrada-detalle-desactivar {
     border: 3px solid black;
     margin-top: 10px;
     margin-bottom: 10px;

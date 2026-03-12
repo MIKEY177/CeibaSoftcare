@@ -21,7 +21,7 @@ export const LandingPage = () =>{
             <br/>
             <Link to="/detalles_entradas_prod">Detalles Entradas de Productos</Link><br/>
             <br/>
-            <Link to="/inventario">Inventario</Link><br/>
+            <Link to="/productos">Productos</Link><br/>
             <br/>
         </>
     )

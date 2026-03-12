@@ -1,14 +1,15 @@
 // Imports Base
 import React, { useEffect, useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminRefugio, MenuFarmaceutico, MenuVeterinario, MenuVeterinarioFarmacia } from "../utils/menu.jsx"
+
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario, MenuVeterinarioFarmacia } from "../utils/menu.jsx"
 
 // Estilos
 import "../styles/global_styles.css"
-import inventarioIcon from "../images/icons/inventario-icon.png"
+import productosIcon from "../images/icons/productos-icon.png"
 import salidaIcon from "../images/icons/salida-icon.png"
 import entradaIcon from "../images/icons/entrada-icon.png"
-import brigadasIcon from "../images/icons/brigadas-icon.png"
+import eventosIcon from "../images/icons/eventos-icon.png"
 
 // Componentes
 import { Navbar } from '../components/Navbar'
@@ -109,45 +110,47 @@ export const Farmacia = () => {
           <section className="seccion2-modulos">
             <h3 className="titulo-area-gestion">Sub-Módulos de Gestión</h3>
             <section className="area-modulos">
+              
+                {user.rol === "administrador" || user.rol === "farmacéutico" ? (
+                  <Link to="/productos">
+                    <div className="modulo-productos">
+                      <h4 className="titulo-modulo-productos">Productos</h4>
+                      <figure className="modulo-productos-icono">
+                        <img className="modulo-productos-img" src={productosIcon} alt=""/>
+                      </figure>
+                    </div>
+                  </Link>) 
+                : ''}
+                {user.rol === "administrador" || user.rol === "farmacéutico" ? (
+                  <Link to="/entradas_prod">
+                    <div className="modulo-entradas-productos">
+                      <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
+                      <figure className="modulo-entradas-productos-icono">
+                        <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
+                      </figure>
+                    </div>
+                  </Link>)
+                : ''}
               {user.rol === "administrador" || user.rol === "farmacéutico" ? (
-                <Link to="/inventario">
-                  <div className="modulo-inventario">
-                    <h4 className="titulo-modulo-inventario">Inventario</h4>
-                    <figure className="modulo-inventario-icono">
-                      <img className="modulo-inventario-img" src={inventarioIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link>
-              ): ''}
-              {user.rol === "administrador" || user.rol === "farmacéutico" ? (
-              <Link to="/salidas_prod">
-                <div className="modulo-salidas-productos">
-                  <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
-                  <figure className="modulo-salidas-productos-icono">
-                    <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link>) : ''}
-              {user.rol === "administrador" || user.rol === "farmacéutico" ? (
-                <Link to="/entradas_prod">
-                  <div className="modulo-entradas-productos">
-                    <h4 className="titulo-modulo-entradas-productos">Entradas Productos</h4>
-                    <figure className="modulo-entradas-productos-icono">
-                      <img className="modulo-entradas-productos-img" src={entradaIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link>
-              ) : ''}
-              {user.rol === "administrador" ? (
-              <Link to="/eventos">
-                <div className="modulo-brigadas">
-                  <h4 className="titulo-modulo-brigadas">Brigadas</h4>
-                  <figure className="modulo-brigadas-icono">
-                    <img className="modulo-brigadas-img" src={brigadasIcon} alt=""/>
-                  </figure>
-                </div>
-              </Link> 
-              ) : ''}   
+                <Link to="/salidas_prod">
+                  <div className="modulo-salidas-productos">
+                    <h4 className="titulo-modulo-salidas-productos">Salidas Productos</h4>
+                    <figure className="modulo-salidas-productos-icono">
+                      <img className="modulo-salidas-productos-img" src={salidaIcon} alt=""/>
+                    </figure>
+                  </div>
+                </Link>)
+              : ''}
+              {user.rol === "administrador" ?(
+                <Link to="/eventos">
+                  <div className="modulo-eventos">
+                    <h4 className="titulo-modulo-eventos">Eventos</h4>
+                    <figure className="modulo-eventos-icono">
+                      <img className="modulo-eventos-img" src={eventosIcon} alt=""/>
+                    </figure>
+                  </div>
+                </Link> )
+              : ''}   
             </section>
           </section>
         </section>
