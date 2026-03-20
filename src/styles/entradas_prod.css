@@ -322,7 +322,8 @@
     grid-template-areas:
     "divInpt1 divInpt3"
     "divInpt2 divInpt4"
-    "divInpt2 divInpt5";
+    "divInpt2 divInpt5"
+    "divInpt2 divInpt6";
 }
 
 .epr-label, .eped-label, .edpr-label{
@@ -344,7 +345,7 @@
     font-size: 1rem;
 }
 
-.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5{
+.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5, .edpr-input6{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -557,46 +558,5 @@
     .body-tabla-epr-detalles::-webkit-scrollbar-thumb, .body-tabla-eped-detalles::-webkit-scrollbar-thumb{
         background-color: #b1b0b0;
     }
-
-    /* Fin Scrollbar */
-
-/* Fin tabla detalles */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.modal-entrada-registrar{
-    display: none;
-}
-
-.modal-entrada-editar{
-    display: none;
-}
-
-.modal-entrada-desactivar{
-    display: none;
-}
-
-.modal-entrada-detalle-registrar{
-    display: none;
-}
-
-.modal-entrada-detalle-desactivar{
-    display: none;
-}
-
-.modales-entradas-prod{
-    display: none;
-}
 
 /* Fin Modales */
