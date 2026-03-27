@@ -18,7 +18,9 @@ import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
 
-const API = "http://localhost/Ceibasoftcare/backend/api/inventario.php";
+const BASE = import.meta.env.VITE_API_BASE;
+const API = `${BASE}/inventario.php`;
+const API_SESSION = `${BASE}/sesion.php`;
 export const indexSelector = 2;
 
 export const Productos = () => {
@@ -109,7 +111,7 @@ export const Productos = () => {
     // ─── Sesión ──────────────────────────────────────────────────────────────────
   
     useEffect(() => {
-      fetch("http://localhost/Ceibasoftcare/backend/api/session.php", { credentials: "include" })
+      fetch(API_SESSION, { credentials: "include" })
         .then(res => res.json())
         .then(data => {
           if (data.status === "ok") {

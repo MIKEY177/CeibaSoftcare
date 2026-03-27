@@ -14,6 +14,12 @@ import flecha from "../images/flecha_salir.png"
 import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
+         const BASE        = import.meta.env.VITE_API_BASE;
+         const API_LOGIN = `${BASE}/login.php`;
+         const API_REC = `${BASE}/recuperar.php`;
+         const API_CODE= `${BASE}/verificar_codigo.php`;
+         const API_PASS = `${BASE}/cambiar_password.php`;
+
         //Login
         const [correo,setcorreo]= useState("")
         const [contrasena,setcontrasena]= useState("")
@@ -53,7 +59,7 @@ export const IniciarSesion = () => {
                         setErrores(nuevosErrores)
                     return
                     }
-                    const respuesta = await fetch("http://localhost/Ceibasoftcare/backend/api/login.php", {
+                    const respuesta = await fetch(API_LOGIN, {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json"
@@ -80,7 +86,7 @@ export const IniciarSesion = () => {
                     }
                     setLoadingCodigo(true);
                     try {
-                        const respuesta = await fetch("http://localhost/Ceibasoftcare/backend/api/recuperar.php",{
+                        const respuesta = await fetch(API_REC,{
                             method:"POST",
                             headers:{
                                 "Content-Type":"application/json"
@@ -103,7 +109,7 @@ export const IniciarSesion = () => {
 
                 const verificarCodigo = async (e) => {
                     e.preventDefault()
-                    const respuesta = await fetch("http://localhost/CeibaSoftcare/backend/api/verificar_codigo.php", {
+                    const respuesta = await fetch(API_CODE, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         credentials: "include", 
@@ -119,7 +125,7 @@ export const IniciarSesion = () => {
                 const cambiarPassword = async (e) => {
                     e.preventDefault()
 
-                    const respuesta = await fetch("http://localhost/CeibaSoftcare/backend/api/cambiar_password.php", {
+                    const respuesta = await fetch(API_PASS, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         credentials: "include",

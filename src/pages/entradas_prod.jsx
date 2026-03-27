@@ -13,10 +13,11 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const API         = "http://localhost/CeibaSoftcare/backend/api/entradas_completas.php";
-const API_DET     = "http://localhost/CeibaSoftcare/backend/api/detalles_entradas.php";
-const API_PROD    = "http://localhost/CeibaSoftcare/backend/api/productos_busqueda.php";
-const API_SESSION = "http://localhost/CeibaSoftcare/backend/api/session.php";
+const BASE        = import.meta.env.VITE_API_BASE;
+const API         = `${BASE}/entradas_completas.php`;
+const API_DET     = `${BASE}/detalles_entradas.php`;
+const API_PROD    = `${BASE}/productos_busqueda.php`;
+const API_SESSION = `${BASE}/session.php`;
 
 export const indexSelector = 3;
 

@@ -18,9 +18,12 @@ export const Inicio = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });
   const navigate = useNavigate();
 
+  const BASE = import.meta.env.VITE_API_BASE;
+  const API_SESSION = `${BASE}/session.php`;
+  const API_EVE = `${BASE}/eventos.php`;
   useEffect(() => {
     // consultar eventos
-    fetch("http://localhost/Ceibasoftcare/backend/api/eventos.php", {
+    fetch(API_EVE, {
       credentials: "include"
     })
     .then(res => res.json())
@@ -34,7 +37,7 @@ export const Inicio = () => {
     .catch(error => console.error(error));
 
     // consultar sesión
-    fetch("http://localhost/Ceibasoftcare/backend/api/session.php", {
+    fetch(API_SESSION, {
       credentials: "include"
     })
     .then(res => res.json())
