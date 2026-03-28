@@ -13,7 +13,7 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const BASE        = import.meta.env.VITE_API_BASE;
+const BASE        = import.meta.env.VITE_API_BASE ?? env(VITE_API_BASE);
 const API         = `${BASE}/entradas_completas.php`;
 const API_DET     = `${BASE}/detalles_entradas.php`;
 const API_PROD    = `${BASE}/productos_busqueda.php`;
