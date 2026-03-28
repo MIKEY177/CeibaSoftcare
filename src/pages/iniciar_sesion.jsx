@@ -14,7 +14,7 @@ import flecha from "../images/flecha_salir.png"
 import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
-         const BASE        = import.meta.env.VITE_API_BASE ?? env(VITE_API_BASE);
+         const BASE        = import.meta.env.VITE_API_BASE ?? env('VITE_API_BASE');
          const API_LOGIN = `${BASE}/login.php`;
          const API_REC = `${BASE}/recuperar.php`;
          const API_CODE= `${BASE}/verificar_codigo.php`;

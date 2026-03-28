@@ -10,11 +10,11 @@ import rolStand from "../images/rol_stand.png"
 export const Navbar = ({ user, menu }) => {
   const navigate = useNavigate();
 
-  const BASE        = import.meta.env.VITE_API_BASE ?? env(VITE_API_BASE);
+  const BASE        = import.meta.env.VITE_API_BASE ?? env('VITE_API_BASE');
   const API         = `${BASE}/logout.php`;
   const cerrarSesion = async () => {
     try {
-      const response = await fetch("http://localhost/Ceibasoftcare/backend/api/logout.php", {
+      const response = await fetch(API, {
         credentials: "include"
       });
       const data = await response.json();
