@@ -2,12 +2,19 @@ DirectoryIndex index.html index.php
 
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    
+    # 1. REGLA PARA LA API (El truco del Proxy)
+    # Si la petición empieza por /api/, quita ese prefijo y busca el archivo PHP
+    # Ejemplo: /api/login.php -> busca login.php en la raíz
+    RewriteRule ^api/(.*)$ $1 [L]
 
-    # Si el archivo existe físicamente (ej. login.php o una imagen), sírvelo directamente
+    # 2. ARCHIVOS REALES
+    # Si el archivo existe físicamente (ej. login.php, una imagen o un .js), sírvelo
     RewriteCond %{REQUEST_FILENAME} -f
     RewriteRule ^ - [L]
 
-    # Si el archivo NO existe (rutas de React como /dashboard), mándalo al index.html
+    # 3. RUTAS DE REACT
+    # Si no es un archivo ni una carpeta real, mándalo al index de React
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . index.html [L]

@@ -18,9 +18,9 @@ export const Inicio = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });
   const navigate = useNavigate();
 
-  const BASE = import.meta.env.VITE_API_BASE;
-  const API_SESSION = `${BASE}/session.php`;
-  const API_EVE = `${BASE}/eventos.php`;
+
+  const API_SESSION = `api/session.php`;
+  const API_EVE = `api/eventos.php`;
   useEffect(() => {
     // consultar eventos
     fetch(API_EVE, {

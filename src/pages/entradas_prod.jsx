@@ -13,11 +13,10 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const BASE        = import.meta.env.VITE_API_BASE ;
-const API         = `${BASE}/entradas_completas.php`;
-const API_DET     = `${BASE}/detalles_entradas.php`;
-const API_PROD    = `${BASE}/productos_busqueda.php`;
-const API_SESSION = `${BASE}/session.php`;
+const API         = `api/entradas_completas.php`;
+const API_DET     = `api/detalles_entradas.php`;
+const API_PROD    = `api/productos_busqueda.php`;
+const API_SESSION = `api/session.php`;
 
 export const indexSelector = 3;
 
