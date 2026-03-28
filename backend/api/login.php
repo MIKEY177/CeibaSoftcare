@@ -25,15 +25,19 @@ if(mysqli_num_rows($resultado) > 0){
     $usuario = mysqli_fetch_assoc($resultado);
     if(password_verify($contrasena, $usuario['contrasena'])){
         // guardar datos en sesión
+        $host = $_SERVER['HTTP_HOST'] ?? '';
+
+        $isLocal = strpos($host, 'localhost') !== false;
+
         session_set_cookie_params([
             'lifetime' => 3600,
             'path' => '/',
-            'domain' => '',  // Dejar vacío para que funcione en localhost
-            'secure' => false,
+            'domain' => $isLocal ? '' : '.onrender.com',
+            'secure' => !$isLocal, // true en producción
             'httponly' => true,
-            'samesite' => 'Lax'
+            'samesite' => 'None' // 🔥 importante para frontend separado
         ]);
-
+        
         session_start();
         $_SESSION['user_id'] = $usuario['id_usuario'];
         $_SESSION['user_name'] = $usuario['nombre'];
