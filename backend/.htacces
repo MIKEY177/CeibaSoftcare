@@ -1,0 +1,20 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # 1. Si la petición empieza por /dist/, servir los archivos estáticos de React
+    RewriteCond %{REQUEST_URI} ^/dist/ [NC]
+    RewriteRule ^dist/(.*)$ dist/$1 [L]
+
+    # 2. Si la petición empieza por /api/, enviarla al index.php de PHP
+    # Esto asume que tienes un router en index.php
+    RewriteCond %{REQUEST_URI} ^/api/ [NC]
+    RewriteRule ^api/(.*)$ index.php [L,QSA]
+
+    # 3. Redirigir la raíz a la carpeta /dist/ donde está React
+    RewriteRule ^$ dist/index.html [L]
+    
+    # 4. Cualquier otra ruta, enviarla al index.html de React (para SPA)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . dist/index.html [L]
+</IfModule>
