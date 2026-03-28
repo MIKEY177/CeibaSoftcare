@@ -21,9 +21,6 @@ COPY backend/ ./
 # 2. Copiamos el build de React (.html, .js, .css)
 COPY --from=frontend-build /app/dist/ ./
 
-# 3. Copiamos el certificado de Aiven para la conexión segura
-# Asegúrate de que este archivo exista en tu carpeta local backend/config/
-COPY backend/config/ca.pem /var/www/html/config/ca.pem
 
 # 4. Ajustamos permisos para Apache
 RUN chown -R www-data:www-data /var/www/html
