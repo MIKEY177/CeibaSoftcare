@@ -1,6 +1,13 @@
 <?php
-// Permitir origen específico (tu frontend en Vite usa 5173)
-header("Access-Control-Allow-Origin: http://localhost:5173, https://ceiba-softcare-7ar7.onrender.com");
+$allowed_origins = [
+    "http://localhost:5173",
+    "https://ceiba-softcare-7ar7.onrender.com"
+];
+
+if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
+    header("Access-Control-Allow-Origin: " . $_SERVER['HTTP_ORIGIN']);
+}
+
 
 // Permitir envío de cookies/sesiones
 header("Access-Control-Allow-Credentials: true");
