@@ -1,38 +1,43 @@
 # ===============================================
-# ETAPA 1: Construir el Frontend (React en la Raíz)
+# ETAPA 1: Construir React (Desde la Raíz)
 # ===============================================
 FROM node:18-alpine AS frontend-build
 
 WORKDIR /app
 
-# 1. Copiamos el package.json que está en la RAÍZ del repo
+# 1. Copiamos los archivos de dependencias de la raíz
 COPY package*.json ./
 RUN npm install
 
-# 2. Copiamos todo lo que NO sea la carpeta backend (usando .dockerignore)
-# Esto incluye src/, public/, etc.
+# 2. Copiamos TODO el contenido de la raíz al contenedor
+# (Usaremos el .dockerignore para que no meta basura)
 COPY . .
+
+# 3. Generamos el build de React
 RUN npm run build
 
 # ===============================================
-# ETAPA 2: Configurar el Backend (Carpeta /backend)
+# ETAPA 2: Configurar PHP + Apache (Carpeta /backend)
 # ===============================================
 FROM php:8.2-apache AS backend-runtime
 
+# Instalar extensiones para MySQL (PDO)
 RUN docker-php-ext-install pdo pdo_mysql
 RUN a2enmod rewrite
 
 WORKDIR /var/www/html
 
-# 3. Copiamos el contenido de tu carpeta 'backend' a la raíz de Apache
-COPY backend/ .
+# 4. Copiamos el contenido de TU carpeta backend a la raíz de Apache
+# IMPORTANTE: Asegúrate de que en GitHub se escriba 'backend' en minúsculas
+COPY backend/ ./
 
-# 4. Traemos la carpeta de construcción de React
-# Si usas Vite es 'dist', si es Create React App es 'build'
+# 5. Traemos la carpeta 'dist' generada en la Etapa 1
+# Nota: Si usas Create React App en lugar de Vite, cambia 'dist' por 'build'
 COPY --from=frontend-build /app/dist ./dist
 
-# 5. Ajustar permisos
+# 6. Permisos de Apache
 RUN chown -R www-data:www-data /var/www/html
 
 EXPOSE 80
+
 CMD ["apache2-foreground"]
