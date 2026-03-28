@@ -1,6 +1,6 @@
 <?php
 // Permitir origen específico (tu frontend en Vite usa 5173)
-header("Access-Control-Allow-Origin: http://localhost:5173");
+header("Access-Control-Allow-Origin: http://localhost:5173, https://ceiba-softcare-7ar7.onrender.com");
 
 // Permitir envío de cookies/sesiones
 header("Access-Control-Allow-Credentials: true");
