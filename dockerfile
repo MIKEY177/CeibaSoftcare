@@ -3,14 +3,14 @@
 # ===============================================
 FROM node:18-alpine AS frontend-build
 
-WORKDIR /app/frontend
+WORKDIR /CEIBASOFTCARE/src
 
 # Copiar archivos de dependencias y instalarlas
-COPY frontend/package*.json ./
+COPY src/package*.json ./
 RUN npm install
 
 # Copiar el resto del código y construir
-COPY frontend/ ./
+COPY src/ ./
 # Asegúrate de configurar variables de entorno si las necesitas durante el build
 RUN npm run build
 
