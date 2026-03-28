@@ -4,9 +4,9 @@ require_once("../config/conexion.php");
 require_once("../config/cors.php");
 session_start();
 
-require __DIR__ . '/../../vendor/PHPMailer/src/PHPMailer.php';
-require __DIR__ . '/../../vendor/PHPMailer/src/SMTP.php';
-require __DIR__ . '/../../vendor/PHPMailer/src/Exception.php';
+require __DIR__ . 'vendor/PHPMailer/src/PHPMailer.php';
+require __DIR__ . 'vendor/PHPMailer/src/SMTP.php';
+require __DIR__ . 'vendor/PHPMailer/src/Exception.php';
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
