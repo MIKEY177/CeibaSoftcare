@@ -9,9 +9,7 @@ import rolStand from "../images/rol_stand.png"
 
 export const Navbar = ({ user, menu }) => {
   const navigate = useNavigate();
-
-  const BASE        = import.meta.env.VITE_API_BASE ?? env('VITE_API_BASE');
-  const API         = `${BASE}/logout.php`;
+  const API         = `api/logout.php`;
   const cerrarSesion = async () => {
     try {
       const response = await fetch(API, {
