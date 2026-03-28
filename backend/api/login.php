@@ -2,43 +2,46 @@
 require_once __DIR__ . '/../config/cors.php';
 require_once __DIR__ . '/../config/conexion.php';
 
-header("Content-Type: application/json"); 
+header("Content-Type: application/json");
 
+// 🔥 CONFIGURAR SESIÓN SIEMPRE
+$host = $_SERVER['HTTP_HOST'] ?? '';
+$isLocal = strpos($host, 'localhost') !== false;
 
-// recibir datos de React
+session_set_cookie_params([
+    'lifetime' => 3600,
+    'path' => '/',
+    'domain' => $isLocal ? '' : '.onrender.com',
+    'secure' => !$isLocal,
+    'httponly' => true,
+    'samesite' => $isLocal ? 'Lax' : 'None'
+]);
+
+session_start();
+
+// 🔹 recibir datos
 $data = json_decode(file_get_contents("php://input"), true);
-$correo = $data['correo'];
-$contrasena = $data['contrasena'];
+$correo = $data['correo'] ?? '';
+$contrasena = $data['contrasena'] ?? '';
 
-// consulta con JOIN para traer el rol
+// 🔹 consulta
 $stmt = mysqli_prepare($conn, 
     "SELECT u.id_usuario, u.nombre, u.contrasena, r.nombre AS rol 
      FROM usuarios u 
      INNER JOIN roles r ON u.id_rol1 = r.id_rol 
      WHERE u.correo = ?"
 );
+
 mysqli_stmt_bind_param($stmt, "s", $correo);
 mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
 
 if(mysqli_num_rows($resultado) > 0){
     $usuario = mysqli_fetch_assoc($resultado);
+
     if(password_verify($contrasena, $usuario['contrasena'])){
-        // guardar datos en sesión
-        $host = $_SERVER['HTTP_HOST'] ?? '';
 
-        $isLocal = strpos($host, 'localhost') !== false;
-
-        session_set_cookie_params([
-            'lifetime' => 3600,
-            'path' => '/',
-            'domain' => $isLocal ? '' : '.onrender.com',
-            'secure' => !$isLocal, // true en producción
-            'httponly' => true,
-            'samesite' => 'None' // 🔥 importante para frontend separado
-        ]);
-        
-        session_start();
+        // 🔥 guardar sesión
         $_SESSION['user_id'] = $usuario['id_usuario'];
         $_SESSION['user_name'] = $usuario['nombre'];
         $_SESSION['user_rol'] = $usuario['rol'];
@@ -49,12 +52,14 @@ if(mysqli_num_rows($resultado) > 0){
             "usuario" => $usuario['nombre'],
             "rol" => $usuario['rol']
         ]);
+
     } else {
         echo json_encode([
             "status" => "error",
             "mensaje" => "Contraseña incorrecta"
         ]);
     }
+
 } else {
     echo json_encode([
         "status" => "error",

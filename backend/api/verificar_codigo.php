@@ -1,6 +1,19 @@
 <?php
 require_once("../config/conexion.php");
 require_once("../config/cors.php");
+
+$host = $_SERVER['HTTP_HOST'] ?? '';
+$isLocal = strpos($host, 'localhost') !== false;
+
+session_set_cookie_params([
+    'lifetime' => 3600,
+    'path' => '/',
+    'domain' => $isLocal ? '' : '.onrender.com',
+    'secure' => !$isLocal,
+    'httponly' => true,
+    'samesite' => $isLocal ? 'Lax' : 'None'
+]);
+
 session_start();
 
 $data = json_decode(file_get_contents("php://input"), true);
