@@ -17,12 +17,18 @@ if ($env === 'aiven') {
     $database = env('AIVEN_NAME');
     $port = env('AIVEN_PORT');
 
-    $ssl_ca = __DIR__ . "/etc/secrets/ca.pem";
+    $caContent = env('DB_CA_PEM');
+
+    // crear archivo temporal real
+    $tempCA = sys_get_temp_dir() . "/ca.pem";
+
+    file_put_contents($tempCA, $caContent);
+
 
     $conn = mysqli_init();
 
     // solo CA (como viste en la doc)
-    mysqli_ssl_set($conn, NULL, NULL, $ssl_ca, NULL, NULL);
+    mysqli_ssl_set($conn, NULL, NULL, $tempCA, NULL, NULL);
 
     $connected = mysqli_real_connect(
         $conn,
