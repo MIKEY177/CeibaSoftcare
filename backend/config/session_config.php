@@ -1,16 +1,15 @@
 <?php
 // Configuración centralizada de sesión
 // Detecta el host actual del servidor
-$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
 
-// Configura los parámetros de la cookie de sesión
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
-    'domain' => '',  // Dejar vacío para que funcione en localhost
-    'secure' => false,       // false en desarrollo (sin HTTPS)
+    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
+    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
     'httponly' => true,
-    'samesite' => 'Lax'
+    'samesite' => 'Lax' // None es necesario para Cross-Site en Render
 ]);
 
 // Iniciar sesión

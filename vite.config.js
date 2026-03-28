@@ -9,11 +9,10 @@ export default defineConfig({
     proxy: {
       // Cuando en React escribas '/api/login.php'
       '/api': {
-        // Tu URL local de XAMPP/WAMP
-        target: 'http://localhost/CeibaSoftcare/backend/api', 
+        // Apuntamos a la carpeta superior (backend)
+        target: 'http://127.0.0.1/ceibasoftcare/backend/api', 
         changeOrigin: true,
-        // Esto quita el '/api' de la URL antes de enviarlo a tu PHP local
-        rewrite: (path) => path.replace(/^\/api/, ''), 
+        rewrite: (path) => path.replace(/^\/api/, ''),
       },
     },
   },

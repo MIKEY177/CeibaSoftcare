@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../config/cors.php';
-require_once __DIR__ . '/../config/conexion.php';
+require_once dirname(__DIR__) . '/config/cors.php';
+require_once dirname(__DIR__) . '/config/conexion.php';
 
 header("Content-Type: application/json");
 

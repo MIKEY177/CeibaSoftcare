@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . '/../config/cors.php';
-require_once __DIR__ . '/../config/conexion.php';
+require_once dirname(__DIR__) . '/config/cors.php';
+require_once dirname(__DIR__) . '/config/conexion.php';
 
 header("Content-Type: application/json");
 
 $debug = (getenv('APP_ENV') === 'aiven' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'local'));
-
+  
 $sql = "SELECT id_evento, nombre, lugar, descripcion, fecha_hora FROM eventos ORDER BY fecha_hora ASC LIMIT 5";
 $result = mysqli_query($conn, $sql);
 

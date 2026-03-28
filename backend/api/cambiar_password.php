@@ -1,6 +1,6 @@
 <?php
-require_once("../config/conexion.php");
-require_once("../config/cors.php");
+require_once dirname(__DIR__) . '/config/cors.php';
+require_once dirname(__DIR__) . '/config/conexion.php';
 session_start();
 
 if (!isset($_SESSION["reset_email"])) {
