@@ -4,7 +4,7 @@ require_once __DIR__ . '/../config/conexion.php';
 
 header("Content-Type: application/json");
 
-$debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'development'));
+$debug = (getenv('APP_ENV') === 'aiven' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'local'));
 
 $sql = "CALL ActividadReciente()";
 $result = mysqli_query($conn, $sql);

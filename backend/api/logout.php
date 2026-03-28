@@ -3,13 +3,16 @@ require_once __DIR__ . '/../config/cors.php';
 
 header("Content-Type: application/json");
 
+$host = $_SERVER['HTTP_HOST'] ?? '';
+$isLocal = strpos($host, 'localhost') !== false;
+
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
-    'domain' => '',  // Dejar vacío para que funcione en localhost
-    'secure' => false,
+    'domain' => $isLocal ? '' : '.onrender.com',
+    'secure' => !$isLocal,
     'httponly' => true,
-    'samesite' => 'Lax'
+    'samesite' => $isLocal ? 'Lax' : 'None'
 ]);
 
 session_start();

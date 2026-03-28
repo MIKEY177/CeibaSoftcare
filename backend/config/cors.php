@@ -1,7 +1,7 @@
 <?php
 $allowed_origins = [
     "http://localhost:5173",
-    "https://ceiba-softcare-7ar7.onrender.com"
+    "https://ceibasoftcare-fl5x.onrender.com"
 ];
 
 if (isset($_SERVER['HTTP_ORIGIN']) && in_array($_SERVER['HTTP_ORIGIN'], $allowed_origins)) {
