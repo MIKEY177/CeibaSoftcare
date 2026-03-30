@@ -79,7 +79,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
-        <input className="edpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" style={{ width: "100%", boxSizing: "border-box" }}
+        <input className="edpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
           onChange={e => { setQuery(e.target.value); onSeleccionar(null); }}
         />
         {cargando && (
@@ -583,13 +583,12 @@ export const EntradasProd = () => {
       </main>
       <Footer />
 
-      <div className="modales-entradas-prod" style={{ display: modalActiva ? "block" : "none" }}>
+      <div className="modales-entradas-prod" style={{ display: modalActiva ? "flex" : "none" }}>
 
         {/* ── MODAL 1: Registrar Entrada ──────────────────────────────────── */}
         {modalActiva === 1 && (
           <aside className="modal-entrada-registrar">
-            <button className="volver-btn" type="button" onClick={cerrarModal}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -676,8 +675,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 2: Ver / Editar Entrada ──────────────────────────────── */}
         {modalActiva === 2 && (
           <aside className="modal-entrada-editar">
-            <button className="volver-btn" type="button" onClick={cerrarModal}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -773,8 +771,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 4: Agregar / Editar producto en memoria ───────────────── */}
         {modalActiva === 4 && (
           <aside className="modal-entrada-detalle-registrar">
-            <button className="volver-btn" type="button" onClick={volver}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <button className="volver-btn-entr-det-prod" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -879,8 +876,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 5: Editar detalle guardado en BD ──────────────────────── */}
         {modalActiva === 5 && (
           <aside className="modal-entrada-detalle-registrar">
-            <button className="volver-btn" type="button" onClick={volver}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <button className="volver-btn-entr-det-prod" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -981,7 +977,7 @@ export const EntradasProd = () => {
           <aside className="modal-entrada-desactivar">
             <h1 className="modal-epel-titulo">Desactivar Producto</h1>
             <h3 className="modal-epel-mensaje">
-              ¿Desea desactivar{" "}
+              ¿Desea desactivar&nbsp;{" "}
               <span className="subrayar">{detalleSeleccionado?.nombre_producto}</span>?
             </h3>
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
@@ -1000,8 +996,7 @@ export const EntradasProd = () => {
 
         {modalActiva === 7 && (
           <aside className="modal-entrada-editar">
-            <button className="volver-btn" type="button" onClick={volver}
-              style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: 6 }}>
+            <button className="volver-btn-entr-prod" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>

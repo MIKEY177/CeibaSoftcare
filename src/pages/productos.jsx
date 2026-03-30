@@ -351,12 +351,14 @@ export const Productos = () => {
                     <td>{producto.cantidad_por_unidad} {producto.tipo_medida}</td>
                     <td>{producto.nombre_usuario}</td>
                     <td>
-                      <figure className="editar-icono" onClick={() => abrirModal(2, producto)} style={{ cursor: "pointer" }}>
-                        <img className="editar-icono-img" src={editarIcon} alt="Editar" />
-                      </figure>
-                      <figure className="desactivar-icono" onClick={() => abrirModal(3, producto)} style={{ cursor: "pointer" }}>
-                        <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
-                      </figure>
+                      <div className='last-td-flex-content-wrapper'>
+                        <figure className="editar-icono" onClick={() => abrirModal(2, producto)} style={{ cursor: "pointer" }}>
+                          <img className="editar-icono-img" src={editarIcon} alt="Editar" />
+                        </figure>
+                        <figure className="desactivar-icono" onClick={() => abrirModal(3, producto)} style={{ cursor: "pointer" }}>
+                          <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
+                        </figure>
+                      </div>
                     </td>
                  </tr>
                 ))
@@ -367,11 +369,11 @@ export const Productos = () => {
       </main>
     <Footer />
              
-      <div className="modales-productos"style={{ display: modalActiva ? 'block' : 'none' }}>
+      <div className="modales-productos"style={{ display: modalActiva ? 'flex' : 'none' }}>
 
         {modalActiva === 1 &&(
           <aside className="modal-productos-registrar">
-            <button className="volver-btn" onClick={cerrarModal} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+            <button className="volver-btn-prod" onClick={cerrarModal}>
                <img className="volver-icono" src={flecha} alt="" />
                 <h2>Volver</h2>
             </button>
@@ -396,7 +398,7 @@ export const Productos = () => {
                   {errores.descripcion && <span className="error-mensaje">{errores.descripcion}</span>}
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt3"}}> 
-                  <label className="ir-label" for="">Unidad de Medida</label>
+                  <label className="ir-label" for="">Unidad de Medida<h6 className="obligatorio">*</h6></label>
                   <select className="ir-input3" value={formRegistrar.tipo_medida} onChange={e => setFormRegistrar({ ...formRegistrar, tipo_medida: e.target.value })}>
                     <option value="">-- Selecciona --</option>
                     <option value="ml">ml</option>
@@ -418,11 +420,11 @@ export const Productos = () => {
                   </div>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
-                  <label className="ir-label" for="">Cantidad por Unidad</label>
+                  <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input5" type="text" nvalue={formRegistrar.cantidad_por_unidad} onChange={e => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-                  <label className="ir-label" for=""> Código de Barras</label>
+                  <label className="ir-label" for=""> Código de Barras<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input6 scan-capture" type="text"
                     value={formRegistrar.codigo_barras} onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
                   {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}
@@ -437,7 +439,7 @@ export const Productos = () => {
         )}    
         {modalActiva === 2 &&(
           <aside className="modal-productos-editar">
-            <button className="volver-btn" onClick={cerrarModal} style={{ background: "none", border: "none", cursor: "pointer", display: "flex", alignItems: "center", gap: "6px" }}>
+            <button className="volver-btn-prod" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -463,7 +465,7 @@ export const Productos = () => {
                 </div>
 
                 <div className="label-and-input-container" style={{gridArea: "divInpt3"}}>
-                  <label className="ied-label" for="">Unidad de Medida</label>
+                  <label className="ied-label" for="">Unidad de Medida<h6 className="obligatorio">*</h6></label>
                   <select className="ied-input5" value={formEditar.tipo_medida} onChange={e => setFormEditar({ ...formEditar, tipo_medida: e.target.value })}>
                     <option value="">-- Selecciona --</option>
                     <option value="ml">ml</option>
@@ -487,14 +489,14 @@ export const Productos = () => {
                 </div>
               
                 <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
-                  <label className="ir-label" for="">Cantidad por Unidad</label>
+                  <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input5" type="text" value={formEditar.cantidad_por_unidad}
                     onChange={e => setFormEditar({ ...formEditar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
                     {errores.cantidad_por_unidad && <span className="error-mensaje">{errores.cantidad_por_unidad}</span>}
                 </div>
               
                 <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-                  <label className="ir-label" for=""> Código de Barras</label>
+                  <label className="ir-label" for=""> Código de Barras<h6 className="obligatorio">*</h6></label>
                   <input className="ied-input6 scan-capture" type="text"
                     value={formEditar.codigo_barras} onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
                   {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}

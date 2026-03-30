@@ -38,13 +38,10 @@ export const Navbar = ({ user, menu }) => {
           <h1 className="perfil-rol-texto">{user?.rol}</h1>
         </figure>
       </div>
-
       <Menu menu={menu}/>
-
-    
-        <button className="cerrar-sesion-btn" onClick={cerrarSesion}>
-          Cerrar Sesión
-        </button>
+      <button className="cerrar-sesion-btn" onClick={cerrarSesion}>
+        Cerrar Sesión
+      </button>
     </aside>
   )
 }

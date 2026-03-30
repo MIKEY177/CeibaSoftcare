@@ -32,7 +32,7 @@ $errors = [];
 
 // 🔹 validación
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $errors["correoModal"] = "Ingrese un correo válido.";
+    $errors["correoModal"] = "❗Ingrese un correo válido.";
 }
 
 if (empty($errors)) {
@@ -43,7 +43,7 @@ if (empty($errors)) {
     $result = mysqli_stmt_get_result($stmt);
 
     if (mysqli_num_rows($result) === 0) {
-        $errors["correoModal"] = "No existe una cuenta con ese correo.";
+        $errors["correoModal"] = "❗No existe una cuenta con ese correo.";
     }
 }
 
@@ -68,7 +68,7 @@ function sendEmail($to, $subject, $html) {
     $apiKey = getenv('RESEND_API_KEY');
 
     if (!$apiKey) {
-        return ["success" => false, "error" => "API KEY no configurada"];
+        return ["success" => false, "error" => "❗API KEY no configurada."];
     }
 
     $ch = curl_init("https://api.resend.com/emails");

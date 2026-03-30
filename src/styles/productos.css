@@ -146,7 +146,13 @@
     border-bottom: 3px solid #D49538;
 }
 
-.body-tabla-productos td:last-child{
+/* .body-tabla-productos td:last-child{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+} */
+
+.last-td-flex-content-wrapper{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -179,11 +185,13 @@
     width: 100%;
     max-height: 50px; 
     table-layout: fixed;
+    /* border: 2px solid red; */
 }
 
 .body-tabla-productos td{
     word-wrap: break-word;
     padding: 10px;
+    /* border: 2px solid red; */
 }
 
 .tabla-productos-btn{
@@ -231,7 +239,7 @@
     height: 300px;
 }
 
-.modal-productos-registrar a:first-child, .modal-productos-editar a:first-child{
+.volver-btn-prod{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -240,11 +248,13 @@
     font-size: 0.8rem;
     background-color: #0094a421;
     border-radius: 10px;
+    border: none;
     padding: 5px 12px;
     position: relative;
     top: 0;
     left: 0;
     transform: translate(-420px, -20px); 
+    cursor: pointer;
 }
 
 .volver-icono{
@@ -318,6 +328,23 @@
     margin-bottom: 50px;
 }
 
+/* .ir-input3 {
+    
+    font-family: 'Lato';
+    justify-content: space-between;
+    font-weight: 600;
+    
+    &, &::picker(select) {
+        appearance: base-select;
+        padding: 0.4rem;
+    }
+
+    &::picker-icon{
+        display: none;
+    }
+
+} */
+
 .ir-input2, .ied-input2{
     resize: none;
     height: 140px;
@@ -325,7 +352,7 @@
     font-family: "ubuntu";
 }
 
-.ir-input6, .ied-input6{
+.ir-input4, .ied-input4{
     background-color: rgba(214, 214, 214, 0.658);
 }
 

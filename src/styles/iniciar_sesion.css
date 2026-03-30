@@ -71,6 +71,7 @@
 }
 
 .iniciar-sesion-form{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -96,6 +97,7 @@
     color: #212427;
     box-shadow: 3px 3px 4px #00000065;
     text-decoration: none;
+    z-index: 2;
 }
 
 .iniciar-sesion-input2{
@@ -206,6 +208,7 @@
 }
 
 .rc-form{
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 500px;
@@ -230,6 +233,7 @@
     text-decoration: none;
     background-color: #F8F8F8;
     margin-bottom: 50px;
+    z-index: 2;
 }
 
 .rc-input3{

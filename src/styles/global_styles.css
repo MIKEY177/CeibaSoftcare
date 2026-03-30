@@ -259,11 +259,87 @@ body{
 }
 
 /* Fin Tablas */
-.error-mensaje {
-    color: #c0392b;
-    font-size: 0.85rem;
-    margin-top: -5px;
-    margin-bottom: 10px;
-    padding-left: 5px;
-    display: block; 
+
+/* Errores de formularios */
+
+/* .error-mensaje-iniciar-sesion-mod1, .error-mensaje-iniciar-sesion-mod2, .error-mensaje-iniciar-sesion-mod3{
+    width: 100%;
+    height: max-content;
+    background-color: #FFEEEE;
+    padding: 13px 10px 8px;
+    transform: translate( 0px, 66px);
+    position: absolute;
+    color: #CC3333;
+    font-size: 1rem;
+    display: flex; 
+    z-index: 1;
+    font-weight: 500;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }
+
+.error-mensaje-iniciar-sesion1{
+    width: 100%;
+    height: max-content;
+    background-color: #cc3333af;
+    padding: 22px 10px 8px;
+    transform: translate( 0px, -25px);
+    position: relative;
+    color: #FFEEEE;
+    font-size: 1rem;
+    display: flex; 
+    z-index: 1;
+    font-weight: 500;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+} */
+
+/* .error-mensaje-iniciar-sesion2{
+    width: 100%;
+    height: max-content;
+    background-color: #FFEEEE;
+    padding: 13px 10px 8px;
+    transform: translate( 0px, 66px);
+    position: absolute;
+    color: #CC3333;
+    font-size: 1rem;
+    display: flex; 
+    z-index: 1;
+    font-weight: 500;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+} */
+
+/* .error-mensaje-iniciar-sesion3{
+    width: 100%;
+    height: max-content;
+    background-color: #cc3333af;
+    padding: 22px 10px 8px;
+    transform: translate( 0px, 66px);
+    position: absolute;
+    color: #FFEEEE;
+    font-size: 1rem;
+    display: flex; 
+    z-index: 1;
+    font-weight: 500;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+} */
+
+/* .error-mensaje-iniciar-sesion4{
+    width: 100%;
+    height: max-content;
+    background-color: #FFEEEE;
+    padding: 13px 10px 8px;
+    transform: translate( 0px, 66px);
+    position: absolute;
+    color: #CC3333;
+    font-size: 1rem;
+    display: flex; 
+    z-index: 1;
+    font-weight: 500;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}  */
+
+/* Errores de formularios */

@@ -49,10 +49,10 @@ export const IniciarSesion = () => {
                      e.preventDefault();
                     const nuevosErrores = {}
                     if (correo === "") {
-                        nuevosErrores.correo = "El correo es obligatorio"
+                        nuevosErrores.correo = "❗El correo es obligatorio."
                     }
                     if (contrasena === "") {
-                    nuevosErrores.contrasena = "La contraseña es obligatoria"
+                    nuevosErrores.contrasena = "❗La contraseña es obligatoria."
                     }
                     if (Object.keys(nuevosErrores).length > 0) {
                         setErrores(nuevosErrores)
@@ -80,7 +80,7 @@ export const IniciarSesion = () => {
                 const enviarCodigo = async (e) => {
                     e.preventDefault()
                     if (correoRecuperar === "") {
-                        setErrores({correoRecuperar: "El correo es obligatorio"})
+                        setErrores({correoRecuperar: "❗El correo es obligatorio."})
                         return
                     }
                     setLoadingCodigo(true);
@@ -97,10 +97,10 @@ export const IniciarSesion = () => {
                         if(data.success){
                             abrirModal(2)
                         }else{
-                            setErrores({correoRecuperar: data.errors?.correoModal || data.error || "Error al enviar el código"})
+                            setErrores({correoRecuperar: data.errors?.correoModal || data.error || "❗Error al enviar el código."})
                         }
                     } catch (error) {
-                        setErrores({correoRecuperar: "No se pudo conectar al servidor"})
+                        setErrores({correoRecuperar: "❗No se pudo conectar al servidor."})
                     } finally {
                         setLoadingCodigo(false);
                     }
@@ -135,7 +135,7 @@ export const IniciarSesion = () => {
                         setErrores({})
                         cerrarModal()
                     } else {
-                        setErrores(data.errors || { confirmarPass: data.error || "Error al cambiar la contraseña" })
+                        setErrores(data.errors || { confirmarPass: data.error || "❗Error al cambiar la contraseña." })
                     }
                 }
         return (
@@ -160,9 +160,9 @@ export const IniciarSesion = () => {
             
                         <label className="iniciar-sesion-label" htmlFor="contrasena">Contraseña</label>
                         <input className="iniciar-sesion-input2" type="password" placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}/>
-                            {errores.contrasena && <span className="error-mensaje">{errores.contrasena}</span>}
-                            {errores.login && <span className="error-mensaje">{errores.login}</span>}
-                            {errores.correo && <span className="error-mensaje">{errores.correo}</span>}
+                            {errores.contrasena && <span className="error-mensaje-iniciar-sesion1">{errores.contrasena}</span>}
+                            {errores.login && <span className="error-mensaje-iniciar-sesion2">{errores.login}</span>}
+                            {errores.correo && <span className="error-mensaje-iniciar-sesion3">{errores.correo}</span>}
                         <a className="olvido-contra" href="" onClick={(e) => {e.preventDefault(); abrirModal(1);}}>¿Olvidó su contraseña?</a>
                     
                         <input className="iniciar-sesion-btn" type="submit" value="Ingresar"/>
@@ -170,7 +170,7 @@ export const IniciarSesion = () => {
                 </aside>
             </main>
             <Footer style={{ color: "#212121" }} />
-                <div className="modales-iniciar-sesion" style={{display: modalActiva ? 'block' : 'none'}}>
+                <div className="modales-iniciar-sesion" style={{display: modalActiva ? 'flex' : 'none'}}>
                     {modalActiva === 1 && (
                         <aside className="modal-recuperar-contrasena mdc1" onClick={(e)=>e.stopPropagation()}>
                             <a href="#" onClick={(e) => { e.preventDefault(); cerrarModal(); }}>
@@ -183,7 +183,7 @@ export const IniciarSesion = () => {
                                 <form className="rc-form" onSubmit={enviarCodigo}>
                                     <label className="rc-label" htmlfor="correoRecuperar">Correo electrónico</label>
                                     <input className="rc-input1" type="text" id="correoRecuperar" placeholder="ejemplo@email.com" value={correoRecuperar} onChange={(e) => setCorreoRecuperar(e.target.value)} />
-                                    {errores.correoRecuperar && <span className="error-mensaje">{errores.correoRecuperar}</span>}
+                                    {errores.correoRecuperar && <span className="error-mensaje-iniciar-sesion-mod1">{errores.correoRecuperar}</span>}
                                     <input
                                         className="rc-btn"
                                         type="submit"
@@ -206,7 +206,7 @@ export const IniciarSesion = () => {
                                 <form className="rc-form" onSubmit={verificarCodigo}>
                                     <label className="rc-label" htmlfor="rc-codigo">Código</label>
                                     <input className="rc-input2" maxLength="8" type="text" value={codigoIngresado}  onChange={(e) => setCodigoIngresado(e.target.value)}  />
-                                    {errores.codigo && <span className="error-mensaje">{errores.codigo}</span>}
+                                    {errores.codigo && <span className="error-mensaje-iniciar-sesion-mod2">{errores.codigo}</span>}
                                     <input className="rc-btn" type="submit" value="Siguiente" />
                                 </form> 
                             </section>
@@ -224,10 +224,10 @@ export const IniciarSesion = () => {
                                 <form className="rc-form" onSubmit={cambiarPassword}>
                                     <label className="rc-label">Nueva Contraseña</label>
                                     <input className="rc-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
-                                        {errores.nuevaPass && <span className="error-mensaje">{errores.nuevaPass}</span>}
+                                        {errores.nuevaPass && <span className="error-mensaje-iniciar-sesion-mod3">{errores.nuevaPass}</span>}
                                     <label className="rc-label">Confirmar Contraseña</label>
                                     <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
-                                        {errores.confirmarPass && <span className="error-mensaje">{errores.confirmarPass}</span>}
+                                        {errores.confirmarPass && <span className="error-mensaje-iniciar-sesion-mod4">{errores.confirmarPass}</span>}
                                     <input className="rc-btn" type="submit" value="Cambiar Contraseña" />
                                 </form>
                             </section>

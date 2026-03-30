@@ -81,7 +81,7 @@ export const Inicio = () => {
             <h3 className="subtitulo-dashboard">Próximos Eventos</h3>
             <section className="area-eventos">
               {eventos.length === 0 ? (
-                <p>No hay eventos programados.</p>
+                <p className="no-hay-eventos">No hay eventos programados.</p>
               ) : (
                 eventos.map((evento) => (
                   <React.Fragment key={evento.id_evento}>

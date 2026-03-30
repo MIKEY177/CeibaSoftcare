@@ -252,7 +252,7 @@
     height: 300px;
 }
 
-.modal-entrada-registrar a:first-child, .modal-entrada-editar a:first-child, .modal-entrada-detalle-registrar a:first-child{
+.volver-btn-entr-prod{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -261,11 +261,31 @@
     font-size: 0.8rem;
     background-color: #0094a421;
     border-radius: 10px;
+    border: none;
     padding: 5px 12px;
     position: relative;
     top: 0;
     left: 0;
     transform: translate(-580px, -30px); 
+    cursor: pointer;
+}
+
+.volver-btn-entr-det-prod{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 12px;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translate(-430px, -30px); 
+    cursor: pointer;
 }
 
 .modal-entrada-detalle-registrar a:first-child{
