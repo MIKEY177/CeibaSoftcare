@@ -8,8 +8,8 @@ import logo_ceibasoftcare from '../images/softcare_logo.png'
 
 export const LandingPage = () => {
     return (
-        <main>
-            <header className="header">
+        <main className='main-landing'>
+            <header className="header-landing">
                 <nav className="navbar">
                     <figure className="content-logo">
                         <img src={logo} alt="Logo Ceiba SoftCare" />
@@ -20,7 +20,7 @@ export const LandingPage = () => {
                         <li><a href="#functions">Funciones</a></li>
                         <li><a href="#contact">Contactenos</a></li>
                         <li><a href="#" className="nav-btn-iniciar"><button>Iniciar Sesión</button></a></li>
-                    </ul>
+                    </ul>   
                 </nav>
             </header>
             <section className="hero-section">
