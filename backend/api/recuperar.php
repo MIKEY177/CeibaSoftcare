@@ -20,17 +20,17 @@ session_start();
 header("Content-Type: application/json");
 
 // cargar .env si estás en local
-if (!getenv('APP_ENV')) {
-    loadEnv(__DIR__ . "/../.env");
+$envFile = __DIR__ . "/../.env";
+
+if (file_exists($envFile)) {
+    loadEnv($envFile);
 }
 
-// 🔹 obtener datos
 $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data["correoModal"] ?? "");
 
 $errors = [];
 
-// 🔹 validación
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors["correoModal"] = "❗Ingrese un correo válido.";
 }
@@ -47,7 +47,6 @@ if (empty($errors)) {
     }
 }
 
-// 🔴 si hay errores
 if (!empty($errors)) {
     echo json_encode([
         "success" => false,
@@ -56,16 +55,14 @@ if (!empty($errors)) {
     exit;
 }
 
-// 🔹 generar código
 $code = bin2hex(random_bytes(4));
 
 $_SESSION["reset_code"] = $code;
 $_SESSION["reset_email"] = $email;
 $_SESSION["reset_expiration"] = time() + (15 * 60);
 
-// 🔥 ENVIAR CORREO CON RESEND
 function sendEmail($to, $subject, $html) {
-    $apiKey = getenv('RESEND_API_KEY');
+    $apiKey = env('RESEND_API_KEY');
 
     if (!$apiKey) {
         return ["success" => false, "error" => "❗API KEY no configurada."];
@@ -75,6 +72,8 @@ function sendEmail($to, $subject, $html) {
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         "Authorization: Bearer $apiKey",
@@ -100,7 +99,6 @@ function sendEmail($to, $subject, $html) {
     return ["success" => true, "response" => json_decode($response, true)];
 }
 
-// 🔹 contenido del correo
 $html = "
     <h2>Recuperación de contraseña</h2>
     <p>Tu código de recuperación es:</p>
@@ -108,10 +106,8 @@ $html = "
     <p>Este código expira en 15 minutos.</p>
 ";
 
-// 🔹 enviar correo
 $resultEmail = sendEmail($email, "Recuperación de contraseña", $html);
 
-// 🔴 error al enviar
 if (!$resultEmail["success"]) {
     echo json_encode([
         "success" => false,
@@ -120,8 +116,7 @@ if (!$resultEmail["success"]) {
     exit;
 }
 
-// ✅ éxito
 echo json_encode([
     "success" => true,
-    "message" => "Código enviado correctamente 🚀"
+    "message" => "Código enviado correctamente "
 ]);

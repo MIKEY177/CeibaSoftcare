@@ -268,21 +268,21 @@ export const EntradasProd = () => {
   const validarDetalle = (form) => {
     const e = {};
     if (!form.id_producto1)
-      e.id_producto1 = "Selecciona un producto.";
+      e.id_producto1 = "❗Selecciona un producto.";
     if (!form.cantidad_presentacion || form.cantidad_presentacion <= 0)
-      e.cantidad_presentacion = "Ingresa una cantidad válida.";
+      e.cantidad_presentacion = "❗Ingresa una cantidad válida.";
     if (!form.fecha_vencimiento) {
-      e.fecha_vencimiento = "La fecha de vencimiento es obligatoria.";
+      e.fecha_vencimiento = "❗La fecha de vencimiento es obligatoria.";
     } else {
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0); // ignora la hora, solo compara fecha
       const fechaIngresada = new Date(form.fecha_vencimiento);
       if (fechaIngresada <= hoy) {
-        e.fecha_vencimiento = "La fecha de vencimiento debe ser una fecha futura.";
+        e.fecha_vencimiento = "❗La fecha de vencimiento debe ser una fecha futura.";
       }
     }
     if (!form.motivo.trim())
-      e.motivo = "El motivo es obligatorio.";
+      e.motivo = "❗El motivo es obligatorio.";
       return e;
   };
   // ── Guardar detalle en memoria (modal 4 desde registrar) ────────────────────
@@ -369,8 +369,8 @@ export const EntradasProd = () => {
   const handleRegistrar = (e) => {
     e.preventDefault();
     const errs = {};
-    if (!formEntrada.fecha_hora)    errs.fecha_hora = "La fecha es obligatoria.";
-    if (listaDetalles.length === 0) errs.detalles   = "Agrega al menos un producto.";
+    if (!formEntrada.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
+    if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
     if (Object.keys(errs).length > 0) { 
       setErrores(errs); return; 
     }
@@ -401,7 +401,7 @@ export const EntradasProd = () => {
           setErrores(res.errores ?? { general: "Error desconocido." });
         }
       })
-      .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
+      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
       .finally(() => setCargando(false));
   };
 
@@ -594,9 +594,9 @@ export const EntradasProd = () => {
             </button>
             <h1 className="modal-epr-titulo">Registre una nueva Entrada de Productos</h1>
 
-            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
-            {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
+            <p className="exito-mensaje">{mensajeExito ?? ""}</p>
+            <span className="error-mensaje">{errores.general ?? ""}</span>
+            <span className="error-mensaje">{errores.sesion ?? ""}</span>
 
             <form className="epr-form" onSubmit={handleRegistrar}>
               <section className="epr-form-inputs-area">
@@ -605,14 +605,14 @@ export const EntradasProd = () => {
                   <input className="epr-input1" type="datetime-local"
                     value={formEntrada.fecha_hora}
                     onChange={e => setFormEntrada({ ...formEntrada, fecha_hora: e.target.value })} />
-                  {errores.fecha_hora && <span className="error-mensaje">{errores.fecha_hora}</span>}
+                  <span className="error-mensaje">{errores.fecha_hora ?? ""}</span>
                 </div>
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="epr-label">Observaciones de la Entrada</label>
                   <textarea className="epr-input2"
                     value={formEntrada.observaciones}
                     onChange={e => setFormEntrada({ ...formEntrada, observaciones: e.target.value })} />
-                  {errores.observaciones && <span className="error-mensaje">{errores.observaciones}</span>}
+                  <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 <section style={{ gridArea: "divInpt3" }} className="epr-form-detalles-area">
                   <div className="epr-form-detalles-header">
@@ -621,7 +621,7 @@ export const EntradasProd = () => {
                       Agregar Producto
                     </button>
                   </div>
-                  {errores.detalles && <p style={{ color: "red", margin: "4px 0" }}>{errores.detalles}</p>}
+                  <span className="error-mensaje">{errores.detalles ?? ""}</span>
                   <table className="tabla-epr-detalles">
                     <thead className="header-tabla-epr-detalles">
                       <tr>
@@ -689,7 +689,7 @@ export const EntradasProd = () => {
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="eped-label">Fecha y Hora <span className="obligatorio">*</span></label>
                   <input className="eped-input1" type="datetime-local" value={formEditar.fecha_hora} onChange={e => setFormEditar({ ...formEditar, fecha_hora: e.target.value })} />
-                  {errores.fecha_hora && <span className="error-mensaje">{errores.fecha_hora}</span>}
+                  <span className="error-mensaje">{errores.fecha_hora ?? ""}</span>
                 </div>
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="eped-label">Observaciones</label>
@@ -805,24 +805,14 @@ export const EntradasProd = () => {
                       }
                     }}
                   />
-                  {productoElegido && (
-                    <div style={{
-                      marginTop: 6, padding: "6px 10px",
-                      borderRadius: 6, fontSize: 13
-                    }}>
-                      <strong>{productoElegido.nombre}</strong>
-                      <span style={{ color: "#555", marginLeft: 8 }}>
-                        | {productoElegido.tipo_medida} — {productoElegido.cantidad_por_unidad} u/pres.
-                      </span>
-                    </div>
-                  )}
-                  {errores.id_producto1 && <span className="error-mensaje">{errores.id_producto1}</span>}
+                  
+                 <span className="error-mensaje">{errores.id_producto1 ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="edpr-label">Motivo <span className="obligatorio">*</span></label>
                   <textarea className="edpr-input2" value={formDetalle.motivo} onChange={e => setFormDetalle({ ...formDetalle, motivo: e.target.value })} />
-                  {errores.motivo && <span className="error-mensaje">{errores.motivo}</span>}
+                  <span className="error-mensaje">{errores.motivo ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt3" }}>
@@ -835,7 +825,7 @@ export const EntradasProd = () => {
                     )}
                   </label>
                   <input className="edpr-input3" type="number" min="1" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
-                  {errores.cantidad_presentacion && <span className="error-mensaje">{errores.cantidad_presentacion}</span>}
+                  <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt4" }}>
@@ -843,7 +833,7 @@ export const EntradasProd = () => {
                   <input className="edpr-input4" type="date"
                     value={formDetalle.fecha_vencimiento}
                     onChange={e => setFormDetalle({ ...formDetalle, fecha_vencimiento: e.target.value })} />
-                  {errores.fecha_vencimiento && <span className="error-mensaje">{errores.fecha_vencimiento}</span>}
+                 <span className="error-mensaje">{errores.fecha_vencimiento ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt5" }}>
@@ -908,16 +898,7 @@ export const EntradasProd = () => {
                           }
                         }}
                       />
-                      {productoElegidoEditar && (
-                        <div style={{
-                            marginTop: 6, padding: "6px 10px",
-                            borderRadius: 6, fontSize: 13
-                          }}>
-                          <strong>{productoElegidoEditar.nombre}</strong>
-                          <span style={{ color: "#555", marginLeft: 8 }}> | {productoElegidoEditar.tipo_medida} — {productoElegidoEditar.cantidad_por_unidad} u/pres.</span>
-                        </div>
-                      )}
-                      {errores.id_producto1 && <span className="error-mensaje">{errores.id_producto1}</span>}
+                      <span className="error-mensaje">{errores.id_producto1 ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt2" }}>
@@ -925,7 +906,7 @@ export const EntradasProd = () => {
                   <textarea className="edpr-input2"
                     value={formEditarDetalle.motivo}
                     onChange={e => setFormEditarDetalle({ ...formEditarDetalle, motivo: e.target.value })} />
-                  {errores.motivo && <span className="error-mensaje">{errores.motivo}</span>}
+                 <span className="error-mensaje">{errores.motivo ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt3" }}>
@@ -937,13 +918,13 @@ export const EntradasProd = () => {
                   </label>
                   <input className="edpr-input3" type="number" min="1" value={formEditarDetalle.cantidad_presentacion}
                     onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle)} />
-                  {errores.cantidad_presentacion && <span className="error-mensaje">{errores.cantidad_presentacion}</span>}
+                  <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt4" }}>
                   <label className="edpr-label">Fecha de Vencimiento <span className="obligatorio">*</span></label>
                   <input className="edpr-input4" type="date" value={formEditarDetalle.fecha_vencimiento} onChange={e => setFormEditarDetalle({ ...formEditarDetalle, fecha_vencimiento: e.target.value })} />
-                  {errores.fecha_vencimiento && <span className="error-mensaje">{errores.fecha_vencimiento}</span>}
+                  <span className="error-mensaje">{errores.fecha_vencimiento ?? ""}</span>
                 </div>
 
                 <div style={{ gridArea: "divInpt5" }}>

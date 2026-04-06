@@ -16,24 +16,24 @@ $confirmacion = trim($data["confirmarPass"] ?? "");
 $errors = [];
 
 if ($contrasena === "") {
-    $errors["nuevaPass"] = "La contraseña es obligatoria";
+    $errors["nuevaPass"] = "❗La contraseña es obligatoria";
 } else {
     $mensajes = [];
     
     if (!preg_match('/[a-z]/', $contrasena)) {
-        $mensajes[] = "una letra minúscula";
+        $mensajes[] = "❗una letra minúscula";
     }
     if (!preg_match('/[A-Z]/', $contrasena)) {
-        $mensajes[] = "una letra mayúscula";
+        $mensajes[] = "❗una letra mayúscula";
     }
     if (!preg_match('/[0-9]/', $contrasena)) {
-        $mensajes[] = "un número";
+        $mensajes[] = "❗un número";
     }
     if (strlen($contrasena) < 8) {
-        $mensajes[] = "mínimo 8 caracteres";
+        $mensajes[] = "❗mínimo 8 caracteres";
     }
     if (!preg_match('/[@$!%*?&.]/', $contrasena)) {
-        $mensajes[] = "un carácter especial (@$!%*?&.)";
+        $mensajes[] = "❗un carácter especial (@$!%*?&.)";
     }
 
     if (!empty($mensajes)) {
@@ -42,9 +42,9 @@ if ($contrasena === "") {
 }
 
 if ($confirmacion === "") {
-    $errors["confirmarPass"] = "Debe confirmar la contraseña";
+    $errors["confirmarPass"] = "❗Debe confirmar la contraseña";
 } elseif ($contrasena !== "" && $contrasena !== $confirmacion) {
-    $errors["confirmarPass"] = "Las contraseñas no coinciden";
+    $errors["confirmarPass"] = "❗Las contraseñas no coinciden";
 }
 
 
@@ -68,5 +68,5 @@ if (mysqli_stmt_affected_rows($stmt) > 0) {
     unset($_SESSION["code_verified"]);
     echo json_encode(["success" => true]);
 } else {
-    echo json_encode(["success" => false, "error" => "No se pudo actualizar la contraseña"]);
+    echo json_encode(["success" => false, "error" => "❗No se pudo actualizar la contraseña"]);
 }

@@ -42,7 +42,7 @@ if ($method === 'GET') {
             http_response_code(400);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "ID de entrada inválido."]
+                "errores" => ["general" => "❗ID de entrada inválido."]
             ], JSON_UNESCAPED_UNICODE);
             exit;
         }
@@ -63,7 +63,7 @@ if ($method === 'GET') {
             http_response_code(404);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "Entrada no encontrada."]
+                "errores" => ["general" => "❗Entrada no encontrada."]
             ], JSON_UNESCAPED_UNICODE);
             exit;
         }
@@ -111,7 +111,7 @@ if ($method === 'GET') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "error"   => $debug ? mysqli_error($conn) : "Error en la consulta"
+            "error"   => $debug ? mysqli_error($conn) : "❗Error en la consulta"
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -170,12 +170,12 @@ if ($body === null) {
 
 // ── Validar sesión ───────────────────────────────────────────────────────────
 $id_usuario = $_SESSION['user_id'] ?? null;
-session_write_close(); // 👈 agrega esto
+session_write_close();
 if ($id_usuario === null) {
     http_response_code(401);
     echo json_encode([
         "success" => false,
-        "errores" => ["sesion" => "No tienes una sesión activa. Por favor inicia sesión."]
+        "errores" => ["sesion" => "❗No tienes una sesión activa. Por favor inicia sesión."]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -199,48 +199,34 @@ function validarDetalle(array $d, int $index): array
 
     $id_producto = intval($d['id_producto1'] ?? 0);
     if ($id_producto === 0) {
-        $errores["{$pre}.id_producto1"] = "El producto es obligatorio.";
+        $errores["{$pre}.id_producto1"] = "❗El producto es obligatorio.";
     }
 
     if (!isset($d['cantidad_presentacion']) || $d['cantidad_presentacion'] === '') {
-        $errores["{$pre}.cantidad_presentacion"] = "La cantidad de presentación es obligatoria.";
+        $errores["{$pre}.cantidad_presentacion"] = "❗La cantidad de presentación es obligatoria.";
     } else {
         $cp = intval($d['cantidad_presentacion']);
-        if ($cp <= 0)      $errores["{$pre}.cantidad_presentacion"] = "Debe ser mayor a 0.";
-        elseif ($cp > 99999) $errores["{$pre}.cantidad_presentacion"] = "No puede superar 99,999.";
-    }
-
-    if (!isset($d['cantidad_total']) || $d['cantidad_total'] === '') {
-        $errores["{$pre}.cantidad_total"] = "La cantidad total es obligatoria.";
-    } else {
-        $ct = floatval($d['cantidad_total']);
-        if ($ct <= 0) {
-            $errores["{$pre}.cantidad_total"] = "Debe ser mayor a 0.";
-        } elseif ($ct > 99999999.99) {
-            $errores["{$pre}.cantidad_total"] = "Excede el límite permitido.";
-        } elseif (strpos((string)$d['cantidad_total'], '.') !== false &&
-                  strlen(explode('.', (string)$d['cantidad_total'])[1]) > 2) {
-            $errores["{$pre}.cantidad_total"] = "Máximo 2 decimales.";
-        }
+        if ($cp <= 0)      $errores["{$pre}.cantidad_presentacion"] = "❗Debe ser mayor a 0.";
+        elseif ($cp > 99999) $errores["{$pre}.cantidad_presentacion"] = "❗No puede superar 99,999.";
     }
 
     $fv = trim($d['fecha_vencimiento'] ?? '');
     if ($fv === '') {
-        $errores["{$pre}.fecha_vencimiento"] = "La fecha de vencimiento es obligatoria.";
+        $errores["{$pre}.fecha_vencimiento"] = "❗La fecha de vencimiento es obligatoria.";
     } else {
         $dt = DateTime::createFromFormat('Y-m-d', $fv);
         if (!$dt || $dt->format('Y-m-d') !== $fv) {
-            $errores["{$pre}.fecha_vencimiento"] = "Formato inválido, use YYYY-MM-DD.";
+            $errores["{$pre}.fecha_vencimiento"] = "❗Formato inválido, use YYYY-MM-DD.";
         } elseif ($dt <= new DateTime('today')) {
-            $errores["{$pre}.fecha_vencimiento"] = "Debe ser una fecha futura.";
+            $errores["{$pre}.fecha_vencimiento"] = "❗Debe ser una fecha futura.";
         }
     }
 
     $motivo = trim($d['motivo'] ?? '');
     if ($motivo === '') {
-        $errores["{$pre}.motivo"] = "El motivo es obligatorio.";
+        $errores["{$pre}.motivo"] = "❗El motivo es obligatorio.";
     } elseif (strlen($motivo) > 100) {
-        $errores["{$pre}.motivo"] = "No puede superar los 100 caracteres.";
+        $errores["{$pre}.motivo"] = "❗No puede superar los 100 caracteres.";
     }
 
     return $errores;
@@ -253,15 +239,15 @@ if ($method === 'POST') {
 
     // — Validar cabecera —
     if ($fecha_hora === '') {
-        $errores['fecha_hora'] = "La fecha es obligatoria.";
+        $errores['fecha_hora'] = "❗La fecha es obligatoria.";
     }
     if (strlen($observaciones) > 100) {
-        $errores['observaciones'] = "Las observaciones no pueden superar los 100 caracteres.";
+        $errores['observaciones'] = "❗Las observaciones no pueden superar los 100 caracteres.";
     }
 
     // — Validar que venga al menos un detalle —
     if (!is_array($detalles) || count($detalles) === 0) {
-        $errores['detalles'] = "Debe incluir al menos un producto en la entrada.";
+        $errores['detalles'] = "❗Debe incluir al menos un producto en la entrada.";
     }
 
     // — Validar cada detalle —
@@ -271,7 +257,7 @@ if ($method === 'POST') {
         if (empty($errDet["detalles[$i].id_producto1"])) {
             $id_prod = intval($det['id_producto1']);
             if (!productoExiste($conn, $id_prod)) {
-                $errDet["detalles[$i].id_producto1"] = "El producto #$id_prod no existe o está inactivo.";
+                $errDet["detalles[$i].id_producto1"] = "❗El producto #$id_prod no existe o está inactivo.";
             }
         }
         $errores = array_merge($errores, $errDet);
@@ -293,7 +279,7 @@ if ($method === 'POST') {
         );
         mysqli_stmt_bind_param($stmt, "ss", $fecha_hora, $observaciones);
         if (!mysqli_stmt_execute($stmt)) {
-            throw new Exception($debug ? mysqli_stmt_error($stmt) : "Error al registrar la entrada.");
+            throw new Exception($debug ? mysqli_stmt_error($stmt) : "❗Error al registrar la entrada.");
         }
         $id_entrada = mysqli_insert_id($conn);
         mysqli_stmt_close($stmt);
@@ -314,7 +300,7 @@ if ($method === 'POST') {
 
             mysqli_stmt_bind_param($stmtDet, "idssii", $cp, $ct, $fv, $mot, $idpro, $id_entrada);
             if (!mysqli_stmt_execute($stmtDet)) {
-                throw new Exception($debug ? mysqli_stmt_error($stmtDet) : "Error al registrar un detalle.");
+                throw new Exception($debug ? mysqli_stmt_error($stmtDet) : "❗Error al registrar un detalle.");
             }
         }
         mysqli_stmt_close($stmtDet);
@@ -350,7 +336,7 @@ if ($method === 'PUT') {
     if ($id_entrada === 0)  $errores['id_entrada']    = "ID de entrada inválido.";
     if ($fecha_hora === '')  $errores['fecha_hora']    = "La fecha es obligatoria.";
     if (strlen($observaciones) > 100)
-        $errores['observaciones'] = "Las observaciones no pueden superar los 100 caracteres.";
+        $errores['observaciones'] = "❗Las observaciones no pueden superar los 100 caracteres.";
 
     if (!empty($errores)) {
         http_response_code(422);
@@ -371,7 +357,7 @@ if ($method === 'PUT') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al actualizar la entrada."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al actualizar la entrada."]
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -388,7 +374,7 @@ if ($method === 'DELETE') {
         http_response_code(400);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => "ID de entrada inválido."]
+            "errores" => ["general" => "❗ID de entrada inválido."]
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -402,7 +388,7 @@ if ($method === 'DELETE') {
         );
         mysqli_stmt_bind_param($s1, "i", $id_entrada);
         if (!mysqli_stmt_execute($s1)) {
-            throw new Exception($debug ? mysqli_stmt_error($s1) : "Error al desactivar los detalles.");
+            throw new Exception($debug ? mysqli_stmt_error($s1) : "❗Error al desactivar los detalles.");
         }
         mysqli_stmt_close($s1);
 
@@ -412,7 +398,7 @@ if ($method === 'DELETE') {
         );
         mysqli_stmt_bind_param($s2, "i", $id_entrada);
         if (!mysqli_stmt_execute($s2)) {
-            throw new Exception($debug ? mysqli_stmt_error($s2) : "Error al desactivar la entrada.");
+            throw new Exception($debug ? mysqli_stmt_error($s2) : "❗Error al desactivar la entrada.");
         }
 
         if (mysqli_stmt_affected_rows($s2) === 0) {
@@ -420,7 +406,7 @@ if ($method === 'DELETE') {
             http_response_code(404);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "Entrada no encontrada."]
+                "errores" => ["general" => "❗Entrada no encontrada."]
             ], JSON_UNESCAPED_UNICODE);
             mysqli_stmt_close($s2);
             mysqli_close($conn);

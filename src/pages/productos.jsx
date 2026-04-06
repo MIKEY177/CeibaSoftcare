@@ -18,6 +18,7 @@ import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
 
+const BASE = import.meta.env.VITE_API_BASE;
 const API = `api/inventario.php`;
 const API_SESSION = `api/session.php`;
 export const indexSelector = 2;
@@ -174,7 +175,7 @@ export const Productos = () => {
       if (e.key === "Enter") {
   
         if (isScanningRef.current) {
-          e.preventDefault(); // 🚫 evita enviar formularios
+          e.preventDefault();
         }
   
         if (scanTimeoutRef.current) {
@@ -194,7 +195,6 @@ export const Productos = () => {
   
         if (isScanningRef.current) {
   
-          // 🚫 Evita que el escáner escriba en otros inputs
           e.preventDefault();
   
           scannedCodeRef.current += e.key;
@@ -390,12 +390,12 @@ export const Productos = () => {
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ir-label" for="">Nombre del Producto<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input1" type="text" value={formRegistrar.nombre} onChange={e => setFormRegistrar({ ...formRegistrar, nombre: e.target.value})}/>
-                  {errores.nombre && <span className="error-mensaje">{errores.nombre}</span>}
+                  <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
                 <div style={{gridArea: "divInpt2"}}>
                   <label className="ir-label" for="">Descripción del Producto</label>
                   <textarea className="ir-input2" name="ir-descripcion" value={formRegistrar.descripcion} onChange={e => setFormRegistrar({ ...formRegistrar, descripcion: e.target.value })}/>
-                  {errores.descripcion && <span className="error-mensaje">{errores.descripcion}</span>}
+                  <span className="error-mensaje">{errores.descripcion ?? ""}</span>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt3"}}> 
                   <label className="ir-label" for="">Unidad de Medida<h6 className="obligatorio">*</h6></label>
@@ -408,7 +408,7 @@ export const Productos = () => {
                     <option value="L">L</option>
                     <option value="unidades">Unidades</option>
                   </select>
-                  {errores.tipo_medida && <span className="error-mensaje">{errores.tipo_medida}</span>}
+                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt4"}}>
                   <label className="ir-label" for="">Usuario que Registra</label>
@@ -422,16 +422,22 @@ export const Productos = () => {
                 <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
                   <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input5" type="text" nvalue={formRegistrar.cantidad_por_unidad} onChange={e => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
+                  <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-                  <label className="ir-label" for=""> Código de Barras<h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input6 scan-capture" type="text"
-                    value={formRegistrar.codigo_barras} onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
-                  {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}
-                  <figure className="codigo-barras-icono">
-                    <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
-                  </figure>
-                </div>
+    <label className="ir-label" htmlFor="">Código de Barras<h6 className="obligatorio">*</h6></label>
+    <div className="input-con-icono">
+        <input className="ir-input6 scan-capture" type="text"
+            value={formRegistrar.codigo_barras} 
+            onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} 
+            onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}
+        />
+        <figure className="codigo-barras-icono">
+            <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
+        </figure>
+    </div>
+    <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
+</div>
               </section>
               <input className="ir-btn" type="submit" value="Registrar Producto"/>
             </form>
@@ -455,13 +461,13 @@ export const Productos = () => {
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ied-label" for="">Nombre del Producto<h6 className="obligatorio">*</h6></label>
                   <input className="ied-input1" type="text"value={formEditar.nombre} onChange={e => setFormEditar({ ...formEditar, nombre: e.target.value })}/>
-                  {errores.nombre && <span className="error-mensaje">{errores.nombre}</span>}
+                  <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt2"}}>
                   <label className="ied-label" for="">Descripción del Producto</label>
                   <textarea className="ied-input2" value={formEditar.descripcion} onChange={e => setFormEditar({ ...formEditar, descripcion: e.target.value })}/>
-                  {errores.descripcion && <span className="error-mensaje">{errores.descripcion}</span>}
+                   <span className="error-mensaje">{errores.descripcion ?? ""}</span>
                 </div>
 
                 <div className="label-and-input-container" style={{gridArea: "divInpt3"}}>
@@ -475,7 +481,7 @@ export const Productos = () => {
                     <option value="L">L</option>
                     <option value="unidades">Unidades</option>
                   </select>
-                  {errores.tipo_medida && <span className="error-mensaje">{errores.tipo_medida}</span>}
+                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
                 </div>
 
                 <div className="label-and-input-container" style={{gridArea: "divInpt4"}}>
@@ -492,18 +498,23 @@ export const Productos = () => {
                   <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
                   <input className="ir-input5" type="text" value={formEditar.cantidad_por_unidad}
                     onChange={e => setFormEditar({ ...formEditar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
-                    {errores.cantidad_por_unidad && <span className="error-mensaje">{errores.cantidad_por_unidad}</span>}
+                    <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
                 </div>
               
-                <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-                  <label className="ir-label" for=""> Código de Barras<h6 className="obligatorio">*</h6></label>
-                  <input className="ied-input6 scan-capture" type="text"
-                    value={formEditar.codigo_barras} onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}/>
-                  {errores.codigo_barras && <span className="error-mensaje">{errores.codigo_barras}</span>}
-                  <figure className="codigo-barras-icono">
-                    <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
-                  </figure>
-                </div>
+    <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
+    <label className="ir-label" htmlFor=""> Código de Barras<h6 className="obligatorio">*</h6></label>
+    <div className="input-con-icono">
+        <input className="ied-input6 scan-capture" type="text"
+            value={formEditar.codigo_barras} 
+            onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} 
+            onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}
+        />
+        <figure className="codigo-barras-icono">
+            <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
+        </figure>
+    </div>
+    <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
+</div>
               </section>
               <input className="ied-btn" type="submit"  value={cargando ? "Guardando..." : "Realizar Cambios"} disabled={cargando} />
             </form>

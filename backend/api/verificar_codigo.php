@@ -22,7 +22,7 @@ $codigo = trim($data["codigo"] ?? "");
 if ($codigo === "") {
     echo json_encode([
         "success" => false,
-        "error" => "El código es obligatorio."
+        "error" => "❗El código es obligatorio."
     ]);
     exit;
 }
@@ -44,6 +44,6 @@ if (
 
     echo json_encode([
         "success" => false,
-        "error" => "Código inválido o expirado"
+        "error" => "❗Código inválido o expirado"
     ]);
 }

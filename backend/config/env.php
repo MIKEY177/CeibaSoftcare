@@ -1,21 +1,11 @@
 <?php
 function env($key, $default = null) {
-    // primero intenta variables del sistema (Render)
     $value = getenv($key);
-
-    if ($value !== false) {
-        return $value;
-    }
-
-    // fallback a $_ENV
-    if (isset($_ENV[$key])) {
-        return $_ENV[$key];
-    }
-
+    if ($value !== false) return $value;
+    if (isset($_ENV[$key])) return $_ENV[$key];
     return $default;
 }
 
-// opcional: cargar .env solo en local
 function loadEnv($path) {
     if (!file_exists($path)) return;
 
@@ -23,9 +13,13 @@ function loadEnv($path) {
 
     foreach ($lines as $line) {
         if (strpos(trim($line), '#') === 0) continue;
+        if (strpos($line, '=') === false) continue;
 
-        list($key, $value) = explode('=', $line, 2);
+        [$key, $value] = explode('=', $line, 2);
+        $key = trim($key);
+        $value = trim($value);
 
-        $_ENV[trim($key)] = trim($value);
+        putenv("$key=$value");  // ✅ este es el cambio clave
+        $_ENV[$key] = $value;
     }
 }

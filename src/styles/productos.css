@@ -97,7 +97,7 @@
     width: 25px;
 }
 
-.editar-icono-img, .desactivar-icono-img, .candado-icono-img, .codigo-barras-icono-img{
+.editar-icono-img, .desactivar-icono-img{
     width: 100%;
     height: 100%;
 }
@@ -175,7 +175,7 @@
 .body-tabla-productos{
     display: block;
     width: 100%;
-    height: 545px; /* adjust if header height changes */
+    height: 545px; 
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -205,12 +205,10 @@
     cursor: pointer;
 }
 
-/* Fin Tablas */
-/* Modales */
-
 .modales-productos{
     position: fixed;
     top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     z-index: 2;
@@ -224,14 +222,16 @@
     margin: auto;
     background-color: #FFFFFF;
     width: 1000px;
-    height: 700px;
+    height: auto;      
+    max-height: 95vh;   
+    overflow-y: auto;  
     border-radius: 10px;
     box-shadow: 0 0 8px 4px #21242779;
     padding: 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: space-evenly;   
+    gap: 15px;          
 }
 
 .modal-productos-desactivar{
@@ -250,10 +250,7 @@
     border-radius: 10px;
     border: none;
     padding: 5px 12px;
-    position: relative;
-    top: 0;
-    left: 0;
-    transform: translate(-420px, -20px); 
+    align-self: flex-start; 
     cursor: pointer;
 }
 
@@ -268,25 +265,26 @@
 .modal-ir-titulo, .modal-ied-titulo, .modal-iel-titulo{
     color: #048F9F;
     font-size: 1.8rem;
-    margin-bottom: 30px;
+    margin-bottom: 20px;  
 }
-
 .ir-form, .ied-form{
     display: flex;
     flex-direction: column;
     width: 900px;
-    height: 460px;
+    height: auto;          
 }
+
 
 .ir-form-inputs-area, .ied-form-inputs-area{
     display: grid;
     grid-template-columns: 1fr 1fr ;
-    grid-template-rows: 100px 100px 100px 100px;
+    grid-template-rows: auto auto auto auto;
     grid-template-areas:
     "divInpt1 divInpt4"
     "divInpt2 divInpt3"
     "divInpt2 divInpt5"
     "divInpt2 divInpt6";
+    gap: 5px 0;
 }
 
 .ir-label, .ied-label{
@@ -303,10 +301,6 @@
     margin-left: 100px;
 }
 
-.codigo-barras-icono{
-    width: 36px;
-    transform: translate(355px, -81px);
-}
 
 .obligatorio{
     color: red;
@@ -325,7 +319,7 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 50px;
+    margin-bottom: 5px;
 }
 
 /* .ir-input3 {
@@ -429,5 +423,39 @@
     font-size: 1.3rem;
     text-decoration: underline;
 }
+.error-mensaje {
+    display: block;
+    color: #c0392b;
+    font-size: 1rem;
+    font-family: 'lato';
+    padding-left: 5px;
+    min-height: 18px;
+    margin-bottom: 5px;
+}
 
+.exito-mensaje {
+    color: #27ae60;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: 'lato';
+}
+.input-con-icono {
+    position: relative;
+    width: max-content;
+}
+
+.codigo-barras-icono {
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* no interfiere con el input */
+}
+
+.codigo-barras-icono-img {
+    width: 100%;
+    height: 100%;
+}
 /* Fin Modales */

@@ -4,20 +4,17 @@ require_once dirname(__DIR__) . '/config/conexion.php';
 
 header("Content-Type: application/json");
 
-// Configurar sesión antes de utilizarla
 $isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
 
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
     'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
+    'secure' => !$isLocal,
     'httponly' => true,
-    'samesite' =>'Lax'// None es necesario para Cross-Site en Render
+    'samesite' => 'Lax'
 ]);
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'development'));
 
@@ -36,7 +33,7 @@ if ($method === 'GET') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "error"   => $debug ? mysqli_error($conn) : "Error en la consulta"
+            "error"   => $debug ? mysqli_error($conn) : "❗Error en la consulta"
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -55,76 +52,70 @@ if ($method === 'GET') {
 // ── Leer body JSON ───────────────────────────────────────────────────────────
 $body = json_decode(file_get_contents("php://input"), true);
 
-// Para GET (listar), el body puede estar vacío
 if ($method !== 'GET' && $body === null) {
     http_response_code(400);
     echo json_encode(["success" => false, "errores" => ["general" => "Body JSON inválido o vacío"]], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
-// Obtener ID del usuario de la sesión
 $id_usuario = $_SESSION['user_id'] ?? null;
 
-// Validar sesión para operaciones que la requieren (POST, PUT, DELETE)
 if ($method !== 'GET' && $id_usuario === null) {
     http_response_code(401);
-    echo json_encode(["success" => false, "errores" => ["sesion" => "No tienes una sesión activa. Por favor inicia sesión."]], JSON_UNESCAPED_UNICODE);
+    echo json_encode(["success" => false, "errores" => ["sesion" => "❗No tienes una sesión activa. Por favor inicia sesión."]], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
 // ── POST: registrar producto ─────────────────────────────────────────────────
 if ($method === 'POST') {
-    $nombre      = trim($body['nombre']      ?? '');
-    $descripcion = trim($body['descripcion'] ?? '');
-    $tipo_medida = trim($body['tipo_medida'] ?? '');
-    $codigo_barras = trim($body['codigo_barras'] ?? '');
+    $nombre              = trim($body['nombre']              ?? '');
+    $descripcion         = trim($body['descripcion']         ?? '');
+    $tipo_medida         = trim($body['tipo_medida']         ?? '');
+    $codigo_barras       = trim($body['codigo_barras']       ?? '');
     $cantidad_por_unidad = trim($body['cantidad_por_unidad'] ?? '');
-
-    $sql_check = "SELECT id_producto FROM productos WHERE nombre = ? AND codigo_barras = ? AND activo = 1";
-    $stmt_check = mysqli_prepare($conn, $sql_check);
-    mysqli_stmt_bind_param($stmt_check, "ss", $nombre, $codigo_barras);
-    mysqli_stmt_execute($stmt_check);
-    mysqli_stmt_store_result($stmt_check);
-    $check_nombre = mysqli_stmt_num_rows($stmt_check) > 0;
-
-    $sql_check_codigo = "SELECT id_producto FROM productos WHERE codigo_barras = ? AND activo = 1";
-    $stmt_check_codigo = mysqli_prepare($conn, $sql_check_codigo);
-    mysqli_stmt_bind_param($stmt_check_codigo, "s", $codigo_barras);
-    mysqli_stmt_execute($stmt_check_codigo);
-    mysqli_stmt_store_result($stmt_check_codigo);
-    $check_codigo_barras = mysqli_stmt_num_rows($stmt_check_codigo) > 0;
-     
-    if ($check_nombre) {
-        $errores['nombre'] = "Ya existe un producto activo con el mismo nombre y código de barras.";
-    }
 
     $errores = [];
 
-
-
     if ($nombre === '') {
-        $errores['nombre'] = "El nombre del producto es obligatorio.";
+        $errores['nombre'] = "❗El nombre del producto es obligatorio.";
     } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "El nombre no puede superar los 150 caracteres.";
-    } elseif (mysqli_stmt_num_rows($stmt_check) > 0) {
-        $errores['nombre'] = "Ya existe un producto activo con el mismo nombre y código de barras.";
+        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
+    } else {
+        $stmt_check = mysqli_prepare($conn, "SELECT id_producto FROM productos WHERE nombre = ? AND codigo_barras = ? AND activo = 1");
+        mysqli_stmt_bind_param($stmt_check, "ss", $nombre, $codigo_barras);
+        mysqli_stmt_execute($stmt_check);
+        mysqli_stmt_store_result($stmt_check);
+        if (mysqli_stmt_num_rows($stmt_check) > 0) {
+            $errores['nombre'] = "❗Ya existe un producto activo con el mismo nombre y código de barras.";
+        }
+        mysqli_stmt_close($stmt_check);
     }
 
     if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "La descripción no puede superar los 500 caracteres.";
+        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
     }
 
     if ($tipo_medida === '') {
-        $errores['tipo_medida'] = "El tipo de medida es obligatorio.";
+        $errores['tipo_medida'] = "❗El tipo de medida es obligatorio.";
     }
-    if ($codigo_barras ===''){
-        $errores['codigo_barras'] = "El código de barras es obligatorio.";
-    }else if ($check_codigo_barras) {
-        $errores['codigo_barras'] = "Ya existe un producto activo con el mismo código de barras.";
+
+    if ($codigo_barras === '') {
+        $errores['codigo_barras'] = "❗El código de barras es obligatorio.";
+    } else {
+        $stmt_check_codigo = mysqli_prepare($conn, "SELECT id_producto FROM productos WHERE codigo_barras = ? AND activo = 1");
+        mysqli_stmt_bind_param($stmt_check_codigo, "s", $codigo_barras);
+        mysqli_stmt_execute($stmt_check_codigo);
+        mysqli_stmt_store_result($stmt_check_codigo);
+        if (mysqli_stmt_num_rows($stmt_check_codigo) > 0) {
+            $errores['codigo_barras'] = "❗Ya existe un producto activo con el mismo código de barras.";
+        }
+        mysqli_stmt_close($stmt_check_codigo);
     }
-    if ($cantidad_por_unidad ===''){
-        $errores['cantidad_por_unidad'] = "La cantidad por unidad es obligatoria.";
+
+    if ($cantidad_por_unidad === '') {
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
     }
+
     if (!empty($errores)) {
         http_response_code(422);
         echo json_encode(["success" => false, "errores" => $errores], JSON_UNESCAPED_UNICODE);
@@ -134,7 +125,7 @@ if ($method === 'POST') {
     $stmt = mysqli_prepare($conn,
         "INSERT INTO productos (nombre, descripcion, tipo_medida, id_usuario1, codigo_barras, cantidad_por_unidad) VALUES (?, ?, ?, ?, ?, ?)"
     );
-    mysqli_stmt_bind_param($stmt, "sssiii", $nombre, $descripcion, $tipo_medida, $id_usuario, $codigo_barras, $cantidad_por_unidad);
+    mysqli_stmt_bind_param($stmt, "sssiss", $nombre, $descripcion, $tipo_medida, $id_usuario, $codigo_barras, $cantidad_por_unidad);
 
     if (mysqli_stmt_execute($stmt)) {
         echo json_encode(["success" => true, "id_producto" => mysqli_insert_id($conn)], JSON_UNESCAPED_UNICODE);
@@ -142,7 +133,7 @@ if ($method === 'POST') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al registrar el producto."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al registrar el producto."]
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -150,61 +141,47 @@ if ($method === 'POST') {
     mysqli_close($conn);
     exit;
 }
-if ($method === 'POST') {
-    echo json_encode(["debug" => $_SESSION, "user_id" => $_SESSION['user_id'] ?? 'NO EXISTE']);
-    exit;
-}
 
 // ── PUT: editar producto ─────────────────────────────────────────────────────
 if ($method === 'PUT') {
-    $id_producto = intval($body['id_producto'] ?? 0);
-    $nombre      = trim($body['nombre']        ?? '');
-    $descripcion = trim($body['descripcion']   ?? '');
-    $tipo_medida = trim($body['tipo_medida']   ?? '');
-    $codigo_barras = trim($body['codigo_barras'] ?? '');
+    $id_producto         = intval($body['id_producto']       ?? 0);
+    $nombre              = trim($body['nombre']              ?? '');
+    $descripcion         = trim($body['descripcion']         ?? '');
+    $tipo_medida         = trim($body['tipo_medida']         ?? '');
+    $codigo_barras       = trim($body['codigo_barras']       ?? '');
     $cantidad_por_unidad = trim($body['cantidad_por_unidad'] ?? '');
 
     $errores = [];
 
-    $sql_check_codigo = "SELECT id_producto FROM productos WHERE codigo_barras = ? AND activo = 1";
-    $stmt_check_codigo = mysqli_prepare($conn, $sql_check_codigo);
-    mysqli_stmt_bind_param($stmt_check_codigo, "s", $codigo_barras);
-    mysqli_stmt_execute($stmt_check_codigo);
-    mysqli_stmt_store_result($stmt_check_codigo);
-    $check_codigo_barras = mysqli_stmt_num_rows($stmt_check_codigo) > 0;
-
-    $sql_codigo_barras = "SELECT codigo_barras FROM productos WHERE nombre = ? AND id_producto != ? AND activo = 1";
-    $stmt_codigo_barras = mysqli_prepare($conn, $sql_codigo_barras);
-    mysqli_stmt_bind_param($stmt_codigo_barras, "si", $nombre, $id_producto);
-    mysqli_stmt_execute($stmt_codigo_barras);
-    $datos_codigo_barras = mysqli_stmt_get_result($stmt_codigo_barras);
-    $row_codigo_barras = mysqli_fetch_assoc($datos_codigo_barras);
-
-    if(!isset($row_codigo_barras['codigo_barras'])){
-        $row_codigo_barras['codigo_barras'] = '';
-    }
-    
-
     if ($nombre === '') {
-        $errores['nombre'] = "El nombre del producto es obligatorio.";
+        $errores['nombre'] = "❗El nombre del producto es obligatorio.";
     } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "El nombre no puede superar los 150 caracteres.";
+        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
     }
 
     if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "La descripción no puede superar los 500 caracteres.";
+        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
     }
 
     if ($tipo_medida === '') {
-        $errores['tipo_medida'] = "El tipo de medida es obligatorio.";
+        $errores['tipo_medida'] = "❗El tipo de medida es obligatorio.";
     }
-    if ($codigo_barras ===''){
-        $errores['codigo_barras'] = "El código de barras es obligatorio.";
-    }elseif ($check_codigo_barras && $row_codigo_barras['codigo_barras'] != $codigo_barras) {
-        $errores['codigo_barras'] = "Ya existe un producto activo con el mismo código de barras.";
+
+    if ($codigo_barras === '') {
+        $errores['codigo_barras'] = "❗El código de barras es obligatorio.";
+    } else {
+        $stmt_check_codigo = mysqli_prepare($conn, "SELECT id_producto FROM productos WHERE codigo_barras = ? AND id_producto != ? AND activo = 1");
+        mysqli_stmt_bind_param($stmt_check_codigo, "si", $codigo_barras, $id_producto);
+        mysqli_stmt_execute($stmt_check_codigo);
+        mysqli_stmt_store_result($stmt_check_codigo);
+        if (mysqli_stmt_num_rows($stmt_check_codigo) > 0) {
+            $errores['codigo_barras'] = "❗Ya existe un producto activo con el mismo código de barras.";
+        }
+        mysqli_stmt_close($stmt_check_codigo);
     }
-    if ($cantidad_por_unidad ===''){
-        $errores['cantidad_por_unidad'] = "La cantidad por unidad es obligatoria.";
+
+    if ($cantidad_por_unidad === '') {
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
     }
 
     if (!empty($errores)) {
@@ -216,14 +193,14 @@ if ($method === 'PUT') {
     $stmt = mysqli_prepare($conn,
         "UPDATE productos SET nombre = ?, descripcion = ?, tipo_medida = ?, codigo_barras = ?, cantidad_por_unidad = ? WHERE id_producto = ?"
     );
-    mysqli_stmt_bind_param($stmt, "sssiii", $nombre, $descripcion, $tipo_medida, $codigo_barras, $cantidad_por_unidad, $id_producto);
+    mysqli_stmt_bind_param($stmt, "sssssi", $nombre, $descripcion, $tipo_medida, $codigo_barras, $cantidad_por_unidad, $id_producto);
 
     if (mysqli_stmt_execute($stmt)) {
         if (mysqli_stmt_affected_rows($stmt) === 0) {
             http_response_code(404);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "Producto no encontrado."]
+                "errores" => ["general" => "❗Producto no encontrado."]
             ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
@@ -232,7 +209,7 @@ if ($method === 'PUT') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al actualizar el producto."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al actualizar el producto."]
         ], JSON_UNESCAPED_UNICODE);
     }
 
@@ -241,7 +218,7 @@ if ($method === 'PUT') {
     exit;
 }
 
-// ── DELETE: eliminar producto ────────────────────────────────────────────────
+// ── DELETE: desactivar producto ──────────────────────────────────────────────
 if ($method === 'DELETE') {
     $id_producto = intval($body['id_producto'] ?? 0);
 
@@ -254,7 +231,7 @@ if ($method === 'DELETE') {
         exit;
     }
 
-    $stmt = mysqli_prepare($conn, "UPDATE productos SET activo= 0 WHERE id_producto = ?");
+    $stmt = mysqli_prepare($conn, "UPDATE productos SET activo = 0 WHERE id_producto = ?");
     mysqli_stmt_bind_param($stmt, "i", $id_producto);
 
     if (mysqli_stmt_execute($stmt)) {
@@ -262,7 +239,7 @@ if ($method === 'DELETE') {
             http_response_code(404);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "Producto no encontrado."]
+                "errores" => ["general" => "❗Producto no encontrado."]
             ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
@@ -271,7 +248,7 @@ if ($method === 'DELETE') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al desactivar el producto."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al desactivar el producto."]
         ], JSON_UNESCAPED_UNICODE);
     }
 

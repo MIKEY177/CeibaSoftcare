@@ -18,7 +18,7 @@ session_set_cookie_params([
 session_start();
 
 $id_usuario = $_SESSION['user_id'] ?? null;
-session_write_close(); // 👈 libera el bloqueo inmediatamente
+session_write_close(); // libera el bloqueo inmediatamente
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
  
@@ -34,7 +34,7 @@ if ($method === 'GET') {
         http_response_code(400);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => "Se requiere id_entrada."]
+            "errores" => ["general" => "❗Se requiere id_entrada."]
         ], JSON_UNESCAPED_UNICODE);
         exit;
     }
@@ -88,7 +88,7 @@ if ($id_usuario === null) {
     http_response_code(401);
     echo json_encode([
         "success" => false,
-        "errores" => ["sesion" => "No tienes una sesión activa. Por favor inicia sesión."]
+        "errores" => ["sesion" => "❗No tienes una sesión activa. Por favor inicia sesión."]
     ], JSON_UNESCAPED_UNICODE);
     exit;
 }
@@ -144,38 +144,38 @@ if ($method === 'PUT') {
     $errores               = [];
  
     if ($id_detalle === 0)
-        $errores['id_detalle_entrada'] = "ID de detalle inválido.";
+        $errores['id_detalle_entrada'] = "❗ID de detalle inválido.";
  
     if ($id_producto === 0) {
-        $errores['id_producto1'] = "El producto es obligatorio.";
+        $errores['id_producto1'] = "❗El producto es obligatorio.";
     } elseif (!productoExiste($conn, $id_producto)) {
-        $errores['id_producto1'] = "El producto no existe o está inactivo.";
+        $errores['id_producto1'] = "❗El producto no existe o está inactivo.";
     }
  
     if ($cantidad_presentacion === '' || intval($cantidad_presentacion) <= 0)
-        $errores['cantidad_presentacion'] = "La cantidad de presentación debe ser mayor a 0.";
+        $errores['cantidad_presentacion'] = "❗La cantidad de presentación debe ser mayor a 0.";
     elseif (intval($cantidad_presentacion) > 99999)
-        $errores['cantidad_presentacion'] = "No puede superar 99,999.";
+        $errores['cantidad_presentacion'] = "❗No puede superar 99,999.";
  
     if ($cantidad_total === '' || floatval($cantidad_total) <= 0)
-        $errores['cantidad_total'] = "La cantidad total debe ser mayor a 0.";
+        $errores['cantidad_total'] = "❗La cantidad total debe ser mayor a 0.";
     elseif (floatval($cantidad_total) > 99999999.99)
-        $errores['cantidad_total'] = "Excede el límite permitido.";
+        $errores['cantidad_total'] = "❗Excede el límite permitido.";
  
     if ($fecha_vencimiento === '') {
-        $errores['fecha_vencimiento'] = "La fecha de vencimiento es obligatoria.";
+        $errores['fecha_vencimiento'] = "❗La fecha de vencimiento es obligatoria.";
     } else {
         $dt = DateTime::createFromFormat('Y-m-d', $fecha_vencimiento);
         if (!$dt || $dt->format('Y-m-d') !== $fecha_vencimiento)
-            $errores['fecha_vencimiento'] = "Formato inválido, use YYYY-MM-DD.";
+            $errores['fecha_vencimiento'] = "❗Formato inválido, use YYYY-MM-DD.";
         elseif ($dt <= new DateTime('today'))
-            $errores['fecha_vencimiento'] = "Debe ser una fecha futura.";
+            $errores['fecha_vencimiento'] = "❗Debe ser una fecha futura.";
     }
  
     if ($motivo === '')
-        $errores['motivo'] = "El motivo es obligatorio.";
+        $errores['motivo'] = "❗El motivo es obligatorio.";
     elseif (strlen($motivo) > 100)
-        $errores['motivo'] = "No puede superar los 100 caracteres.";
+        $errores['motivo'] = "❗No puede superar los 100 caracteres.";
  
     if (!empty($errores)) {
         http_response_code(422);
@@ -213,7 +213,7 @@ if ($method === 'PUT') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al actualizar el detalle."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al actualizar el detalle."]
         ], JSON_UNESCAPED_UNICODE);
     }
  
@@ -254,7 +254,7 @@ if ($method === 'DELETE') {
         http_response_code(500);
         echo json_encode([
             "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "Error al desactivar el detalle."]
+            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al desactivar el detalle."]
         ], JSON_UNESCAPED_UNICODE);
     }
  

@@ -14,10 +14,11 @@ import flecha from "../images/flecha_salir.png"
 import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
-         const API_LOGIN = `api/login.php`;
-         const API_REC = `api/recuperar.php`;
-         const API_CODE= `api/verificar_codigo.php`;
-         const API_PASS = `api/cambiar_password.php`;
+        const BASE = import.meta.env.VITE_API_BASE;
+         const API_LOGIN = `${BASE}/login.php`;
+        const API_REC   = `${BASE}/recuperar.php`;
+        const API_CODE  = `${BASE}/verificar_codigo.php`;
+        const API_PASS  = `${BASE}/cambiar_password.php`;
 
         //Login
         const [correo,setcorreo]= useState("")
@@ -33,111 +34,96 @@ export const IniciarSesion = () => {
         const [modalActiva, setModalActiva] = useState(null);
         const navigate = useNavigate();
 
-        const [errores, setErrores] = useState({})
+        const [errores, setErrores] = useState({})           // login
+        const [erroresModal, setErroresModal] = useState({}) // modales
         const [loadingCodigo, setLoadingCodigo] = useState(false);
 
         const abrirModal = (num) => {
             setErrores({})
+            setErroresModal({})
             setModalActiva(num)
         }
         const cerrarModal = () => {
             setErrores({})
+            setErroresModal({})
             setModalActiva(null);
         }
 
-                const iniciarSesion = async(e) => {
-                     e.preventDefault();
-                    const nuevosErrores = {}
-                    if (correo === "") {
-                        nuevosErrores.correo = "❗El correo es obligatorio."
-                    }
-                    if (contrasena === "") {
-                    nuevosErrores.contrasena = "❗La contraseña es obligatoria."
-                    }
-                    if (Object.keys(nuevosErrores).length > 0) {
-                        setErrores(nuevosErrores)
-                    return
-                    }
-                    const respuesta = await fetch(API_LOGIN, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        credentials: "include",
-                        body:JSON.stringify({
-                        correo: correo,
-                        contrasena: contrasena
-                        })
-                    })
-                    const data = await respuesta.json();
-                    if (data.status === "success") {
-                        navigate("/inicio");
-                    } else {
-                        setErrores({login: data.mensaje});
-                    }
+        const enviarCodigo = async (e) => {
+            e.preventDefault()
+            setLoadingCodigo(true);
+            try {
+                const respuesta = await fetch(API_REC, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ correoModal: correoRecuperar })
+                })
+                const data = await respuesta.json()
+                if (data.success) {
+                    abrirModal(2)
+                } else {
+                    setErroresModal({ correoRecuperar: data.errors?.correoModal || data.error || "❗Error al enviar el código." })
                 }
+            } catch (error) {
+                setErroresModal({ correoRecuperar: "❗No se pudo conectar al servidor." })
+            } finally {
+                setLoadingCodigo(false);
+            }
+        }
+        const iniciarSesion = async (e) => {
+            e.preventDefault();
+            try {
+                const respuesta = await fetch(API_LOGIN, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ correo, contrasena })
+                })
+                const data = await respuesta.json();
+                if (data.status === "success") {
+                    navigate("/inicio");
+                } else if (data.errors) {
+                    setErrores(data.errors);
+                } else {
+                    setErrores({ login: data.mensaje });
+                }
+            } catch (error) {
+                setErrores({ login: "❗No se pudo conectar al servidor." })
+            }
+        }
 
-                const enviarCodigo = async (e) => {
-                    e.preventDefault()
-                    if (correoRecuperar === "") {
-                        setErrores({correoRecuperar: "❗El correo es obligatorio."})
-                        return
-                    }
-                    setLoadingCodigo(true);
-                    try {
-                        const respuesta = await fetch(API_REC,{
-                            method:"POST",
-                            headers:{
-                                "Content-Type":"application/json"
-                            },
-                            credentials: "include",
-                            body: JSON.stringify({ correoModal: correoRecuperar }) 
-                        })
-                        const data = await respuesta.json()
-                        if(data.success){
-                            abrirModal(2)
-                        }else{
-                            setErrores({correoRecuperar: data.errors?.correoModal || data.error || "❗Error al enviar el código."})
-                        }
-                    } catch (error) {
-                        setErrores({correoRecuperar: "❗No se pudo conectar al servidor."})
-                    } finally {
-                        setLoadingCodigo(false);
-                    }
+        const verificarCodigo = async (e) => {
+            e.preventDefault()
+                const respuesta = await fetch(API_CODE, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include", 
+                    body: JSON.stringify({ codigo: codigoIngresado })
+                });
+                const data = await respuesta.json()
+                if(data.success){
+                    abrirModal(3)
+                }else{
+                    setErroresModal({codigo: data.error})
                 }
-
-                const verificarCodigo = async (e) => {
-                    e.preventDefault()
-                    const respuesta = await fetch(API_CODE, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include", 
-                        body: JSON.stringify({ codigo: codigoIngresado })
-                    });
-                    const data = await respuesta.json()
-                    if(data.success){
-                        abrirModal(3)
-                    }else{
-                        setErrores({codigo: data.error})
-                    }
+        }
+        const cambiarPassword = async (e) => {
+            e.preventDefault()
+                const respuesta = await fetch(API_PASS, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "include",
+                    body: JSON.stringify({ nuevaPass, confirmarPass })
+                })
+                const data = await respuesta.json()
+                if (data.success) {
+                    setErroresModal({})
+                    cerrarModal()
+                } else {
+                    setErroresModal(data.errors || { confirmarPass: data.error || "❗Error al cambiar la contraseña." })
                 }
-                const cambiarPassword = async (e) => {
-                    e.preventDefault()
-
-                    const respuesta = await fetch(API_PASS, {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        credentials: "include",
-                        body: JSON.stringify({ nuevaPass, confirmarPass })
-                    })
-                    const data = await respuesta.json()
-                    if (data.success) {
-                        setErrores({})
-                        cerrarModal()
-                    } else {
-                        setErrores(data.errors || { confirmarPass: data.error || "❗Error al cambiar la contraseña." })
-                    }
-                }
+            }
         return (
             <>
             <head>
@@ -157,16 +143,20 @@ export const IniciarSesion = () => {
                     <form className="iniciar-sesion-form" onSubmit={iniciarSesion}>
                         <label className="iniciar-sesion-label" htmlFor="correo">Correo Electrónico</label>
                         <input className="iniciar-sesion-input1" type="text" placeholder="ejemplo@email.com" name="correo" value={correo} onChange={(e) => setcorreo(e.target.value)}/>
-            
+
                         <label className="iniciar-sesion-label" htmlFor="contrasena">Contraseña</label>
                         <input className="iniciar-sesion-input2" type="password" placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}/>
-                            {errores.contrasena && <span className="error-mensaje-iniciar-sesion1">{errores.contrasena}</span>}
-                            {errores.login && <span className="error-mensaje-iniciar-sesion2">{errores.login}</span>}
-                            {errores.correo && <span className="error-mensaje-iniciar-sesion3">{errores.correo}</span>}
+
                         <a className="olvido-contra" href="" onClick={(e) => {e.preventDefault(); abrirModal(1);}}>¿Olvidó su contraseña?</a>
-                    
+
+                        <div className="error-login-container">
+                         {Object.values(errores).map((error, index) => (
+                            <span key={index} className="error-login-global">{error}</span>
+                            ))}
+                        </div>
+
                         <input className="iniciar-sesion-btn" type="submit" value="Ingresar"/>
-                    </form> 
+                    </form>
                 </aside>
             </main>
             <Footer style={{ color: "#212121" }} />
@@ -183,13 +173,12 @@ export const IniciarSesion = () => {
                                 <form className="rc-form" onSubmit={enviarCodigo}>
                                     <label className="rc-label" htmlfor="correoRecuperar">Correo electrónico</label>
                                     <input className="rc-input1" type="text" id="correoRecuperar" placeholder="ejemplo@email.com" value={correoRecuperar} onChange={(e) => setCorreoRecuperar(e.target.value)} />
-                                    {errores.correoRecuperar && <span className="error-mensaje-iniciar-sesion-mod1">{errores.correoRecuperar}</span>}
-                                    <input
-                                        className="rc-btn"
-                                        type="submit"
-                                        value={loadingCodigo ? "Enviando..." : "Enviar Código"}
-                                        disabled={loadingCodigo}
-                                    />
+                                    <div className="error-login-container">
+                                        {Object.values(erroresModal).map((error, index) => (
+                                            <span key={index} className="error-login-global">{error}</span>
+                                        ))}
+                                    </div>
+                                    <input className="rc-btn"type="submit" value={loadingCodigo ? "Enviando..." : "Enviar Código"} disabled={loadingCodigo}/>
                                 </form> 
                             </section>
                         </aside>
@@ -206,7 +195,11 @@ export const IniciarSesion = () => {
                                 <form className="rc-form" onSubmit={verificarCodigo}>
                                     <label className="rc-label" htmlfor="rc-codigo">Código</label>
                                     <input className="rc-input2" maxLength="8" type="text" value={codigoIngresado}  onChange={(e) => setCodigoIngresado(e.target.value)}  />
-                                    {errores.codigo && <span className="error-mensaje-iniciar-sesion-mod2">{errores.codigo}</span>}
+                                    <div className="error-login-container">
+                                        {Object.values(erroresModal).map((error, index) => (
+                                            <span key={index} className="error-login-global">{error}</span>
+                                        ))}
+                                    </div>
                                     <input className="rc-btn" type="submit" value="Siguiente" />
                                 </form> 
                             </section>
@@ -227,7 +220,11 @@ export const IniciarSesion = () => {
                                         {errores.nuevaPass && <span className="error-mensaje-iniciar-sesion-mod3">{errores.nuevaPass}</span>}
                                     <label className="rc-label">Confirmar Contraseña</label>
                                     <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
-                                        {errores.confirmarPass && <span className="error-mensaje-iniciar-sesion-mod4">{errores.confirmarPass}</span>}
+                                        <div className="error-login-container">
+                                            {Object.values(erroresModal).map((error, index) => (
+                                                <span key={index} className="error-login-global">{error}</span>
+                                            ))}
+                                        </div>
                                     <input className="rc-btn" type="submit" value="Cambiar Contraseña" />
                                 </form>
                             </section>
