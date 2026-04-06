@@ -4,37 +4,44 @@ require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
 require_once dirname(__DIR__) . "/config/env.php";
 
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
+// Detectar entorno local
+$isLocal = (
+    $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ||
+    $_SERVER['REMOTE_ADDR'] === '::1'
+);
 
+// Configuración de sesión segura
 session_set_cookie_params([
     'lifetime' => 3600,
     'path' => '/',
     'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
+    'secure' => !$isLocal, // HTTPS en Render
     'httponly' => true,
-    'samesite' =>  'Lax' // None es necesario para Cross-Site en Render
+    'samesite' => 'lax' 
 ]);
 
 session_start();
 
 header("Content-Type: application/json");
 
-// cargar .env si estás en local
+// Cargar variables de entorno si existen
 $envFile = __DIR__ . "/../.env";
-
 if (file_exists($envFile)) {
     loadEnv($envFile);
 }
 
+// Obtener datos del frontend
 $data = json_decode(file_get_contents("php://input"), true);
 $email = trim($data["correoModal"] ?? "");
 
 $errors = [];
 
+// Validación de email
 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
     $errors["correoModal"] = "❗Ingrese un correo válido.";
 }
 
+// Verificar si el usuario existe
 if (empty($errors)) {
     $sql = "SELECT correo FROM usuarios WHERE correo = ?";
     $stmt = mysqli_prepare($conn, $sql);
@@ -47,6 +54,7 @@ if (empty($errors)) {
     }
 }
 
+// Si hay errores, responder
 if (!empty($errors)) {
     echo json_encode([
         "success" => false,
@@ -55,40 +63,42 @@ if (!empty($errors)) {
     exit;
 }
 
-$code = bin2hex(random_bytes(4));
+// Generar código seguro
+$code = strtoupper(bin2hex(random_bytes(4)));
 
+// Guardar en sesión
 $_SESSION["reset_code"] = $code;
 $_SESSION["reset_email"] = $email;
 $_SESSION["reset_expiration"] = time() + (15 * 60);
 
-function sendEmail($to, $subject, $html) {
-    $apiKey = env('RESEND_API_KEY');
 
-    if (!$apiKey) {
-        return ["success" => false, "error" => "❗API KEY no configurada."];
-    }
+function sendToN8n($email, $code) {
 
-    $ch = curl_init("https://api.resend.com/emails");
+    $url = "https://ceibasoftcare.app.n8n.cloud/webhook/reset-password";
+
+    $payload = [
+        "email" => $email,
+        "code" => $code
+    ];
+
+    $ch = curl_init($url);
 
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_POST, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); 
+
+    // Seguridad activa (NO desactivar SSL)
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        "Authorization: Bearer $apiKey",
         "Content-Type: application/json"
     ]);
 
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode([
-        "from" => "CEIBA SOFTCARE <onboarding@resend.dev>",
-        "to" => [$to],
-        "subject" => $subject,
-        "html" => $html
-    ]));
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
 
     $response = curl_exec($ch);
     $error = curl_error($ch);
+    $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
     curl_close($ch);
 
@@ -96,27 +106,33 @@ function sendEmail($to, $subject, $html) {
         return ["success" => false, "error" => $error];
     }
 
-    return ["success" => true, "response" => json_decode($response, true)];
+    if ($statusCode >= 400) {
+        return [
+            "success" => false,
+            "error" => "Error HTTP $statusCode",
+            "response" => $response
+        ];
+    }
+
+    return ["success" => true];
 }
 
-$html = "
-    <h2>Recuperación de contraseña</h2>
-    <p>Tu código de recuperación es:</p>
-    <h1 style='color:#2c7be5;'>$code</h1>
-    <p>Este código expira en 15 minutos.</p>
-";
+// Enviar a n8n
+$result = sendToN8n($email, $code);
 
-$resultEmail = sendEmail($email, "Recuperación de contraseña", $html);
-
-if (!$resultEmail["success"]) {
+// Manejo de error
+if (!$result["success"]) {
     echo json_encode([
         "success" => false,
-        "error" => $resultEmail["error"]
+        "error" => "Error enviando el correo",
+        "detalle" => $result
     ]);
     exit;
 }
 
+// Respuesta final
 echo json_encode([
     "success" => true,
-    "message" => "Código enviado correctamente "
+    "message" => "Código enviado correctamente 📩"
 ]);
+?>

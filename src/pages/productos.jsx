@@ -18,7 +18,6 @@ import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
 
-const BASE = import.meta.env.VITE_API_BASE;
 const API = `api/inventario.php`;
 const API_SESSION = `api/session.php`;
 export const indexSelector = 2;

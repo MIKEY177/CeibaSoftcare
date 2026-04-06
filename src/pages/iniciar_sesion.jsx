@@ -14,11 +14,10 @@ import flecha from "../images/flecha_salir.png"
 import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
-        const BASE = import.meta.env.VITE_API_BASE;
-         const API_LOGIN = `${BASE}/login.php`;
-        const API_REC   = `${BASE}/recuperar.php`;
-        const API_CODE  = `${BASE}/verificar_codigo.php`;
-        const API_PASS  = `${BASE}/cambiar_password.php`;
+        const API_LOGIN = `api/login.php`;
+        const API_REC   = `api/recuperar.php`;
+        const API_CODE  = `api/verificar_codigo.php`;
+        const API_PASS  = `api/cambiar_password.php`;
 
         //Login
         const [correo,setcorreo]= useState("")
