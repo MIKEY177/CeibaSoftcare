@@ -74,7 +74,7 @@ $_SESSION["reset_expiration"] = time() + (15 * 60);
 
 function sendToN8n($email, $code) {
 
-    $url = "https://ceibasoftcare.app.n8n.cloud/webhook/reset-password";
+    $url = getenv("N8N_WEBHOOK_URL");
 
     $payload = [
         "email" => $email,
