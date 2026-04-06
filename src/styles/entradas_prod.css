@@ -136,7 +136,6 @@
 
 .header-tabla-entradas td, .body-tabla-entradas td{
     border-bottom: 3px solid #D49538;
-    /* border: 3px solid #D49538; */
 }
 
 .body-tabla-entradas td:last-child{
@@ -163,7 +162,7 @@
 .body-tabla-entradas{
     display: block;
     width: 100%;
-    height: 545px; /* adjust if header height changes */
+    height: 545px;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -252,7 +251,7 @@
     height: 300px;
 }
 
-.modal-entrada-registrar a:first-child, .modal-entrada-editar a:first-child, .modal-entrada-detalle-registrar a:first-child{
+.volver-btn-entr-prod {
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -261,11 +260,33 @@
     font-size: 0.8rem;
     background-color: #0094a421;
     border-radius: 10px;
+    border: none;
     padding: 5px 12px;
     position: relative;
     top: 0;
     left: 0;
-    transform: translate(-580px, -30px); 
+    transform: translate(-530px, -15px); 
+    cursor: pointer;
+    margin-top: 10px;   
+    margin-left: 20px;
+}
+
+.volver-btn-entr-det-prod{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 12px;
+    position: relative;
+    top: 0;
+    left: 0;
+    transform: translate(-430px, -30px); 
+    cursor: pointer;
 }
 
 .modal-entrada-detalle-registrar a:first-child{
@@ -322,7 +343,8 @@
     grid-template-areas:
     "divInpt1 divInpt3"
     "divInpt2 divInpt4"
-    "divInpt2 divInpt5";
+    "divInpt2 divInpt5"
+    "divInpt2 divInpt6";
 }
 
 .epr-label, .eped-label, .edpr-label{
@@ -335,7 +357,6 @@
 }
 
 .label-and-input-container{
-    /* margin-top: 100px; */
     margin-left: 100px;
 }
 
@@ -344,7 +365,7 @@
     font-size: 1rem;
 }
 
-.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5{
+.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5, .edpr-input6{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -355,7 +376,7 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 50px;
+    margin-bottom: 5px;
 }
 
 .epr-input2, .eped-input2, .edpr-input2{
@@ -397,6 +418,7 @@
     align-self: center;
     scale: 1;
     transition: scale 0.2s ease-in-out;
+     margin-top: 20px; 
 }
  
 .edpr-btn{
@@ -522,7 +544,7 @@
 .body-tabla-epr-detalles, .body-tabla-eped-detalles{
     display: block;
     width: 97%;
-    height: 250px; /* adjust if header height changes */
+    height: 250px; 
     overflow-y: auto;
     overflow-x: hidden;
     margin: auto;
@@ -558,45 +580,22 @@
         background-color: #b1b0b0;
     }
 
-    /* Fin Scrollbar */
-
-/* Fin tabla detalles */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.modal-entrada-registrar{
-    display: none;
+    .error-mensaje {
+    display: block;
+    color: #c0392b;
+    font-size: 1rem;
+    font-family: 'lato';
+    padding-left: 5px;
+    min-height: 18px;
+    margin-bottom: 5px;
 }
 
-.modal-entrada-editar{
-    display: none;
+.exito-mensaje {
+    color: #27ae60;
+    font-size: 1rem;
+    font-weight: bold;
+    font-family: 'lato';
+    min-height: 20px;
+    display: block;
 }
-
-.modal-entrada-desactivar{
-    display: none;
-}
-
-.modal-entrada-detalle-registrar{
-    display: none;
-}
-
-.modal-entrada-detalle-desactivar{
-    display: none;
-}
-
-.modales-entradas-prod{
-    display: none;
-}
-
 /* Fin Modales */

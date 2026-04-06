@@ -259,3 +259,343 @@ body{
 }
 
 /* Fin Tablas */
+
+/* Estilos de la Langing Page */
+
+.main-landing{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.header-landing{
+    width: 100%;
+    height: 10vh;
+    background-color: #0190A0;
+}
+
+.navbar{
+    width: 95%;
+    height: 10vh;
+    margin: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.content-logo{
+    width: 20%;
+    display: flex;
+    align-items: center;
+}
+
+.navbar .content-logo img{
+    width: 70px;
+    height: 65px;
+    margin-right: 1rem;
+}
+
+.content-logo h2{
+    color: #ffffff;
+}
+
+.navbar ul{
+    width: 40%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    list-style: none;
+}
+.navbar ul li button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: "Ubuntu";
+}
+
+.navbar ul li button:hover {
+    text-decoration: underline;
+}
+.navbar ul li a{
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.navbar ul li .nav-btn-iniciar button {
+    width: 170px;
+    height: 60px;
+    border-radius: 5px;
+    border: none;
+    background-color: #EAA949;
+    color: #875000;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.hero-section{
+    width: 100%;
+    height: 600px;
+    margin: auto;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.content-hero{
+    width: 60%;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.content-hero h1{
+    color: #212427;
+    font-size: 60px;
+}
+
+.content-hero .separator-hero{
+    width: 870px;
+    height: 1px;
+    background-color: #D49538;
+    margin-top: .5rem;
+}
+
+.content-hero .text-hero{
+    width: 750px;
+    font-size: 24px;
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #212427;
+}
+
+.image-hero{
+    width: 40%;
+    display: flex;
+    align-items: center;
+}
+
+.image-hero img{
+    width: 100%;
+}
+
+.about{
+    width: 100%;
+    height: 550px;
+    margin: auto;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.img-about{
+    width: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.img-about img{
+    width: 80%;
+}
+
+.content-about{
+    width: 60%;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.content-about h1{
+    color: #212427;
+    font-size: 50px;
+}
+
+.content-about .separator-about{
+    width: 420px;
+    height: 1px;
+    background-color: #D49538;
+    margin-top: .5rem;
+}
+
+.content-about .text-about{
+    width: 800px;
+    font-size: 22px;
+    margin-top: 1.5rem;
+    text-align: center;
+    color: #212427;
+}
+
+.functions {
+    width: 100%;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.functions h1 {
+    color: #212427;
+    font-size: 50px;
+    height: 80px;
+}
+
+.functions .text-functions {
+    height: 80px;
+    font-size: 24px;
+    text-align: center;
+    color: #212427;
+}
+
+.functions .cards-functions {
+    width: 70%;
+    height: 300px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.content-card {
+    width: 380px;
+    height: 220px;
+    box-shadow: -2px 2px 6px 4px #E4E4E4;
+    background-color: #ffffff;
+    text-align: center;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0 20px;
+}
+
+.content-card h3 {
+    /* height: 90px; */
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.content-card .text-card-function{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 1rem;
+}
+
+.contact {
+    height: 700px;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.contact h1 {
+    font-size: 50px;
+    margin-bottom: 10px;
+    color: #212427;
+}
+
+.text-contact {
+    margin-bottom: 25px;
+    font-size: 22px;
+    color: #212427;
+}
+
+.contact table {
+    max-width: 1350px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background-color: #E4E4E4;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.contact thead {
+    background-color: #d6d6d6;
+}
+
+.contact th {
+    padding: 15px;
+    font-size: 24px;
+    text-align: center;
+    border-bottom: 3px solid #B5B3B3;
+}
+
+.contact .tipo {
+    border-right: 3px solid #B5B3B3;
+}
+
+.contact td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 3px solid #B5B3B3;
+    font-size: 20px;
+}
+
+.contact .final-td{
+    border-bottom: none;
+}
+
+.contact .line-contact {
+    text-align: center;
+    font-weight: bold;
+    border-left: 3px solid #B5B3B3;
+}
+
+footer{
+    font-family: "Lato", sans-serif;
+    width: 100%;
+    height: 80px;
+    background-color: #F6FEFF;
+    border: none;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    color: #333333;
+    font-size: 20px;
+    padding: 15px;
+}
+
+.softcare-logo-img, .ceiba-logo-img, .logo-softcare-img, .diseno-principal-img{
+    width: 80%;
+    height: 80%;
+}
+
+.asociaciones, .softcare, .ceiba{
+    display: flex;
+    flex-direction: row;
+}
+
+.softcare-logo{
+    width: 60px;
+    height: 60px;
+}
+
+.ceiba-logo{
+    width: 60px;
+    height: 60px;
+}
+
+.softcare{
+    margin-right: 50px;
+}
+
+.softcare-titulo, .ceiba-titulo{
+    color: #333333;
+    font-size: 1.2rem;
+    font-weight: 400;
+    align-self: center;
+}

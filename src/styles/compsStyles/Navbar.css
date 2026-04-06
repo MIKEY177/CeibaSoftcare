@@ -73,7 +73,6 @@
 }
 
 .contenedor-nav{
-    height: 380px;
     width: 280px;
     margin: 50px auto 0;
     display: flex;
@@ -113,6 +112,9 @@
 }
 
 .cerrar-sesion-btn{
+    position: absolute;
+    bottom: 0;
+    margin-bottom: 146px;
     height: 40px;
     width: 200px;
     background: linear-gradient(to right, #BE5263, #E66377);

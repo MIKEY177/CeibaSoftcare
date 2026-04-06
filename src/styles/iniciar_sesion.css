@@ -71,6 +71,7 @@
 }
 
 .iniciar-sesion-form{
+    position: relative;
     display: flex;
     flex-direction: column;
     align-self: center;
@@ -96,6 +97,7 @@
     color: #212427;
     box-shadow: 3px 3px 4px #00000065;
     text-decoration: none;
+    z-index: 2;
 }
 
 .iniciar-sesion-input2{
@@ -118,9 +120,22 @@
 .olvido-contra{
     color: #740000;
     font-size: 1rem;
-    margin-bottom: 80px;
+    margin-bottom: 10px; 
 }
 
+.error-login-container {
+    height: 40px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    margin-bottom: 10px; 
+}
+
+.error-login-global {
+    font-size: 1rem;
+}
 .iniciar-sesion-btn{
     margin: 0 90px;
     height: 50px;
@@ -147,7 +162,7 @@
     width: 100%;
     height: 100%;
     z-index: 2;
-    display: flex;
+    display: none;
     background-color: #00000065;
 }
 
@@ -206,6 +221,7 @@
 }
 
 .rc-form{
+    position: relative;
     display: flex;
     flex-direction: column;
     width: 500px;
@@ -229,7 +245,8 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
+    z-index: 2;
 }
 
 .rc-input3{
@@ -258,29 +275,6 @@
     align-self: center;
     transform: scale(1);
     transition: transform 0.1s ease-in-out;
-}
-
-
-
-
-
-
-
-
-.mdc1{
-    display: none;
-}
-
-.mdc2{
-    display: none;
-}
-
-.mdc3{
-    display: none;
-}
-
-.modales-iniciar-sesion{
-    display: none;
 }
 
 /* Fin Ventanas Modales */

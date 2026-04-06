@@ -24,6 +24,13 @@ main{
     overflow-y: hidden;
 }
 
+.no-hay-eventos{
+    text-align: center;
+    font-size: 1.5rem;
+    width: 100%;
+    color: #1E1E1E;
+}
+
 .fecha{
     font-size: 1.3rem;
     font-weight: 500;
@@ -72,6 +79,7 @@ main{
 
 .area-eventos::-webkit-scrollbar {
     width: 6px;
+    height: 12px;
 }
 
 .area-eventos::-webkit-scrollbar-track {
