@@ -5,7 +5,8 @@ import { Menu } from "./Menu.jsx";
 
 // Estilos e imágenes
 import "../styles/compsStyles/Navbar.css"
-import rolStand from "../images/rol_stand.png"
+import rolStand       from "../images/rol_stand.png"
+import pfpPlaceholder from "../../images/pfp_placeholder.png"
 
 export const Navbar = ({ user, menu }) => {
   const navigate = useNavigate();
@@ -28,7 +29,7 @@ export const Navbar = ({ user, menu }) => {
     <aside className="vertical-navbar">
       <div className="perfil">
         <figure className="avatar">
-          <img className="avatar-img" src="" alt=""/>
+          <img className="avatar-img" src={pfpPlaceholder} alt=""/>
         </figure>
         {/* Nombre del usuario */}
         <h1 className="perfil-nombre">{user?.nombre}</h1>
