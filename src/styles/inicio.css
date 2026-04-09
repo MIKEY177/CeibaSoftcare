@@ -1,0 +1,96 @@
+main{
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.seccion1-proximas-eventos{
+    width: 100%;
+    height: 340px;
+    overflow: hidden;
+}
+
+.area-eventos{
+    width: 100%;
+    height: 300px;
+    background-color: white;
+    border: 3px solid #BDEDF3;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-family: "Lato";
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.no-hay-eventos{
+    text-align: center;
+    font-size: 1.5rem;
+    width: 100%;
+    color: #1E1E1E;
+}
+
+.fecha{
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.articulo-evento{
+    width: 290px;
+    height: 220px;
+    background-color: #EFEFEF;
+    border-radius: 15px;
+    padding: 15px;
+    margin: 10px 0 0;
+}
+
+.detalles-evento{
+    font-size: 1.05rem;
+}
+
+.articulo-evento h5{
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #048F9F;
+    text-align: center;
+}
+
+.articulo-evento h6{
+    margin: 15px 0 0;
+    font-size: 1.05rem;
+}
+
+.articulo-evento p{
+    font-size: 1.05rem;
+    overflow-wrap: break-word;
+}
+
+.separador-vertical{
+    margin: 5px 20px 0;
+    width: 3px;
+    height: 250px;
+    background-color: #BDEDF3;
+    flex-shrink: 0;
+}
+
+/* Scrollbar */
+
+.area-eventos::-webkit-scrollbar {
+    width: 6px;
+    height: 12px;
+}
+
+.area-eventos::-webkit-scrollbar-track {
+    background: #BDEDF3;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+}
+
+.area-eventos::-webkit-scrollbar-thumb {
+    background-color: #0094A4;
+    border-radius: 100px;
+}
+
+/* Fin Scrollbar */
