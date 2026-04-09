@@ -308,7 +308,18 @@ body{
     align-items: center;
     list-style: none;
 }
+.navbar ul li button {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-size: 20px;
+    cursor: pointer;
+    font-family: "Ubuntu";
+}
 
+.navbar ul li button:hover {
+    text-decoration: underline;
+}
 .navbar ul li a{
     color: #ffffff;
     text-decoration: none;

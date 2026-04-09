@@ -1,4 +1,4 @@
-import { Link } from 'react'
+import { Link } from 'react-router-dom'
 import '../styles/global_styles.css'
 import logo from '../images/softcare_logo_blanco.png'
 import img_hero from '../images/image-hero.png'
@@ -7,6 +7,9 @@ import logo_ceiba from '../images/ceiba_logo.png'
 import logo_ceibasoftcare from '../images/softcare_logo.png'
 
 export const LandingPage = () => {
+    const scrollTo = (id) => {
+        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    };
     return (
         <main className='main-landing'>
             <header className="header-landing">
@@ -16,11 +19,11 @@ export const LandingPage = () => {
                         <h2>Ceiba SoftCare</h2>
                     </figure>
                     <ul>
-                        <li><a href="#about">Nosotros</a></li>
-                        <li><a href="#functions">Funciones</a></li>
-                        <li><a href="#contact">Contactenos</a></li>
-                        <li><a href="#" className="nav-btn-iniciar"><button>Iniciar Sesión</button></a></li>
-                    </ul>   
+                        <li><button onClick={() => scrollTo('about')}>Nosotros</button></li>
+                        <li><button onClick={() => scrollTo('functions')}>Funciones</button></li>
+                        <li><button onClick={() => scrollTo('contact')}>Contáctenos</button></li>
+                        <li><Link to="/iniciar_sesion" className="nav-btn-iniciar"><button>Iniciar Sesión</button></Link></li>
+                    </ul> 
                 </nav>
             </header>
             <section className="hero-section">
@@ -30,7 +33,6 @@ export const LandingPage = () => {
                     <p className="text-hero">Solución integral para el albergue Ceiba, gestionando y organizando de manera
                         eficiente el cuidado de nuestros animales.
                     </p>
-                    {/* <a href="#" class="btn-iniciar"><button>Iniciar Sesión</button></a> */}
                 </article>
                 <figure className="image-hero">
                     <img src={img_hero} alt="Imagen Hero Section" />
