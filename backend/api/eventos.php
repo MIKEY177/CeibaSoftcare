@@ -86,12 +86,12 @@ if ($method === 'POST') {
         $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
 
-  if ($fecha_hora === '') {
+ if ($fecha_hora === '') {
     $errores['fecha_hora'] = "❗La fecha y hora son obligatorias.";
 } else {
-    $dt = DateTime::createFromFormat('Y-m-d H:i:s', $fecha_hora);
+    $dt = new DateTime($fecha_hora);
 
-    if (!$dt || $dt->format('Y-m-d H:i:s') !== $fecha_hora) {
+    if (!$dt) {
         $errores['fecha_hora'] = "❗Formato inválido.";
     } elseif ($dt <= new DateTime()) {
         $errores['fecha_hora'] = "❗Debe ser una fecha futura.";
@@ -148,21 +148,23 @@ if ($method === 'PUT') {
         $errores['nombre'] = "❗El nombre no puede superar los 100 caracteres.";
     }
 
-   if ($fecha_hora === '') {
+ if ($fecha_hora === '') {
     $errores['fecha_hora'] = "❗La fecha y hora son obligatorias.";
 } else {
-    $dt = DateTime::createFromFormat('Y-m-d H:i:s', $fecha_hora);
+    try {
+        $dt = new DateTime($fecha_hora);
 
-    if (!$dt || $dt->format('Y-m-d H:i:s') !== $fecha_hora) {
+        if ($dt <= new DateTime()) {
+            $errores['fecha_hora'] = "❗Debe ser una fecha futura.";
+        }
+    } catch (Exception $e) {
         $errores['fecha_hora'] = "❗Formato inválido.";
-    } elseif ($dt <= new DateTime()) {
-        $errores['fecha_hora'] = "❗Debe ser una fecha futura.";
     }
 }
  if (strlen($descripcion) > 100) {
         $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
-    
+
     if ($lugar === '') {
         $errores['lugar'] = "❗El lugar es obligatorio.";
     } elseif (strlen($lugar) > 100) {

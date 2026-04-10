@@ -17,6 +17,17 @@ export const Eventos = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });
   const normalizarFecha = (f) => f.replace("T", " ").slice(0,16);
 
+    const eventoVacio = () => { 
+      const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); 
+      return { 
+        nombre: "", 
+        descripcion: "", 
+        requiere_producto: 0,
+        fecha_hora: d.toISOString().slice(0, 16), 
+        lugar: "" 
+      }; 
+    }; 
+
   const [errores,setErrores] = useState({});
   const [mensajeExito, setMensajeExito] = useState("");
 
@@ -42,29 +53,24 @@ export const Eventos = () => {
       Number(eventoSeleccionado.requiere_producto) !== Number(formEditar.requiere_producto)
     );
   };
-  const eventoVacio = () => { 
-      const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); 
-      return { 
-        nombre: "", 
-        descripcion: "", 
-        requiere_producto: 0,
-        fecha_hora: d.toISOString().slice(0, 16), 
-        lugar: "" 
-      }; 
-    }; 
+
 
   const abrirModal = (num, evento = null) => { 
     if (num === 1) setFormEvento(eventoVacio()); 
-    if (num === 2 && evento) { 
-        const eventoNormalizado = {
-          ...evento, requiere_producto: Number(evento.requiere_producto ?? 0)
-        };
-        setEventoSeleccionado(eventoNormalizado); 
-        setFormEditar(eventoNormalizado);
-      } 
-      if (num === 3 && evento) { 
-        setEventoSeleccionado(evento); 
-      }   
+    if (num === 2 && evento) {
+      const eventoNormalizado = {
+        ...evento,
+        requiere_producto: Number(evento.requiere_producto ?? 0),
+        fecha_hora: evento.fecha_hora
+        ? evento.fecha_hora.replace(" ", "T").slice(0, 16): ""
+      };
+
+      setEventoSeleccionado(eventoNormalizado);
+      setFormEditar(eventoNormalizado);
+    }
+    if (num === 3 && evento) { 
+      setEventoSeleccionado(evento); 
+    }   
       setModalActivo(num); 
   }; 
 
@@ -100,16 +106,6 @@ export const Eventos = () => {
     }) 
     .catch(console.error);
   }, []);
-
-  useEffect(() => { 
-    fetch(API, { credentials: "include" }) 
-    .then(r => r.json()) 
-    .then(res => { 
-      if (res.success) 
-      setEventos(res.data); 
-    }) 
-    .catch(console.error); 
-  }, []); 
   
   const handleRegistrar = (e) => {
     e.preventDefault();
@@ -142,28 +138,34 @@ export const Eventos = () => {
     .finally(() => setCargando(false));
   };
 
-  const handleEditar = (e) => { 
-    e.preventDefault(); 
-    if (!hayCambios()) {
-      setErrores({ general: "No se realizaron cambios." });
-      return;
-    }
-    setCargando(true); 
-    setErrores({});
-    setMensajeExito("");
+const handleEditar = (e) => { 
+  e.preventDefault(); 
+  if (!hayCambios()) {
+    setErrores({ general: "No se realizaron cambios." });
+    return;
+  }
+  setCargando(true); 
+  setErrores({});
+  setMensajeExito("");
+  let fecha = formEditar.fecha_hora;
+  if (fecha.includes("T")) {
+    fecha = fecha.replace("T", " ");
+  }
 
-    fetch(API, { 
-      method: "PUT", 
-      credentials: "include", 
-      headers: { "Content-Type": "application/json" }, 
-      body: JSON.stringify({ 
-        id_evento: eventoSeleccionado.id_evento, 
-        ...formEditar,
-        fecha_hora: formEditar.fecha_hora.replace("T", " ") + ":00",
-        requiere_producto: Number(formEditar.requiere_producto)
-      }) 
-    }) 
-    .then(r => r.json()) 
+  fecha = fecha.length === 16 ? fecha + ":00" : fecha;
+
+  fetch(API, {
+    method: "PUT",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      id_evento: eventoSeleccionado.id_evento,
+      ...formEditar,
+      fecha_hora: fecha,
+      requiere_producto: Number(formEditar.requiere_producto)
+    })
+  })
+  .then(r => r.json()) 
     .then(res => { 
       if (res.success) {
         if (res.mensaje === "No se realizaron cambios.") {
@@ -265,7 +267,7 @@ export const Eventos = () => {
                           <td>{evento.lugar}</td>
                           <td>
                             <div className="last-td-flex-content-wrapper">
-                              <figure className="editar-icono" style={{ cursor: "pointer" }} onClick={() => {console.log(evento);abrirModal(2, evento)}}>
+                              <figure className="editar-icono" style={{ cursor: "pointer" }} onClick={() =>abrirModal(2, evento)}>
                                 <img className="editar-icono-img" src={editarIcon} alt="Editar" />
                               </figure>
                               <figure className="desactivar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(3, evento)}>

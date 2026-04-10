@@ -69,6 +69,10 @@ export const Inicio = () => {
     }
   })();
 
+  const eventosOrdenados = [...eventos]
+  .filter(ev => new Date(ev.fecha_hora) > new Date())
+  .sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora))
+  .slice(0, 5);
   return (
     <>
       <main>
@@ -79,10 +83,10 @@ export const Inicio = () => {
           <section className="seccion1-proximas-eventos">
             <h3 className="subtitulo-dashboard">Próximos Eventos</h3>
             <section className="area-eventos">
-              {eventos.length === 0 ? (
+              {eventosOrdenados.length === 0 ? (
                 <p className="no-hay-eventos">No hay eventos programados.</p>
               ) : (
-                eventos.map((evento) => (
+                eventosOrdenados.map((evento) => (
                   <React.Fragment key={evento.id_evento}>
                     <div className="subarea-evento">
                       <h4 className="fecha">{evento.fecha_hora}</h4>
