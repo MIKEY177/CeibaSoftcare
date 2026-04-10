@@ -231,7 +231,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;          
+    gap: 0px;          
 }
 
 .modal-eventos-desactivar{
@@ -265,7 +265,7 @@
 .modal-er-titulo, .modal-eed-titulo, .modal-eel-titulo{
     color: #048F9F;
     font-size: 1.8rem;
-    margin-bottom: 20px;  
+    margin-bottom: 0px;  
 }
 .er-form, .eed-form{
     display: flex;
@@ -434,7 +434,7 @@
 
 .exito-mensaje {
     color: #27ae60;
-    font-size: 0.85rem;
+    font-size: 1rem;
     font-weight: bold;
     font-family: 'lato';
 }
@@ -459,18 +459,3 @@
 } */
 /* Fin Modales */
 
-.modales-eventos{
-    display: none;
-}
-
-.modal-eventos-registrar{
-    display: none;
-}
-
-.modal-eventos-editar{
-    display: none;
-}
-
-.modal-eventos-desactivar{
-    display: none;
-}
