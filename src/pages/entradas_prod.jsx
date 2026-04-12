@@ -25,7 +25,7 @@ const entradaVacia = () => {
   d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
   return { fecha_hora: d.toISOString().slice(0, 16), observaciones: "" };
 };
-
+    
 const detalleVacio = {
   id_producto1:          "",
   nombre_producto:       "",

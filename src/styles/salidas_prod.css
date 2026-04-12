@@ -608,6 +608,7 @@
     display: block;
 }
 /* Fin Modales */
+<<<<<<< Updated upstream
 
 .modales-salidas-prod{
 display: none;
@@ -632,3 +633,5 @@ display: none;
 .modal-salida-detalle-desactivar{
 display: none;
 }
+=======
+>>>>>>> Stashed changes
