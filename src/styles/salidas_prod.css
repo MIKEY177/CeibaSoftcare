@@ -608,27 +608,3 @@
     display: block;
 }
 /* Fin Modales */
-
-.modales-salidas-prod{
-display: none;
-}
-
-.modal-salida-registrar{
-display: none;
-}
-
-.modal-salida-editar{
-display: none;
-}
-
-.modal-salida-desactivar{
-display: none;
-}
-
-.modal-salida-detalle-registrar{
-display: none;
-}
-
-.modal-salida-detalle-desactivar{
-display: none;
-}

@@ -55,6 +55,7 @@ export const Inicio = () => {
 
   }, []);
 
+
   // compute menu object based on user role
   const menuObj = (() => {
     switch (user.rol) {
