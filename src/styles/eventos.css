@@ -218,7 +218,7 @@
     align-items: center;
 }
 
-.modal-eventos-registrar, .modal-eventos-editar, .modal-eventos-desactivar{
+.modal-eventos-registrar, .modal-eventos-editar, .modal-eventos-desactivar, .modal-eventos-rp{
     margin: auto;
     background-color: #FFFFFF;
     width: 1000px;
@@ -267,14 +267,26 @@
     font-size: 1.8rem;
     margin-bottom: 0px;  
 }
-.er-form, .eed-form{
+.modal-rp-titulo, .modal-ep-titulo{
+   color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 50px;  
+}
+.er-form, .eed-form, .rp-form{
     display: flex;
     flex-direction: column;
     width: 900px;
     height: auto;          
 }
 
-
+.rp-form-inputs-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+        "divInpt1 divInpt2"
+        "divInpt3 .";
+}
 .er-form-inputs-area, .eed-form-inputs-area{
     display: grid;
     grid-template-columns: 1fr 1fr ;
@@ -282,11 +294,12 @@
     grid-template-areas:
     "divInpt1 divInpt2"
     "divInpt4 divInpt2"
-    "divInpt5 divInpt3";
+    "divInpt5 divInpt3"
+    ". divInpt6";
     gap: 5px 0;
 }
 
-.er-label, .eed-label{
+.er-label, .eed-label, .rp-label{
     color: #212427;
     font-size: 1.3rem;
     font-weight: 500;
@@ -319,6 +332,19 @@
     text-decoration: none;
     background-color: #F8F8F8;
     margin-bottom: 5px;
+}
+.rp-input1, .rp-input2, .rp-input3, .rp-input4{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 10px;
 }
 
 /* .er-input3 {
@@ -442,7 +468,232 @@
     position: relative;
     width: max-content;
 }
+/* ── Buscador de productos ─────────────────────────────────── */
 
+.buscador-wrapper {
+    position: relative;
+    width: 400px;
+}
+
+.buscador-input-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.buscador-limpiar-btn {
+    height: 40px;
+    padding: 0 14px;
+    background-color: #e66377d7;
+    color: #740000;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.buscador-limpiar-btn:hover {
+    transform: scale(1.05);
+}
+
+.buscador-cargando {
+    font-size: 0.85rem;
+    color: #888;
+    padding-left: 5px;
+    margin: 2px 0 0 0;
+}
+
+.buscador-sin-resultados {
+    font-size: 0.85rem;
+    color: #888;
+    padding-left: 5px;
+    margin: 2px 0 0 0;
+}
+
+.buscador-dropdown {
+    position: absolute;
+    z-index: 999;
+    background: #fff;
+    border: 2px solid #0094A4;
+    border-radius: 8px;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    margin: 2px 0 0 0;
+    padding: 0;
+    list-style: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+}
+
+.buscador-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.buscador-dropdown::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 8px;
+}
+
+.buscador-dropdown::-webkit-scrollbar-thumb {
+    background-color: #0094A4;
+    border-radius: 8px;
+}
+
+.buscador-dropdown li {
+    padding: 10px 14px;
+    cursor: pointer;
+    border-bottom: 1px solid #e8e8e8;
+    transition: background 0.1s ease;
+}
+
+.buscador-dropdown li:last-child {
+    border-bottom: none;
+}
+
+.buscador-dropdown li:hover {
+    background-color: #e8f7f9;
+}
+
+.buscador-nombre {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #212427;
+}
+
+.buscador-detalle {
+    font-size: 0.85rem;
+    color: #888;
+    margin-left: 8px;
+    font-weight: normal;
+}
+
+/* ── Tabla productos del evento (modal 5) ──────────────────── */
+
+.modal-eventos-productos-lista {
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 800px;
+    height: auto;
+    max-height: 95vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.tabla-productos-evento {
+    width: 100%;
+    border-collapse: collapse;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 2px solid #D49538;
+    font-family: "Lato";
+    text-align: center;
+}
+
+.tabla-productos-evento thead {
+    background-color: #FFF8E2;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.tabla-productos-evento thead td {
+    padding: 12px 10px;
+    border-bottom: 2px solid #D49538;
+}
+
+.tabla-productos-evento tbody tr {
+    transition: background 0.1s ease;
+}
+
+.tabla-productos-evento tbody tr:hover {
+    background-color: #fffaf0;
+}
+
+.tabla-productos-evento tbody td {
+    padding: 10px;
+    border-bottom: 1px solid #f0d9a8;
+    font-size: 1rem;
+    color: #212427;
+}
+
+.tabla-productos-evento tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.btn-quitar-producto {
+    padding: 5px 16px;
+    background-color: #e66377d7;
+    color: #740000;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: transform 0.1s ease-in-out;
+}
+
+.btn-quitar-producto:hover {
+    transform: scale(1.05);
+}
+
+/* ── Botones agregar / ver productos (modal 1) ─────────────── */
+
+.registrar-producto-btn{
+    width: 310px;
+    height: 40px;
+    font-size: 1.3rem;
+    font-family: "ubuntu";
+    background-color: #0094A4;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+     margin-bottom: 30px;
+}
+
+.registrar-producto-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+}
+
+
+.btn-ver-productos {
+    height: 36px;
+    width: 400px;
+    background-color: #eaaa4921;
+    color: #875000;
+    border: 2px solid #D49538;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-family: "ubuntu";
+    cursor: pointer;
+    margin-top: 4px;
+    transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.btn-ver-productos:hover {
+    background-color: #eaaa493a;
+    transform: scale(1.02);
+}
+
+.agregar-producto{
+    display: flex;
+    justify-content: center;
+   
+}
+.ep-btn{
+    width: 100%;
+    display: flex; 
+    justify-content: center;
+}
 /* .codigo-barras-icono {
     width: 30px;
     height: 30px;
