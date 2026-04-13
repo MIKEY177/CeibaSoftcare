@@ -420,7 +420,7 @@ export const Productos = () => {
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
                   <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input5" type="text" nvalue={formRegistrar.cantidad_por_unidad} onChange={e => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
+                  <input className="ir-input5" type="text" value={formRegistrar.cantidad_por_unidad} onChange={e => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
                   <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
                 </div>
                 <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 

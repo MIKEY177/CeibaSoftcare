@@ -26,6 +26,7 @@ const entradaVacia = () => {
   return { fecha_hora: d.toISOString().slice(0, 16), observaciones: "" };
 };
 
+    
 const detalleVacio = {
   id_producto1:          "",
   nombre_producto:       "",
@@ -567,12 +568,14 @@ export const EntradasProd = () => {
                       <button className="ver-detalles-btn" type="button" onClick={() => abrirModal(7, entrada)}> Ver Detalles</button>
                     </td>
                     <td>
-                      <figure className="editar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(2, entrada)}>
-                        <img className="editar-icono-img" src={editarIcon} alt="Editar" />
-                      </figure>
-                      <figure className="desactivar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(3, entrada)}>
-                        <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
-                      </figure>
+                      <div className="last-td-flex-content-wrapper">
+                        <figure className="editar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(2, entrada)}>
+                          <img className="editar-icono-img" src={editarIcon} alt="Editar" />
+                        </figure>
+                        <figure className="desactivar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(3, entrada)}>
+                          <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
+                        </figure>
+                      </div>
                     </td>
                   </tr>
                 ))
