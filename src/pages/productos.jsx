@@ -160,7 +160,6 @@ export const Productos = () => {
       const interval = now - lastKeyTimeRef.current;
       lastKeyTimeRef.current = now;
   
-      // Si la velocidad es lenta se considera humano
       if (interval > 100) {
         scannedCodeRef.current = "";
         isScanningRef.current = false;
@@ -268,25 +267,29 @@ export const Productos = () => {
     // ─── Envío genérico al backend ───────────────────────────────────────────────
   
     const enviar = (method, body, onExito) => {
-      setCargando(true);
-      setErrores({});
-      fetch(API, {
-        method,
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+     setCargando(true);
+     setErrores({});
+     fetch(API, {
+       method,
+       credentials: "include",
+       headers: { "Content-Type": "application/json" },
+       body: JSON.stringify(body),
+     })
+     .then(res => res.json())
+     .then(response => {
+       if (response.success) {
+         if (response.mensaje === "No se realizaron cambios.") {
+           setErrores({ general: "No se realizaron cambios." });
+           return;
+         }
+         cargarProductos();
+         mostrarExito(onExito);
+        } else {
+         setErrores(response.errores ?? { general: "Error desconocido." });
+        }
       })
-        .then(res => res.json())
-        .then(response => {
-          if (response.success) {
-            cargarProductos();
-            mostrarExito(onExito);
-          } else {
-            setErrores(response.errores ?? { general: "Error desconocido." });
-          }
-        })
-        .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
-        .finally(() => setCargando(false));
+      .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
+      .finally(() => setCargando(false));
     };
   
     const handleRegistrar = (e) => {

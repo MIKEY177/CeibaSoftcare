@@ -270,8 +270,11 @@ export const EntradasProd = () => {
     const e = {};
     if (!form.id_producto1)
       e.id_producto1 = "❗Selecciona un producto.";
-    if (!form.cantidad_presentacion || form.cantidad_presentacion <= 0)
+    if (!form.cantidad_presentacion || form.cantidad_presentacion === "") {
       e.cantidad_presentacion = "❗Ingresa una cantidad válida.";
+    } else if (!Number.isInteger(Number(form.cantidad_presentacion)) || Number(form.cantidad_presentacion) <= 0) {
+       e.cantidad_presentacion = "❗La cantidad debe ser un número entero positivo.";
+    }
     if (!form.fecha_vencimiento) {
       e.fecha_vencimiento = "❗La fecha de vencimiento es obligatoria.";
     } else {
@@ -697,6 +700,7 @@ export const EntradasProd = () => {
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="eped-label">Observaciones</label>
                   <textarea className="eped-input2" value={formEditar.observaciones} onChange={e => setFormEditar({ ...formEditar, observaciones: e.target.value })} />
+                    <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 {/* Tabla de detalles con botones editar/desactivar */}
                 <section style={{ gridArea: "divInpt3" }} className="eped-form-detalles-area">
@@ -827,7 +831,7 @@ export const EntradasProd = () => {
                       </span>
                     )}
                   </label>
-                  <input className="edpr-input3" type="number" min="1" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
+                  <input className="edpr-input3" type="number" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
 
@@ -919,7 +923,7 @@ export const EntradasProd = () => {
                       (frascos / cajas / unidades)
                     </span>
                   </label>
-                  <input className="edpr-input3" type="number" min="1" value={formEditarDetalle.cantidad_presentacion}
+                  <input className="edpr-input3" type="number" value={formEditarDetalle.cantidad_presentacion}
                     onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
@@ -971,7 +975,7 @@ export const EntradasProd = () => {
                 onClick={handleDesactivarDetalle} disabled={cargando}>
                 {cargando ? "Desactivando..." : "Desactivar"}
               </button>
-              <button className="cancelar-btn" type="button" onClick={() => setModalActiva(2)}>
+              <button className="cancelar-btn" type="button" onClick={() => {setErrores({}); setModalActiva(2);}}>
                 Cancelar
               </button>
             </section>

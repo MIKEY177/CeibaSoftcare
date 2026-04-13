@@ -214,18 +214,19 @@ export const IniciarSesion = () => {
                                 <h1 className="modal-rc-titulo">Recuperar contraseña - 3er paso</h1>
                                 <h3 className="modal-rc-mensaje">El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.</h3>
                                 <form className="rc-form" onSubmit={cambiarPassword}>
-                                    <label className="rc-label">Nueva Contraseña</label>
+                                  <label className="rc-label">Nueva Contraseña</label>
                                     <input className="rc-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
-                                        {errores.nuevaPass && <span className="error-mensaje-iniciar-sesion-mod3">{errores.nuevaPass}</span>}
+                                    <span className="error-login-global">{erroresModal.nuevaPass ?? ""}</span>
+
                                     <label className="rc-label">Confirmar Contraseña</label>
                                     <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
-                                        <div className="error-login-container">
-                                            {Object.values(erroresModal).map((error, index) => (
-                                                <span key={index} className="error-login-global">{error}</span>
-                                            ))}
-                                        </div>
+                                    <span className="error-login-global">{erroresModal.confirmarPass ?? ""}</span>
+
+                                    {/* Error general */}
+                                    <span className="error-login-global">{erroresModal.general ?? ""}</span>
+
                                     <input className="rc-btn" type="submit" value="Cambiar Contraseña" />
-                                </form>
+                              </form>
                             </section>
                         </aside>
                     )}

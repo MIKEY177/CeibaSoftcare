@@ -78,8 +78,8 @@ if ($method === 'POST') {
 
     if ($nombre === '') {
         $errores['nombre'] = "❗El nombre del producto es obligatorio.";
-    } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
+    } elseif (strlen($nombre) > 100) {
+        $errores['nombre'] = "❗El nombre no puede superar los 100 caracteres.";
     } else {
         $stmt_check = mysqli_prepare($conn, "SELECT id_producto FROM productos WHERE nombre = ? AND codigo_barras = ? AND activo = 1");
         mysqli_stmt_bind_param($stmt_check, "ss", $nombre, $codigo_barras);
@@ -91,8 +91,8 @@ if ($method === 'POST') {
         mysqli_stmt_close($stmt_check);
     }
 
-    if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
+    if (strlen($descripcion) > 100) {
+        $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
 
     if ($tipo_medida === '') {
@@ -111,9 +111,10 @@ if ($method === 'POST') {
         }
         mysqli_stmt_close($stmt_check_codigo);
     }
-
     if ($cantidad_por_unidad === '') {
-        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+      $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+    } elseif (!is_numeric($cantidad_por_unidad) || floatval($cantidad_por_unidad) <= 0) {
+      $errores['cantidad_por_unidad'] = "❗La cantidad por unidad debe ser un número positivo.";
     }
 
     if (!empty($errores)) {
@@ -155,14 +156,18 @@ if ($method === 'PUT') {
 
     if ($nombre === '') {
         $errores['nombre'] = "❗El nombre del producto es obligatorio.";
-    } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
+    } elseif (strlen($nombre) > 100) {
+        $errores['nombre'] = "❗El nombre no puede superar los 100 caracteres.";
     }
 
-    if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
+    if (strlen($descripcion) > 100) {
+        $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
-
+    if ($cantidad_por_unidad ===''){
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+    } elseif (!is_numeric($cantidad_por_unidad) || floatval($cantidad_por_unidad) <= 0) {
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad debe ser un número positivo.";
+    }
     if ($tipo_medida === '') {
         $errores['tipo_medida'] = "❗El tipo de medida es obligatorio.";
     }
@@ -180,10 +185,6 @@ if ($method === 'PUT') {
         mysqli_stmt_close($stmt_check_codigo);
     }
 
-    if ($cantidad_por_unidad === '') {
-        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
-    }
-
     if (!empty($errores)) {
         http_response_code(422);
         echo json_encode(["success" => false, "errores" => $errores], JSON_UNESCAPED_UNICODE);
@@ -197,14 +198,16 @@ if ($method === 'PUT') {
 
     if (mysqli_stmt_execute($stmt)) {
         if (mysqli_stmt_affected_rows($stmt) === 0) {
-            http_response_code(404);
-            echo json_encode([
-                "success" => false,
-                "errores" => ["general" => "❗Producto no encontrado."]
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
-        }
+        echo json_encode([
+            "success" => true,
+            "mensaje" => "No se realizaron cambios."
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode([
+            "success" => true,
+            "mensaje" => "Producto actualizado correctamente."
+        ], JSON_UNESCAPED_UNICODE);
+    }
     } else {
         http_response_code(500);
         echo json_encode([

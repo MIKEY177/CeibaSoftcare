@@ -3,6 +3,8 @@ require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
 
 header("Content-Type: application/json");
+ini_set('display_errors', 0);
+error_reporting(0);
 
 $isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
 
@@ -79,13 +81,25 @@ if (mysqli_num_rows($resultado) > 0) {
     $respuesta = ["status" => "error", "mensaje" => "❗No existe una cuenta con ese correo."];
 }
 
-$sql_log = "INSERT INTO inicio_sesion (correo, contrasena, id_usuario1) VALUES (?, ?, ?)";
-$stmt_log = mysqli_prepare($conn, $sql_log);
-$contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
-mysqli_stmt_bind_param($stmt_log, "ssi", $correo, $contrasena_hash, $usuario_id_para_log);
-mysqli_stmt_execute($stmt_log);
+try {
+    $sql_log = "INSERT INTO inicio_sesion (correo, contrasena, id_usuario1) VALUES (?, ?, ?)";
+    $stmt_log = mysqli_prepare($conn, $sql_log);
+    $contrasena_hash = password_hash($contrasena, PASSWORD_DEFAULT);
+
+    if ($usuario_id_para_log !== null) {
+        mysqli_stmt_bind_param($stmt_log, "ssi", $correo, $contrasena_hash, $usuario_id_para_log);
+    } else {
+        $stmt_log = mysqli_prepare($conn, "INSERT INTO inicio_sesion (correo, contrasena) VALUES (?, ?)");
+        mysqli_stmt_bind_param($stmt_log, "ss", $correo, $contrasena_hash);
+    }
+
+    mysqli_stmt_execute($stmt_log);
+    mysqli_stmt_close($stmt_log);
+} catch (Exception $e) {
+    error_log("Error log sesion: " . $e->getMessage());
+    // No bloqueamos la respuesta al usuario
+}
 
 echo json_encode($respuesta);
-
 mysqli_close($conn);
 ?>
