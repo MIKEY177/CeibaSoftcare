@@ -161,7 +161,7 @@ export const Productos = () => {
       lastKeyTimeRef.current = now;
   
       // Si la velocidad es lenta se considera humano
-      if (interval > 80) {
+      if (interval > 100) {
         scannedCodeRef.current = "";
         isScanningRef.current = false;
   

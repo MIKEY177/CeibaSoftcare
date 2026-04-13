@@ -45,14 +45,13 @@ $stmt = mysqli_prepare($conn,
 );
 
 if (!$stmt) {
-    echo json_encode(["status" => "error", "mensaje" => "❗Error interno del servidor."]);
+    echo json_encode(["status" => "error", "mensaje" => "❗Correo no encontrado."]);
     exit;
 }
 
 mysqli_stmt_bind_param($stmt, "s", $correo);
 mysqli_stmt_execute($stmt);
 $resultado = mysqli_stmt_get_result($stmt);
-
 $usuario_id_para_log = null;
 $login_exitoso = false;
 $respuesta = [];

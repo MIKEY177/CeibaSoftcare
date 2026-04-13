@@ -5,6 +5,7 @@ import img_hero from '../images/image-hero.png'
 import img_about from '../images/image-about.png'
 import logo_ceiba from '../images/ceiba_logo.png'
 import logo_ceibasoftcare from '../images/softcare_logo.png'
+import logo_sena from '../images/logo_sena.png'
 
 export const LandingPage = () => {
     const scrollTo = (id) => {
@@ -112,6 +113,12 @@ export const LandingPage = () => {
             <footer>
                 <p>© Derechos Reservados.</p>
                 <section className="asociaciones">
+                    <div className="sena">
+                        <figure className="sena-logo">
+                            <img className="sena-logo-img" src={logo_sena} alt="" />
+                        </figure>
+                        <h6 className="sena-titulo">Sena</h6>
+                    </div>
                     <div className="softcare">
                         <figure className="softcare-logo">
                             <img className="softcare-logo-img" src={logo_ceiba} alt="" />
