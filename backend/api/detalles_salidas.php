@@ -172,7 +172,7 @@ if ($method === 'PUT') {
     }
 
     if (empty($errores)) {
-        $stock = 'SELECT cantidad_actual FROM stocks WHERE id_producto1 = ?';
+        $stock = "SELECT cantidad_actual FROM stocks WHERE id_producto1 = ?";
         $s = mysqli_prepare($conn, $stock);
         mysqli_stmt_bind_param($s, "i", $id_producto);
         mysqli_stmt_execute($s);
@@ -185,7 +185,7 @@ if ($method === 'PUT') {
             $detalle_actual_total = floatval($detalleActual['cantidad_total']);
             $detalle_producto_original = intval($detalleActual['id_producto1']);
             $maxStock = floatval($cantidad_actual);
-            if ($id_producto === $detalle_producto_original) {
+            if ($detalle_producto_original === $id_producto) {
                 $maxStock += $detalle_actual_total;
             }
             if (floatval($cantidad_total) > $maxStock) {

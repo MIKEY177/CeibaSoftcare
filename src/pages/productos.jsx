@@ -128,17 +128,16 @@ export const Productos = () => {
     useEffect(() => {
   
     const applyScannedCode = () => {
-  
-      // Ignorar si no es escaneo real
-      if (!isScanningRef.current || scannedCodeRef.current.length < 6) {
+
+      const code = scannedCodeRef.current;
+
+      if (!code || code.length < 3) {
         scannedCodeRef.current = "";
         return;
       }
-  
-      const code = scannedCodeRef.current;
-  
-      console.log("Código escaneado automáticamente:", code);
-  
+
+      console.log("Código escaneado:", code);
+
       if (modalActiva === 1) {
         setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
       } 
@@ -148,87 +147,42 @@ export const Productos = () => {
       else {
         setBusqueda(code);
       }
-  
+
       scannedCodeRef.current = "";
-      isScanningRef.current = false;
     };
-  
-  
+
     const handleKeyDown = (e) => {
-      
-      const now = Date.now();
-      const interval = now - lastKeyTimeRef.current;
-      lastKeyTimeRef.current = now;
-  
-      // Si la velocidad es lenta se considera humano
-      if (interval > 80) {
-        scannedCodeRef.current = "";
-        isScanningRef.current = false;
-  
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
-        }
-      }
-  
-      if (e.key === "Enter") {
-  
-        if (isScanningRef.current) {
-          e.preventDefault();
-        }
-  
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
-        }
-  
-        applyScannedCode();
-        return;
-      }
-  
+
+    // Solo números
+    if (!/^[0-9]$/.test(e.key) && e.key !== "Enter") return;
+
+    // Si es número → acumular
       if (/^[0-9]$/.test(e.key)) {
-  
-        if (scannedCodeRef.current === "") {
-          isScanningRef.current = interval < 80;
-        }
-  
-        if (isScanningRef.current) {
-  
-          e.preventDefault();
-  
-          scannedCodeRef.current += e.key;
-  
-          if (scanTimeoutRef.current) {
-            clearTimeout(scanTimeoutRef.current);
-          }
-  
-          scanTimeoutRef.current = setTimeout(() => {
-            applyScannedCode();
-          }, 120);
-        }
-  
-      } 
-      else if (e.key === "Backspace") {
-  
-        if (isScanningRef.current) {
-          e.preventDefault();
-          scannedCodeRef.current = scannedCodeRef.current.slice(0, -1);
-        }
-  
-      } 
-      else {
-  
-        scannedCodeRef.current = "";
-        isScanningRef.current = false;
-  
+
+        scannedCodeRef.current += e.key;
+
+        // Reinicia timeout
         if (scanTimeoutRef.current) {
           clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
         }
+
+        // Si no llega ENTER, igual procesa
+        scanTimeoutRef.current = setTimeout(() => {
+          applyScannedCode();
+        }, 200);
+      }
+
+      // Si el lector manda ENTER (muchos lo hacen)
+      if (e.key === "Enter") {
+
+        if (scanTimeoutRef.current) {
+          clearTimeout(scanTimeoutRef.current);
+        }
+
+        applyScannedCode();
       }
     };
-  
-  
+    
     document.addEventListener("keydown", handleKeyDown);
   
     return () => {
@@ -238,6 +192,8 @@ export const Productos = () => {
         clearTimeout(scanTimeoutRef.current);
       }
     };
+
+
   
   }, [modalActiva]);
   
