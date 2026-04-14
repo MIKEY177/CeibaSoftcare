@@ -49,6 +49,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
@@ -60,6 +61,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     if (!query || query.trim().length < 1) {
       setResultados([]);
       setAbierto(false);
+      setMostrarResultados(false);
       return; 
     }
     
@@ -91,13 +93,14 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     onSeleccionar(prod);
     setQuery(prod.nombre);
     setAbierto(false);
+    setMostrarResultados(false);
   }
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="sdpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); }}
+          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true); }}
         />
         {cargando && (
           <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#888", pointerEvents: "none"}}>
@@ -106,7 +109,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto && (
+      {abierto && mostrarResultados && (
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
           borderRadius: 6, boxShadow: "0 6px 20px rgba(0,0,0,.18)",
@@ -295,7 +298,7 @@ export const SalidasProd = () => {
     if (form.cantidad_total === "" || parseFloat(form.cantidad_total) <= 0)
       e.cantidad_total = "❗La cantidad total debe ser mayor a 0.";
     else if (form.cantidad_actual !== "" && parseFloat(form.cantidad_total) > parseFloat(form.cantidad_actual))
-      e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible (${form.cantidad_actual}).`;
+      e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible máximo (${form.cantidad_actual}).`;
     if (!form.motivo.trim())
       e.motivo = "❗El motivo es obligatorio.";
     return e;
@@ -369,6 +372,7 @@ export const SalidasProd = () => {
       nombre_producto: det.nombre_producto,
       tipo_medida: det.tipo_medida,
       cantidad_por_unidad: det.cantidad_por_unidad,
+      cantidad_actual: det.cantidad_actual ?? "",
       cantidad_presentacion: det.cantidad_presentacion,
       cantidad_total: det.cantidad_total,
       motivo: det.motivo,
@@ -845,11 +849,6 @@ export const SalidasProd = () => {
                 </label>
                 <input className="sdpr-input3" type="number" min="1" value={formDetalle.cantidad_presentacion} 
                 onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? formDetalle.cantidad_por_unidad, setFormDetalle)} />
-                {formDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
-                    Stock disponible: {formDetalle.cantidad_actual} {formDetalle.tipo_medida}
-                  </div>
-                )}
                 <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
               </div>
         
@@ -874,8 +873,16 @@ export const SalidasProd = () => {
                     <img className="candado-icono-img" src={campoRestringido} alt=""/>
                   </figure>
                 </div>
+                {formDetalle.cantidad_actual !== "" && (
+                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
+                    Stock disponible máximo: {formDetalle.cantidad_actual} {formDetalle.tipo_medida}
+                  </div>
+                )}
+              </div>
+              <div style={{ gridArea: "divInpt5" }}>
                 <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
               </div>
+
             </section>
             <input className="sdpr-btn" type="submit" 
               value={detalleEditIndex !== null ? "Guardar Cambios" : "Agregar Producto" } 
@@ -915,7 +922,7 @@ export const SalidasProd = () => {
                                       cantidad_por_unidad: prod.cantidad_por_unidad,
                                       cantidad_actual: prod.cantidad_actual,
                                       cantidad_presentacion: "",
-                                      cantidad_total: "",
+                                      cantidad_total_original: productoElegidoEditar.cantidad_total ?? formEditarDetalle.cantidad_total, // para recalcular si cambia el producto
                                     }));
                                   }
                                 }}
@@ -943,11 +950,6 @@ export const SalidasProd = () => {
                   value={formEditarDetalle.cantidad_presentacion}
                   onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle) } 
                 />
-                {formEditarDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
-                    Stock disponible: {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
-                  </div>
-                )}
                 <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
               </div>
         
@@ -968,6 +970,15 @@ export const SalidasProd = () => {
                     <img className="candado-icono-img" src={campoRestringido} alt="" />
                   </figure>
                 </div>
+                {formEditarDetalle.cantidad_actual !== "" && (
+                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
+                    Stock máximo:  {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
+                  </div>
+                )}
+               
+              </div>
+              < div style={{ gridArea: "divInpt5" }}>
+                <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
               </div>
             </section>
             <input className="sdpr-btn" type="submit"
