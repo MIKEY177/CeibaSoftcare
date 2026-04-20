@@ -369,17 +369,22 @@ export const EntradasProd = () => {
     setModalActiva(5);
   };
 
-  // ── POST: registrar entrada + detalles ───────────────────────────────────────
-  const handleRegistrar = (e) => {
-    e.preventDefault();
+  const btnRegistrarRef = useRef(null);
+
+  const handleRegistrar = () => {
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
     const errs = {};
     if (!formEntrada.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
     if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-    if (Object.keys(errs).length > 0) { 
-      setErrores(errs); return; 
+    if (Object.keys(errs).length > 0) {
+      setErrores(errs);
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+      return;
     }
+
     setCargando(true);
     setErrores({});
+
     fetch(API, {
       method: "POST",
       credentials: "include",
@@ -388,25 +393,29 @@ export const EntradasProd = () => {
         fecha_hora:    formEntrada.fecha_hora,
         observaciones: formEntrada.observaciones,
         detalles: listaDetalles.map(d => ({
-          id_producto1:          d.id_producto1,
+          id_producto1: d.id_producto1,
           cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total:        d.cantidad_total,
-          fecha_vencimiento:     d.fecha_vencimiento,
-          motivo:                d.motivo,
+          cantidad_total: d.cantidad_total,
+          fecha_vencimiento: d.fecha_vencimiento,
+          motivo: d.motivo,
         })),
       }),
     })
     .then(r => r.json())
     .then(res => {
-        if (res.success) {
-          cargarEntradas();
-          mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-        } else {
-          setErrores(res.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
-      .finally(() => setCargando(false));
+      if (res.success) {
+        cargarEntradas();
+        mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
+      } else {
+        setErrores(res.errores ?? { general: "Error desconocido." });
+        if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+      }
+    })
+    .catch(() => {
+      setErrores({ general: "❗Error de conexión con el servidor." });
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+    })
+    .finally(() => setCargando(false));
   };
 
   // ── PUT: editar cabecera de entrada ──────────────────────────────────────────
@@ -604,7 +613,7 @@ export const EntradasProd = () => {
             <span className="error-mensaje">{errores.general ?? ""}</span>
             <span className="error-mensaje">{errores.sesion ?? ""}</span>
 
-            <form className="epr-form" onSubmit={handleRegistrar}>
+            <form className="epr-form" onSubmit={e => e.preventDefault()}>
               <section className="epr-form-inputs-area">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="epr-label">Fecha y Hora de Entrada <span className="obligatorio">*</span></label>
@@ -669,11 +678,12 @@ export const EntradasProd = () => {
                   </table>
                 </section>
               </section>
-              <input className="epr-btn" type="submit"
-                value={cargando ? "Registrando..."
-                  : `Registrar Entrada${listaDetalles.length > 0 ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})` : ""}`}
-                disabled={cargando}
-              />
+              <button ref={btnRegistrarRef} className="epr-btn" type="button" onClick={handleRegistrar}>
+                {cargando ? "Registrando..."
+                  : `Registrar Entrada${listaDetalles.length > 0
+                  ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
+                  : ""}`}
+              </button>
             </form>
           </aside>
         )}

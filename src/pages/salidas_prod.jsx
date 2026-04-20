@@ -383,43 +383,53 @@ export const SalidasProd = () => {
   };
 
   // ── POST: registrar salida + detalles ───────────────────────────────────────
-  const handleRegistrar = (e) => {
-    e.preventDefault();
-    const errs = {};
-    if (!formSalida.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
-    if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-    if (Object.keys(errs).length > 0) { 
-      setErrores(errs); return; 
+  const btnRegistrarRef = useRef(null);
+ const handleRegistrar = () => {
+  if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
+
+  const errs = {};
+  if (!formSalida.fecha_hora)     errs.fecha_hora = "❗La fecha es obligatoria.";
+  if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
+  if (Object.keys(errs).length > 0) {
+    setErrores(errs);
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+    return;
+  }
+
+  setCargando(true);
+  setErrores({});
+
+  fetch(API, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fecha_hora:    formSalida.fecha_hora,
+      observaciones: formSalida.observaciones,
+      detalles: listaDetalles.map(d => ({
+        id_producto1:          d.id_producto1,
+        cantidad_presentacion: d.cantidad_presentacion,
+        cantidad_total:        d.cantidad_total,
+        motivo:                d.motivo,
+      })),
+    }),
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      cargarSalidas();
+      mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
+    } else {
+      setErrores(res.errores ?? { general: "Error desconocido." });
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
     }
-    setCargando(true);
-    setErrores({});
-    fetch(API, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fecha_hora:    formSalida.fecha_hora,
-        observaciones: formSalida.observaciones,
-        detalles: listaDetalles.map(d => ({
-          id_producto1:          d.id_producto1,
-          cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total:        d.cantidad_total,
-          motivo:                d.motivo,
-        })),
-      }),
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.success) {
-          cargarSalidas();
-          mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-        } else {
-          setErrores(res.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
-      .finally(() => setCargando(false));
-  };
+  })
+  .catch(() => {
+    setErrores({ general: "❗Error de conexión con el servidor." });
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+  })
+  .finally(() => setCargando(false));
+};
 
   // ── PUT: editar cabecera de salida ──────────────────────────────────────────
   const handleEditar = (e) => {
@@ -615,7 +625,7 @@ export const SalidasProd = () => {
           <span className="error-mensaje">{errores.general ?? ""}</span>
           <span className="error-mensaje">{errores.sesion ?? ""}</span>
         
-          <form className="spr-form" onSubmit={handleRegistrar}>
+          <form className="spr-form" onSubmit={e => e.preventDefault()}>
             <section className="spr-form-inputs-area">
               <div style={{ gridArea: "divInpt1" }}>
                 <label className="spr-label">Fecha y Hora de Salida <span className="obligatorio">*</span></label>
@@ -678,11 +688,17 @@ export const SalidasProd = () => {
                 </table>
               </section>
             </section>
-            <input className="epr-btn" type="submit"
-                value={cargando ? "Registrando..."
-                  : `Registrar Salida${listaDetalles.length > 0 ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})` : ""}`}
-                disabled={cargando}
-            />
+            <button
+  ref={btnRegistrarRef}
+  className="epr-btn"
+  type="button"
+  onClick={handleRegistrar}
+>
+  {cargando ? "Registrando..."
+    : `Registrar Salida${listaDetalles.length > 0
+        ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
+        : ""}`}
+</button>
           </form>
         </aside>
         )}
