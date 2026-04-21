@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdminFarmacia, MenuFarmaceutico } from "../utils/menu.jsx"
 
 import "../styles/global_styles.css"
@@ -13,10 +13,10 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const API         = `api/entradas_completas.php`;
-const API_DET     = `api/detalles_entradas.php`;
-const API_PROD    = `api/productos_busqueda.php`;
-const API_SESSION = `api/session.php`;
+const API         = `/api/entradas_completas.php`;
+const API_DET     = `/api/detalles_entradas.php`;
+const API_PROD    = `/api/productos_busqueda.php`;
+const API_SESSION = `/api/session.php`;
 
 export const indexSelector = 3;
 
@@ -40,48 +40,62 @@ const detalleVacio = {
 
 // BuscadorProducto
 const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
-  const [query, setQuery] = useState(initialValue ?? '');
+  const [query, setQuery] = useState(initialValue || '');
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-    // si es la primera vez y hay initialValue, no busca
-    if (primeraVez.current) {
-      primeraVez.current = false;
-      if (initialValue) return;
-    }
-
-    if (!query || query.trim().length < 1) {
-      setResultados([]);
-      setAbierto(false);
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setCargando(true);
-      fetch(`${API_PROD}?q=${encodeURIComponent(query)}`, { credentials: "include" })
-        .then(r => r.json())
-        .then(res => { if (res.success) { setResultados(res.data); setAbierto(true); } })
-        .catch(console.error)
-        .finally(() => setCargando(false));
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
+      if (primeraVez.current) {
+        primeraVez.current = false;
+        if (initialValue) return;
+      } 
+      if (!query || query.trim().length < 1) {
+        setResultados([]);
+        setAbierto(false);
+        setMostrarResultados(false);
+        return; 
+      }
+      
+      const timer = setTimeout(() => {  
+        setCargando(true);
+        fetch(`${API_PROD}?q=${encodeURIComponent(query)}`, { credentials: "include" })
+          .then(r => r.json())
+          .then(res => {
+            if (res.success) {
+              setResultados(res.data ?? []);
+              setAbierto(true);
+            } else {
+              setResultados([]);
+              setAbierto(true);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            setResultados([]);
+            setAbierto(true);
+          })
+          .finally(() => setCargando(false));
+      }, 300);
+  
+      return () => clearTimeout(timer);
+    }, [query]);
 
   const elegir = (prod) => {
     onSeleccionar(prod);
     setQuery(prod.nombre);
     setAbierto(false);
+    setMostrarResultados(false);
   };
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="edpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); }}
+          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true);}}
         />
         {cargando && (
           <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#888", pointerEvents: "none"}}>
@@ -90,7 +104,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto && (
+      {abierto &&  mostrarResultados &&(
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
           borderRadius: 6, boxShadow: "0 6px 20px rgba(0,0,0,.18)",
@@ -126,6 +140,7 @@ export const EntradasProd = () => {
 
   const [user,     setUser]     = useState({ nombre: "", rol: "" });
   const [entradas, setEntradas] = useState([]);
+  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   // ── UI ──────────────────────────────────────────────────────────────────────
@@ -154,6 +169,17 @@ export const EntradasProd = () => {
       setHistorial(prev => prev.slice(0, -1));
       setModalActiva(anterior);
     };
+  
+  useEffect(() => {
+      setBusqueda(params.get("b") || "");
+      const url = new URL(window.location);
+      if (busqueda) {
+        url.searchParams.set("b", busqueda);
+      } else {
+        url.searchParams.delete("b");
+      }
+    }, []);
+
   // ── Sesión ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     fetch(API_SESSION, { credentials: "include" })
@@ -534,8 +560,9 @@ export const EntradasProd = () => {
 
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const entradasFiltradas = entradas.filter(e =>
-    (e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())
+    ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())) &&
+    (e.id_entrada == (params.get("id") || e.id_entrada))
   );
   // RENDER
   return (

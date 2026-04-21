@@ -1,22 +1,11 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
+require_once dirname(__DIR__) . "/config/session_config.php";
 
 header("Content-Type: application/json");
 ini_set('display_errors', 0);
 error_reporting(0);
-
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, 
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
-session_start();
 
 $data = json_decode(file_get_contents("php://input"), true);
 $correo = trim($data['correo'] ?? '');

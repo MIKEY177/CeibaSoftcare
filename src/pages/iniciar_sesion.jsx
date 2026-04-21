@@ -1,6 +1,6 @@
 // Imports Base
 
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Estilos e imágenes
@@ -15,6 +15,7 @@ import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
         const API_LOGIN = `api/login.php`;
+        const API_SESSION = `api/session.php`;
         const API_REC   = `api/recuperar.php`;
         const API_CODE  = `api/verificar_codigo.php`;
         const API_PASS  = `api/cambiar_password.php`;
@@ -36,6 +37,24 @@ export const IniciarSesion = () => {
         const [errores, setErrores] = useState({})           // login
         const [erroresModal, setErroresModal] = useState({}) // modales
         const [loadingCodigo, setLoadingCodigo] = useState(false);
+
+        // Verificar si hay sesión activa al cargar
+        useEffect(() => {
+            const verificarSesionActiva = async () => {
+                try {
+                    const respuesta = await fetch(API_SESSION, {
+                        credentials: "include"
+                    });
+                    const data = await respuesta.json();
+                    if (data.status === "ok") {
+                        navigate("/inicio");
+                    }
+                } catch (error) {
+                    console.error("Error al verificar sesión:", error);
+                }
+            };
+            verificarSesionActiva();
+        }, []);
 
         const abrirModal = (num) => {
             setErrores({})

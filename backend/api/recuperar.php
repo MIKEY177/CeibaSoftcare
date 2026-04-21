@@ -3,24 +3,7 @@
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
 require_once dirname(__DIR__) . "/config/env.php";
-
-// Detectar entorno local
-$isLocal = (
-    $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ||
-    $_SERVER['REMOTE_ADDR'] === '::1'
-);
-
-// Configuración de sesión segura
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // HTTPS en Render
-    'httponly' => true,
-    'samesite' => 'lax' 
-]);
-
-session_start();
+require_once dirname(__DIR__) . "/config/session_config.php";
 
 header("Content-Type: application/json");
 

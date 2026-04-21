@@ -60,6 +60,19 @@ export const Farmacia = () => {
       });
     }, []);
 
+
+  const verActividad = (actividad, fecha, id) => {
+    const path = actividad === "Entrada" 
+      ? "/entradas_prod" 
+      : "/salidas_prod";
+
+    navigate({
+    pathname: path,
+    search: `?b=${encodeURIComponent(fecha)}&id=${encodeURIComponent(id)}`
+    });
+  };  
+
+
      const menuObj = (() => {
         switch (user.rol) {
           case "administrador":
@@ -97,12 +110,12 @@ export const Farmacia = () => {
                 <p>No hay actividad reciente.</p>
               ) : (
                 actividad.map((activity) => (
-                <tr> 
+                <tr > 
                   <td>{activity.producto}</td> 
                   <td>{activity.fecha}</td> 
                   <td>{activity.cantidad}</td>
                   <td>{activity.actividad}</td>
-                  <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
+                  <td><button class="tabla-actividad-reciente-btn" onClick={()=>verActividad(activity.actividad,activity.fecha, activity.id)}>Ver</button></td>
                 </tr>
                 ))
               )}

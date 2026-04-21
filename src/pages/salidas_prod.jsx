@@ -1,6 +1,6 @@
 // Imports Base
 import React, { useEffect, useState, useRef} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -147,6 +147,7 @@ export const SalidasProd = () => {
 
   const [user, setUser] = useState({nombre: "", rol: ""}); 
   const [salidas, setSalidas] = useState([]);
+  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   const [modalActivo, setModalActivo] = useState(null); 
@@ -169,6 +170,7 @@ export const SalidasProd = () => {
   
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
 
+  
   const volver = () => {
     if (historial.length === 0) return;
       const anterior = historial[historial.length - 1];
@@ -186,6 +188,16 @@ export const SalidasProd = () => {
         } else navigate("/iniciar_sesion");
       })
       .catch(() => navigate("/iniciar_sesion"));
+  }, []);
+
+  useEffect(() => {
+    setBusqueda(params.get("b") || "");
+    const url = new URL(window.location);
+    if (busqueda) {
+      url.searchParams.set("b", busqueda);
+    } else {
+      url.searchParams.delete("b");
+    }
   }, []);
 
   useEffect(() => { cargarSalidas(); }, []);
@@ -546,8 +558,9 @@ export const SalidasProd = () => {
 
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const salidasFiltradas = salidas.filter(e =>
-    (e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())
+    ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
+    (e.id_salida == (params.get("id") || id_salida))
   );
 
   return (

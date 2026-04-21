@@ -1,19 +1,7 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
-
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
-    'httponly' => true,
-    'samesite' =>  'Lax' // None es necesario para Cross-Site en Render
-]);
-
-session_start();
+require_once dirname(__DIR__) . "/config/session_config.php";
 
 $data = json_decode(file_get_contents("php://input"), true);
 
