@@ -231,7 +231,7 @@
     background-color: #00000065;
 }
 
-.modal-salida-registrar, .modal-salida-editar, .modal-salida-desactivar, .modal-salida-detalle-registrar, .modal-salida-detalle-desactivar{
+.modal-salida-registrar, .modal-salida-editar, .modal-salida-desactivar, .modal-salida-detalle-registrar, .modal-salida-detalle-desactivar, .modal-salida-ver{
     margin: auto;
     background-color: #FFFFFF;
     width: 1300px;
@@ -260,7 +260,12 @@
     height: 300px;
 }
 
-.volver-btn-sal-prod {
+.modal-salida-ver{
+    width: 1300px;
+    height: 600px;
+}
+
+.volver-btn-sal-prod-re, .volver-btn-sal-prod-ed, .volver-btn-sal-prod-ver {
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -274,10 +279,18 @@
     position: relative;
     top: 0;
     left: 0;
-    transform: translate(-530px, -15px);
+    transform: translate(-580px, -30px); 
     cursor: pointer;
     margin-top: 10px;
     margin-left: 20px;
+}
+
+.volver-btn-sal-prod-re{
+    transform: translate(-580px, -15px); 
+}
+
+.volver-btn-sal-prod-ver{
+    transform: translate(-580px, -30px); 
 }
 
 .volver-btn-sal-det-prod{
@@ -374,7 +387,7 @@
     font-size: 1rem;
 }
 
-.spr-input1, .spr-input2, .sped-input1, .sped-input2, .sdpr-input1, .sdpr-input2, .sdpr-input3, .sdpr-input4, .sdpr-input5, .sdpr-input6{
+.spr-input1, .spr-input2, .sped-input1, .sped-input2, .sdpr-input1, .sdpr-input2, .sdpr-input3, .sdpr-input4, .sdpr-input5, .sdpr-input6, .sped-input1-ver, .sped-input2-ver{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -388,14 +401,18 @@
     margin-bottom: 5px;
 }
 
-.spr-input2, .sped-input2, .sdpr-input2{
+.sped-input1-ver, .sped-input2-ver{
+    border: 3px solid #EFEFEF;
+}
+
+.spr-input2, .sped-input2, .sdpr-input2, .sped-input2-ver{
     resize: none;
     height: 218px;
     padding: 5px 10px;
     font-family: "ubuntu";
 }
 
-.spr-input4, .sped-input4, .sdpr-input5{
+.spr-input4, .sped-input4, .sdpr-input5, .sdpr-input6{
     background-color: rgba(214, 214, 214, 0.658);
 }
 
@@ -482,11 +499,22 @@
     text-decoration: underline;
 }
 
+
+
 .spr-form-detalles-header, .sped-form-detalles-header{
-    margin-bottom: -7px;
+    margin-bottom: -5px;
     padding: 0 5px;
     display: flex;
-    width: 100%;
+    width: max-content;
+    height: max-content;
+    transform: translatey(-18px);
+}
+
+.spr-form-detalles-header-re, .sped-form-detalles-header-re{
+    margin-bottom: -30px;
+    padding: 0 5px;
+    display: flex;
+    width: max-content;
     height: max-content;
     transform: translatey(-18px);
 }

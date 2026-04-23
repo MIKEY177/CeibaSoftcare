@@ -560,7 +560,7 @@ export const SalidasProd = () => {
   const salidasFiltradas = salidas.filter(e =>
     ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
     (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
-    (e.id_salida == (params.get("id") || id_salida))
+    (e.id_salida == (params.get("id") || e.id_salida))
   );
 
   return (
@@ -628,7 +628,7 @@ export const SalidasProd = () => {
         {/* ── MODAL 1: Registrar Salida ──────────────────────────────────── */}
         {modalActivo === 1 && (
         <aside className="modal-salida-registrar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-re" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -655,7 +655,7 @@ export const SalidasProd = () => {
                 <span className="error-mensaje">{errores.observaciones ?? ""}</span>
               </div>
               <section style={{ gridArea: "divInpt3" }} className="spr-form-detalles-area">
-                <div className="spr-form-detalles-header">
+                <div className="spr-form-detalles-header-re">
                   <h2>Productos de la Salida</h2>
                   <button type="button" className="spr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
                     Agregar Producto
@@ -718,7 +718,7 @@ export const SalidasProd = () => {
         {/* ── MODAL 2: Ver / Editar Salida ──────────────────────────────── */}
         {modalActivo === 2 && (
         <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-ed" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -797,8 +797,8 @@ export const SalidasProd = () => {
         {modalActivo === 3 && (
         <aside className="modal-salida-desactivar">
           <h1 className="modal-epel-titulo">Desactivar Salida Registrada</h1>
-          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°{salidaSeleccionada?.id_salida}
-            <span className="subrayar">{""}</span>?
+          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°
+            <span className="subrayar">{salidaSeleccionada?.id_salida}</span>?
           </h3>
 
           {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}       
@@ -893,7 +893,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{  cursor: "not-allowed" }}
                     placeholder={productoElegido ? "Ingresa la cantidad" : "Selecciona un producto primero"}
                     value={formDetalle.cantidad_total !== ""
                       ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : "" }
@@ -991,7 +991,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{cursor: "not-allowed" }}
                     value={formEditarDetalle.cantidad_total !== "" 
                       ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida ?? ''}` : ''}
                   />
@@ -1043,8 +1043,8 @@ export const SalidasProd = () => {
         )}
         {/* modal 7 */}
         {modalActivo === 7 && (
-        <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={volver}>
+        <aside className="modal-salida-ver">
+          <button className="volver-btn-sal-prod-ver" type="button" onClick={volver}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -1053,12 +1053,12 @@ export const SalidasProd = () => {
           <section className="sped-form-inputs-area">
             <div style={{ gridArea: "divInpt1" }}>
               <label className="sped-label">Fecha y Hora</label>
-              <input className="sped-input1" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
+              <input className="sped-input1-ver" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
             </div>
         
             <div style={{ gridArea: "divInpt2" }}>
               <label className="sped-label">Observaciones</label>
-              <textarea className="sped-input2" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
+              <textarea className="sped-input2-ver" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
             </div>
         
             <section style={{ gridArea: "divInpt3" }} className="sped-form-detalles-area">

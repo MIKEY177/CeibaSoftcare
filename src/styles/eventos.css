@@ -218,7 +218,7 @@
     align-items: center;
 }
 
-.modal-eventos-registrar, .modal-eventos-editar, .modal-eventos-desactivar, .modal-eventos-rp{
+.modal-eventos-registrar, .modal-eventos-editar, .modal-eventos-rp{
     margin: auto;
     background-color: #FFFFFF;
     width: 1000px;
@@ -232,6 +232,20 @@
     flex-direction: column;
     align-items: center;
     gap: 0px;          
+}
+
+.modal-eventos-desactivar{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 1300px;
+    height: 700px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;   
 }
 
 .modal-eventos-desactivar{
@@ -296,7 +310,7 @@
     "divInpt4 divInpt2"
     "divInpt5 divInpt3"
     ". divInpt6";
-    gap: 5px 0;
+    gap: 5px 100px;
 }
 
 .er-label, .eed-label, .rp-label{

@@ -630,7 +630,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 1: Registrar Entrada ──────────────────────────────────── */}
         {modalActiva === 1 && (
           <aside className="modal-entrada-registrar">
-            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
+            <button className="volver-btn-entr-prod-re" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -657,7 +657,7 @@ export const EntradasProd = () => {
                   <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 <section style={{ gridArea: "divInpt3" }} className="epr-form-detalles-area">
-                  <div className="epr-form-detalles-header">
+                  <div className="epr-form-detalles-header-re">
                     <h2>Productos de la Entrada</h2>
                     <button type="button" className="epr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
                       Agregar Producto
@@ -718,7 +718,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 2: Ver / Editar Entrada ──────────────────────────────── */}
         {modalActiva === 2 && (
           <aside className="modal-entrada-editar">
-            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
+            <button className="volver-btn-entr-prod-ed" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -891,7 +891,7 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                      style={{cursor: "not-allowed" }}
                       placeholder={!productoElegido ? "Selecciona un producto primero" : "Ingresa la cantidad"}
                       value={formDetalle.cantidad_total !== ""
                         ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : ""}
@@ -980,7 +980,7 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                      style={{ cursor: "not-allowed" }}
                       value={formEditarDetalle.cantidad_total !== ""
                         ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida}` : ""}
                     />
@@ -1020,8 +1020,8 @@ export const EntradasProd = () => {
         )}
 
         {modalActiva === 7 && (
-          <aside className="modal-entrada-editar">
-            <button className="volver-btn-entr-prod" type="button" onClick={volver}>
+          <aside className="modal-entrada-ver">
+            <button className="volver-btn-entr-prod-ver" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -1030,12 +1030,12 @@ export const EntradasProd = () => {
             <section className="eped-form-inputs-area">
              <div style={{ gridArea: "divInpt1" }}>
                 <label className="eped-label">Fecha y Hora</label>
-                <input className="eped-input1" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
+                <input className="eped-input1-ver" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
               </div>
 
               <div style={{ gridArea: "divInpt2" }}>
                 <label className="eped-label">Observaciones</label>
-                <textarea className="eped-input2" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
+                <textarea className="eped-input2-ver" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
               </div>
 
               <section style={{ gridArea: "divInpt3" }} className="eped-form-detalles-area">

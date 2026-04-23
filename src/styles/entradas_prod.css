@@ -231,7 +231,7 @@
     background-color: #00000065;
 }
 
-.modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-desactivar, .modal-entrada-detalle-registrar, .modal-entrada-detalle-desactivar{
+.modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-desactivar, .modal-entrada-detalle-registrar, .modal-entrada-detalle-desactivar, .modal-entrada-ver{
     margin: auto;
     background-color: #FFFFFF;
     width: 1300px;
@@ -260,7 +260,12 @@
     height: 300px;
 }
 
-.volver-btn-entr-prod {
+.modal-entrada-ver{
+    width: 1300px;
+    height: 600px;
+}
+
+.volver-btn-entr-prod-re, .volver-btn-entr-prod-ed, .volver-btn-entr-prod-ver{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -274,10 +279,18 @@
     position: relative;
     top: 0;
     left: 0;
-    transform: translate(-530px, -15px); 
+    transform: translate(-580px, -30px); 
     cursor: pointer;
     margin-top: 10px;   
     margin-left: 20px;
+}
+
+.volver-btn-entr-prod-re{
+    transform: translate(-580px, -15px); 
+}
+
+.volver-btn-entr-prod-ver{
+    transform: translate(-580px, -30px); 
 }
 
 .volver-btn-entr-det-prod{
@@ -374,7 +387,7 @@
     font-size: 1rem;
 }
 
-.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5, .edpr-input6{
+.epr-input1, .epr-input2, .eped-input1, .eped-input2, .edpr-input1, .edpr-input2, .edpr-input3, .edpr-input4, .edpr-input5, .edpr-input6, .eped-input1-ver, .eped-input2-ver{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -388,14 +401,18 @@
     margin-bottom: 5px;
 }
 
-.epr-input2, .eped-input2, .edpr-input2{
+.eped-input1-ver, .eped-input2-ver{
+    border: 3px solid #EFEFEF;
+}
+
+.epr-input2, .eped-input2, .edpr-input2, .eped-input2-ver{
     resize: none;
     height: 218px;
     padding: 5px 10px;
     font-family: "ubuntu";
 }
 
-.epr-input4, .eped-input4, .edpr-input5{
+.epr-input4, .eped-input4, .edpr-input5, .edpr-input6{
     background-color: rgba(214, 214, 214, 0.658);
 }
 
@@ -482,11 +499,20 @@
     text-decoration: underline;
 }
 
-.epr-form-detalles-header, .eped-form-detalles-header{
-    margin-bottom: -7px;
+.epr-form-detalles-header, .eped-form-detalles-header{ 
+    margin-bottom: -5px;
     padding: 0 5px;
     display: flex;
-    width: 100%;
+    width: max-content;
+    height: max-content;
+    transform: translatey(-18px);
+}
+
+.epr-form-detalles-header-re, .eped-form-detalles-header-re{
+    margin-bottom: -30px;
+    padding: 0 5px;
+    display: flex;
+    width: max-content;
     height: max-content;
     transform: translatey(-18px);
 }
