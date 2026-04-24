@@ -1,6 +1,6 @@
 // Imports Base
 import React, { useEffect, useState, useRef} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -49,6 +49,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
@@ -60,6 +61,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     if (!query || query.trim().length < 1) {
       setResultados([]);
       setAbierto(false);
+      setMostrarResultados(false);
       return; 
     }
     
@@ -91,13 +93,14 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     onSeleccionar(prod);
     setQuery(prod.nombre);
     setAbierto(false);
+    setMostrarResultados(false);
   }
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="sdpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); }}
+          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true); }}
         />
         {cargando && (
           <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#888", pointerEvents: "none"}}>
@@ -106,7 +109,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto && (
+      {abierto && mostrarResultados && (
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
           borderRadius: 6, boxShadow: "0 6px 20px rgba(0,0,0,.18)",
@@ -144,6 +147,7 @@ export const SalidasProd = () => {
 
   const [user, setUser] = useState({nombre: "", rol: ""}); 
   const [salidas, setSalidas] = useState([]);
+  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   const [modalActivo, setModalActivo] = useState(null); 
@@ -166,6 +170,7 @@ export const SalidasProd = () => {
   
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
 
+  
   const volver = () => {
     if (historial.length === 0) return;
       const anterior = historial[historial.length - 1];
@@ -183,6 +188,16 @@ export const SalidasProd = () => {
         } else navigate("/iniciar_sesion");
       })
       .catch(() => navigate("/iniciar_sesion"));
+  }, []);
+
+  useEffect(() => {
+    setBusqueda(params.get("b") || "");
+    const url = new URL(window.location);
+    if (busqueda) {
+      url.searchParams.set("b", busqueda);
+    } else {
+      url.searchParams.delete("b");
+    }
   }, []);
 
   useEffect(() => { cargarSalidas(); }, []);
@@ -295,7 +310,7 @@ export const SalidasProd = () => {
     if (form.cantidad_total === "" || parseFloat(form.cantidad_total) <= 0)
       e.cantidad_total = "❗La cantidad total debe ser mayor a 0.";
     else if (form.cantidad_actual !== "" && parseFloat(form.cantidad_total) > parseFloat(form.cantidad_actual))
-      e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible (${form.cantidad_actual}).`;
+      e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible máximo (${form.cantidad_actual}).`;
     if (!form.motivo.trim())
       e.motivo = "❗El motivo es obligatorio.";
     return e;
@@ -369,6 +384,7 @@ export const SalidasProd = () => {
       nombre_producto: det.nombre_producto,
       tipo_medida: det.tipo_medida,
       cantidad_por_unidad: det.cantidad_por_unidad,
+      cantidad_actual: det.cantidad_actual ?? "",
       cantidad_presentacion: det.cantidad_presentacion,
       cantidad_total: det.cantidad_total,
       motivo: det.motivo,
@@ -379,43 +395,53 @@ export const SalidasProd = () => {
   };
 
   // ── POST: registrar salida + detalles ───────────────────────────────────────
-  const handleRegistrar = (e) => {
-    e.preventDefault();
-    const errs = {};
-    if (!formSalida.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
-    if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-    if (Object.keys(errs).length > 0) { 
-      setErrores(errs); return; 
+  const btnRegistrarRef = useRef(null);
+ const handleRegistrar = () => {
+  if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
+
+  const errs = {};
+  if (!formSalida.fecha_hora)     errs.fecha_hora = "❗La fecha es obligatoria.";
+  if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
+  if (Object.keys(errs).length > 0) {
+    setErrores(errs);
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+    return;
+  }
+
+  setCargando(true);
+  setErrores({});
+
+  fetch(API, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fecha_hora:    formSalida.fecha_hora,
+      observaciones: formSalida.observaciones,
+      detalles: listaDetalles.map(d => ({
+        id_producto1:          d.id_producto1,
+        cantidad_presentacion: d.cantidad_presentacion,
+        cantidad_total:        d.cantidad_total,
+        motivo:                d.motivo,
+      })),
+    }),
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      cargarSalidas();
+      mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
+    } else {
+      setErrores(res.errores ?? { general: "Error desconocido." });
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
     }
-    setCargando(true);
-    setErrores({});
-    fetch(API, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fecha_hora:    formSalida.fecha_hora,
-        observaciones: formSalida.observaciones,
-        detalles: listaDetalles.map(d => ({
-          id_producto1:          d.id_producto1,
-          cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total:        d.cantidad_total,
-          motivo:                d.motivo,
-        })),
-      }),
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.success) {
-          cargarSalidas();
-          mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-        } else {
-          setErrores(res.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
-      .finally(() => setCargando(false));
-  };
+  })
+  .catch(() => {
+    setErrores({ general: "❗Error de conexión con el servidor." });
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+  })
+  .finally(() => setCargando(false));
+};
 
   // ── PUT: editar cabecera de salida ──────────────────────────────────────────
   const handleEditar = (e) => {
@@ -532,8 +558,9 @@ export const SalidasProd = () => {
 
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const salidasFiltradas = salidas.filter(e =>
-    (e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())
+    ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
+    (e.id_salida == (params.get("id") || e.id_salida))
   );
 
   return (
@@ -601,7 +628,7 @@ export const SalidasProd = () => {
         {/* ── MODAL 1: Registrar Salida ──────────────────────────────────── */}
         {modalActivo === 1 && (
         <aside className="modal-salida-registrar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-re" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -611,7 +638,7 @@ export const SalidasProd = () => {
           <span className="error-mensaje">{errores.general ?? ""}</span>
           <span className="error-mensaje">{errores.sesion ?? ""}</span>
         
-          <form className="spr-form" onSubmit={handleRegistrar}>
+          <form className="spr-form" onSubmit={e => e.preventDefault()}>
             <section className="spr-form-inputs-area">
               <div style={{ gridArea: "divInpt1" }}>
                 <label className="spr-label">Fecha y Hora de Salida <span className="obligatorio">*</span></label>
@@ -628,7 +655,7 @@ export const SalidasProd = () => {
                 <span className="error-mensaje">{errores.observaciones ?? ""}</span>
               </div>
               <section style={{ gridArea: "divInpt3" }} className="spr-form-detalles-area">
-                <div className="spr-form-detalles-header">
+                <div className="spr-form-detalles-header-re">
                   <h2>Productos de la Salida</h2>
                   <button type="button" className="spr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
                     Agregar Producto
@@ -674,18 +701,24 @@ export const SalidasProd = () => {
                 </table>
               </section>
             </section>
-            <input className="epr-btn" type="submit"
-                value={cargando ? "Registrando..."
-                  : `Registrar Salida${listaDetalles.length > 0 ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})` : ""}`}
-                disabled={cargando}
-            />
+            <button
+  ref={btnRegistrarRef}
+  className="epr-btn"
+  type="button"
+  onClick={handleRegistrar}
+>
+  {cargando ? "Registrando..."
+    : `Registrar Salida${listaDetalles.length > 0
+        ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
+        : ""}`}
+</button>
           </form>
         </aside>
         )}
         {/* ── MODAL 2: Ver / Editar Salida ──────────────────────────────── */}
         {modalActivo === 2 && (
         <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-ed" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -764,8 +797,8 @@ export const SalidasProd = () => {
         {modalActivo === 3 && (
         <aside className="modal-salida-desactivar">
           <h1 className="modal-epel-titulo">Desactivar Salida Registrada</h1>
-          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°{salidaSeleccionada?.id_salida}
-            <span className="subrayar">{""}</span>?
+          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°
+            <span className="subrayar">{salidaSeleccionada?.id_salida}</span>?
           </h3>
 
           {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}       
@@ -845,11 +878,6 @@ export const SalidasProd = () => {
                 </label>
                 <input className="sdpr-input3" type="number" min="1" value={formDetalle.cantidad_presentacion} 
                 onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? formDetalle.cantidad_por_unidad, setFormDetalle)} />
-                {formDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
-                    Stock disponible: {formDetalle.cantidad_actual} {formDetalle.tipo_medida}
-                  </div>
-                )}
                 <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
               </div>
         
@@ -865,7 +893,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{  cursor: "not-allowed" }}
                     placeholder={productoElegido ? "Ingresa la cantidad" : "Selecciona un producto primero"}
                     value={formDetalle.cantidad_total !== ""
                       ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : "" }
@@ -874,8 +902,16 @@ export const SalidasProd = () => {
                     <img className="candado-icono-img" src={campoRestringido} alt=""/>
                   </figure>
                 </div>
+                {formDetalle.cantidad_actual !== "" && (
+                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
+                    Stock disponible máximo: {formDetalle.cantidad_actual} {formDetalle.tipo_medida}
+                  </div>
+                )}
+              </div>
+              <div style={{ gridArea: "divInpt5" }}>
                 <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
               </div>
+
             </section>
             <input className="sdpr-btn" type="submit" 
               value={detalleEditIndex !== null ? "Guardar Cambios" : "Agregar Producto" } 
@@ -915,7 +951,7 @@ export const SalidasProd = () => {
                                       cantidad_por_unidad: prod.cantidad_por_unidad,
                                       cantidad_actual: prod.cantidad_actual,
                                       cantidad_presentacion: "",
-                                      cantidad_total: "",
+                                      cantidad_total_original: productoElegidoEditar.cantidad_total ?? formEditarDetalle.cantidad_total, // para recalcular si cambia el producto
                                     }));
                                   }
                                 }}
@@ -943,11 +979,6 @@ export const SalidasProd = () => {
                   value={formEditarDetalle.cantidad_presentacion}
                   onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle) } 
                 />
-                {formEditarDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 12, color: "#555", marginTop: 4 }}>
-                    Stock disponible: {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
-                  </div>
-                )}
                 <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
               </div>
         
@@ -960,7 +991,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{cursor: "not-allowed" }}
                     value={formEditarDetalle.cantidad_total !== "" 
                       ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida ?? ''}` : ''}
                   />
@@ -968,6 +999,15 @@ export const SalidasProd = () => {
                     <img className="candado-icono-img" src={campoRestringido} alt="" />
                   </figure>
                 </div>
+                {formEditarDetalle.cantidad_actual !== "" && (
+                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
+                    Stock máximo:  {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
+                  </div>
+                )}
+               
+              </div>
+              < div style={{ gridArea: "divInpt5" }}>
+                <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
               </div>
             </section>
             <input className="sdpr-btn" type="submit"
@@ -1003,8 +1043,8 @@ export const SalidasProd = () => {
         )}
         {/* modal 7 */}
         {modalActivo === 7 && (
-        <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={volver}>
+        <aside className="modal-salida-ver">
+          <button className="volver-btn-sal-prod-ver" type="button" onClick={volver}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -1013,12 +1053,12 @@ export const SalidasProd = () => {
           <section className="sped-form-inputs-area">
             <div style={{ gridArea: "divInpt1" }}>
               <label className="sped-label">Fecha y Hora</label>
-              <input className="sped-input1" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
+              <input className="sped-input1-ver" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
             </div>
         
             <div style={{ gridArea: "divInpt2" }}>
               <label className="sped-label">Observaciones</label>
-              <textarea className="sped-input2" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
+              <textarea className="sped-input2-ver" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
             </div>
         
             <section style={{ gridArea: "divInpt3" }} className="sped-form-detalles-area">
