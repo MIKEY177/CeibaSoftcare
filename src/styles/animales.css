@@ -1,0 +1,491 @@
+.seccion1-busqueda-agregar{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.busqueda-form{
+    display: flex;
+}
+
+.busqueda-input1{
+    width: 400px;
+    height: 40px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border: 2px solid #048F9F;
+    border-right: none;
+    outline: none;
+    padding: 4px 0px 2px 10px;
+    font-size: 1.2rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #FFFFFF;
+}
+
+.busqueda-input1::placeholder{
+    color: #0190a059;
+}
+
+.busqueda-icono{
+    width: 50px;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    border: 2px solid #048F9F;
+    border-right: none;
+    border-left: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.busqueda-icono::after{
+    content: '';
+    width: 2px;
+    height: 27px;
+    background-color: #04909f7c;
+    position: absolute;
+    z-index: 2;
+    transform: translatex(10px);
+}
+
+.busqueda-icono-img{
+    width: 22px;
+    margin-top: 3px;
+}
+
+.busqueda-barras-icono-img{
+    width: 30px;
+    margin-top: 8px;
+}
+
+.busqueda-barras-icono{
+    width: 50px;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 2px solid #048F9F;
+    border-left: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.registrar-btn{
+    width: 200px;
+    height: 40px;
+    font-size: 1.3rem;
+    font-family: "ubuntu";
+    background-color: #0094A4;
+    color: #FFFFFF;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.registrar-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.1s ease-in-out;
+}
+
+.editar-icono, .desactivar-icono{
+    width: 25px;
+}
+
+.editar-icono-img, .desactivar-icono-img{
+    width: 100%;
+    height: 100%;
+}
+
+/* Scrollbar */
+
+.body-tabla-animales::-webkit-scrollbar {
+  width: 8px;
+}
+
+.body-tabla-animales::-webkit-scrollbar-track {
+  background: #FFF8E2;
+}
+
+.body-tabla-animales::-webkit-scrollbar-thumb {
+  background-color: #D49538;
+}
+
+/* Fin Scrollbar */
+/* Tablas */
+
+.tabla-animales{
+    width: 100%;
+    height: 600px;
+    background-color: white;
+    border: 3px solid #D49538;
+    border-radius: 25px;
+    font-family: "Lato";
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    table-layout: fixed;
+}
+
+.header-tabla-animales{
+    background-color: #FFF8E2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    height: 50px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-tabla-animales td, .body-tabla-animales td{
+    border-bottom: 3px solid #D49538;
+}
+
+/* .body-tabla-animales td:last-child{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+} */
+
+.last-td-flex-content-wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/* .header-tabla-animales:after{
+    content: '';
+    width: 3px;
+    height: 546px;
+    background-color: #D49538;
+    position: absolute;
+    z-index: 2;
+    transform: translate(990px);
+} */
+
+.body-tabla-animales tr:last-child td{
+    border-bottom: 0;
+}
+
+.body-tabla-animales{
+    display: block;
+    width: 100%;
+    height: 545px; 
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body-tabla-animales tr{
+    display: table;
+    width: 100%;
+    max-height: 50px; 
+    table-layout: fixed;
+    /* border: 2px solid red; */
+}
+
+.body-tabla-animales td{
+    word-wrap: break-word;
+    padding: 10px;
+    /* border: 2px solid red; */
+}
+
+.tabla-animales-btn{
+    background-color: #D49538;
+    padding: 5px 30px;
+    font-size: 1rem;
+    font-weight: 550;
+    color: white;
+    border: none;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.modales-animales{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    background-color: #00000065;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-animales-registrar, .modal-animales-editar{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 1000px;
+    height: auto;      
+    max-height: 95vh;   
+    overflow-y: auto;  
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;          
+}
+
+.modal-animales-desactivar{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 1300px;
+    height: 700px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;   
+}
+
+.modal-animales-desactivar{
+    width: 500px;
+    height: 300px;
+}
+
+.volver-btn-anim{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 12px;
+    align-self: flex-start; 
+    cursor: pointer;
+}
+
+.volver-icono{
+    height: 14px;
+    width: 9px;
+    align-self: center;
+    margin-right: 10px;
+    transform: scale(1);
+}
+
+.modal-ar-titulo, .modal-aed-titulo, .modal-ael-titulo{
+    color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 20px;  
+}
+
+.ar-form, .aed-form{
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    height: auto;          
+}
+
+.ar-form-inputs-area, .aed-form-inputs-area{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "divInpt1 divInpt4"
+    "divInpt2 divInpt5"
+    "divInpt3 divInpt6"
+    "divInpt3 divInpt7";
+    gap: 5px 0;
+}
+
+.ar-label, .aed-label{
+    color: #212427;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    display: flex;
+}
+
+.label-and-input-container{
+    /* margin-top: 100px; */
+    margin-left: 0px;
+}
+
+
+.obligatorio{
+    color: red;
+    font-size: 1rem;
+}
+
+.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
+.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 30px;
+}
+
+/* .ar-input3 {
+    
+    font-family: 'Lato';
+    justify-content: space-between;
+    font-weight: 600;
+    
+    &, &::picker(select) {
+        appearance: base-select;
+        padding: 0.4rem;
+    }
+
+    &::picker-icon{
+        display: none;
+    }
+
+} */
+
+.ar-input3, .aed-input3{
+    resize: none;
+    height: 140px;
+    padding: 5px 10px;
+    font-family: "ubuntu";
+}
+
+.ar-input7, .aed-input7{
+    background-color: rgba(214, 214, 214, 0.658);
+}
+
+.union-input-icono{
+    display: flex;
+}
+
+.candado-icono{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    transform: translate(-40px, 4px);
+}
+
+.ar-btn, .aed-btn, .cancelar-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 20px;
+    background-color: #eaaa49de;
+    color: #875000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cancelar-btn{
+    transform: scale(1.15);
+}
+
+.desactivar-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 25px;
+    background-color: #e66377d7;
+    color: #740000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1.15);
+    transition: transform 0.2s ease-in-out;
+}
+
+.ar-btn:hover, .aed-btn:hover{
+    transform: scale(1.05);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cancelar-btn:hover, .desactivar-btn:hover{
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 320px;
+}
+
+.modal-ael-mensaje{
+    display: flex;
+    color: #212427;
+    font-size: 1.3rem;
+}
+
+.subrayar{
+    font-size: 1.3rem;
+    text-decoration: underline;
+}
+.error-mensaje {
+    display: block;
+    color: #c0392b;
+    font-size: 1rem;
+    font-family: 'lato';
+    padding-left: 5px;
+    min-height: 18px;
+    margin-bottom: 5px;
+}
+
+.exito-mensaje {
+    color: #27ae60;
+    font-size: 0.85rem;
+    font-weight: bold;
+    font-family: 'lato';
+}
+.input-con-icono {
+    position: relative;
+    width: max-content;
+}
+
+.codigo-barras-icono {
+    width: 32px;
+    height: 23px;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-14px);
+    pointer-events: none; /* no interfiere con el input */
+}
+
+.codigo-barras-icono-img {
+    width: 100%;
+    height: 100%;
+}
+/* Fin Modales */
+
+.modales-animales{
+    display: none;
+}
+
+.modal-animales-registrar{
+    display: none;
+}
+
+.modal-animales-editar{
+    display: none;
+}
+
+.modal-animales-desactivar{
+    display: none;
+}
