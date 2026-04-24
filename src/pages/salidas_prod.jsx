@@ -560,7 +560,7 @@ export const SalidasProd = () => {
   const salidasFiltradas = salidas.filter(e =>
     ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
     (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
-    (e.id_salida == (params.get("id") || id_salida))
+    (e.id_salida == (params.get("id") || e.id_salida))
   );
 
   return (
