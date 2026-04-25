@@ -339,15 +339,15 @@ export const Verificaciones = () => {
                   <td colSpan="6">{busqueda ? "No se encontraron verificaciones que coincidan." : "No hay verificaciones registradas."}</td>
                 </tr>
               ) : (
-                  animalesFiltrados.map((producto) => (
-                <tr key={producto.id_producto}>
-                    <td>{producto.tipo_verificacion}</td>
-                    <td>{producto.codigo}</td>
-                    <td>{producto.fecha} {producto.tipo_medida}</td>
-                    <td>{producto.animal}</td>
-                    <td><button class="tabla-verificaciones-ver" onClick={()=>verActividad()}>Ver</button></td>
-                 </tr>
-                ))
+                  verificacionesFiltradas.map((verificacion) => ( */}
+              <tr key={'/*verificacion.id_verificacion*/'}>
+                {/* <td>{verificacion.tipo_verificacion}</td>
+                    <td>{verificacion.codigo}</td>
+                    <td>{verificacion.fecha} {verificacion.tipo_medida}</td>
+                    <td>{verificacion.animal}</td> */}
+                <td><a href=""><button class="tabla-verificaciones-btn">Ver</button></a></td>
+              </tr>
+              {/* ))
               )} */}
             </tbody>
           </table>
@@ -355,7 +355,7 @@ export const Verificaciones = () => {
       </main>
       <Footer />
 
-      <div className="modal-verificaciones" style={{}}>
+      {<div className="modal-verificaciones" style={{}}>
 
         {/* ── MODAL 1: Detalle Verificación ──────────────────────────────────── */}
         <aside className="modal-verificaciones-ver">
@@ -370,31 +370,31 @@ export const Verificaciones = () => {
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>} */}
 
-          <section className="ar-form-inputs-area">
+          <section className="detalles-verificacion">
 
             <div className="datos-verificacion">
               <h5>Datos de Verificación</h5>
-              <p><h6>Tipo de Verificación</h6></p>
-              <p><h6>Tipo de Código</h6></p>
-              <p><h6>Código</h6></p>
-              <p><h6>Fecha de Verificación</h6></p>
-              <p><h6>Responsable verificación</h6></p>
+              <p><strong>Tipo de Verificación</strong></p>
+              <p><strong>Tipo de Código</strong></p>
+              <p><strong>Código</strong></p>
+              <p><strong>Fecha de Verificación</strong></p>
+              <p className='p-final'><strong>Responsable verificación</strong></p>
             </div>
 
             <div className="datos-verificacion-propietario">
               <h5>Datos del Propietario</h5>
-              <p><h6>Nombre</h6></p>
-              <p><h6>Identificación</h6></p>
-              <p><h6>Telefono</h6></p>
-              <p><h6>Correo</h6></p>
-              <p><h6>Dirección</h6></p>
+              <p><strong>Nombre</strong></p>
+              <p><strong>Identificación</strong></p>
+              <p><strong>Telefono</strong></p>
+              <p><strong>Correo</strong></p>
+              <p className='p-final'><strong>Dirección</strong></p>
             </div>
 
             <div className="datos-verificacion-especificaciones">
               <h5>Especificaciones</h5>
-              <p><h6>Nombre del Animal</h6></p>
-              <p><h6>Descripción</h6></p>
-              <p><h6>Registro Fotográfico</h6></p>
+              <p><strong>Nombre del Animal</strong></p>
+              <p><strong>Descripción</strong></p>
+              <p className='p-final'><strong>Registro Fotográfico</strong></p>
             </div>
 
           </section>
@@ -402,7 +402,7 @@ export const Verificaciones = () => {
         </aside>
 
 
-      </div>
+      </div>}
     </>
   )
 } 
