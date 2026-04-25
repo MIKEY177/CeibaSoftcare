@@ -12,6 +12,7 @@ import { Eventos } from './pages/eventos.jsx'
 import { Animales } from './pages/animales.jsx'
 import { Verificaciones } from './pages/verificaciones.jsx'
 import { RegistrarVerificacion } from './pages/registrar_verificacion.jsx'
+import { EditarVerificacion } from './pages/editar_verificacion.jsx'
 
 function App() {
     return (
@@ -36,6 +37,7 @@ function App() {
                     <Route path="/animales" element={<Animales />} />
                     <Route path="/verificaciones" element={<Verificaciones />} />
                     <Route path="/registrar_verificacion" element={<RegistrarVerificacion />} />
+                    <Route path="/editar_verificacion" element={<EditarVerificacion />} />
                 </Routes>
             </Router>
         </>
