@@ -13,6 +13,7 @@ import { Animales } from './pages/animales.jsx'
 import { Verificaciones } from './pages/verificaciones.jsx'
 import { RegistrarVerificacion } from './pages/registrar_verificacion.jsx'
 import { EditarVerificacion } from './pages/editar_verificacion.jsx'
+import { SalidaAnimales } from './pages/salidas_animales.jsx'
 
 function App() {
     return (
@@ -38,6 +39,7 @@ function App() {
                     <Route path="/verificaciones" element={<Verificaciones />} />
                     <Route path="/registrar_verificacion" element={<RegistrarVerificacion />} />
                     <Route path="/editar_verificacion" element={<EditarVerificacion />} />
+                    <Route path="/salida_animales" element={<SalidaAnimales />} />
                 </Routes>
             </Router>
         </>

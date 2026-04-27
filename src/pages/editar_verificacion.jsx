@@ -3,7 +3,7 @@ import React from 'react'
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
-import { MenuVeterinario } from '../utils/menu';
+import { MenuVeterinario } from '../utils/menu.jsx';
 
 import "../styles/global_styles.css"
 import "../styles/verificaciones.css"

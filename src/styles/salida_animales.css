@@ -55,8 +55,26 @@
     margin-top: 3px;
 }
 
+.busqueda-barras-icono-img{
+    width: 30px;
+    margin-top: 8px;
+}
+
+.busqueda-barras-icono{
+    width: 50px;
+    height: 40px;
+    padding: 0 10px;
+    background-color: #FFFFFF;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border: 2px solid #048F9F;
+    border-left: none;
+    cursor: pointer;
+    align-items: center;
+}
+
 .registrar-btn{
-    width: 250px;
+    width: 200px;
     height: 40px;
     font-size: 1.3rem;
     font-family: "ubuntu";
@@ -74,24 +92,34 @@
     transform: scale(1.05);
     transition: transform 0.1s ease-in-out;
 }
+
+.editar-icono, .desactivar-icono{
+    width: 25px;
+}
+
+.editar-icono-img, .desactivar-icono-img{
+    width: 100%;
+    height: 100%;
+}
+
 /* Scrollbar */
 
-.body-tabla-verificaciones::-webkit-scrollbar {
+.body-tabla-salidas-animales::-webkit-scrollbar {
   width: 8px;
 }
 
-.body-tabla-verificaciones::-webkit-scrollbar-track {
+.body-tabla-salidas-animales::-webkit-scrollbar-track {
   background: #FFF8E2;
 }
 
-.body-tabla-verificaciones::-webkit-scrollbar-thumb {
+.body-tabla-salidas-animales::-webkit-scrollbar-thumb {
   background-color: #D49538;
 }
 
 /* Fin Scrollbar */
 /* Tablas */
 
-.tabla-verificaciones{
+.tabla-salidas-animales{
     width: 100%;
     height: 600px;
     background-color: white;
@@ -104,7 +132,7 @@
     table-layout: fixed;
 }
 
-.header-tabla-verificaciones{
+.header-tabla-salidas-animales{
     background-color: #FFF8E2;
     font-size: 1.4rem;
     font-weight: 600;
@@ -114,11 +142,11 @@
     table-layout: fixed;
 }
 
-.header-tabla-verificaciones td, .body-tabla-verificaciones td{
+.header-tabla-salidas-animales td, .body-tabla-salidas-animales td{
     border-bottom: 3px solid #D49538;
 }
 
-/* .body-tabla-verificaciones td:last-child{
+/* .body-tabla-animales td:last-child{
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -140,11 +168,11 @@
     transform: translate(990px);
 } */
 
-.body-tabla-verificaciones tr:last-child td{
+.body-tabla-salidas-animales tr:last-child td{
     border-bottom: 0;
 }
 
-.body-tabla-verificaciones{
+.body-tabla-salidas-animales{
     display: block;
     width: 100%;
     height: 545px; 
@@ -152,7 +180,7 @@
     overflow-x: hidden;
 }
 
-.body-tabla-verificaciones tr{
+.body-tabla-salidas-animales tr{
     display: table;
     width: 100%;
     max-height: 50px; 
@@ -160,13 +188,13 @@
     /* border: 2px solid red; */
 }
 
-.body-tabla-verificaciones td{
+.body-tabla-salidas-animales td{
     word-wrap: break-word;
     padding: 10px;
     /* border: 2px solid red; */
 }
 
-.tabla-verificaciones-btn{
+.tabla-salidas-animales-btn{
     background-color: #D49538;
     padding: 5px 30px;
     font-size: 1rem;
@@ -177,7 +205,7 @@
     cursor: pointer;
 }
 
-.modal-verificaciones{
+.modales-salidas-animales{
     position: fixed;
     top: 0;
     left: 0;
@@ -190,10 +218,10 @@
     align-items: center;
 }
 
-.modal-verificaciones-ver{
+.modal-salidas-animales-registrar, .modal-salidas-animales-editar{
     margin: auto;
     background-color: #FFFFFF;
-    width: 1100px;
+    width: 1000px;
     height: auto;      
     max-height: 95vh;   
     overflow-y: auto;  
@@ -206,7 +234,7 @@
     gap: 15px;          
 }
 
-.volver-btn-verificaciones{
+.volver-btn-salida-animal{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -229,64 +257,41 @@
     transform: scale(1);
 }
 
-.detalles-verificacion{
-    display: grid;
-    grid-template-columns: repeat(2,1fr);
-    justify-items: center;
-    gap: 30px;
+.modal-ar-titulo, .modal-aed-titulo, .modal-ael-titulo{
+    color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 20px;  
 }
 
-.detalles-verificacion .datos-verificacion,
-.detalles-verificacion .datos-verificacion-propietario,
-.detalles-verificacion .datos-verificacion-especificaciones{
+.ar-form, .aed-form{
+    display: flex;
+    flex-direction: column;
+    width: 900px;
+    height: auto;          
+}
+
+.ar-form-inputs-area, .aed-form-inputs-area{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "divInpt1 divInpt4"
+    "divInpt2 divInpt3";
+    gap: 5px 0;
+}
+
+.ar-label, .aed-label{
     color: #212427;
     font-size: 1.3rem;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(4, 4, 4, 0.345);
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-left: 5px;
+    display: flex;
 }
 
-.detalles-verificacion .datos-verificacion {
-    width: 450px;
-    height: auto;
-}
-
-.detalles-verificacion .datos-verificacion h5,
-.detalles-verificacion .datos-verificacion-propietario h5,
-.detalles-verificacion .datos-verificacion-especificaciones h5{
-    font-size: 1.3rem;
-    border-bottom: #048F9F 2px solid;
-    margin: 0 0 10px 0;
-    padding-bottom: 8px;
-}
-
-.detalles-verificacion .datos-verificacion p,
-.detalles-verificacion .datos-verificacion-propietario p,
-.detalles-verificacion .datos-verificacion-especificaciones p{
-    font-size: 1.2rem;
-    border-bottom: #CCC9C9 2px solid;
-    padding: 7px 0;
-}
-
-.detalles-verificacion .datos-verificacion .p-final,
-.detalles-verificacion .datos-verificacion-propietario .p-final,
-.detalles-verificacion .datos-verificacion-especificaciones .p-final{
-    border-bottom: none;
-}
-
-.detalles-verificacion .datos-verificacion-propietario {
-    width: 450px;
-}
-.detalles-verificacion .datos-verificacion-especificaciones {
-  width: 400px;
-  grid-column: 1 / -1;
-  justify-self: center;
-}
-
-.modal-ar-titulo{
-    font-size: 1.8rem;
-    color: #048F9F;
-    margin-bottom: 30px;
+.label-and-input-container{
+    /* margin-top: 100px; */
+    margin-left: 0px;
 }
 
 
@@ -295,7 +300,20 @@
     font-size: 1rem;
 }
 
-
+.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
+.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
+    height: 40px;
+    width: 400px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 30px;
+}
 
 /* .ar-input3 {
     
@@ -314,7 +332,7 @@
 
 } */
 
-/* .ar-input3, .aed-input3{
+.ar-input3, .aed-input3{
     resize: none;
     height: 140px;
     padding: 5px 10px;
@@ -417,96 +435,10 @@
 .input-con-icono {
     position: relative;
     width: max-content;
-} */
+}
+
 /* Fin Modales */
 
-.modal-verificaciones{
+.modales-salidas-animales{
     display: none;
-}
-
-/* Registrar Verificaciones */
-
-.titulo-registrar-verificacion{
-    color: #048F9F;
-    font-size: 2.3rem;
-    text-align: center;
-}
-
-.form-verificaciones{
-    width: 90%;
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
-}
-
-
-
-.ied-input{
-    width: 350px;
-    height: 40px;
-    border-radius: 10px;
-    border: 3px solid #0094A4;
-    outline: none;
-    padding: 0 10px;
-    font-size: 1.15rem;
-    color: #212427;
-    text-decoration: none;
-    background-color: #EFF5F5;
-    margin-bottom: 30px;
-}
-
-.ied-select{
-    width: 350px;
-    height: 40px;
-    border-radius: 10px;
-    border: 3px solid #0094A4;
-    outline: none;
-    padding: 0 10px;
-    font-size: 1.15rem;
-    color: #212427;
-    text-decoration: none;
-    background-color: #EFF5F5;
-    margin-bottom: 5px;
-}
-
-.epr-input2{
-    width: 350px;
-    height: 145px;
-    background-color: #EFF5F5;
-}
-
-.btn-registrar-verificacion{
-    height: 50px;
-    grid-column: 1 / -1;
-    justify-self: center;
-    background-color: #EAA949;
-    color: #875000;
-    border-radius: 10px;
-    border: none;
-    padding: 10px 30px;
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-top: 2rem;
-}
-
-.registro-ft{
-    width: 350px;
-    height: 145px;
-    border: 3px solid #0094A4;
-    padding: 5px;
-    border-radius: 10px;
-    text-align: center;
-}
-
-
-.registro-fotografico{
-    width: 99%;
-    height: 100%;
-    border: 3px dashed #0094A4;
-    background-color: #EFF5F5;
-    border-radius: 10px;
-}
-
-.registro-fotografico::placeholder{
-    color: #0094a49c;
-    text-align: center;
 }
