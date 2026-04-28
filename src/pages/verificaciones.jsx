@@ -1,22 +1,28 @@
 // Imports Base
-import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import React, { useEffect, useState, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  MenuAdmin,
+  MenuAdminFarmacia,
+  MenuAdminAlbergue,
+  MenuFarmaceutico,
+  MenuVeterinario,
+} from "../utils/menu.jsx";
 
 // Estilos e imágenes
-import "../styles/global_styles.css"
-import "../styles/verificaciones.css"
-import editarIcon from "../images/icons/editar.png"
-import desactivarIcon from "../images/icons/desactivar.png"
-import lupaBusqueda from "../images/lupa_busqueda.png"
-import barrasBusqueda from "../images/codigo_barras.png"
-import campoRestringido from "../images/candado.png"
-import flecha from "../images/flecha_salir.png"
+import "../styles/global_styles.css";
+import "../styles/verificaciones.css";
+import editarIcon from "../images/icons/editar.png";
+import desactivarIcon from "../images/icons/desactivar.png";
+import lupaBusqueda from "../images/lupa_busqueda.png";
+import barrasBusqueda from "../images/codigo_barras.png";
+import campoRestringido from "../images/candado.png";
+import flecha from "../images/flecha_salir.png";
 
 // Componentes
-import { Navbar } from '../components/Navbar.jsx'
-import { Footer } from '../components/Footer.jsx'
-import { Menu } from '../components/Menu.jsx'
+import { Navbar } from "../components/Navbar.jsx";
+import { Footer } from "../components/Footer.jsx";
+import { Menu } from "../components/Menu.jsx";
 
 // const API = `api/inventario.php`;
 // const API_SESSION = `api/session.php`;
@@ -34,13 +40,13 @@ export const Verificaciones = () => {
   //     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
 
   //     const [formRegistrar, setFormRegistrar] = useState({
-  //       nombre: "", 
-  //       descripcion: "", 
+  //       nombre: "",
+  //       descripcion: "",
   //       tipo_medida: "",
   //     });
   //     const [formEditar, setFormEditar] = useState({
-  //       nombre: "", 
-  //       descripcion: "", 
+  //       nombre: "",
+  //       descripcion: "",
   //       tipo_medida: "",
   //     });
 
@@ -75,20 +81,20 @@ export const Verificaciones = () => {
   //       setModalActiva(null);
   //       setProductoSeleccionado(null);
 
-  //       setFormRegistrar({ 
-  //         nombre: "", 
-  //         descripcion: "", 
-  //         tipo_medida: "", 
-  //         codigo_barras: "", 
-  //         cantidad_por_unidad: "" 
+  //       setFormRegistrar({
+  //         nombre: "",
+  //         descripcion: "",
+  //         tipo_medida: "",
+  //         codigo_barras: "",
+  //         cantidad_por_unidad: ""
   //       });
 
-  //       setFormEditar({   
-  //         nombre: "", 
-  //         descripcion: "", 
-  //         tipo_medida: "", 
-  //         codigo_barras: "", 
-  //         cantidad_por_unidad: "" 
+  //       setFormEditar({
+  //         nombre: "",
+  //         descripcion: "",
+  //         tipo_medida: "",
+  //         codigo_barras: "",
+  //         cantidad_por_unidad: ""
   //       });
   //     };
 
@@ -141,10 +147,10 @@ export const Verificaciones = () => {
 
   //       if (modalActiva === 1) {
   //         setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
-  //       } 
+  //       }
   //       else if (modalActiva === 2) {
   //         setFormEditar(prev => ({ ...prev, codigo_barras: code }));
-  //       } 
+  //       }
   //       else {
   //         setBusqueda(code);
   //       }
@@ -152,7 +158,6 @@ export const Verificaciones = () => {
   //       scannedCodeRef.current = "";
   //       isScanningRef.current = false;
   //     };
-
 
   //     const handleKeyDown = (e) => {
 
@@ -207,7 +212,7 @@ export const Verificaciones = () => {
   //           }, 120);
   //         }
 
-  //       } 
+  //       }
   //       else if (e.key === "Backspace") {
 
   //         if (isScanningRef.current) {
@@ -215,7 +220,7 @@ export const Verificaciones = () => {
   //           scannedCodeRef.current = scannedCodeRef.current.slice(0, -1);
   //         }
 
-  //       } 
+  //       }
   //       else {
 
   //         scannedCodeRef.current = "";
@@ -227,7 +232,6 @@ export const Verificaciones = () => {
   //         }
   //       }
   //     };
-
 
   //     document.addEventListener("keydown", handleKeyDown);
 
@@ -315,13 +319,21 @@ export const Verificaciones = () => {
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Verificaciones</h2>
           <section className="seccion1-busqueda-agregar">
-            <form className="busqueda-form" onSubmit={''}>
-              <input className="busqueda-input1" type="text" name="busqueda" placeholder="Busca una verificación" value={''} />
+            <form className="busqueda-form" onSubmit={""}>
+              <input
+                className="busqueda-input1"
+                type="text"
+                name="busqueda"
+                placeholder="Busca una verificación"
+                value={""}
+              />
               <button className="diff_busqueda-icono" type="submit">
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
             </form>
-            <button className="registrar-btn" onClick={''}>Registrar Verificación</button>
+            <button className="registrar-btn" onClick={""}>
+              Registrar Verificación
+            </button>
           </section>
           <table className="tabla-verificaciones">
             <thead className="header-tabla-verificaciones">
@@ -340,12 +352,16 @@ export const Verificaciones = () => {
                 </tr>
               ) : (
                   verificacionesFiltradas.map((verificacion) => ( */}
-              <tr key={'/*verificacion.id_verificacion*/'}>
+              <tr key={"/*verificacion.id_verificacion*/"}>
                 {/* <td>{verificacion.tipo_verificacion}</td>
                     <td>{verificacion.codigo}</td>
                     <td>{verificacion.fecha} {verificacion.tipo_medida}</td>
                     <td>{verificacion.animal}</td> */}
-                <td><a href=""><button class="tabla-verificaciones-btn">Ver</button></a></td>
+                <td>
+                  <a href="">
+                    <button class="tabla-verificaciones-btn">Ver</button>
+                  </a>
+                </td>
               </tr>
               {/* ))
               )} */}
@@ -355,54 +371,76 @@ export const Verificaciones = () => {
       </main>
       <Footer />
 
-      {<div className="modal-verificaciones" style={{}}>
-
-        {/* ── MODAL 1: Detalle Verificación ──────────────────────────────────── */}
-        <aside className="modal-verificaciones-ver">
-          <button className="volver-btn-verificaciones" onClick={''}>
-            <img className="volver-icono" src={flecha} alt="" />
-            <h2>Volver</h2>
-          </button>
-          <h1 className="modal-ar-titulo">
-            Verificación N°[id_verificacion]
-          </h1>
-          {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+      {
+        <div className="modal-verificaciones" style={{}}>
+          {/* ── MODAL 1: Detalle Verificación ──────────────────────────────────── */}
+          <aside className="modal-verificaciones-ver">
+            <button className="volver-btn-verificaciones" onClick={""}>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
+            </button>
+            <h1 className="modal-ar-titulo">
+              Verificación N°[id_verificacion]
+            </h1>
+            {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>} */}
 
-          <section className="detalles-verificacion">
+            <section className="detalles-verificacion">
+              <div className="datos-verificacion">
+                <h5>Datos de Verificación</h5>
+                <p>
+                  <strong>Tipo de Verificación</strong>
+                </p>
+                <p>
+                  <strong>Tipo de Código</strong>
+                </p>
+                <p>
+                  <strong>Código</strong>
+                </p>
+                <p>
+                  <strong>Fecha de Verificación</strong>
+                </p>
+                <p className="p-final">
+                  <strong>Responsable verificación</strong>
+                </p>
+              </div>
 
-            <div className="datos-verificacion">
-              <h5>Datos de Verificación</h5>
-              <p><strong>Tipo de Verificación</strong></p>
-              <p><strong>Tipo de Código</strong></p>
-              <p><strong>Código</strong></p>
-              <p><strong>Fecha de Verificación</strong></p>
-              <p className='p-final'><strong>Responsable verificación</strong></p>
-            </div>
+              <div className="datos-verificacion-propietario">
+                <h5>Datos del Propietario</h5>
+                <p>
+                  <strong>Nombre</strong>
+                </p>
+                <p>
+                  <strong>Identificación</strong>
+                </p>
+                <p>
+                  <strong>Telefono</strong>
+                </p>
+                <p>
+                  <strong>Correo</strong>
+                </p>
+                <p className="p-final">
+                  <strong>Dirección</strong>
+                </p>
+              </div>
 
-            <div className="datos-verificacion-propietario">
-              <h5>Datos del Propietario</h5>
-              <p><strong>Nombre</strong></p>
-              <p><strong>Identificación</strong></p>
-              <p><strong>Telefono</strong></p>
-              <p><strong>Correo</strong></p>
-              <p className='p-final'><strong>Dirección</strong></p>
-            </div>
-
-            <div className="datos-verificacion-especificaciones">
-              <h5>Especificaciones</h5>
-              <p><strong>Nombre del Animal</strong></p>
-              <p><strong>Descripción</strong></p>
-              <p className='p-final'><strong>Registro Fotográfico</strong></p>
-            </div>
-
-          </section>
-
-        </aside>
-
-
-      </div>}
+              <div className="datos-verificacion-especificaciones">
+                <h5>Especificaciones</h5>
+                <p>
+                  <strong>Nombre del Animal</strong>
+                </p>
+                <p>
+                  <strong>Descripción</strong>
+                </p>
+                <p className="p-final">
+                  <strong>Registro Fotográfico</strong>
+                </p>
+              </div>
+            </section>
+          </aside>
+        </div>
+      }
     </>
-  )
-} 
+  );
+};

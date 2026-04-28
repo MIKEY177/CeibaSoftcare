@@ -509,20 +509,6 @@ export const IngresoAnimales = () => {
             </form>
           </aside>
 
-        {/* ── MODAL 3: Desactivar Animal ──────────────────────────────────── */}
-
-          <aside className="modal-animales-desactivar">
-            <h1 className="modal-ael-titulo">Desactivar Animal Registrado</h1>
-            {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
-            <h3 className="modal-ael-mensaje">¿Desea desactivar &nbsp;<h6 className="subrayar">[animal]</h6>?</h3>
-            <section className="modal-buttons">
-              <button className="desactivar-btn" onClick={''} disabled={''}>
-                {/* {cargando ? "Desactivando..." : "Desactivar"} */}
-              </button>
-              <button className="cancelar-btn" onClick={''}>Cancelar</button>
-            </section>
-          </aside> 
       </div>
     </>
   )
