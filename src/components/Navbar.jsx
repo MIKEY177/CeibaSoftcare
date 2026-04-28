@@ -2,6 +2,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Menu } from "./Menu.jsx";
+import settings from "../../images/settings.png"
 
 // Estilos e imágenes
 import "../styles/compsStyles/Navbar.css"
@@ -27,6 +28,9 @@ export const Navbar = ({ user, menu }) => {
 
   return (
     <aside className="vertical-navbar">
+      <Link className="ajustes" key={''} to={''}>
+        <img className="ajustes-img" src={settings} alt="" />
+      </Link>
       <div className="perfil">
         <figure className="avatar">
           <img className="avatar-img" src={pfpPlaceholder} alt=""/>
