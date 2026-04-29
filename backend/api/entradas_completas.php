@@ -1,21 +1,10 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
+require_once dirname(__DIR__) . '/config/session_config.php';
 
 header("Content-Type: application/json");
 
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
-    'httponly' => true,
-    'samesite' =>'Lax' // None es necesario para Cross-Site en Render
-]);
-
-session_start();
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -231,7 +220,9 @@ function validarDetalle(array $d, int $index): array
 
     return $errores;
 }
+
 if ($method === 'POST') {
+
     $fecha_hora    = trim($body['fecha_hora']    ?? '');
     $observaciones = trim($body['observaciones'] ?? '');
     $detalles      = $body['detalles']           ?? [];
@@ -253,7 +244,6 @@ if ($method === 'POST') {
     // — Validar cada detalle —
     foreach ($detalles as $i => $det) {
         $errDet = validarDetalle($det, $i);
-        // Verificar que el producto existe en BD
         if (empty($errDet["detalles[$i].id_producto1"])) {
             $id_prod = intval($det['id_producto1']);
             if (!productoExiste($conn, $id_prod)) {
@@ -308,8 +298,8 @@ if ($method === 'POST') {
         mysqli_commit($conn);
 
         echo json_encode([
-            "success"    => true,
-            "id_entrada" => $id_entrada,
+            "success"              => true,
+            "id_entrada"           => $id_entrada,
             "detalles_registrados" => count($detalles)
         ], JSON_UNESCAPED_UNICODE);
 
@@ -325,7 +315,6 @@ if ($method === 'POST') {
     mysqli_close($conn);
     exit;
 }
-
 // ── PUT: editar cabecera de entrada ─────────────────────────────────────────
 if ($method === 'PUT') {
     $id_entrada    = intval($body['id_entrada']    ?? 0);

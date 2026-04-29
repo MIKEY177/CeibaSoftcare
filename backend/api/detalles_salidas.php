@@ -1,21 +1,9 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
+require_once dirname(__DIR__) . '/config/session_config.php';
  
 header("Content-Type: application/json");
- 
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 0,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
-    'httponly' => true,
-    'samesite' => 'Lax' // None es necesario para Cross-Site en Render
-]);
- 
-session_start();
 
 $id_usuario = $_SESSION['user_id'] ?? null;
 session_write_close(); // libera el bloqueo inmediatamente
@@ -172,7 +160,7 @@ if ($method === 'PUT') {
     }
 
     if (empty($errores)) {
-        $stock = 'SELECT cantidad_actual FROM stocks WHERE id_producto1 = ?';
+        $stock = "SELECT cantidad_actual FROM stocks WHERE id_producto1 = ?";
         $s = mysqli_prepare($conn, $stock);
         mysqli_stmt_bind_param($s, "i", $id_producto);
         mysqli_stmt_execute($s);
@@ -185,7 +173,7 @@ if ($method === 'PUT') {
             $detalle_actual_total = floatval($detalleActual['cantidad_total']);
             $detalle_producto_original = intval($detalleActual['id_producto1']);
             $maxStock = floatval($cantidad_actual);
-            if ($id_producto === $detalle_producto_original) {
+            if ($detalle_producto_original === $id_producto) {
                 $maxStock += $detalle_actual_total;
             }
             if (floatval($cantidad_total) > $maxStock) {
@@ -232,7 +220,7 @@ if ($method === 'PUT') {
             http_response_code(404);
             echo json_encode([
                 "success" => false,
-                "errores" => ["general" => "Detalle no encontrado."]
+                "errores" => ["general" => "Detalle no encontrado o sin cambios."]
             ], JSON_UNESCAPED_UNICODE);
         } else {
             echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
