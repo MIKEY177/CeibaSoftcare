@@ -1,3 +1,4 @@
+import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdminFarmacia, MenuFarmaceutico } from "../utils/menu.jsx"
@@ -564,6 +565,13 @@ export const EntradasProd = () => {
     (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())) &&
     (e.id_entrada == (params.get("id") || e.id_entrada))
   );
+
+  useEffect(() => {
+    if (params.get("id")) {
+      const entrada = entradas.find(e => e.id_entrada == params.get("id"));
+      if (entrada) abrirModal(7, entrada);
+    }
+  }, [entradas]);
   // RENDER
   return (
     <>
@@ -1059,15 +1067,37 @@ export const EntradasProd = () => {
                       <td colSpan="5" style={{ textAlign: "center", color: "#888" }}> Sin productos registrados.</td>
                     </tr>
                     ) : (
-                      (entradaSeleccionada?.detalles ?? []).map(det => (
-                        <tr key={det.id_detalle_entrada}>
+                      entradaSeleccionada?.detalles?.map(det => {
+                        const esResaltado = params.get("p") && det.nombre_producto.toLowerCase() === params.get("p").toLowerCase();
+                        const sinFiltro = !params.get("p");
+                        if (esResaltado) {
+                          return(
+                        <motion.tr
+                         key={det.id_detalle_entrada}
+                         initial={{ backgroundColor: "#3693a8b7" }} 
+                         animate={{ backgroundColor: "#ffffff" }} 
+                         transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}>
                           <td>{det.nombre_producto}</td>
                           <td>{det.cantidad_presentacion}</td>
                           <td>{det.cantidad_total} {det.tipo_medida}</td>
                           <td>{det.fecha_vencimiento}</td>
                           <td>{det.motivo}</td>
-                        </tr>
-                      ))
+                        </motion.tr>
+                          );
+                          }
+
+                          if (sinFiltro || !esResaltado) {
+                            return (
+                              <tr key={det.id_detalle_entrada}>
+                                <td>{det.nombre_producto}</td>
+                                <td>{det.cantidad_presentacion}</td>
+                                <td>{det.cantidad_total} {det.tipo_medida}</td>
+                                <td>{det.fecha_vencimiento}</td>
+                                <td>{det.motivo}</td>
+                              </tr>
+                            );
+                          }                   
+                          })
                     )}
                   </tbody>
                 </table>

@@ -1,4 +1,5 @@
 // Imports Base
+import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef} from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
@@ -563,6 +564,12 @@ export const SalidasProd = () => {
     (e.id_salida == (params.get("id") || e.id_salida))
   );
 
+  useEffect(() => {
+  if (!salidas.length) return;
+
+  const salida = salidas.find(s => s.id_salida == params.get("id"));
+  if (salida) abrirModal(7, salida);
+}, [salidas]);
   return (
     <>
       <head>
@@ -617,6 +624,7 @@ export const SalidasProd = () => {
                     </div>
                   </td>
                 </tr>
+              
               ))
             )}
             </tbody>  
@@ -1076,19 +1084,49 @@ export const SalidasProd = () => {
                   </tr>
                 </thead>
                 <tbody className="body-tabla-sped-detalles">
-                  {(salidaSeleccionada?.detalles ?? []).length === 0 ? (
+                  {
+                  (salidaSeleccionada?.detalles ?? []).length === 0 ? (
                     <tr>
                       <td colSpan="5">No hay detalles disponibles</td>
                     </tr>
                   ) : (
-                    salidaSeleccionada?.detalles?.map((detalle, index) => (
-                      <tr key={index}>
-                        <td>{detalle.nombre_producto}</td>
-                        <td>{detalle.cantidad_presentacion}</td>
-                        <td>{detalle.cantidad_total}</td>
-                        <td>{detalle.motivo}</td>
-                      </tr>
-                    ))
+                  
+                    salidaSeleccionada?.detalles?.map((detalle, index) => {
+                    const esResaltado = params.get("p") && detalle.nombre_producto.toLowerCase() === params.get("p").toLowerCase();
+                    const sinFiltro = !params.get("p");
+
+                    
+                    if (esResaltado) {
+                      return (
+                        <motion.tr 
+                          key={index} 
+                          initial={{ backgroundColor: "#3693a8b7" }} 
+                          animate={{ backgroundColor: "#ffffff" }} 
+                          transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
+                        >
+                          <td>{detalle.nombre_producto}</td>
+                          <td>{detalle.cantidad_presentacion}</td>
+                          <td>{detalle.cantidad_total}</td>
+                          <td>{detalle.motivo}</td>
+                        </motion.tr>
+                      );
+                    }
+
+                    
+                    if (sinFiltro || !esResaltado) {
+                      return (
+                        <tr key={index}>
+                          <td>{detalle.nombre_producto}</td>
+                          <td>{detalle.cantidad_presentacion}</td>
+                          <td>{detalle.cantidad_total}</td>
+                          <td>{detalle.motivo}</td>
+                        </tr>
+                      );
+                    }
+
+                    return null;
+                      }
+                    )
                   )}
                 </tbody>
               </table>
