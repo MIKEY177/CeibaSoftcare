@@ -11,7 +11,7 @@ export const Footer = (props) => {
   return (
     <>
     <footer {...props}>
-        <p>© Derechos Reservados.</p>
+        <p>© 2025 - Ceiba Softcare, <br/>Derechos Reservados.</p>
         <section className="asociaciones">
             <div className="softcare">
                 <figure className="softcare-logo">
