@@ -11,6 +11,7 @@ import { indexSelector as eventosIndex } from '../pages/eventos.jsx'
 import { indexSelector as animalesIndex } from '../pages/animales.jsx'
 import { indexSelector as ajustesIndex } from '../pages/ajustes.jsx'
 import { indexSelector as usuariosIndex } from '../pages/usuarios.jsx'
+import { indexSelector as albergueIndex } from '../pages/albergue.jsx'
 
 export const Menu = (props) => {
 
@@ -27,6 +28,7 @@ export const Menu = (props) => {
   else if (pathname === '/animales') indexSelector = animalesIndex
   else if (pathname === '/ajustes') indexSelector = ajustesIndex
   else if (pathname === '/usuarios') indexSelector = usuariosIndex
+  else if (pathname === '/albergue') indexSelector = albergueIndex
   
 
   return (
