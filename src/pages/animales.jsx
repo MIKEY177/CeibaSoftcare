@@ -145,8 +145,8 @@ export const Animales = () => {
 
   const menuObj = (() => {
     switch (user.rol) {
-      case "administrador": return MenuAdminFarmacia;
-      case "veterinario":   return MenuVeterinario;
+      case "administrador": return MenuAdminAlbergue;
+      case "veterinario":   return MenuAdminAlbergue;
       default: return {};
     }
   })();
