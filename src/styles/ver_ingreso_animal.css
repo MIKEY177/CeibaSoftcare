@@ -1,0 +1,69 @@
+.tabla-ver-ingreso-animal {
+    width: 100%;
+    max-width: 1000px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 3px solid #D49538;
+    border-radius: 15px;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+}
+
+/* Header de la tabla (celdas con labels) */
+.header-tabla-ingreso-animal {
+    background-color: #FFF8E2;
+}
+
+.header-tabla-ingreso-animal td {
+    height: 70px;
+    padding: 15px 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #212427;
+    border-bottom: 2px solid #D49538;
+    border-right: 2px solid #D49538;
+    background-color: #FFF8E2;
+}
+
+.header-tabla-ingreso-animal td:last-child {
+    border-right: none;
+}
+
+
+.body-tabla-ver-ingreso-animal {
+    background-color: #FFFFFF;
+}
+
+.body-tabla-ver-ingreso-animal th {
+    padding: 20px;
+    border-bottom: 2px solid #D49538;
+    border-right: 2px solid #D49538;
+    background-color: #FFFFFF;
+    font-weight: normal;
+    height: 150px;
+}
+
+.body-tabla-ver-ingreso-animal th:last-child {
+    border-right: none;
+}
+
+.body-tabla-ver-ingreso-animal:last-child th {
+    border-bottom: none;
+}
+
+.header-tabla-ingreso-animal:first-child td:first-child {
+    border-top-left-radius: 12px;
+}
+
+.header-tabla-ingreso-animal:first-child td:last-child {
+    border-top-right-radius: 12px;
+}
+
+.body-tabla-ver-ingreso-animal:last-child th:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.body-tabla-ver-ingreso-animal:last-child th:last-child {
+    border-bottom-right-radius: 12px;
+}
