@@ -3,14 +3,20 @@
     overflow-y: scroll;
 }
 
-.seccion1-fecha-agregar,
-.seccion1-busqueda-agregar{
-    display: flex;
+.seccion1-fecha-agregar{
     width: 100%;
+    display: flex;
     justify-content: space-between;
     padding: 0 30px;
     margin: 3rem 0 2rem 0;
     font-size: 1.3rem;
+}
+
+.seccion1-busqueda-agregar-eventos-clinicos{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 3rem 0 2rem 0;
 }
 
 .busqueda-form{
@@ -61,24 +67,6 @@
 .busqueda-icono-img{
     width: 22px;
     margin-top: 3px;
-}
-
-.busqueda-barras-icono-img{
-    width: 30px;
-    margin-top: 8px;
-}
-
-.busqueda-barras-icono{
-    width: 50px;
-    height: 40px;
-    padding: 0 10px;
-    background-color: #FFFFFF;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 2px solid #048F9F;
-    border-left: none;
-    cursor: pointer;
-    align-items: center;
 }
 
 .registrar-btn{
@@ -142,8 +130,6 @@
     display: flex;
     gap: 10px;
 }
-
-
 
 /* Tabla exámenes físicos*/
 

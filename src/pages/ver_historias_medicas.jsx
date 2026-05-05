@@ -59,7 +59,7 @@ export const VerHistoriaMedicas = () => {
           </section>
           <section className="eventos-clinicos">
             <h2 className="titulo-dashboard">Eventos Clínicos</h2>
-            <section className="seccion1-busqueda-agregar">
+            <section className="seccion1-busqueda-agregar-eventos-clinicos">
               <form className="busqueda-form" onSubmit={""}>
                 <input
                   className="busqueda-input1"
