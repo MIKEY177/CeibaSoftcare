@@ -64,7 +64,7 @@ export const VerIngresoAnimal = () => {
         <Navbar menu={menu} user= {user} />
         { ingreso && ( 
         <section className="secciones-area-gestion">   
-         <h2 className="titulo-dashboard">Ingreso de animal #{id}</h2>
+         <h2 className="titulo-dashboard">Ingreso de {ingreso.nombre}</h2>
           <table className="tabla-ver-ingreso-animal">
             <thead className="header-tabla-ingreso-animal">
               <tr>

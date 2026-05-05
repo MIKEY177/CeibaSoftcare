@@ -10,12 +10,6 @@ import { EntradasProd } from './pages/entradas_prod.jsx'
 import { SalidasProd } from './pages/salidas_prod.jsx'
 import { Eventos } from './pages/eventos.jsx'
 import { Animales } from './pages/animales.jsx'
-<<<<<<< Updated upstream
-import { Verificaciones } from './pages/verificaciones.jsx'
-import { RegistrarVerificacion } from './pages/registrar_verificacion.jsx'
-import { EditarVerificacion } from './pages/editar_verificacion.jsx'
-=======
->>>>>>> Stashed changes
 import { SalidaAnimales } from './pages/salidas_animales.jsx'
 import { IngresoAnimales } from './pages/ingreso_animales.jsx'
 import { VerIngresoAnimal } from './pages/ver_ingreso_animal.jsx'
@@ -24,17 +18,10 @@ function App() {
     return (
         <>
             <head>
-<<<<<<< Updated upstream
-                <meta charset="UTF-8" />
-                <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-=======
                 <meta charSet="UTF-8" />
                 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin = "true" />
->>>>>>> Stashed changes
                 <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
             </head>
             <Router>
@@ -48,18 +35,9 @@ function App() {
                     <Route path="/salidas_prod" element={<SalidasProd />} />
                     <Route path="/eventos" element={<Eventos />} />
                     <Route path="/animales" element={<Animales />} />
-<<<<<<< Updated upstream
-                    <Route path="/verificaciones" element={<Verificaciones />} />
-                    <Route path="/registrar_verificacion" element={<RegistrarVerificacion />} />
-                    <Route path="/editar_verificacion" element={<EditarVerificacion />} />
-                    <Route path="/salida_animales" element={<SalidaAnimales />} />
-                    <Route path="/ingreso_animales" element={<IngresoAnimales />} />
-                    <Route path="/ver_ingreso_animales" element={<VerIngresoAnimal />} />
-=======
                     <Route path="/salida_animales" element={<SalidaAnimales />} />
                     <Route path="/ingreso_animales" element={<IngresoAnimales />} />
                     <Route path="/ver_ingreso_animales/:id" element={<VerIngresoAnimal />} />
->>>>>>> Stashed changes
                 </Routes>
             </Router>
         </>
