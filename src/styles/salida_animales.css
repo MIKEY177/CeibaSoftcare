@@ -442,3 +442,11 @@
 .modales-salidas-animales{
     display: none;
 }
+
+.modal-salidas-animales-registrar{
+    display: none;
+}
+
+.modal-salidas-animales-editar{
+    display: none;
+}

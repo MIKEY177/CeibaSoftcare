@@ -26,7 +26,7 @@ export const DetalleExamenFisico = () => {
         <Navbar menu={MenuVeterinario} />
         <section className="secciones-area-gestion-examenes-fisicos">
           <h2 className="titulo-dashboard">Exámen Fisico [fecha_creacion]</h2>
-          <section className="seccion1-busqueda-agregar">
+          <section className="seccion1-busqueda-agregar seccion1-ver-historia-medica">
             <button className="registrar-btn" onClick={""}>
               Registrar Salida
             </button>

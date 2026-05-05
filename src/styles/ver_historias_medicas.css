@@ -1,4 +1,4 @@
-.secciones-area-gestion{
+.ver-historia-medica{
     height: 90vh;
     overflow-y: scroll;
 }
@@ -290,7 +290,7 @@
 }
 
 
-.modales-examenes-fisicos{
+.modales-historias-medicas-detalle{
     position: fixed;
     top: 0;
     left: 0;
@@ -303,10 +303,11 @@
     align-items: center;
 }
 
-.modal-historias-medicas-registrar, .modal-historias-medicas-editar{
+.modal-registrar-examen-fisico, .modal-editar-examen-fisico,
+.modal-registrar-evento-clinico, .modal-editar-evento-clinico{
     margin: auto;
     background-color: #FFFFFF;
-    width: 700px;
+    width: 1300px;
     height: auto;      
     max-height: 95vh;   
     overflow-y: auto;  
@@ -319,7 +320,11 @@
     gap: 15px;          
 }
 
-.volver-btn-historias-medicas{
+.modal-registrar-evento-clinico, .modal-editar-evento-clinico{
+    width: 900px;
+}
+
+.volver-btn-ver-historias-medicas{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -351,8 +356,14 @@
 .ar-form, .aed-form{
     display: flex;
     flex-direction: column;
-    width: 400px;
+    width: 900px;
     height: auto;          
+}
+
+.modal-registrar-evento-clinico .ar-form,
+.modal-editar-evento-clinico .ar-form{
+    width: 750px;
+    align-items: center;
 }
 
 .ar-form-inputs-area, .aed-form-inputs-area{
@@ -524,31 +535,25 @@
     width: max-content;
 }
 
-.codigo-barras-icono {
-    width: 32px;
-    height: 23px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-14px);
-    pointer-events: none; /* no interfiere con el input */
-}
-
-.codigo-barras-icono-img {
-    width: 100%;
-    height: 100%;
-}
 /* Fin Modales */
 
-.modales-historias-medicas{
+.modales-historias-medicas-detalle  {
     display: none;
 }
 
-.modal-historias-medicas-registrar{
+.modal-registrar-examen-fisico{
     display: none;
-}  
+} 
 
-.modal-historias-medicas-editar{
+.modal-editar-examen-fisico{
     display: none;
 }
 
+
+.modal-registrar-evento-clinico{
+    display: none;
+}
+
+.modal-editar-evento-clinico{
+    display: none;
+}

@@ -6,6 +6,8 @@ import {
   MenuVeterinario,
 } from "../utils/menu.jsx";
 
+import flecha from "../images/flecha_salir.png";
+
 import lupaBusqueda from "../images/lupa_busqueda.png";
 import editarIcon from "../images/icons/editar.png";
 
@@ -27,12 +29,12 @@ export const VerHistoriaMedicas = () => {
       </head>
       <main>
         <Navbar menu={MenuVeterinario} />
-        <section className="secciones-area-gestion">
+        <section className="secciones-area-gestion ver-historia-medica">
           <section className="examenes-fisicos">
             <h2 className="titulo-dashboard">
               Historia Médica del Animal [id_animal]
             </h2>
-            <section className="seccion1-fecha-agregar">
+            <section className="seccion1-fecha-agregar seccion1-ver-historia-medica">
               <div className="fecha-creacion">
                 <strong>Fecha de Creación: </strong>
                 <p>{/*Fecha*/}[dd/mm/aaaa]</p>
@@ -51,7 +53,9 @@ export const VerHistoriaMedicas = () => {
                 <td className="td-examenes-fisicos">
                   [dd/mm/aaaa]
                   <a href="">
-                    <button class="tabla-examenes-fisicos-btn">Ver Detalles</button>
+                    <button class="tabla-examenes-fisicos-btn">
+                      Ver Detalles
+                    </button>
                   </a>
                 </td>
               </tbody>
@@ -110,6 +114,335 @@ export const VerHistoriaMedicas = () => {
         </section>
       </main>
       <Footer />
+
+      <div className="modales-historias-medicas-detalle">
+        <aside className="modal-registrar-examen-fisico">
+          <button className="volver-btn-ver-historias-medicas" onClick={""}>
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
+          <h1 className="modal-ar-titulo">Registrar Exámen Físico</h1>
+
+          <form className="ar-form" onSubmit={""}>
+            <section className="ar-form-inputs-area">
+              <div style={{ gridArea: "divInpt1" }}>
+                <label className="ar-label" for="">
+                  {" "}
+                  Historia Médica <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input1"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt2" }}>
+                <label className="ar-label" for="">
+                  Frecuencia Cardiaca<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input2"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt4" }}>
+                <label className="ar-label" for="">
+                  Mucosa<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input4"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt3" }}>
+                <label className="ar-label" for="">
+                  Tiempo de Llenado Capilar<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input4"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt5" }}>
+                <label className="ar-label" for="">
+                  Fecha<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input5"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt6" }}>
+                <label className="ar-label" for="">
+                  Frecuencia Respiratoria<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input6"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div
+                className="label-and-input-container"
+                style={{ gridArea: "divInpt7" }}
+              >
+                <label className="ar-label" for="">
+                  Temperatura Rectal
+                </label>
+                <input className="ar-input6" type="text" value={""} readOnly />
+              </div>
+
+              <div style={{ gridArea: "divInpt8" }}>
+                <label className="ar-label" for="">
+                  Condición Corporal<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input6"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+              </div>
+            </section>
+            <input
+              className="ar-btn"
+              type="submit"
+              value="Registrar Exámen Físico"
+            />
+          </form>
+        </aside>
+
+        <aside className="modal-editar-examen-fisico">
+          <button className="volver-btn-ver-historias-medicas" onClick={""}>
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
+          <h1 className="modal-ar-titulo">Registrar Exámen Físico</h1>
+
+          <form className="ar-form" onSubmit={""}>
+            <section className="ar-form-inputs-area">
+              <div style={{ gridArea: "divInpt1" }}>
+                <label className="ar-label" for="">
+                  {" "}
+                  Historia Médica <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input1"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt2" }}>
+                <label className="ar-label" for="">
+                  Frecuencia Cardiaca<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input2"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt4" }}>
+                <label className="ar-label" for="">
+                  Mucosa<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input4"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt3" }}>
+                <label className="ar-label" for="">
+                  Tiempo de Llenado Capilar<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input4"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt5" }}>
+                <label className="ar-label" for="">
+                  Fecha<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input5"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt6" }}>
+                <label className="ar-label" for="">
+                  Frecuencia Respiratoria<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input6"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div
+                className="label-and-input-container"
+                style={{ gridArea: "divInpt7" }}
+              >
+                <label className="ar-label" for="">
+                  Temperatura Rectal
+                </label>
+                <input className="ar-input6" type="text" value={""} readOnly />
+              </div>
+
+              <div style={{ gridArea: "divInpt8" }}>
+                <label className="ar-label" for="">
+                  Condición Corporal<h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input6"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+              </div>
+            </section>
+            <input className="ar-btn" type="submit" value="Guardar Cambios" />
+          </form>
+        </aside>
+
+        <aside className="modal-registrar-evento-clinico">
+          <button className="volver-btn-ver-historias-medicas" onClick={""}>
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
+          <h1 className="modal-ar-titulo">Registrar Evento Clínico</h1>
+
+          <form className="ar-form" onSubmit={""}>
+            <section className="ar-form-inputs-area">
+              <div style={{ gridArea: "divInpt1" }}>
+                <label className="ar-label" for="">
+                  {" "}
+                  Fecha <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input1"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt2" }}>
+                <label className="ar-label" for="">
+                  Responsable <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input2"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{gridArea: "divInpt3"}}>
+                  <label className="ar-label" for="">Motivo<h6 className="obligatorio">*</h6></label>
+                  <textarea className="ar-input3" name="ar-observaciones" value={''} onChange={''}/>
+                  {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
+                </div>
+
+            </section>
+            <input className="ar-btn" type="submit" value="Registrar Evento Clínico" />
+          </form>
+        </aside>
+        
+        <aside className="modal-editar-evento-clinico">
+          <button className="volver-btn-ver-historias-medicas" onClick={""}>
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
+          <h1 className="modal-ar-titulo">Registrar Evento Clínico</h1>
+
+          <form className="ar-form" onSubmit={""}>
+            <section className="ar-form-inputs-area">
+              <div style={{ gridArea: "divInpt1" }}>
+                <label className="ar-label" for="">
+                  {" "}
+                  Fecha <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input1"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{ gridArea: "divInpt2" }}>
+                <label className="ar-label" for="">
+                  Responsable <h6 className="obligatorio">*</h6>
+                </label>
+                <input
+                  className="ar-input2"
+                  type="text"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
+              </div>
+
+              <div style={{gridArea: "divInpt3"}}>
+                  <label className="ar-label" for="">Motivo<h6 className="obligatorio">*</h6></label>
+                  <textarea className="ar-input3" name="ar-observaciones" value={''} onChange={''}/>
+                  {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
+                </div>
+
+            </section>
+            <input className="ar-btn" type="submit" value="Guardar Cambios" />
+          </form>
+        </aside>
+
+      </div>
     </>
   );
 };
