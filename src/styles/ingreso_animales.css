@@ -289,7 +289,7 @@
     height: auto;          
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area-ingresos, .aed-form-inputs-area{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
@@ -297,8 +297,7 @@
     "divInpt1 divInpt5"
     "divInpt2 divInpt6"
     "divInpt4 divInpt7"
-    "divInpt3 divInpt8";
-    gap: 5px 0;
+    "divInpt3 divInpt8";    
 }
 
 .ar-label, .aed-label{
@@ -321,8 +320,8 @@
     font-size: 1rem;
 }
 
-.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
-.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
+.ar-input1-ingreso, .ar-input2-ingreso, .ar-input4-ingreso, .ar-input5-ingreso, .ar-input6-ingreso, .ar-input7-ingreso,
+.aed-input1-ingreso, .aed-input2-ingreso, .aed-input3-ingreso, .aed-input4-ingreso, .aed-input5-ingreso, .aed-input6-ingreso, .aed-input7-ingreso{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -333,46 +332,19 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
 }
 
-/* .ar-input3 {
-    
-    font-family: 'Lato';
-    justify-content: space-between;
-    font-weight: 600;
-    
-    &, &::picker(select) {
-        appearance: base-select;
-        padding: 0.4rem;
-    }
-
-    &::picker-icon{
-        display: none;
-    }
-
-} */
 
 .ar-input3, .aed-input3{
     resize: none;
-    height: 140px;
+    height: 400px;
     padding: 5px 10px;
     font-family: "ubuntu";
 }
 
 .ar-input7, .aed-input7{
     background-color: rgba(214, 214, 214, 0.658);
-}
-
-.union-input-icono{
-    display: flex;
-}
-
-.candado-icono{
-    width: 30px;
-    height: 30px;
-    position: relative;
-    transform: translate(-40px, 4px);
 }
 
 .ar-btn, .aed-btn, .cancelar-btn{
@@ -388,26 +360,6 @@
     cursor: pointer;
     align-self: center;
     transform: scale(1);
-    transition: transform 0.2s ease-in-out;
-}
-
-.cancelar-btn{
-    transform: scale(1.15);
-}
-
-.desactivar-btn{
-    margin-top: 20px;
-    height: 40px;
-    width: max-content;
-    padding: 0 25px;
-    background-color: #e66377d7;
-    color: #740000;
-    border-radius: 8px;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    align-self: center;
-    transform: scale(1.15);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -474,15 +426,6 @@
 }
 /* Fin Modales */
 
- .modales-ingreso-animales{
-    display: none;
-}
+ 
 
-.modal-ingreso-animales-registrar{
-    display: none;
-} 
-
-.modal-ingreso-animales-editar{
-    display: none;
-}
 
