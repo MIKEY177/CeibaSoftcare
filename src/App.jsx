@@ -18,7 +18,6 @@ import { IngresoAnimales } from "./pages/ingreso_animales.jsx";
 import { VerIngresoAnimal } from "./pages/ver_ingreso_animal.jsx";
 import { HistoriasMedicas } from "./pages/historias_medicas.jsx";
 import { VerHistoriaMedicas } from "./pages/ver_historias_medicas.jsx"; 
-import { DetalleExamenFisico } from "./pages/detalle_examen_fisico.jsx";
 
 function App() {
   return (
@@ -52,7 +51,6 @@ function App() {
           <Route path="/ver_ingreso_animales" element={<VerIngresoAnimal />} />
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
           <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
-          <Route path="/detalle_examen_fisico" element={<DetalleExamenFisico />} />
         </Routes>
       </Router>
     </>

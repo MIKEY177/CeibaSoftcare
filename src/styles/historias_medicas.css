@@ -263,23 +263,22 @@
     margin-bottom: 20px;  
 }
 
-.ar-form, .aed-form{
+.modal-historias-medicas-registrar .ar-form, .aed-form,
+.modal-historias-medicas-editar .ar-form{
+    width: 400px;
     display: flex;
     flex-direction: column;
-    width: 400px;
     height: auto;          
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area-historias{
     display: grid;
-    grid-template-columns: 500px 1fr;
-    grid-template-rows: auto auto auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
     grid-template-areas:
-    "divInpt1 divInpt5"
-    "divInpt2 divInpt6"
-    "divInpt4 divInpt7"
-    "divInpt3 divInpt8";
-    gap: 5px 0;
+    "divInpt1 "
+    "divInpt2 ";
+    
 }
 
 .ar-label, .aed-label{
@@ -466,4 +465,3 @@
 .modal-historias-medicas-editar{
     display: none;
 }
-

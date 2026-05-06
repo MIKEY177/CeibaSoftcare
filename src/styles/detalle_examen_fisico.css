@@ -1,6 +1,6 @@
 .secciones-area-gestion-examenes-fisicos{
-    width: calc(100vw - 400px);
-    height: 80vh;
+    width: 1000px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly; /* se puede quitar y cambiar si se quiere posicionar mas precisamente */
@@ -9,27 +9,17 @@
 }
 
 .seccion1-ver-historia-medica{
-    width: 70%;
+    width: 95%;
     justify-content: end;
+    margin: 0 0 2rem 0;
 }
 
-.editar-btn-examen{
-    width: 250px;
-    height: 40px;
-    font-size: 1.3rem;
-    font-family: "ubuntu";
-    background-color: #0094A4;
-    color: #FFFFFF;
-    border-radius: 10px;
-    border: none;
-    cursor: pointer;
-    align-items: end;
-    transform: scale(1);
-    transition: transform 0.1s ease-in-out;
+.titulo-examenes-fisicos-modal{
+    margin: 2rem;
 }
 
 .tabla-detalles-examenes-fisicos {
-    width: 100%;
+    width: 90%;
     max-width: 1000px;
     border-collapse: separate;
     border-spacing: 0;

@@ -13,6 +13,7 @@ import editarIcon from "../images/icons/editar.png";
 
 import "../styles/global_styles.css";
 import "../styles/ver_historias_medicas.css";
+import "../styles/detalle_examen_fisico.css";
 
 // Componentes
 import { Navbar } from "../components/Navbar.jsx";
@@ -32,32 +33,65 @@ export const VerHistoriaMedicas = () => {
         <section className="secciones-area-gestion ver-historia-medica">
           <section className="examenes-fisicos">
             <h2 className="titulo-dashboard">
-              Historia Médica del Animal [id_animal]
+              Historia Médica del Animal [nombre_animal]
             </h2>
-            <section className="seccion1-fecha-agregar seccion1-ver-historia-medica">
-              <div className="fecha-creacion">
-                <strong>Fecha de Creación: </strong>
-                <p>{/*Fecha*/}[dd/mm/aaaa]</p>
-              </div>
+            <div className="fecha-creacion">
+              <strong>Fecha de Creación: </strong>
+              <p>{/*Fecha*/}[dd/mm/aaaa]</p>
+            </div>
+            <h2 className="titulo-dashboard titulo-examen-fisico">
+              Exámenes Físicos
+            </h2>
+            <section className="seccion1-busqueda-agregar">
+              <form className="busqueda-form" onSubmit={""}>
+                <input
+                  className="busqueda-input1"
+                  type="text"
+                  name="busqueda"
+                  placeholder="Busca una Historia Médica"
+                  value={""}
+                />
+                <button className="diff_busqueda-icono" type="submit">
+                  <img
+                    className="busqueda-icono-img"
+                    src={lupaBusqueda}
+                    alt=""
+                  />
+                </button>
+              </form>
               <button className="registrar-btn" onClick={""}>
-                Registrar Exámen Físico
+                Registrar un Exámen Físico
               </button>
             </section>
+
             <table className="tabla-examenes-fisicos">
               <thead className="header-tabla-examenes-fisicos">
                 <tr>
-                  <td>Exámenes Físicos</td>
+                  <td>Fecha de Exámen</td>
+                  <td></td>
                 </tr>
               </thead>
               <tbody className="body-tabla-examenes-fisicos">
-                <td className="td-examenes-fisicos">
-                  [dd/mm/aaaa]
+                <tr>
+                <td>[dd/mm/aaaa]</td>
+                <td>
                   <a href="">
                     <button class="tabla-examenes-fisicos-btn">
                       Ver Detalles
                     </button>
                   </a>
                 </td>
+                </tr>
+                <tr>
+                <td>[dd/mm/aaaa]</td>
+                <td>
+                  <a href="">
+                    <button class="tabla-examenes-fisicos-btn">
+                      Ver Detalles
+                    </button>
+                  </a>
+                </td>
+                </tr>
               </tbody>
             </table>
           </section>
@@ -94,6 +128,7 @@ export const VerHistoriaMedicas = () => {
                 </tr>
               </thead>
               <tbody className="body-tabla-eventos-clinicos">
+                <tr>
                 <td>{/*Fecha*/}</td>
                 <td>{/*Descripción*/}</td>
                 <td>{/*Responsable*/}</td>
@@ -108,6 +143,23 @@ export const VerHistoriaMedicas = () => {
                     </figure>
                   </div>
                 </td>
+                </tr>
+                <tr>
+                <td>{/*Fecha*/}</td>
+                <td>{/*Descripción*/}</td>
+                <td>{/*Responsable*/}</td>
+                <td>
+                  <div className="last-td-flex-content-wrapper">
+                    <figure className="editar-icono">
+                      <img
+                        className="editar-icono-img"
+                        src={editarIcon}
+                        alt="Editar"
+                      />
+                    </figure>
+                  </div>
+                </td>
+                </tr>
               </tbody>
             </table>
           </section>
@@ -384,17 +436,27 @@ export const VerHistoriaMedicas = () => {
                 {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
               </div>
 
-              <div style={{gridArea: "divInpt3"}}>
-                  <label className="ar-label" for="">Motivo<h6 className="obligatorio">*</h6></label>
-                  <textarea className="ar-input3" name="ar-observaciones" value={''} onChange={''}/>
-                  {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
-                </div>
-
+              <div style={{ gridArea: "divInpt3" }}>
+                <label className="ar-label" for="">
+                  Motivo<h6 className="obligatorio">*</h6>
+                </label>
+                <textarea
+                  className="ar-input3"
+                  name="ar-observaciones"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
+              </div>
             </section>
-            <input className="ar-btn" type="submit" value="Registrar Evento Clínico" />
+            <input
+              className="ar-btn"
+              type="submit"
+              value="Registrar Evento Clínico"
+            />
           </form>
         </aside>
-        
+
         <aside className="modal-editar-evento-clinico">
           <button className="volver-btn-ver-historias-medicas" onClick={""}>
             <img className="volver-icono" src={flecha} alt="" />
@@ -431,17 +493,67 @@ export const VerHistoriaMedicas = () => {
                 {/* <span className="error-mensaje">{errores.nombre ?? ""}</span> */}
               </div>
 
-              <div style={{gridArea: "divInpt3"}}>
-                  <label className="ar-label" for="">Motivo<h6 className="obligatorio">*</h6></label>
-                  <textarea className="ar-input3" name="ar-observaciones" value={''} onChange={''}/>
-                  {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
-                </div>
-
+              <div style={{ gridArea: "divInpt3" }}>
+                <label className="ar-label" for="">
+                  Motivo<h6 className="obligatorio">*</h6>
+                </label>
+                <textarea
+                  className="ar-input3"
+                  name="ar-observaciones"
+                  value={""}
+                  onChange={""}
+                />
+                {/* <span className="error-mensaje">{errores.descripcion ?? ""}</span> */}
+              </div>
             </section>
             <input className="ar-btn" type="submit" value="Guardar Cambios" />
           </form>
         </aside>
 
+        <aside className="modal-detalle-examen-fisico">
+          <button className="volver-btn-historias-medicas" onClick={""}>
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
+          <section className="secciones-area-gestion-examenes-fisicos">
+            <h2 className="titulo-dashboard titulo-examenes-fisicos-modal">Exámen Fisico [fecha_creacion]</h2>
+            <section className="seccion1-busqueda-agregar seccion1-ver-historia-medica">
+              <button className="registrar-btn" onClick={""}>
+                Registrar Salida
+              </button>
+            </section>
+            <table className="tabla-detalles-examenes-fisicos">
+              <thead className="header-tabla-detalles-examenes-fisicos">
+                <tr>
+                  <td>Frecuencia Cardiaca</td>
+                  <td>Frecuencia Respiratoria</td>
+                  <td>Mucosa</td>
+                </tr>
+              </thead>
+              <tbody className="body-tabla-detalles-examenes-fisicos">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tbody>
+              <thead className="header-tabla-detalles-examenes-fisicos">
+                <tr>
+                  <td>Temperatura Rectal</td>
+                  <td>Tiempo de Llenado Capilar</td>
+                  <td>Condición Corporal</td>
+                </tr>
+              </thead>
+              <tbody className="body-tabla-detalles-examenes-fisicos">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+        </aside>
       </div>
     </>
   );
