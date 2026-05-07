@@ -15,7 +15,6 @@ import { RegistrarVerificacion } from "./pages/registrar_verificacion.jsx";
 import { EditarVerificacion } from "./pages/editar_verificacion.jsx";
 import { SalidaAnimales } from "./pages/salidas_animales.jsx";
 import { IngresoAnimales } from "./pages/ingreso_animales.jsx";
-import { VerIngresoAnimal } from "./pages/ver_ingreso_animal.jsx";
 import { HistoriasMedicas } from "./pages/historias_medicas.jsx";
 import { VerHistoriaMedicas } from "./pages/ver_historias_medicas.jsx";
 import { DetalleVerificacion } from "./pages/detalle_verificacion.jsx";
@@ -49,7 +48,6 @@ function App() {
           <Route path="/editar_verificacion" element={<EditarVerificacion />} />
           <Route path="/salida_animales" element={<SalidaAnimales />} />
           <Route path="/ingreso_animales" element={<IngresoAnimales />} />
-          <Route path="/ver_ingreso_animales" element={<VerIngresoAnimal />} />
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
           <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
           <Route path="/detelle_verificacion" element={<DetalleVerificacion/>} />

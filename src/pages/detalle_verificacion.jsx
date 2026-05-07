@@ -1,7 +1,5 @@
 import React from "react";
 
-import ceiba from '../images/ceiba_logo.png'
-
 import "../styles/global_styles.css";
 import "../styles/verificaciones.css";
 

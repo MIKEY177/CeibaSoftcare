@@ -221,7 +221,7 @@
 .modal-salidas-animales-registrar, .modal-salidas-animales-editar{
     margin: auto;
     background-color: #FFFFFF;
-    width: 900px;
+    width: 1000px;
     height: auto;      
     max-height: 95vh;   
     overflow-y: auto;  
@@ -266,11 +266,11 @@
 .ar-form-salidas{
     display: flex;
     flex-direction: column;
-    width: 400px;
+    
     height: auto;      
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area-salidas-animales, .aed-form-inputs-area-salidas-animales{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;

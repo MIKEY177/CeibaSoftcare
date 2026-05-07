@@ -264,7 +264,7 @@ export const SalidaAnimales = () => {
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
             <form className="ar-form-salidas" onSubmit={e => handleRegistrar(e)}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-salidas-animales">
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ar-label" for="">Fecha Salida<h6 className="obligatorio">*</h6></label>
@@ -316,7 +316,7 @@ export const SalidaAnimales = () => {
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
 
             <form className="aed-form" onSubmit={handleEditar}>
-              <section className="aed-form-inputs-area">
+              <section className="aed-form-inputs-area-salidas-animales">
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="aed-label" for="">Fecha Salida<h6 className="obligatorio">*</h6></label>

@@ -6,6 +6,7 @@ import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, Menu
 // Estilos e imágenes
 import "../styles/global_styles.css"
 import "../styles/ingreso_animales.css"
+import "../styles/ver_ingreso_animal.css"
 import editarIcon from "../images/icons/editar.png"
 import desactivarIcon from "../images/icons/desactivar.png"
 import lupaBusqueda from "../images/lupa_busqueda.png"
@@ -299,7 +300,7 @@ export const IngresoAnimales = () => {
       </main>
       <Footer/>
             
-      <div className="modales-ingreso-animales" style={{display: modalActiva ? "flex" : "none"}}>
+    <div className="modales-ingreso-animales" style={{display: modalActiva ? "flex" : "none"}}>
       
         {/* ── MODAL 1: Registrar Animal ──────────────────────────────────── */}
         {modalActiva === 1 && (
@@ -473,7 +474,63 @@ export const IngresoAnimales = () => {
               <input className="ar-btn" type="submit" value="Guardar Cambios"/>
             </form>
           </aside>
+
         )}
+          {/* ── MODAL 3: Detalle de ingreso Animal ──────────────────────────────────── */}
+          
+          <aside className='modal-detalle-ingreso'>
+            <button className="volver-btn-ingreso-anim" onClick={cerrarModal}>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
+            </button>
+            <h1 className="modal-aed-titulo">
+              Ingreso del animal [nombre_animal]
+            </h1>
+            <table className="tabla-ver-ingreso-animal">
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Persona que reporta</td>
+                <td>Cédula de quien reporta</td>
+                <td>Dirección de quien reporta</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.persona_reporta}*/}</th>
+                <th>{/*{ingreso.cedula_reporta}*/}</th>
+                <th>{/*{ingreso.direccion_reporta}*/}</th>
+              </tr>
+            </tbody>
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Telefono de quien reporta</td>
+                <td>Funcionario que autoriza</td>
+                <td>Cédula del funcionario</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.telefono_reporta}*/}</th>
+                <th>{/*{ingreso.funcionario_autoriza}*/}</th>
+                <th>{/*{ingreso.cedula_realiza}*/}</th>
+              </tr>
+            </tbody>
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Fecha de ingreso</td>
+                <td>Motivo de ingreso</td>
+                <td>Verificación</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.fecha_hora_ingreso}*/}</th>
+                <th>{/*{ingreso.motivo_ingreso}*/}</th>
+                <th>{/*[{ingreso.fecha}] {ingreso.nombre}*/}</th>
+              </tr>
+            </tbody>
+          </table>
+          </aside>
       </div>
     </>
   )
