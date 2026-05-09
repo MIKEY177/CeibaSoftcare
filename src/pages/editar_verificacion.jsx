@@ -70,7 +70,7 @@ export const EditarVerificacion = () => {
                         <div className="content-form">
                             <label htmlFor="" className='ied-label'>Registro fotografico <h6 className="obligatorio">*</h6></label>
                             <div className="registro-ft">
-                                <input type="text" className="epr-input2 registro-fotografico" placeholder='Subir imagen'/>
+                                <input type="text" className="registrar-registro-fotografico" placeholder='Subir imagen'/>
                             </div>
                         </div>
                         <div className="content-form">
