@@ -46,7 +46,7 @@ export const Farmacia = () => {
       .then(data => {
         console.log("Datos de sesión:", data);
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "farmacéutico") {
             navigate("/inicio");
           }
@@ -59,6 +59,18 @@ export const Farmacia = () => {
         navigate("/iniciar_sesion");
       });
     }, []);
+
+
+  const verActividad = (actividad, fecha, id, nombre_producto) => {
+    const path = actividad === "Entrada" 
+      ? "/entradas_prod" 
+      : "/salidas_prod";
+
+    navigate(
+    `${path}/${id}/${encodeURIComponent(fecha)}/${encodeURIComponent(nombre_producto)}`
+  );
+  };  
+
 
      const menuObj = (() => {
         switch (user.rol) {
@@ -102,7 +114,7 @@ export const Farmacia = () => {
                   <td>{activity.fecha}</td> 
                   <td>{activity.cantidad}</td>
                   <td>{activity.actividad}</td>
-                  <td><a href=""><button class="tabla-actividad-reciente-btn">Ver</button></a></td>
+                  <td><button class="tabla-actividad-reciente-btn" onClick={()=>verActividad(activity.actividad,activity.fecha, activity.id, activity.producto)}>Ver</button></td>
                 </tr>
                 ))
               )}

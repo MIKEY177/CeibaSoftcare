@@ -87,6 +87,8 @@ body{
     transition: transform 0.2s ease-in-out;
 }
 
+
+
 .modulo-farmacia, .modulo-albergue, .modulo-usuarios{
     border-radius: 20px;
     width: 290px;
@@ -171,6 +173,11 @@ body{
 .modulo-salidas-productos-icono, .modulo-entradas-productos-icono{
     width: 50px;
     height: 60px;
+}
+
+.modulo-salidas-animales-icono, .modulo-ingresos-animales-icono{
+    width: 75px;
+    height: 54px;
 }
 
 .modulo-farmacia-img, .modulo-albergue-img, .modulo-usuarios-img, .modulo-eventos-img, .modulo-productos-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img{

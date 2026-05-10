@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { MenuAdminFarmacia, MenuFarmaceutico } from "../utils/menu.jsx"
 
 import "../styles/global_styles.css"
@@ -138,10 +138,8 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
 // Componente principal
 export const EntradasProd = () => {
   const navigate = useNavigate();
-
   const [user,     setUser]     = useState({ nombre: "", rol: "" });
   const [entradas, setEntradas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   // ── UI ──────────────────────────────────────────────────────────────────────
@@ -162,7 +160,10 @@ export const EntradasProd = () => {
   const [formEditarDetalle, setFormEditarDetalle] = useState(detalleVacio);
   const [historial, setHistorial] = useState([]);
   const [productoElegidoEditar, setProductoElegidoEditar] = useState(null);
-
+  const { id, fecha, nombre_producto } = useParams();
+  const idu = id || null; 
+  const fechaEntrada = fecha || null;
+  const nombreProducto = nombre_producto || null;
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
   const volver = () => {
     if (historial.length === 0) return;
@@ -171,15 +172,6 @@ export const EntradasProd = () => {
       setModalActiva(anterior);
     };
   
-  useEffect(() => {
-      setBusqueda(params.get("b") || "");
-      const url = new URL(window.location);
-      if (busqueda) {
-        url.searchParams.set("b", busqueda);
-      } else {
-        url.searchParams.delete("b");
-      }
-    }, []);
 
   // ── Sesión ──────────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -187,7 +179,7 @@ export const EntradasProd = () => {
       .then(r => r.json())
       .then(data => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "farmacéutico") navigate("/inicio");
         } else navigate("/iniciar_sesion");
       })
@@ -563,15 +555,26 @@ export const EntradasProd = () => {
   const entradasFiltradas = entradas.filter(e =>
     ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
     (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())) &&
-    (e.id_entrada == (params.get("id") || e.id_entrada))
+    (e.id_entrada === (idu || e.id_entrada))
   );
 
   useEffect(() => {
-    if (params.get("id")) {
-      const entrada = entradas.find(e => e.id_entrada == params.get("id"));
-      if (entrada) abrirModal(7, entrada);
+
+    if (!idu || entradas.length === 0) return;
+
+    setBusqueda(fechaEntrada || "");
+
+    const entrada = entradas.find(
+      (e) => Number(e.id_entrada) === Number(idu)
+    );
+    
+
+    if (entrada && modalActiva !== 7) {
+      setEntradaSeleccionada(entrada);
+      setModalActiva(7);
     }
-  }, [entradas]);
+
+  }, [idu, fechaEntrada, entradas]);
   // RENDER
   return (
     <>
@@ -1068,8 +1071,8 @@ export const EntradasProd = () => {
                     </tr>
                     ) : (
                       entradaSeleccionada?.detalles?.map(det => {
-                        const esResaltado = params.get("p") && det.nombre_producto.toLowerCase() === params.get("p").toLowerCase();
-                        const sinFiltro = !params.get("p");
+                        const esResaltado = nombreProducto && det.nombre_producto.toLowerCase() === nombreProducto.toLowerCase();
+                        const sinFiltro = !nombreProducto;
                         if (esResaltado) {
                           return(
                         <motion.tr

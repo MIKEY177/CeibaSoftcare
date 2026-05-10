@@ -20,7 +20,7 @@ import { Menu } from '../components/Menu.jsx'
 
 const API = `api/animales.php`;
 const API_SESSION = `api/session.php`;
-export const indexSelector = 6;
+export const indexSelector = 2;
 
 export const Animales = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });
@@ -128,7 +128,7 @@ export const Animales = () => {
       .then(res => res.json())
       .then(data => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "veterinario" && data.rol !== "administrador") {
             navigate("/iniciar_sesion");
           }

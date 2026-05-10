@@ -11,6 +11,8 @@ import "../styles/global_styles.css";
 import "../styles/ver_ingreso_animal.css";
 import { useParams, useNavigate } from "react-router-dom";
 
+
+
 import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { Menu } from "../components/Menu.jsx";
@@ -43,7 +45,7 @@ export const VerIngresoAnimal = () => {
           .then(res => res.json())
           .then(data => {
             if (data.status === "ok") {
-              setUser({ nombre: data.usuario, rol: data.rol });
+              setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
               if (data.rol === "farmacéutico") navigate("/albergue");
               setMenu(MenuAdminAlbergue);
             } else {

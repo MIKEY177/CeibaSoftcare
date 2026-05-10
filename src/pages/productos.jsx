@@ -114,7 +114,7 @@ export const Productos = () => {
         .then(res => res.json())
         .then(data => {
           if (data.status === "ok") {
-            setUser({ nombre: data.usuario, rol: data.rol });
+            setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
             if (data.rol === "veterinario") navigate("/farmacia");
           } else {
             navigate("/iniciar_sesion");

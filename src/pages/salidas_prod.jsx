@@ -1,7 +1,7 @@
 // Imports Base
 import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef} from 'react'
-import { useNavigate, useSearchParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -148,7 +148,6 @@ export const SalidasProd = () => {
 
   const [user, setUser] = useState({nombre: "", rol: ""}); 
   const [salidas, setSalidas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   const [modalActivo, setModalActivo] = useState(null); 
@@ -168,7 +167,10 @@ export const SalidasProd = () => {
   const [formEditarDetalle, setFormEditarDetalle] = useState(detalleVacio);
   const [historial, setHistorial] = useState([]);
   const [productoElegidoEditar, setProductoElegidoEditar] = useState(null);
-  
+  const { id, fecha, nombre_producto } = useParams();
+  const idu = id || null;
+  const fechaSalida = fecha || null;
+  const nombreProducto = nombre_producto || null;
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
 
   
@@ -184,21 +186,11 @@ export const SalidasProd = () => {
       .then(r => r.json())
       .then(data => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "farmacéutico") navigate("/inicio");
         } else navigate("/iniciar_sesion");
       })
       .catch(() => navigate("/iniciar_sesion"));
-  }, []);
-
-  useEffect(() => {
-    setBusqueda(params.get("b") || "");
-    const url = new URL(window.location);
-    if (busqueda) {
-      url.searchParams.set("b", busqueda);
-    } else {
-      url.searchParams.delete("b");
-    }
   }, []);
 
   useEffect(() => { cargarSalidas(); }, []);
@@ -561,15 +553,27 @@ export const SalidasProd = () => {
   const salidasFiltradas = salidas.filter(e =>
     ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
     (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
-    (e.id_salida == (params.get("id") || e.id_salida))
+    (e.id_salida === (idu || e.id_salida))
   );
 
-  useEffect(() => {
-  if (!salidas.length) return;
+ useEffect(() => {
+ 
+     if (!idu || salidas.length === 0) return;
+ 
+     setBusqueda(fechaSalida || "");
+ 
+     const salida = salidas.find(
+       (e) => Number(e.id_salida) === Number(idu)
+     );
+     
+ 
+     if (salida && modalActivo !== 7) {
+       setSalidaSeleccionada(salida);
+       setModalActivo(7);
+     }
+ 
+   }, [idu, fechaSalida, salidas]);
 
-  const salida = salidas.find(s => s.id_salida == params.get("id"));
-  if (salida) abrirModal(7, salida);
-}, [salidas]);
   return (
     <>
       <head>
@@ -624,7 +628,6 @@ export const SalidasProd = () => {
                     </div>
                   </td>
                 </tr>
-              
               ))
             )}
             </tbody>  
@@ -1084,49 +1087,34 @@ export const SalidasProd = () => {
                   </tr>
                 </thead>
                 <tbody className="body-tabla-sped-detalles">
-                  {
-                  (salidaSeleccionada?.detalles ?? []).length === 0 ? (
+                  {(salidaSeleccionada?.detalles ?? []).length === 0 ? (
                     <tr>
                       <td colSpan="5">No hay detalles disponibles</td>
                     </tr>
                   ) : (
-                  
-                    salidaSeleccionada?.detalles?.map((detalle, index) => {
-                    const esResaltado = params.get("p") && detalle.nombre_producto.toLowerCase() === params.get("p").toLowerCase();
-                    const sinFiltro = !params.get("p");
-
-                    
-                    if (esResaltado) {
-                      return (
-                        <motion.tr 
-                          key={index} 
-                          initial={{ backgroundColor: "#3693a8b7" }} 
-                          animate={{ backgroundColor: "#ffffff" }} 
-                          transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}
-                        >
-                          <td>{detalle.nombre_producto}</td>
-                          <td>{detalle.cantidad_presentacion}</td>
-                          <td>{detalle.cantidad_total}</td>
-                          <td>{detalle.motivo}</td>
-                        </motion.tr>
-                      );
-                    }
-
-                    
-                    if (sinFiltro || !esResaltado) {
-                      return (
-                        <tr key={index}>
-                          <td>{detalle.nombre_producto}</td>
-                          <td>{detalle.cantidad_presentacion}</td>
-                          <td>{detalle.cantidad_total}</td>
-                          <td>{detalle.motivo}</td>
+                    salidaSeleccionada?.detalles?.map(det => {
+                      const esResaltadoBusqueda = nombreProducto && det.nombre_producto.toLowerCase().includes(nombreProducto.toLowerCase());
+                      const sinFiltro = !nombreProducto;
+                      if (esResaltadoBusqueda) {
+                        return (
+                          <motion.tr key={det.id_detalle_salida} initial={{ backgroundColor: "#3693a8b7" }} animate={{ backgroundColor: "#ffffff" }} transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}>
+                            <td>{det.nombre_producto}</td>
+                            <td>{det.cantidad_presentacion}</td>
+                            <td>{det.cantidad_total}</td>
+                            <td>{det.motivo}</td>
+                          </motion.tr>
+                        );
+                      }else if (sinFiltro) {  
+                        return (
+                        <tr key={det.id_detalle_salida}>
+                          <td>{det.nombre_producto}</td>
+                          <td>{det.cantidad_presentacion}</td>
+                          <td>{det.cantidad_total}</td>
+                          <td>{det.motivo}</td>
                         </tr>
-                      );
+                        );
                     }
-
-                    return null;
-                      }
-                    )
+                    })
                   )}
                 </tbody>
               </table>

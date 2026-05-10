@@ -22,7 +22,7 @@ import { form } from 'framer-motion/m'
 const API = `api/salidas_animales.php`;
 const API_SESSION = `api/session.php`;
 const API_ANIMALES = `api/animales.php`;
-export const indexSelector = 6;
+export const indexSelector = 3;
 
 export const SalidaAnimales = () => {
    const [user, setUser] = useState({ nombre: "", rol: "" });
@@ -125,9 +125,9 @@ export const SalidaAnimales = () => {
         .then(res => res.json())
         .then(data => {
           if (data.status === "ok") {
-            setUser({ nombre: data.usuario, rol: data.rol });
+            setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
             if (data.rol !== "veterinario" && data.rol !== "administrador") navigate("/albergue");
-            setMenu(MenuAdminAlbergue);
+            setMenu(MenuVeterinario);
           } else {
             navigate("/iniciar_sesion");
           }
