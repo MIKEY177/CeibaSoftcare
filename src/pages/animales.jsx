@@ -229,6 +229,7 @@ export const Animales = () => {
       </head>
       <main>
         <Navbar menu={menuObj} user={user} />
+        <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Registro Animales</h2>
           <section className="seccion1-busqueda-agregar">
@@ -242,14 +243,29 @@ export const Animales = () => {
                 value={busqueda}
                 onChange={(e) => setBusqueda(e.target.value)}
               />
+
+            <form className="busqueda-form" onSubmit={handleBusqueda}>
+              <input
+                className="busqueda-input1"
+                type="text"
+                name="busqueda"
+                placeholder="Busca un animal"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
               <button className="diff_busqueda-icono" type="submit">
+                <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
             </form>
             <button className="registrar-btn" onClick={() => abrirModal(1)}>
               Registrar Animal
             </button>
+            <button className="registrar-btn" onClick={() => abrirModal(1)}>
+              Registrar Animal
+            </button>
           </section>
+
 
           <table className="tabla-animales">
             <thead className="header-tabla-animales">
@@ -258,6 +274,7 @@ export const Animales = () => {
                 <td>Especie</td>
                 <td>Sexo</td>
                 <td>Fecha Nac. Estimada</td>
+                <td>Fecha Nac. Estimada</td>
                 <td>Observaciones</td>
                 <td>Tipo</td>
                 <td>Editar | Desactivar</td>
@@ -265,7 +282,13 @@ export const Animales = () => {
             </thead>
             <tbody className="body-tabla-animales">
               {animalesFiltrados.length === 0 ? (
+              {animalesFiltrados.length === 0 ? (
                 <tr>
+                  <td colSpan="7">
+                    {busqueda
+                      ? "No se encontraron animales que coincidan."
+                      : "No hay animales registrados."}
+                  </td>
                   <td colSpan="7">
                     {busqueda
                       ? "No se encontraron animales que coincidan."
@@ -281,7 +304,21 @@ export const Animales = () => {
                     <td>{animal.fecha_nac_estimada}</td>
                     <td>{animal.observaciones}</td>
                     <td>{animal.tipo}</td>
+                animalesFiltrados.map((animal) => (
+                  <tr key={animal.id_animal}>
+                    <td>{animal.nombre}</td>
+                    <td>{animal.especie}</td>
+                    <td>{animal.sexo}</td>
+                    <td>{animal.fecha_nac_estimada}</td>
+                    <td>{animal.observaciones}</td>
+                    <td>{animal.tipo}</td>
                     <td>
+                      <div className="last-td-flex-content-wrapper">
+                        <figure
+                          className="editar-icono"
+                          onClick={() => abrirModal(2, animal)}
+                          style={{ cursor: "pointer" }}
+                        >
                       <div className="last-td-flex-content-wrapper">
                         <figure
                           className="editar-icono"
@@ -295,12 +332,19 @@ export const Animales = () => {
                           onClick={() => abrirModal(3, animal)}
                           style={{ cursor: "pointer" }}
                         >
+                        <figure
+                          className="desactivar-icono"
+                          onClick={() => abrirModal(3, animal)}
+                          style={{ cursor: "pointer" }}
+                        >
                           <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
                         </figure>
                       </div>
                     </td>
                   </tr>
+                  </tr>
                 ))
+              )}
               )}
             </tbody>
           </table>
@@ -309,10 +353,17 @@ export const Animales = () => {
       <Footer />
 
       <div className="modales-animales" style={{ display: modalActiva ? "flex" : "none" }}>
+      <Footer />
+
+      <div className="modales-animales" style={{ display: modalActiva ? "flex" : "none" }}>
 
         {/* ── MODAL 1: Registrar Animal ──────────────────────────────────── */}
         {modalActiva === 1 && (
+        {modalActiva === 1 && (
           <aside className="modal-animales-registrar">
+            <button className="volver-btn-anim" onClick={cerrarModal}>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
             <button className="volver-btn-anim" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
@@ -320,12 +371,26 @@ export const Animales = () => {
             <h1 className="modal-ar-titulo">Registre un Animal</h1>
 
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+            <h1 className="modal-ar-titulo">Registre un Animal</h1>
+
+            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+            {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
             <form className="ar-form" onSubmit={handleRegistrar}>
+            <form className="ar-form" onSubmit={handleRegistrar}>
               <section className="ar-form-inputs-area">
 
+                <div style={{ gridArea: "divInpt1" }}>
+                  <label className="ar-label">Nombre del Animal<h6 className="obligatorio">*</h6></label>
+                  <input
+                    className="ar-input1"
+                    type="text"
+                    value={formRegistrar.nombre}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, nombre: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label">Nombre del Animal<h6 className="obligatorio">*</h6></label>
                   <input
@@ -346,7 +411,27 @@ export const Animales = () => {
                     onChange={(e) => setFormRegistrar(prev => ({ ...prev, fecha_nac_estimada: e.target.value }))}
                   />
                   <span className="error-mensaje">{errores.fecha_nac_estimada ?? ""}</span>
+                <div style={{ gridArea: "divInpt2" }}>
+                  <label className="ar-label">Fecha de Nacimiento Estimada<h6 className="obligatorio">*</h6></label>
+                  <input
+                    className="ar-input2"
+                    type="date"
+                    value={formRegistrar.fecha_nac_estimada}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, fecha_nac_estimada: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.fecha_nac_estimada ?? ""}</span>
                 </div>
+                
+
+                <div style={{ gridArea: "divInpt3" }}>
+                  <label className="ar-label">Observaciones</label>
+                  <textarea
+                    className="ar-input3"
+                    name="ar-observaciones"
+                    value={formRegistrar.observaciones}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, observaciones: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 
 
                 <div style={{ gridArea: "divInpt3" }}>
@@ -369,8 +454,32 @@ export const Animales = () => {
                     onChange={(e) => setFormRegistrar(prev => ({ ...prev, n_microchip: e.target.value }))}
                   />
                   <span className="error-mensaje">{errores.n_microchip ?? ""}</span>
+                <div style={{ gridArea: "divInpt4" }}>
+                  <label className="ar-label">N° de microchip</label>
+                  <input
+                    className="ar-input4"
+                    type="text" 
+                    value={formRegistrar.n_microchip}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, n_microchip: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.n_microchip ?? ""}</span>
                 </div>
 
+                <div style={{ gridArea: "divInpt5" }}>
+                  <label className="ar-label">Especie<h6 className="obligatorio">*</h6></label>
+                  <select
+                    className="ar-input5"
+                    value={formRegistrar.especie}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, especie: e.target.value }))}
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Canino">Canino</option>
+                    <option value="Felino">Felino</option>
+                    <option value="Semoviente">Semoviente</option>
+                    <option value="Ave">Ave</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  <span className="error-mensaje">{errores.especie ?? ""}</span>
                 <div style={{ gridArea: "divInpt5" }}>
                   <label className="ar-label">Especie<h6 className="obligatorio">*</h6></label>
                   <select
@@ -401,13 +510,31 @@ export const Animales = () => {
                   </select>
                   <span className="error-mensaje">{errores.sexo ?? ""}</span>
                 </div>  
+                <div style={{ gridArea: "divInpt6" }}>
+                  <label className="ar-label">Sexo<h6 className="obligatorio">*</h6></label>
+                  <select
+                    className="ar-input6"
+                    value={formRegistrar.sexo}
+                    onChange={(e) => setFormRegistrar(prev => ({ ...prev, sexo: e.target.value }))}
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Hembra">Hembra</option>
+                  </select>
+                  <span className="error-mensaje">{errores.sexo ?? ""}</span>
+                </div>  
 
+                <div className="label-and-input-container" style={{ gridArea: "divInpt8" }}>
+                  <label className="ar-label">Usuario que Registra</label>
                 <div className="label-and-input-container" style={{ gridArea: "divInpt8" }}>
                   <label className="ar-label">Usuario que Registra</label>
                   <div className="union-input-icono">
                     {/* FIX: muestra el nombre del usuario en sesión */}
                     <input className="ar-input8" type="text" value={user.nombre} readOnly />
+                    {/* FIX: muestra el nombre del usuario en sesión */}
+                    <input className="ar-input8" type="text" value={user.nombre} readOnly />
                     <figure className="candado-icono">
+                      <img className="candado-icono-img" src={campoRestringido} alt="" />
                       <img className="candado-icono-img" src={campoRestringido} alt="" />
                     </figure>
                   </div>
@@ -420,25 +547,47 @@ export const Animales = () => {
                 value={cargando ? "Registrando..." : "Registrar Animal"}
                 disabled={cargando}
               />
+              <input
+                className="ar-btn"
+                type="submit"
+                value={cargando ? "Registrando..." : "Registrar Animal"}
+                disabled={cargando}
+              />
             </form>
           </aside>
+        )}
         )}
 
         {/* ── MODAL 2: Editar Animal ──────────────────────────────────── */}
         {modalActiva === 2 && (
+        {modalActiva === 2 && (
           <aside className="modal-animales-editar">
+            <button className="volver-btn-anim" onClick={cerrarModal}>
             <button className="volver-btn-anim" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
             <h1 className="modal-aed-titulo">Editar Animal Registrado</h1>
+            <h1 className="modal-aed-titulo">Editar Animal Registrado</h1>
 
+            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
 
             <form className="aed-form" onSubmit={handleEditar}>
+            <form className="aed-form" onSubmit={handleEditar}>
               <section className="aed-form-inputs-area">
 
+                <div style={{ gridArea: "divInpt1" }}>
+                  <label className="aed-label">Nombre del Animal<h6 className="obligatorio">*</h6></label>
+                  <input
+                    className="aed-input1"
+                    type="text"
+                    value={formEditar.nombre}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, nombre: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="aed-label">Nombre del Animal<h6 className="obligatorio">*</h6></label>
                   <input
@@ -459,8 +608,26 @@ export const Animales = () => {
                     onChange={(e) => setFormEditar(prev => ({ ...prev, fecha_nac_estimada: e.target.value }))}
                   />
                   <span className="error-mensaje">{errores.fecha_nac_estimada ?? ""}</span>
+                <div style={{ gridArea: "divInpt2" }}>
+                  <label className="aed-label">Fecha de Nacimiento Estimada<h6 className="obligatorio">*</h6></label>
+                  <input
+                    className="aed-input2"
+                    type="date"
+                    value={formEditar.fecha_nac_estimada}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, fecha_nac_estimada: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.fecha_nac_estimada ?? ""}</span>
                 </div>
 
+                <div style={{ gridArea: "divInpt3" }}>
+                  <label className="aed-label">Observaciones</label>
+                  <textarea
+                    className="aed-input3"
+                    name="aed-observaciones"
+                    value={formEditar.observaciones}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, observaciones: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 <div style={{ gridArea: "divInpt3" }}>
                   <label className="aed-label">Observaciones</label>
                   <textarea
@@ -481,8 +648,32 @@ export const Animales = () => {
                     onChange={(e) => setFormEditar(prev => ({ ...prev, n_microchip: e.target.value }))}
                   />
                   <span className="error-mensaje">{errores.n_microchip ?? ""}</span>
+                <div style={{ gridArea: "divInpt4" }}>
+                  <label className="aed-label">N° Microchip</label>
+                   <input
+                    className="aed-input4"
+                    type="text"
+                    value={formEditar.n_microchip}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, n_microchip: e.target.value }))}
+                  />
+                  <span className="error-mensaje">{errores.n_microchip ?? ""}</span>
                 </div>
 
+                <div style={{ gridArea: "divInpt5" }}>
+                  <label className="aed-label">Especie<h6 className="obligatorio">*</h6></label>
+                  <select
+                    className="aed-input5"
+                    value={formEditar.especie}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, especie: e.target.value }))}
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Canino">Canino</option>
+                    <option value="Felino">Felino</option>
+                    <option value="Semoviente">Semoviente</option>
+                    <option value="Ave">Ave</option>
+                    <option value="Otro">Otro</option>
+                  </select>
+                  <span className="error-mensaje">{errores.especie ?? ""}</span>
                 <div style={{ gridArea: "divInpt5" }}>
                   <label className="aed-label">Especie<h6 className="obligatorio">*</h6></label>
                   <select
@@ -512,19 +703,42 @@ export const Animales = () => {
                     <option value="Hembra">Hembra</option>
                   </select>
                   <span className="error-mensaje">{errores.sexo ?? ""}</span>
+                <div style={{ gridArea: "divInpt6" }}>
+                  <label className="aed-label">Sexo<h6 className="obligatorio">*</h6></label>
+                  <select
+                    className="aed-input6"
+                    value={formEditar.sexo}
+                    onChange={(e) => setFormEditar(prev => ({ ...prev, sexo: e.target.value }))}
+                  >
+                    <option value="">Seleccionar...</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Hembra">Hembra</option>
+                  </select>
+                  <span className="error-mensaje">{errores.sexo ?? ""}</span>
                 </div>
 
                 <div className="label-and-input-container" style={{ gridArea: "divInpt8" }}>
                   <label className="aed-label">Usuario que Registra</label>
+                <div className="label-and-input-container" style={{ gridArea: "divInpt8" }}>
+                  <label className="aed-label">Usuario que Registra</label>
                   <div className="union-input-icono">
                     <input className="aed-input8" type="text" value={user.nombre} readOnly />
+                    <input className="aed-input8" type="text" value={user.nombre} readOnly />
                     <figure className="candado-icono">
+                      <img className="candado-icono-img" src={campoRestringido} alt="" />
                       <img className="candado-icono-img" src={campoRestringido} alt="" />
                     </figure>
                   </div>
                 </div>
 
+
               </section>
+              <input
+                className="aed-btn"
+                type="submit"
+                value={cargando ? "Guardando..." : "Guardar Cambios"}
+                disabled={cargando}
+              />
               <input
                 className="aed-btn"
                 type="submit"
@@ -534,11 +748,22 @@ export const Animales = () => {
             </form>
           </aside>
         )}
+        )}
 
         {/* ── MODAL 3: Desactivar Animal ──────────────────────────────────── */}
         {modalActiva === 3 && (
+        {modalActiva === 3 && (
           <aside className="modal-animales-desactivar">
             <h1 className="modal-ael-titulo">Desactivar Animal Registrado</h1>
+
+            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+
+            <h3 className="modal-ael-mensaje">
+              ¿Desea desactivar&nbsp;
+              <span className="subrayar">{animalSeleccionado?.nombre ?? "este animal"}</span>?
+            </h3>
+
 
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
@@ -558,12 +783,27 @@ export const Animales = () => {
               </button>
               <button className="cancelar-btn" onClick={cerrarModal}>
                 Cancelar
+              <button
+                className="desactivar-btn"
+                onClick={handleEliminar}
+                disabled={cargando}
+              >
+                {cargando ? "Desactivando..." : "Desactivar"}
+              </button>
+              <button className="cancelar-btn" onClick={cerrarModal}>
+                Cancelar
               </button>
             </section>
           </aside>
         )}
 
+          </aside>
+        )}
+
       </div>
     </>
+  );
+};
+
   );
 };
