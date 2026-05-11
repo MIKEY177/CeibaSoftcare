@@ -17,7 +17,7 @@ import flecha from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
-
+import { form } from 'framer-motion/m'
 
 const API = `api/salidas_animales.php`;
 const API_SESSION = `api/session.php`;
@@ -198,7 +198,7 @@ export const SalidaAnimales = () => {
       </head>
       <main>
         <Navbar menu={menu} user={user} />
-        <section className="secciones-area-gestion contenedor-salidas">
+        <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Salidas Animales</h2>
           <section className="seccion1-busqueda-agregar">
             <form className="busqueda-form" onSubmit={handleBusqueda}>
@@ -263,8 +263,8 @@ export const SalidaAnimales = () => {
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
-            <form className="ar-form-salidas" onSubmit={e => handleRegistrar(e)}>
-              <section className="ar-form-inputs-area-salidas-animales">
+            <form className="ar-form" onSubmit={e => handleRegistrar(e)}>
+              <section className="ar-form-inputs-area">
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ar-label" for="">Fecha Salida<h6 className="obligatorio">*</h6></label>
@@ -316,7 +316,7 @@ export const SalidaAnimales = () => {
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
 
             <form className="aed-form" onSubmit={handleEditar}>
-              <section className="aed-form-inputs-area-salidas-animales">
+              <section className="aed-form-inputs-area">
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="aed-label" for="">Fecha Salida<h6 className="obligatorio">*</h6></label>

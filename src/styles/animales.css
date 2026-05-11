@@ -297,7 +297,7 @@
     "divInpt1 divInpt4"
     "divInpt2 divInpt5"
     "divInpt3 divInpt6"
-    "divInpt3 divInpt7";
+    "divInpt3 divInpt8";
     gap: 5px 0;
 }
 
@@ -321,8 +321,8 @@
     font-size: 1rem;
 }
 
-.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
-.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
+.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input8,
+.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input8{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -333,7 +333,7 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 /* .ar-input3 {
@@ -360,7 +360,7 @@
     font-family: "ubuntu";
 }
 
-.ar-input7, .aed-input7{
+.ar-input8, .aed-input8, .ar-input7, .aed-input7{
     background-color: rgba(214, 214, 214, 0.658);
 }
 
@@ -471,21 +471,4 @@
 .codigo-barras-icono-img {
     width: 100%;
     height: 100%;
-}
-/* Fin Modales */
-
-.modales-animales{
-    display: none;
-}
-
-.modal-animales-registrar{
-    display: none;
-}
-
-.modal-animales-editar{
-    display: none;
-}
-
-.modal-animales-desactivar{
-    display: none;
 }

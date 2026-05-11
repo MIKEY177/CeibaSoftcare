@@ -253,54 +253,61 @@ export const Eventos = () => {
       .catch(console.error);
   }, []);
 
-  const handleRegistrar = (e) => {
-    e.preventDefault();
-    const nuevosErrores = {};
+const btnRegistrarRef = useRef(null);
+const enviandoEvento = useRef(false);
 
-    if (formEvento.requiere_producto === 1 && listaProductos.length === 0) {
-      nuevosErrores.productos = "❗Debes agregar al menos un producto.";
-      setErrores(nuevosErrores);
-      return;
-    }
+const handleRegistrar = () => {
+  if (enviandoEvento.current) return; // ← bloqueo inmediato
+  enviandoEvento.current = true;      // ← marca inmediatamente
 
-    setCargando(true);
-    setErrores({});
-    const data = {
-      ...formEvento,
-      fecha_hora: formEvento.fecha_hora.replace("T", " ") + ":00",
-      requiere_producto: Number(formEvento.requiere_producto),
-      productos:
-        formEvento.requiere_producto === 1
-          ? listaProductos.map((p) => ({
-              id_producto: p.id_producto,
-              cantidad_presentacion: p.cantidad_presentacion,
-              cantidad_total: p.cantidad_total,
-            }))
-          : [],
-    };
+  const nuevosErrores = {};
+  if (formEvento.requiere_producto === 1 && listaProductos.length === 0) {
+    nuevosErrores.productos = "❗Debes agregar al menos un producto.";
+    setErrores(nuevosErrores);
+    enviandoEvento.current = false;
+    return;
+  }
 
-    fetch(API, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    })
-      .then(async (r) => {
-        const res = await r.json();
-        if (!r.ok) {
-          setErrores(res.errores || {});
-          return;
-        }
-        setEventos((prev) => [...prev, res.data]);
-        setMensajeExito("Evento registrado correctamente");
-        setTimeout(() => {
-          cerrarModal();
-        }, 1500);
-      })
-      .catch(console.error)
-      .finally(() => setCargando(false));
+  setCargando(true);
+  setErrores({});
+
+  const data = {
+    ...formEvento,
+    fecha_hora: formEvento.fecha_hora.replace("T", " ") + ":00",
+    requiere_producto: Number(formEvento.requiere_producto),
+    productos:
+      formEvento.requiere_producto === 1
+        ? listaProductos.map((p) => ({
+            id_producto: p.id_producto,
+            cantidad_presentacion: p.cantidad_presentacion,
+            cantidad_total: p.cantidad_total,
+          }))
+        : [],
   };
 
+  fetch(API, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
+    .then(async (r) => {
+      const res = await r.json();
+      if (!r.ok) {
+        setErrores(res.errores || {});
+        enviandoEvento.current = false;
+        return;
+      }
+      setEventos((prev) => [...prev, res.data]);
+      setMensajeExito("Evento registrado correctamente");
+      setTimeout(() => cerrarModal(), 1500);
+    })
+    .catch(() => {
+      setErrores({ general: "❗Error de conexión con el servidor." });
+      enviandoEvento.current = false;
+    })
+    .finally(() => setCargando(false));
+};
   const handleEditar = (e) => {
     e.preventDefault();
     if (!hayCambios()) {
@@ -489,10 +496,7 @@ export const Eventos = () => {
           </table>
         </section>
         <Footer />
-        <div
-          className="modales-eventos"
-          style={{ display: modalActivo ? "flex" : "none" }}
-        >
+        <div className="modales-eventos" style={{ display: modalActivo ? "flex" : "none" }}>
           {/* MODAL REGISTRAR */}
           {modalActivo === 1 && (
             <aside className="modal-eventos-registrar">
@@ -505,7 +509,7 @@ export const Eventos = () => {
               <p className="exito-mensaje">{mensajeExito ?? ""}</p>
               <span className="error-mensaje">{errores.general ?? ""}</span>
               <span className="error-mensaje">{errores.sesion ?? ""}</span>
-              <form className="er-form" onSubmit={handleRegistrar}>
+              <form className="er-form" onSubmit={e => e.preventDefault()}>
                 <section className="er-form-inputs-area">
                   <div style={{ gridArea: "divInpt1" }}>
                     <label className="er-label">  {" "} Nombre del Evento<h6 className="obligatorio">*</h6></label>
@@ -562,7 +566,7 @@ export const Eventos = () => {
                     <span className="error-mensaje">{errores.lugar ?? ""}</span>
                   </div>
                 </section>
-                <input className="er-btn" type="submit" value="Registrar Evento"/>
+                <button ref={btnRegistrarRef} className="er-btn" type="button"  onClick={handleRegistrar} disabled={cargando}> {cargando ? "Registrando..." : "Registrar Evento"} </button>
               </form>
             </aside>
           )}
@@ -671,7 +675,7 @@ export const Eventos = () => {
               <h1 className="modal-eel-titulo">Desactivar Evento Registrado</h1>
 
               <h3 className="modal-eel-mensaje">
-                ¿Desea desactivar <span className="subrayar">evento</span>?
+                ¿Desea desactivar&nbsp; <span className="subrayar"> evento</span>?
               </h3>
 
               <section className="modal-buttons">

@@ -351,6 +351,17 @@
     background-color: rgba(214, 214, 214, 0.658);
 }
 
+.union-input-icono{
+    display: flex;
+}
+
+.candado-icono{
+    width: 30px;
+    height: 30px;
+    position: relative;
+    transform: translate(-40px, 4px);
+}
+
 .ar-btn, .aed-btn, .cancelar-btn{
     margin-top: 20px;
     height: 40px;
@@ -364,6 +375,26 @@
     cursor: pointer;
     align-self: center;
     transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cancelar-btn{
+    transform: scale(1.15);
+}
+
+.desactivar-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 25px;
+    background-color: #e66377d7;
+    color: #740000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1.15);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -429,4 +460,7 @@
     height: 100%;
 }
 /* Fin Modales */
+
+ 
+
 

@@ -1,5 +1,6 @@
+import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { MenuAdminFarmacia, MenuFarmaceutico } from "../utils/menu.jsx"
 
 import "../styles/global_styles.css"
@@ -13,10 +14,10 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const API         = `api/entradas_completas.php`;
-const API_DET     = `api/detalles_entradas.php`;
-const API_PROD    = `api/productos_busqueda.php`;
-const API_SESSION = `api/session.php`;
+const API         = `/api/entradas_completas.php`;
+const API_DET     = `/api/detalles_entradas.php`;
+const API_PROD    = `/api/productos_busqueda.php`;
+const API_SESSION = `/api/session.php`;
 
 export const indexSelector = 3;
 
@@ -40,48 +41,62 @@ const detalleVacio = {
 
 // BuscadorProducto
 const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
-  const [query, setQuery] = useState(initialValue ?? '');
+  const [query, setQuery] = useState(initialValue || '');
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
+  const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-    // si es la primera vez y hay initialValue, no busca
-    if (primeraVez.current) {
-      primeraVez.current = false;
-      if (initialValue) return;
-    }
-
-    if (!query || query.trim().length < 1) {
-      setResultados([]);
-      setAbierto(false);
-      return;
-    }
-
-    const timer = setTimeout(() => {
-      setCargando(true);
-      fetch(`${API_PROD}?q=${encodeURIComponent(query)}`, { credentials: "include" })
-        .then(r => r.json())
-        .then(res => { if (res.success) { setResultados(res.data); setAbierto(true); } })
-        .catch(console.error)
-        .finally(() => setCargando(false));
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [query]);
+      if (primeraVez.current) {
+        primeraVez.current = false;
+        if (initialValue) return;
+      } 
+      if (!query || query.trim().length < 1) {
+        setResultados([]);
+        setAbierto(false);
+        setMostrarResultados(false);
+        return; 
+      }
+      
+      const timer = setTimeout(() => {  
+        setCargando(true);
+        fetch(`${API_PROD}?q=${encodeURIComponent(query)}`, { credentials: "include" })
+          .then(r => r.json())
+          .then(res => {
+            if (res.success) {
+              setResultados(res.data ?? []);
+              setAbierto(true);
+            } else {
+              setResultados([]);
+              setAbierto(true);
+            }
+          })
+          .catch(error => {
+            console.error(error);
+            setResultados([]);
+            setAbierto(true);
+          })
+          .finally(() => setCargando(false));
+      }, 300);
+  
+      return () => clearTimeout(timer);
+    }, [query]);
 
   const elegir = (prod) => {
     onSeleccionar(prod);
     setQuery(prod.nombre);
     setAbierto(false);
+    setMostrarResultados(false);
   };
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="edpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); }}
+          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true);}}
         />
         {cargando && (
           <span style={{ position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)", fontSize: 12, color: "#888", pointerEvents: "none"}}>
@@ -90,7 +105,7 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto && (
+      {abierto &&  mostrarResultados &&(
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
           borderRadius: 6, boxShadow: "0 6px 20px rgba(0,0,0,.18)",
@@ -126,6 +141,7 @@ export const EntradasProd = () => {
 
   const [user,     setUser]     = useState({ nombre: "", rol: "" });
   const [entradas, setEntradas] = useState([]);
+  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   // ── UI ──────────────────────────────────────────────────────────────────────
@@ -154,6 +170,17 @@ export const EntradasProd = () => {
       setHistorial(prev => prev.slice(0, -1));
       setModalActiva(anterior);
     };
+  
+  useEffect(() => {
+      setBusqueda(params.get("b") || "");
+      const url = new URL(window.location);
+      if (busqueda) {
+        url.searchParams.set("b", busqueda);
+      } else {
+        url.searchParams.delete("b");
+      }
+    }, []);
+
   // ── Sesión ──────────────────────────────────────────────────────────────────
   useEffect(() => {
     fetch(API_SESSION, { credentials: "include" })
@@ -270,8 +297,11 @@ export const EntradasProd = () => {
     const e = {};
     if (!form.id_producto1)
       e.id_producto1 = "❗Selecciona un producto.";
-    if (!form.cantidad_presentacion || form.cantidad_presentacion <= 0)
+    if (!form.cantidad_presentacion || form.cantidad_presentacion === "") {
       e.cantidad_presentacion = "❗Ingresa una cantidad válida.";
+    } else if (!Number.isInteger(Number(form.cantidad_presentacion)) || Number(form.cantidad_presentacion) <= 0) {
+       e.cantidad_presentacion = "❗La cantidad debe ser un número entero positivo.";
+    }
     if (!form.fecha_vencimiento) {
       e.fecha_vencimiento = "❗La fecha de vencimiento es obligatoria.";
     } else {
@@ -366,17 +396,22 @@ export const EntradasProd = () => {
     setModalActiva(5);
   };
 
-  // ── POST: registrar entrada + detalles ───────────────────────────────────────
-  const handleRegistrar = (e) => {
-    e.preventDefault();
+  const btnRegistrarRef = useRef(null);
+
+  const handleRegistrar = () => {
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
     const errs = {};
     if (!formEntrada.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
     if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-    if (Object.keys(errs).length > 0) { 
-      setErrores(errs); return; 
+    if (Object.keys(errs).length > 0) {
+      setErrores(errs);
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+      return;
     }
+
     setCargando(true);
     setErrores({});
+
     fetch(API, {
       method: "POST",
       credentials: "include",
@@ -385,25 +420,29 @@ export const EntradasProd = () => {
         fecha_hora:    formEntrada.fecha_hora,
         observaciones: formEntrada.observaciones,
         detalles: listaDetalles.map(d => ({
-          id_producto1:          d.id_producto1,
+          id_producto1: d.id_producto1,
           cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total:        d.cantidad_total,
-          fecha_vencimiento:     d.fecha_vencimiento,
-          motivo:                d.motivo,
+          cantidad_total: d.cantidad_total,
+          fecha_vencimiento: d.fecha_vencimiento,
+          motivo: d.motivo,
         })),
       }),
     })
     .then(r => r.json())
     .then(res => {
-        if (res.success) {
-          cargarEntradas();
-          mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-        } else {
-          setErrores(res.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
-      .finally(() => setCargando(false));
+      if (res.success) {
+        cargarEntradas();
+        mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
+      } else {
+        setErrores(res.errores ?? { general: "Error desconocido." });
+        if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+      }
+    })
+    .catch(() => {
+      setErrores({ general: "❗Error de conexión con el servidor." });
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+    })
+    .finally(() => setCargando(false));
   };
 
   // ── PUT: editar cabecera de entrada ──────────────────────────────────────────
@@ -522,9 +561,17 @@ export const EntradasProd = () => {
 
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const entradasFiltradas = entradas.filter(e =>
-    (e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())
+    ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())) &&
+    (e.id_entrada == (params.get("id") || e.id_entrada))
   );
+
+  useEffect(() => {
+    if (params.get("id")) {
+      const entrada = entradas.find(e => e.id_entrada == params.get("id"));
+      if (entrada) abrirModal(7, entrada);
+    }
+  }, [entradas]);
   // RENDER
   return (
     <>
@@ -591,7 +638,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 1: Registrar Entrada ──────────────────────────────────── */}
         {modalActiva === 1 && (
           <aside className="modal-entrada-registrar">
-            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
+            <button className="volver-btn-entr-prod-re" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -601,7 +648,7 @@ export const EntradasProd = () => {
             <span className="error-mensaje">{errores.general ?? ""}</span>
             <span className="error-mensaje">{errores.sesion ?? ""}</span>
 
-            <form className="epr-form" onSubmit={handleRegistrar}>
+            <form className="epr-form" onSubmit={e => e.preventDefault()}>
               <section className="epr-form-inputs-area">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="epr-label">Fecha y Hora de Entrada <span className="obligatorio">*</span></label>
@@ -618,7 +665,7 @@ export const EntradasProd = () => {
                   <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 <section style={{ gridArea: "divInpt3" }} className="epr-form-detalles-area">
-                  <div className="epr-form-detalles-header">
+                  <div className="epr-form-detalles-header-re">
                     <h2>Productos de la Entrada</h2>
                     <button type="button" className="epr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
                       Agregar Producto
@@ -666,11 +713,12 @@ export const EntradasProd = () => {
                   </table>
                 </section>
               </section>
-              <input className="epr-btn" type="submit"
-                value={cargando ? "Registrando..."
-                  : `Registrar Entrada${listaDetalles.length > 0 ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})` : ""}`}
-                disabled={cargando}
-              />
+              <button ref={btnRegistrarRef} className="epr-btn" type="button" onClick={handleRegistrar}>
+                {cargando ? "Registrando..."
+                  : `Registrar Entrada${listaDetalles.length > 0
+                  ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
+                  : ""}`}
+              </button>
             </form>
           </aside>
         )}
@@ -678,7 +726,7 @@ export const EntradasProd = () => {
         {/* ── MODAL 2: Ver / Editar Entrada ──────────────────────────────── */}
         {modalActiva === 2 && (
           <aside className="modal-entrada-editar">
-            <button className="volver-btn-entr-prod" type="button" onClick={cerrarModal}>
+            <button className="volver-btn-entr-prod-ed" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -697,6 +745,7 @@ export const EntradasProd = () => {
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="eped-label">Observaciones</label>
                   <textarea className="eped-input2" value={formEditar.observaciones} onChange={e => setFormEditar({ ...formEditar, observaciones: e.target.value })} />
+                    <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 {/* Tabla de detalles con botones editar/desactivar */}
                 <section style={{ gridArea: "divInpt3" }} className="eped-form-detalles-area">
@@ -827,7 +876,7 @@ export const EntradasProd = () => {
                       </span>
                     )}
                   </label>
-                  <input className="edpr-input3" type="number" min="1" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
+                  <input className="edpr-input3" type="number" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
 
@@ -850,7 +899,7 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                      style={{cursor: "not-allowed" }}
                       placeholder={!productoElegido ? "Selecciona un producto primero" : "Ingresa la cantidad"}
                       value={formDetalle.cantidad_total !== ""
                         ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : ""}
@@ -919,7 +968,7 @@ export const EntradasProd = () => {
                       (frascos / cajas / unidades)
                     </span>
                   </label>
-                  <input className="edpr-input3" type="number" min="1" value={formEditarDetalle.cantidad_presentacion}
+                  <input className="edpr-input3" type="number" value={formEditarDetalle.cantidad_presentacion}
                     onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
@@ -939,7 +988,7 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                      style={{ cursor: "not-allowed" }}
                       value={formEditarDetalle.cantidad_total !== ""
                         ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida}` : ""}
                     />
@@ -971,7 +1020,7 @@ export const EntradasProd = () => {
                 onClick={handleDesactivarDetalle} disabled={cargando}>
                 {cargando ? "Desactivando..." : "Desactivar"}
               </button>
-              <button className="cancelar-btn" type="button" onClick={() => setModalActiva(2)}>
+              <button className="cancelar-btn" type="button" onClick={() => {setErrores({}); setModalActiva(2);}}>
                 Cancelar
               </button>
             </section>
@@ -979,8 +1028,8 @@ export const EntradasProd = () => {
         )}
 
         {modalActiva === 7 && (
-          <aside className="modal-entrada-editar">
-            <button className="volver-btn-entr-prod" type="button" onClick={volver}>
+          <aside className="modal-entrada-ver">
+            <button className="volver-btn-entr-prod-ver" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -989,12 +1038,12 @@ export const EntradasProd = () => {
             <section className="eped-form-inputs-area">
              <div style={{ gridArea: "divInpt1" }}>
                 <label className="eped-label">Fecha y Hora</label>
-                <input className="eped-input1" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
+                <input className="eped-input1-ver" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
               </div>
 
               <div style={{ gridArea: "divInpt2" }}>
                 <label className="eped-label">Observaciones</label>
-                <textarea className="eped-input2" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
+                <textarea className="eped-input2-ver" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
               </div>
 
               <section style={{ gridArea: "divInpt3" }} className="eped-form-detalles-area">
@@ -1018,15 +1067,37 @@ export const EntradasProd = () => {
                       <td colSpan="5" style={{ textAlign: "center", color: "#888" }}> Sin productos registrados.</td>
                     </tr>
                     ) : (
-                      (entradaSeleccionada?.detalles ?? []).map(det => (
-                        <tr key={det.id_detalle_entrada}>
+                      entradaSeleccionada?.detalles?.map(det => {
+                        const esResaltado = params.get("p") && det.nombre_producto.toLowerCase() === params.get("p").toLowerCase();
+                        const sinFiltro = !params.get("p");
+                        if (esResaltado) {
+                          return(
+                        <motion.tr
+                         key={det.id_detalle_entrada}
+                         initial={{ backgroundColor: "#3693a8b7" }} 
+                         animate={{ backgroundColor: "#ffffff" }} 
+                         transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}>
                           <td>{det.nombre_producto}</td>
                           <td>{det.cantidad_presentacion}</td>
                           <td>{det.cantidad_total} {det.tipo_medida}</td>
                           <td>{det.fecha_vencimiento}</td>
                           <td>{det.motivo}</td>
-                        </tr>
-                      ))
+                        </motion.tr>
+                          );
+                          }
+
+                          if (sinFiltro || !esResaltado) {
+                            return (
+                              <tr key={det.id_detalle_entrada}>
+                                <td>{det.nombre_producto}</td>
+                                <td>{det.cantidad_presentacion}</td>
+                                <td>{det.cantidad_total} {det.tipo_medida}</td>
+                                <td>{det.fecha_vencimiento}</td>
+                                <td>{det.motivo}</td>
+                              </tr>
+                            );
+                          }                   
+                          })
                     )}
                   </tbody>
                 </table>

@@ -97,7 +97,7 @@ export const Farmacia = () => {
                 <p>No hay actividad reciente.</p>
               ) : (
                 actividad.map((activity) => (
-                <tr> 
+                <tr > 
                   <td>{activity.producto}</td> 
                   <td>{activity.fecha}</td> 
                   <td>{activity.cantidad}</td>

@@ -263,20 +263,21 @@
     margin-bottom: 20px;  
 }
 
-.ar-form-salidas{
+.ar-form, .aed-form{
     display: flex;
     flex-direction: column;
-    
-    height: auto;      
+    width: 900px;
+    height: auto;          
 }
 
-.ar-form-inputs-area-salidas-animales, .aed-form-inputs-area-salidas-animales{
+.ar-form-inputs-area, .aed-form-inputs-area{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
     grid-template-areas:
     "divInpt1 divInpt4"
     "divInpt2 divInpt3";
+    gap: 5px 0;
 }
 
 .ar-label, .aed-label{
@@ -311,7 +312,7 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
 /* .ar-input3 {
