@@ -1,7 +1,6 @@
 // Imports Base
 
 import React, {useState, useEffect} from 'react'
-import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
 
 // Estilos e imágenes
@@ -16,7 +15,6 @@ import { Footer } from '../components/Footer'
 
 export const IniciarSesion = () => {
         const API_LOGIN = `api/login.php`;
-        const API_SESSION = `api/session.php`;
         const API_SESSION = `api/session.php`;
         const API_REC   = `api/recuperar.php`;
         const API_CODE  = `api/verificar_codigo.php`;
@@ -39,24 +37,6 @@ export const IniciarSesion = () => {
         const [errores, setErrores] = useState({})           // login
         const [erroresModal, setErroresModal] = useState({}) // modales
         const [loadingCodigo, setLoadingCodigo] = useState(false);
-
-        // Verificar si hay sesión activa al cargar
-        useEffect(() => {
-            const verificarSesionActiva = async () => {
-                try {
-                    const respuesta = await fetch(API_SESSION, {
-                        credentials: "include"
-                    });
-                    const data = await respuesta.json();
-                    if (data.status === "ok") {
-                        navigate("/inicio");
-                    }
-                } catch (error) {
-                    console.error("Error al verificar sesión:", error);
-                }
-            };
-            verificarSesionActiva();
-        }, []);
 
         // Verificar si hay sesión activa al cargar
         useEffect(() => {
@@ -254,10 +234,7 @@ export const IniciarSesion = () => {
                                 <h3 className="modal-rc-mensaje">El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.</h3>
                                 <form className="rc-form" onSubmit={cambiarPassword}>
                                   <label className="rc-label">Nueva Contraseña</label>
-                                  <label className="rc-label">Nueva Contraseña</label>
                                     <input className="rc-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
-                                    <span className="error-login-global">{erroresModal.nuevaPass ?? ""}</span>
-
                                     <span className="error-login-global">{erroresModal.nuevaPass ?? ""}</span>
 
                                     <label className="rc-label">Confirmar Contraseña</label>
@@ -268,7 +245,6 @@ export const IniciarSesion = () => {
                                     <span className="error-login-global">{erroresModal.general ?? ""}</span>
 
                                     <input className="rc-btn" type="submit" value="Cambiar Contraseña" />
-                              </form>
                               </form>
                             </section>
                         </aside>

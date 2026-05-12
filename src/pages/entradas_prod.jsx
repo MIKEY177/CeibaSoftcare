@@ -1,5 +1,4 @@
 import { motion } from "framer-motion"
-import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MenuAdminFarmacia, MenuFarmaceutico } from "../utils/menu.jsx"
@@ -15,10 +14,6 @@ import flecha           from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
 
-const API         = `/api/entradas_completas.php`;
-const API_DET     = `/api/detalles_entradas.php`;
-const API_PROD    = `/api/productos_busqueda.php`;
-const API_SESSION = `/api/session.php`;
 const API         = `/api/entradas_completas.php`;
 const API_DET     = `/api/detalles_entradas.php`;
 const API_PROD    = `/api/productos_busqueda.php`;
@@ -47,50 +42,14 @@ const detalleVacio = {
 // BuscadorProducto
 const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [query, setQuery] = useState(initialValue || '');
-  const [query, setQuery] = useState(initialValue || '');
   const [resultados, setResultados] = useState([]);
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
-  const [mostrarResultados, setMostrarResultados] = useState(false);
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
   useEffect(() => {
-      if (primeraVez.current) {
-        primeraVez.current = false;
-        if (initialValue) return;
-      } 
-      if (!query || query.trim().length < 1) {
-        setResultados([]);
-        setAbierto(false);
-        setMostrarResultados(false);
-        return; 
-      }
-      
-      const timer = setTimeout(() => {  
-        setCargando(true);
-        fetch(`${API_PROD}?q=${encodeURIComponent(query)}`, { credentials: "include" })
-          .then(r => r.json())
-          .then(res => {
-            if (res.success) {
-              setResultados(res.data ?? []);
-              setAbierto(true);
-            } else {
-              setResultados([]);
-              setAbierto(true);
-            }
-          })
-          .catch(error => {
-            console.error(error);
-            setResultados([]);
-            setAbierto(true);
-          })
-          .finally(() => setCargando(false));
-      }, 300);
-  
-      return () => clearTimeout(timer);
-    }, [query]);
       if (primeraVez.current) {
         primeraVez.current = false;
         if (initialValue) return;
@@ -131,14 +90,12 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     setQuery(prod.nombre);
     setAbierto(false);
     setMostrarResultados(false);
-    setMostrarResultados(false);
   };
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="edpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true);}}
           onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true);}}
         />
         {cargando && (
@@ -148,7 +105,6 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto &&  mostrarResultados &&(
       {abierto &&  mostrarResultados &&(
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
@@ -184,7 +140,6 @@ export const EntradasProd = () => {
   const navigate = useNavigate();
   const [user,     setUser]     = useState({ nombre: "", rol: "" });
   const [entradas, setEntradas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   // ── UI ──────────────────────────────────────────────────────────────────────
@@ -335,11 +290,7 @@ export const EntradasProd = () => {
     if (!form.id_producto1)
       e.id_producto1 = "❗Selecciona un producto.";
     if (!form.cantidad_presentacion || form.cantidad_presentacion === "") {
-    if (!form.cantidad_presentacion || form.cantidad_presentacion === "") {
       e.cantidad_presentacion = "❗Ingresa una cantidad válida.";
-    } else if (!Number.isInteger(Number(form.cantidad_presentacion)) || Number(form.cantidad_presentacion) <= 0) {
-       e.cantidad_presentacion = "❗La cantidad debe ser un número entero positivo.";
-    }
     } else if (!Number.isInteger(Number(form.cantidad_presentacion)) || Number(form.cantidad_presentacion) <= 0) {
        e.cantidad_presentacion = "❗La cantidad debe ser un número entero positivo.";
     }
@@ -441,10 +392,6 @@ export const EntradasProd = () => {
 
   const handleRegistrar = () => {
     if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
-  const btnRegistrarRef = useRef(null);
-
-  const handleRegistrar = () => {
-    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
     const errs = {};
     if (!formEntrada.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
     if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
@@ -452,16 +399,10 @@ export const EntradasProd = () => {
       setErrores(errs);
       if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
       return;
-    if (Object.keys(errs).length > 0) {
-      setErrores(errs);
-      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-      return;
     }
-
 
     setCargando(true);
     setErrores({});
-
 
     fetch(API, {
       method: "POST",
@@ -472,11 +413,7 @@ export const EntradasProd = () => {
         observaciones: formEntrada.observaciones,
         detalles: listaDetalles.map(d => ({
           id_producto1: d.id_producto1,
-          id_producto1: d.id_producto1,
           cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total: d.cantidad_total,
-          fecha_vencimiento: d.fecha_vencimiento,
-          motivo: d.motivo,
           cantidad_total: d.cantidad_total,
           fecha_vencimiento: d.fecha_vencimiento,
           motivo: d.motivo,
@@ -485,19 +422,6 @@ export const EntradasProd = () => {
     })
     .then(r => r.json())
     .then(res => {
-      if (res.success) {
-        cargarEntradas();
-        mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-      } else {
-        setErrores(res.errores ?? { general: "Error desconocido." });
-        if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-      }
-    })
-    .catch(() => {
-      setErrores({ general: "❗Error de conexión con el servidor." });
-      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-    })
-    .finally(() => setCargando(false));
       if (res.success) {
         cargarEntradas();
         mostrarExito(`¡Entrada registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
@@ -718,7 +642,6 @@ export const EntradasProd = () => {
         {modalActiva === 1 && (
           <aside className="modal-entrada-registrar">
             <button className="volver-btn-entr-prod-re" type="button" onClick={cerrarModal}>
-            <button className="volver-btn-entr-prod-re" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
@@ -728,7 +651,6 @@ export const EntradasProd = () => {
             <span className="error-mensaje">{errores.general ?? ""}</span>
             <span className="error-mensaje">{errores.sesion ?? ""}</span>
 
-            <form className="epr-form" onSubmit={e => e.preventDefault()}>
             <form className="epr-form" onSubmit={e => e.preventDefault()}>
               <section className="epr-form-inputs-area">
                 <div style={{ gridArea: "divInpt1" }}>
@@ -746,7 +668,6 @@ export const EntradasProd = () => {
                   <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 <section style={{ gridArea: "divInpt3" }} className="epr-form-detalles-area">
-                  <div className="epr-form-detalles-header-re">
                   <div className="epr-form-detalles-header-re">
                     <h2>Productos de la Entrada</h2>
                     <button type="button" className="epr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
@@ -801,12 +722,6 @@ export const EntradasProd = () => {
                   ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
                   : ""}`}
               </button>
-              <button ref={btnRegistrarRef} className="epr-btn" type="button" onClick={handleRegistrar}>
-                {cargando ? "Registrando..."
-                  : `Registrar Entrada${listaDetalles.length > 0
-                  ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
-                  : ""}`}
-              </button>
             </form>
           </aside>
         )}
@@ -814,7 +729,6 @@ export const EntradasProd = () => {
         {/* ── MODAL 2: Ver / Editar Entrada ──────────────────────────────── */}
         {modalActiva === 2 && (
           <aside className="modal-entrada-editar">
-            <button className="volver-btn-entr-prod-ed" type="button" onClick={cerrarModal}>
             <button className="volver-btn-entr-prod-ed" type="button" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
@@ -834,7 +748,6 @@ export const EntradasProd = () => {
                 <div style={{ gridArea: "divInpt2" }}>
                   <label className="eped-label">Observaciones</label>
                   <textarea className="eped-input2" value={formEditar.observaciones} onChange={e => setFormEditar({ ...formEditar, observaciones: e.target.value })} />
-                    <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                     <span className="error-mensaje">{errores.observaciones ?? ""}</span>
                 </div>
                 {/* Tabla de detalles con botones editar/desactivar */}
@@ -967,7 +880,6 @@ export const EntradasProd = () => {
                     )}
                   </label>
                   <input className="edpr-input3" type="number" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
-                  <input className="edpr-input3" type="number" value={formDetalle.cantidad_presentacion} onChange={e => handleCantidadPres(e.target.value, productoElegido?.cantidad_por_unidad ?? 0, setFormDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
 
@@ -990,7 +902,6 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{cursor: "not-allowed" }}
                       style={{cursor: "not-allowed" }}
                       placeholder={!productoElegido ? "Selecciona un producto primero" : "Ingresa la cantidad"}
                       value={formDetalle.cantidad_total !== ""
@@ -1061,7 +972,6 @@ export const EntradasProd = () => {
                     </span>
                   </label>
                   <input className="edpr-input3" type="number" value={formEditarDetalle.cantidad_presentacion}
-                  <input className="edpr-input3" type="number" value={formEditarDetalle.cantidad_presentacion}
                     onChange={e => handleCantidadPres(e.target.value, productoElegidoEditar?.cantidad_por_unidad ?? formEditarDetalle.cantidad_por_unidad, setFormEditarDetalle)} />
                   <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
                 </div>
@@ -1081,7 +991,6 @@ export const EntradasProd = () => {
                   </label>
                   <div className="union-input-icono">
                     <input className="edpr-input6" type="text" readOnly
-                      style={{ cursor: "not-allowed" }}
                       style={{ cursor: "not-allowed" }}
                       value={formEditarDetalle.cantidad_total !== ""
                         ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida}` : ""}
@@ -1115,7 +1024,6 @@ export const EntradasProd = () => {
                 {cargando ? "Desactivando..." : "Desactivar"}
               </button>
               <button className="cancelar-btn" type="button" onClick={() => {setErrores({}); setModalActiva(2);}}>
-              <button className="cancelar-btn" type="button" onClick={() => {setErrores({}); setModalActiva(2);}}>
                 Cancelar
               </button>
             </section>
@@ -1123,8 +1031,6 @@ export const EntradasProd = () => {
         )}
 
         {modalActiva === 7 && (
-          <aside className="modal-entrada-ver">
-            <button className="volver-btn-entr-prod-ver" type="button" onClick={volver}>
           <aside className="modal-entrada-ver">
             <button className="volver-btn-entr-prod-ver" type="button" onClick={volver}>
               <img className="volver-icono" src={flecha} alt="" />
@@ -1136,12 +1042,10 @@ export const EntradasProd = () => {
              <div style={{ gridArea: "divInpt1" }}>
                 <label className="eped-label">Fecha y Hora</label>
                 <input className="eped-input1-ver" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
-                <input className="eped-input1-ver" type="datetime-local" value={entradaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
               </div>
 
               <div style={{ gridArea: "divInpt2" }}>
                 <label className="eped-label">Observaciones</label>
-                <textarea className="eped-input2-ver" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
                 <textarea className="eped-input2-ver" value={entradaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
               </div>
 

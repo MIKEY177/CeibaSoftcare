@@ -1,6 +1,5 @@
 // Imports Base
 import { motion } from "framer-motion"
-import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
@@ -52,7 +51,6 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [cargando, setCargando] = useState(false);
   const [abierto, setAbierto] = useState(false);
   const [mostrarResultados, setMostrarResultados] = useState(false);
-  const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
 
@@ -64,7 +62,6 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     if (!query || query.trim().length < 1) {
       setResultados([]);
       setAbierto(false);
-      setMostrarResultados(false);
       setMostrarResultados(false);
       return; 
     }
@@ -98,14 +95,12 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
     setQuery(prod.nombre);
     setAbierto(false);
     setMostrarResultados(false);
-    setMostrarResultados(false);
   }
 
   return (
     <div ref={wrapperRef} style={{ position: "relative", width: "100%", zIndex: 999 }}>
       <div style={{ position: "relative" }}>
         <input className="sdpr-input1" type="text" placeholder="Buscar por nombre o código de barras..." value={query} autoComplete="off" 
-          onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true); }}
           onChange={e => { setQuery(e.target.value); onSeleccionar(null); setMostrarResultados(true); }}
         />
         {cargando && (
@@ -115,7 +110,6 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
         )}
       </div>
 
-      {abierto && mostrarResultados && (
       {abierto && mostrarResultados && (
         <ul style={{ position: "absolute", top: "100%", left: 0, width: "100%",
           zIndex: 99999, background: "#fff", border: "1px solid #ccc",
@@ -154,7 +148,6 @@ export const SalidasProd = () => {
 
   const [user, setUser] = useState({nombre: "", rol: ""}); 
   const [salidas, setSalidas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   const [modalActivo, setModalActivo] = useState(null); 
@@ -181,8 +174,6 @@ export const SalidasProd = () => {
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
 
   
-
-  
   const volver = () => {
     if (historial.length === 0) return;
       const anterior = historial[historial.length - 1];
@@ -200,16 +191,6 @@ export const SalidasProd = () => {
         } else navigate("/iniciar_sesion");
       })
       .catch(() => navigate("/iniciar_sesion"));
-  }, []);
-
-  useEffect(() => {
-    setBusqueda(params.get("b") || "");
-    const url = new URL(window.location);
-    if (busqueda) {
-      url.searchParams.set("b", busqueda);
-    } else {
-      url.searchParams.delete("b");
-    }
   }, []);
 
   useEffect(() => { cargarSalidas(); }, []);
@@ -323,7 +304,6 @@ export const SalidasProd = () => {
       e.cantidad_total = "❗La cantidad total debe ser mayor a 0.";
     else if (form.cantidad_actual !== "" && parseFloat(form.cantidad_total) > parseFloat(form.cantidad_actual))
       e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible máximo (${form.cantidad_actual}).`;
-      e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible máximo (${form.cantidad_actual}).`;
     if (!form.motivo.trim())
       e.motivo = "❗El motivo es obligatorio.";
     return e;
@@ -398,7 +378,6 @@ export const SalidasProd = () => {
       tipo_medida: det.tipo_medida,
       cantidad_por_unidad: det.cantidad_por_unidad,
       cantidad_actual: det.cantidad_actual ?? "",
-      cantidad_actual: det.cantidad_actual ?? "",
       cantidad_presentacion: det.cantidad_presentacion,
       cantidad_total: det.cantidad_total,
       motivo: det.motivo,
@@ -409,53 +388,6 @@ export const SalidasProd = () => {
   };
 
   // ── POST: registrar salida + detalles ───────────────────────────────────────
-  const btnRegistrarRef = useRef(null);
- const handleRegistrar = () => {
-  if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
-
-  const errs = {};
-  if (!formSalida.fecha_hora)     errs.fecha_hora = "❗La fecha es obligatoria.";
-  if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-  if (Object.keys(errs).length > 0) {
-    setErrores(errs);
-    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-    return;
-  }
-
-  setCargando(true);
-  setErrores({});
-
-  fetch(API, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      fecha_hora:    formSalida.fecha_hora,
-      observaciones: formSalida.observaciones,
-      detalles: listaDetalles.map(d => ({
-        id_producto1:          d.id_producto1,
-        cantidad_presentacion: d.cantidad_presentacion,
-        cantidad_total:        d.cantidad_total,
-        motivo:                d.motivo,
-      })),
-    }),
-  })
-  .then(r => r.json())
-  .then(res => {
-    if (res.success) {
-      cargarSalidas();
-      mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-    } else {
-      setErrores(res.errores ?? { general: "Error desconocido." });
-      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-    }
-  })
-  .catch(() => {
-    setErrores({ general: "❗Error de conexión con el servidor." });
-    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
-  })
-  .finally(() => setCargando(false));
-};
   const btnRegistrarRef = useRef(null);
  const handleRegistrar = () => {
   if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
@@ -696,7 +628,6 @@ export const SalidasProd = () => {
                     </div>
                   </td>
                 </tr>
-              
               ))
             )}
             </tbody>  
@@ -709,7 +640,6 @@ export const SalidasProd = () => {
         {modalActivo === 1 && (
         <aside className="modal-salida-registrar">
           <button className="volver-btn-sal-prod-re" type="button" onClick={cerrarModal}>
-          <button className="volver-btn-sal-prod-re" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -719,7 +649,6 @@ export const SalidasProd = () => {
           <span className="error-mensaje">{errores.general ?? ""}</span>
           <span className="error-mensaje">{errores.sesion ?? ""}</span>
         
-          <form className="spr-form" onSubmit={e => e.preventDefault()}>
           <form className="spr-form" onSubmit={e => e.preventDefault()}>
             <section className="spr-form-inputs-area">
               <div style={{ gridArea: "divInpt1" }}>
@@ -737,7 +666,6 @@ export const SalidasProd = () => {
                 <span className="error-mensaje">{errores.observaciones ?? ""}</span>
               </div>
               <section style={{ gridArea: "divInpt3" }} className="spr-form-detalles-area">
-                <div className="spr-form-detalles-header-re">
                 <div className="spr-form-detalles-header-re">
                   <h2>Productos de la Salida</h2>
                   <button type="button" className="spr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
@@ -795,24 +723,12 @@ export const SalidasProd = () => {
         ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
         : ""}`}
 </button>
-            <button
-  ref={btnRegistrarRef}
-  className="epr-btn"
-  type="button"
-  onClick={handleRegistrar}
->
-  {cargando ? "Registrando..."
-    : `Registrar Salida${listaDetalles.length > 0
-        ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
-        : ""}`}
-</button>
           </form>
         </aside>
         )}
         {/* ── MODAL 2: Ver / Editar Salida ──────────────────────────────── */}
         {modalActivo === 2 && (
         <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod-ed" type="button" onClick={cerrarModal}>
           <button className="volver-btn-sal-prod-ed" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
@@ -892,8 +808,6 @@ export const SalidasProd = () => {
         {modalActivo === 3 && (
         <aside className="modal-salida-desactivar">
           <h1 className="modal-epel-titulo">Desactivar Salida Registrada</h1>
-          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°
-            <span className="subrayar">{salidaSeleccionada?.id_salida}</span>?
           <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°
             <span className="subrayar">{salidaSeleccionada?.id_salida}</span>?
           </h3>
@@ -991,7 +905,6 @@ export const SalidasProd = () => {
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
                     style={{  cursor: "not-allowed" }}
-                    style={{  cursor: "not-allowed" }}
                     placeholder={productoElegido ? "Ingresa la cantidad" : "Selecciona un producto primero"}
                     value={formDetalle.cantidad_total !== ""
                       ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : "" }
@@ -1007,16 +920,8 @@ export const SalidasProd = () => {
                 )}
               </div>
               <div style={{ gridArea: "divInpt5" }}>
-                {formDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
-                    Stock disponible máximo: {formDetalle.cantidad_actual} {formDetalle.tipo_medida}
-                  </div>
-                )}
-              </div>
-              <div style={{ gridArea: "divInpt5" }}>
                 <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
               </div>
-
 
             </section>
             <input className="sdpr-btn" type="submit" 
@@ -1058,7 +963,6 @@ export const SalidasProd = () => {
                                       cantidad_actual: prod.cantidad_actual,
                                       cantidad_presentacion: "",
                                       cantidad_total_original: productoElegidoEditar.cantidad_total ?? formEditarDetalle.cantidad_total, // para recalcular si cambia el producto
-                                      cantidad_total_original: productoElegidoEditar.cantidad_total ?? formEditarDetalle.cantidad_total, // para recalcular si cambia el producto
                                     }));
                                   }
                                 }}
@@ -1099,7 +1003,6 @@ export const SalidasProd = () => {
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
                     style={{cursor: "not-allowed" }}
-                    style={{cursor: "not-allowed" }}
                     value={formEditarDetalle.cantidad_total !== "" 
                       ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida ?? ''}` : ''}
                   />
@@ -1107,15 +1010,6 @@ export const SalidasProd = () => {
                     <img className="candado-icono-img" src={campoRestringido} alt="" />
                   </figure>
                 </div>
-                {formEditarDetalle.cantidad_actual !== "" && (
-                  <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
-                    Stock máximo:  {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
-                  </div>
-                )}
-               
-              </div>
-              < div style={{ gridArea: "divInpt5" }}>
-                <span className = "error-mensaje">{errores.cantidad_total ?? ""}</span>
                 {formEditarDetalle.cantidad_actual !== "" && (
                   <div style={{ fontSize: 16, color: "#555", marginTop: 4 }}>
                     Stock máximo:  {formEditarDetalle.cantidad_actual} {formEditarDetalle.tipo_medida}
@@ -1162,8 +1056,6 @@ export const SalidasProd = () => {
         {modalActivo === 7 && (
         <aside className="modal-salida-ver">
           <button className="volver-btn-sal-prod-ver" type="button" onClick={volver}>
-        <aside className="modal-salida-ver">
-          <button className="volver-btn-sal-prod-ver" type="button" onClick={volver}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -1173,12 +1065,10 @@ export const SalidasProd = () => {
             <div style={{ gridArea: "divInpt1" }}>
               <label className="sped-label">Fecha y Hora</label>
               <input className="sped-input1-ver" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
-              <input className="sped-input1-ver" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
             </div>
         
             <div style={{ gridArea: "divInpt2" }}>
               <label className="sped-label">Observaciones</label>
-              <textarea className="sped-input2-ver" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
               <textarea className="sped-input2-ver" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
             </div>
         
@@ -1197,8 +1087,7 @@ export const SalidasProd = () => {
                   </tr>
                 </thead>
                 <tbody className="body-tabla-sped-detalles">
-                  {
-                  (salidaSeleccionada?.detalles ?? []).length === 0 ? (
+                  {(salidaSeleccionada?.detalles ?? []).length === 0 ? (
                     <tr>
                       <td colSpan="5">No hay detalles disponibles</td>
                     </tr>
