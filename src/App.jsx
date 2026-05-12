@@ -19,6 +19,8 @@ import { HistoriasMedicas } from "./pages/historias_medicas.jsx";
 import { VerHistoriaMedicas } from "./pages/ver_historias_medicas.jsx";
 import { DetalleVerificacion } from "./pages/detalle_verificacion.jsx";
 import { Albergue } from "./pages/albergue.jsx";
+import {Ajustes} from "./pages/ajustes.jsx";
+import { Usuarios } from "./pages/usuarios.jsx";
 
 function App() {
   return (
@@ -55,6 +57,8 @@ function App() {
           <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
           <Route path="/detelle_verificacion" element={<DetalleVerificacion/>} />
           <Route path="/albergue" element={<Albergue />} />
+          <Route path="/ajustes" element={<Ajustes />} />
+          <Route path="/usuarios" element={<Usuarios />} />
         </Routes>
       </Router>
     </>
