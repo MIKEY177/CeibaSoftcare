@@ -10,9 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "avatar": "^0.1.0",
     "boring-avatars": "^2.0.4",
     "framer-motion": "^12.38.0",
-    "react": "^19.2.0",
+    "react": "^19.2.6",
     "react-avatar": "^5.0.4",
     "react-dom": "^19.2.0",
     "react-easy-crop": "^5.5.7",

@@ -110,7 +110,7 @@ export const Albergue = () => {
                     </div>
                   </Link>
    
-                  <Link to="/albergue">
+                  <Link to="/ingreso_animales">
                     <div className="modulo-entradas-productos">
                       <h4 className="titulo-modulo-entradas-productos">Ingresos Animales</h4>
                       <figure className="modulo-ingresos-animales-icono">
@@ -119,7 +119,7 @@ export const Albergue = () => {
                     </div>
                   </Link>
 
-                <Link to="/albergue">
+                <Link to="/salida_animales">
                   <div className="modulo-salidas-productos">
                     <h4 className="titulo-modulo-salidas-productos">Salidas Animales</h4>
                     <figure className="modulo-salidas-animales-icono">
@@ -128,7 +128,7 @@ export const Albergue = () => {
                   </div>
                 </Link>
     
-                <Link to="/albergue">
+                <Link to="/historias_medicas">
                   <div className="modulo-eventos">
                     <h4 className="titulo-modulo-eventos">Historias Clínicas</h4>
                     <figure className="modulo-eventos-icono">
