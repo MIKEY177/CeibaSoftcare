@@ -1,8 +1,21 @@
+.ver-historia-medica{
+    height: 90vh;
+    overflow-y: scroll;
+}
+
 .seccion1-busqueda-agregar{
+    width: 90%;
     display: flex;
-    width: 100%;
     justify-content: space-between;
-    padding: 0 30px;
+    font-size: 1.3rem;
+    margin: auto;
+}
+
+.seccion1-busqueda-agregar-eventos-clinicos{
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem auto;
 }
 
 .busqueda-form{
@@ -55,26 +68,8 @@
     margin-top: 3px;
 }
 
-.busqueda-barras-icono-img{
-    width: 30px;
-    margin-top: 8px;
-}
-
-.busqueda-barras-icono{
-    width: 50px;
-    height: 40px;
-    padding: 0 10px;
-    background-color: #FFFFFF;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 5px;
-    border: 2px solid #048F9F;
-    border-left: none;
-    cursor: pointer;
-    align-items: center;
-}
-
 .registrar-btn{
-    width: 200px;
+    width: 290px;
     height: 40px;
     font-size: 1.3rem;
     font-family: "ubuntu";
@@ -104,24 +99,48 @@
 
 /* Scrollbar */
 
-.body-tabla-ingreso-animales::-webkit-scrollbar {
+.body-tabla-historias-medicas::-webkit-scrollbar {
   width: 8px;
 }
 
-.body-tabla-ingreso-animales::-webkit-scrollbar-track {
+.body-tabla-historias-medicas::-webkit-scrollbar-track {
   background: #FFF8E2;
 }
 
-.body-tabla-ingreso-animales::-webkit-scrollbar-thumb {
+.body-tabla-historias-medicas::-webkit-scrollbar-thumb {
   background-color: #D49538;
 }
 
 /* Fin Scrollbar */
-/* Tablas */
 
-.tabla-ingreso-animales{
+.examenes-fisicos{
     width: 100%;
-    height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.examenes-fisicos .titulo-dashboard,
+.eventos-clinicos .titulo-dashboard{
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.fecha-creacion{
+    font-size: 1.3rem;
+    display: flex;
+    margin: 2rem;
+    gap: 10px;
+}
+
+.titulo-examen-fisico{
+    margin-bottom: 2rem;
+}
+
+/* Tabla exámenes físicos*/
+
+.tabla-examenes-fisicos{
+    width: 90%;
+    height: auto;
     background-color: white;
     border: 3px solid #D49538;
     border-radius: 25px;
@@ -130,9 +149,10 @@
     overflow: hidden;
     text-align: center;
     table-layout: fixed;
+    margin: 2rem auto;
 }
 
-.header-tabla-ingreso-animales{
+.header-tabla-examenes-fisicos{
     background-color: #FFF8E2;
     font-size: 1.4rem;
     font-weight: 600;
@@ -142,15 +162,73 @@
     table-layout: fixed;
 }
 
-.header-tabla-ingreso-animales td, .body-tabla-ingreso-animales td{
+.header-tabla-examenes-fisicos td, .body-tabla-examenes-fisicos td{
     border-bottom: 3px solid #D49538;
 }
 
-/* .body-tabla-animales td:last-child{
-    display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-} */
+.body-tabla-examenes-fisicos tr:last-child td{
+    border-bottom: 0;
+}
+
+.body-tabla-examenes-fisicos{
+    display: block;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body-tabla-examenes-fisicos{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.body-tabla-examenes-fisicos td{
+    word-wrap: break-word;
+    padding: 10px;
+    /* border: 2px solid red; */
+}
+
+.tabla-examenes-fisicos-btn{
+    background-color: #D49538;
+    padding: 5px 30px;
+    font-size: 1rem;
+    font-weight: 550;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Tabla eventos clínicos */
+
+.tabla-eventos-clinicos{
+    width: 90%;
+    height: auto;
+    background-color: white;
+    border: 3px solid #D49538;
+    border-radius: 25px;
+    font-family: "Lato";
+    border-spacing: 0;
+    overflow: hidden;
+    text-align: center;
+    table-layout: fixed;
+    margin: auto;
+}
+
+.header-tabla-eventos-clinicos{
+    background-color: #FFF8E2;
+    font-size: 1.4rem;
+    font-weight: 600;
+    height: 50px;
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.header-tabla-eventos-clinicos td, .body-tabla-eventos-clinicos td{
+    border-bottom: 3px solid #D49538;
+}
 
 .last-td-flex-content-wrapper{
     display: flex;
@@ -158,21 +236,11 @@
     justify-content: space-evenly;
 }
 
-/* .header-tabla-animales:after{
-    content: '';
-    width: 3px;
-    height: 546px;
-    background-color: #D49538;
-    position: absolute;
-    z-index: 2;
-    transform: translate(990px);
-} */
-
-.body-tabla-ingreso-animales tr:last-child td{
+.body-tabla-eventos-clinicos tr:last-child td{
     border-bottom: 0;
 }
 
-.body-tabla-ingreso-animales{
+.body-tabla-eventos-clinicos{
     display: block;
     width: 100%;
     height: 545px; 
@@ -180,7 +248,7 @@
     overflow-x: hidden;
 }
 
-.body-tabla-ingreso-animales tr{
+.body-tabla-eventos-clinicos {
     display: table;
     width: 100%;
     max-height: 50px; 
@@ -188,13 +256,13 @@
     /* border: 2px solid red; */
 }
 
-.body-tabla-ingreso-animales td{
+.body-tabla-eventos-clinicos td{
     word-wrap: break-word;
     padding: 10px;
     /* border: 2px solid red; */
 }
 
-.tabla-ingreso-animales-btn{
+.tabla-eventos-clinicos-btn{
     background-color: #D49538;
     padding: 5px 30px;
     font-size: 1rem;
@@ -205,7 +273,8 @@
     cursor: pointer;
 }
 
-.modales-ingreso-animales{
+
+.modales-historias-medicas-detalle{
     position: fixed;
     top: 0;
     left: 0;
@@ -218,10 +287,12 @@
     align-items: center;
 }
 
-.modal-ingreso-animales-registrar, .modal-ingreso-animales-editar, .modal-detalle-ingreso{
+.modal-registrar-examen-fisico, .modal-editar-examen-fisico,
+.modal-registrar-evento-clinico, .modal-editar-evento-clinico,
+.modal-detalle-examen-fisico{
     margin: auto;
     background-color: #FFFFFF;
-    width: 1000px;
+    width: 1300px;
     height: auto;      
     max-height: 95vh;   
     overflow-y: auto;  
@@ -234,30 +305,15 @@
     gap: 15px;          
 }
 
-.modal-detalle-ingreso{
-    width: 1200px;
+.modal-registrar-evento-clinico, .modal-editar-evento-clinico, .modal-detalle-examen-fisico{
+    width: 900px;
 }
 
-.modal-animales-desactivar{
-    margin: auto;
-    background-color: #FFFFFF;
-    width: 1300px;
-    height: 700px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px 4px #21242779;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;   
+.modal-detalle-examen-fisico{
+    width: 1100PX;
 }
 
-.modal-animales-desactivar{
-    width: 500px;
-    height: 300px;
-}
-
-.volver-btn-ingreso-anim{
+.volver-btn-ver-historias-medicas{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -293,7 +349,14 @@
     height: auto;          
 }
 
-.ar-form-inputs-area-ingresos, .aed-form-inputs-area{
+.modal-registrar-evento-clinico .ar-form,
+.modal-editar-evento-clinico .ar-form
+.modal-detalle-examen-fisico{
+    width: 750px;
+    align-items: center;
+}
+
+.ar-form-inputs-area, .aed-form-inputs-area{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
@@ -301,7 +364,8 @@
     "divInpt1 divInpt5"
     "divInpt2 divInpt6"
     "divInpt4 divInpt7"
-    "divInpt3 divInpt8";    
+    "divInpt3 divInpt8";
+    gap: 5px 0;
 }
 
 .ar-label, .aed-label{
@@ -324,8 +388,8 @@
     font-size: 1rem;
 }
 
-.ar-input1-ingreso, .ar-input2-ingreso, .ar-input4-ingreso, .ar-input5-ingreso, .ar-input6-ingreso, .ar-input7-ingreso,
-.aed-input1-ingreso, .aed-input2-ingreso, .aed-input3-ingreso, .aed-input4-ingreso, .aed-input5-ingreso, .aed-input6-ingreso, .aed-input7-ingreso{
+.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
+.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -336,13 +400,29 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
+/* .ar-input3 {
+    
+    font-family: 'Lato';
+    justify-content: space-between;
+    font-weight: 600;
+    
+    &, &::picker(select) {
+        appearance: base-select;
+        padding: 0.4rem;
+    }
+
+    &::picker-icon{
+        display: none;
+    }
+
+} */
 
 .ar-input3, .aed-input3{
     resize: none;
-    height: 400px;
+    height: 140px;
     padding: 5px 10px;
     font-family: "ubuntu";
 }
@@ -445,22 +525,29 @@
     width: max-content;
 }
 
-.codigo-barras-icono {
-    width: 32px;
-    height: 23px;
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-14px);
-    pointer-events: none; /* no interfiere con el input */
-}
-
-.codigo-barras-icono-img {
-    width: 100%;
-    height: 100%;
-}
 /* Fin Modales */
 
- 
+.modales-historias-medicas-detalle  {
+    display: none;
+}
+
+.modal-registrar-examen-fisico{
+    display: none;
+} 
+
+.modal-editar-examen-fisico{
+    display: none;
+}
 
 
+.modal-registrar-evento-clinico{
+    display: none;
+}
+
+.modal-editar-evento-clinico{
+    display: none;
+}
+
+.modal-detalle-examen-fisico{
+    display: none;
+}

@@ -104,22 +104,22 @@
 
 /* Scrollbar */
 
-.body-tabla-ingreso-animales::-webkit-scrollbar {
+.body-tabla-historias-medicas::-webkit-scrollbar {
   width: 8px;
 }
 
-.body-tabla-ingreso-animales::-webkit-scrollbar-track {
+.body-tabla-historias-medicas::-webkit-scrollbar-track {
   background: #FFF8E2;
 }
 
-.body-tabla-ingreso-animales::-webkit-scrollbar-thumb {
+.body-tabla-historias-medicas::-webkit-scrollbar-thumb {
   background-color: #D49538;
 }
 
 /* Fin Scrollbar */
 /* Tablas */
 
-.tabla-ingreso-animales{
+.tabla-historias-medicas{
     width: 100%;
     height: 600px;
     background-color: white;
@@ -132,7 +132,7 @@
     table-layout: fixed;
 }
 
-.header-tabla-ingreso-animales{
+.header-tabla-historias-medicas{
     background-color: #FFF8E2;
     font-size: 1.4rem;
     font-weight: 600;
@@ -142,7 +142,7 @@
     table-layout: fixed;
 }
 
-.header-tabla-ingreso-animales td, .body-tabla-ingreso-animales td{
+.header-tabla-historias-medicas td, .body-tabla-historias-medicas td{
     border-bottom: 3px solid #D49538;
 }
 
@@ -168,11 +168,11 @@
     transform: translate(990px);
 } */
 
-.body-tabla-ingreso-animales tr:last-child td{
+.body-tabla-historias-medicas tr:last-child td{
     border-bottom: 0;
 }
 
-.body-tabla-ingreso-animales{
+.body-tabla-historias-medicas{
     display: block;
     width: 100%;
     height: 545px; 
@@ -180,7 +180,7 @@
     overflow-x: hidden;
 }
 
-.body-tabla-ingreso-animales tr{
+.body-tabla-historias-medicas tr{
     display: table;
     width: 100%;
     max-height: 50px; 
@@ -188,13 +188,13 @@
     /* border: 2px solid red; */
 }
 
-.body-tabla-ingreso-animales td{
+.body-tabla-historias-medicas td{
     word-wrap: break-word;
     padding: 10px;
     /* border: 2px solid red; */
 }
 
-.tabla-ingreso-animales-btn{
+.tabla-historias-medicas-btn{
     background-color: #D49538;
     padding: 5px 30px;
     font-size: 1rem;
@@ -205,7 +205,7 @@
     cursor: pointer;
 }
 
-.modales-ingreso-animales{
+.modales-historias-medicas{
     position: fixed;
     top: 0;
     left: 0;
@@ -218,10 +218,10 @@
     align-items: center;
 }
 
-.modal-ingreso-animales-registrar, .modal-ingreso-animales-editar, .modal-detalle-ingreso{
+.modal-historias-medicas-registrar, .modal-historias-medicas-editar{
     margin: auto;
     background-color: #FFFFFF;
-    width: 1000px;
+    width: 700px;
     height: auto;      
     max-height: 95vh;   
     overflow-y: auto;  
@@ -234,30 +234,7 @@
     gap: 15px;          
 }
 
-.modal-detalle-ingreso{
-    width: 1200px;
-}
-
-.modal-animales-desactivar{
-    margin: auto;
-    background-color: #FFFFFF;
-    width: 1300px;
-    height: 700px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px 4px #21242779;
-    padding: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-evenly;   
-}
-
-.modal-animales-desactivar{
-    width: 500px;
-    height: 300px;
-}
-
-.volver-btn-ingreso-anim{
+.volver-btn-historias-medicas{
     display: flex;
     width: max-content;
     text-decoration: none;
@@ -286,22 +263,22 @@
     margin-bottom: 20px;  
 }
 
-.ar-form, .aed-form{
+.modal-historias-medicas-registrar .ar-form, .aed-form,
+.modal-historias-medicas-editar .ar-form{
+    width: 400px;
     display: flex;
     flex-direction: column;
-    width: 900px;
     height: auto;          
 }
 
-.ar-form-inputs-area-ingresos, .aed-form-inputs-area{
+.ar-form-inputs-area-historias{
     display: grid;
-    grid-template-columns: 500px 1fr;
-    grid-template-rows: auto auto auto auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto;
     grid-template-areas:
-    "divInpt1 divInpt5"
-    "divInpt2 divInpt6"
-    "divInpt4 divInpt7"
-    "divInpt3 divInpt8";    
+    "divInpt1 "
+    "divInpt2 ";
+    
 }
 
 .ar-label, .aed-label{
@@ -324,8 +301,8 @@
     font-size: 1rem;
 }
 
-.ar-input1-ingreso, .ar-input2-ingreso, .ar-input4-ingreso, .ar-input5-ingreso, .ar-input6-ingreso, .ar-input7-ingreso,
-.aed-input1-ingreso, .aed-input2-ingreso, .aed-input3-ingreso, .aed-input4-ingreso, .aed-input5-ingreso, .aed-input6-ingreso, .aed-input7-ingreso{
+.ar-input1, .ar-input2, .ar-input3, .ar-input4, .ar-input5, .ar-input6, .ar-input7,
+.aed-input1, .aed-input2, .aed-input3, .aed-input4, .aed-input5, .aed-input6, .aed-input7{
     height: 40px;
     width: 400px;
     border-radius: 10px;
@@ -336,13 +313,29 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 10px;
+    margin-bottom: 30px;
 }
 
+/* .ar-input3 {
+    
+    font-family: 'Lato';
+    justify-content: space-between;
+    font-weight: 600;
+    
+    &, &::picker(select) {
+        appearance: base-select;
+        padding: 0.4rem;
+    }
+
+    &::picker-icon{
+        display: none;
+    }
+
+} */
 
 .ar-input3, .aed-input3{
     resize: none;
-    height: 400px;
+    height: 140px;
     padding: 5px 10px;
     font-family: "ubuntu";
 }
@@ -461,6 +454,14 @@
 }
 /* Fin Modales */
 
- 
+.modales-historias-medicas{
+    display: none;
+}
 
+.modal-historias-medicas-registrar{
+    display: none;
+}  
 
+.modal-historias-medicas-editar{
+    display: none;
+}
