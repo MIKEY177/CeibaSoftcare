@@ -18,6 +18,9 @@ import { IngresoAnimales } from "./pages/ingreso_animales.jsx";
 import { HistoriasMedicas } from "./pages/historias_medicas.jsx";
 import { VerHistoriaMedicas } from "./pages/ver_historias_medicas.jsx";
 import { DetalleVerificacion } from "./pages/detalle_verificacion.jsx";
+import { Albergue } from "./pages/albergue.jsx";
+import {Ajustes} from "./pages/ajustes.jsx";
+import { Usuarios } from "./pages/usuarios.jsx";
 
 function App() {
   return (
@@ -40,7 +43,9 @@ function App() {
           <Route path="/iniciar_sesion" element={<IniciarSesion />} />
           <Route path="/productos" element={<Productos />} />
           <Route path="/entradas_prod" element={<EntradasProd />} />
+          <Route path="/entradas_prod/:id/:fecha/:nombre_producto" element={<EntradasProd />} />
           <Route path="/salidas_prod" element={<SalidasProd />} />
+          <Route path="/salidas_prod/:id/:fecha/:nombre_producto" element={<SalidasProd />} />
           <Route path="/eventos" element={<Eventos />} />
           <Route path="/animales" element={<Animales />} />
           <Route path="/verificaciones" element={<Verificaciones />} />
@@ -51,6 +56,9 @@ function App() {
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
           <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
           <Route path="/detelle_verificacion" element={<DetalleVerificacion/>} />
+          <Route path="/albergue" element={<Albergue />} />
+          <Route path="/ajustes" element={<Ajustes />} />
+          <Route path="/usuarios" element={<Usuarios />} />
         </Routes>
       </Router>
     </>

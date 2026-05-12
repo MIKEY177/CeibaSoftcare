@@ -22,7 +22,7 @@ import { Menu } from '../components/Menu.jsx'
 const API = `api/ingreso_animales.php`;
 const API_SESSION = `api/session.php`;
 const API_VERIFICACIONES = `api/seleccionar_verificacion.php`;
-export const indexSelector = 6;
+export const indexSelector = 4;
 
 export const IngresoAnimales = () => {
    const [user, setUser] = useState({ nombre: "", rol: "" });
@@ -168,7 +168,7 @@ export const IngresoAnimales = () => {
         .then(res => res.json())
         .then(data => {
           if (data.status === "ok") {
-            setUser({ nombre: data.usuario, rol: data.rol });
+            setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
             if (data.rol === "farmacéutico") navigate("/albergue");
           } else {
             navigate("/iniciar_sesion");
@@ -185,8 +185,8 @@ export const IngresoAnimales = () => {
   
     const menuObj = (() => {
       switch (user.rol) {
-        case "administrador": return MenuAdminAlbergue;
-        case "veterinario":  return MenuAdminAlbergue;
+        case "administrador": return MenuVeterinario;
+        case "veterinario":  return MenuVeterinario;
         default:              return {};
       }
     })();

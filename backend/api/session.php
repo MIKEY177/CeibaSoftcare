@@ -11,7 +11,8 @@ if (isset($_SESSION['user_id'])) {
     echo json_encode([
         "status" => "ok",
         "usuario" => $_SESSION['user_name'],
-        "rol" => $_SESSION['user_rol']
+        "rol" => $_SESSION['user_rol'],
+        "foto_perfil" => $_SESSION['foto_perfil'],
     ]);
 } else {
     http_response_code(401);

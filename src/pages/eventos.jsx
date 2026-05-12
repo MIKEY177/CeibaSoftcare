@@ -11,6 +11,7 @@ import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
+
 const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [query, setQuery] = useState(valorInicial);
   const [resultados, setResultados] = useState([]);
@@ -231,7 +232,7 @@ export const Eventos = () => {
       .then((r) => r.json())
       .then((data) => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador") navigate("/inicio");
         } else navigate("/iniciar_sesion");
       })

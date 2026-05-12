@@ -43,7 +43,7 @@ export const Inicio = () => {
     .then(data => {
       console.log("Datos de sesión:", data);
       if (data.status === "ok") {
-        setUser({ nombre: data.usuario, rol: data.rol });
+        setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
       } else {
         navigate("/iniciar_sesion");
       }

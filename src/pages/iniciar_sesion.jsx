@@ -160,10 +160,10 @@ export const IniciarSesion = () => {
                     <h1 className="titulo-inicio-sesion">Ingrese los siguientes datos y acceda a la plataforma</h1>
                     <form className="iniciar-sesion-form" onSubmit={iniciarSesion}>
                         <label className="iniciar-sesion-label" htmlFor="correo">Correo Electrónico</label>
-                        <input className="iniciar-sesion-input1" type="text" placeholder="ejemplo@email.com" name="correo" value={correo} onChange={(e) => setcorreo(e.target.value)}/>
+                        <input className="iniciar-sesion-input1" type="text" placeholder="ejemplo@email.com" name="correo" value={correo} onChange={(e) => setcorreo(e.target.value)} autoComplete="username"/>
 
                         <label className="iniciar-sesion-label" htmlFor="contrasena">Contraseña</label>
-                        <input className="iniciar-sesion-input2" type="password" placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}/>
+                        <input className="iniciar-sesion-input2" type="password" placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}  autoComplete="current-password"/>
 
                         <a className="olvido-contra" href="" onClick={(e) => {e.preventDefault(); abrirModal(1);}}>¿Olvidó su contraseña?</a>
 
@@ -238,7 +238,7 @@ export const IniciarSesion = () => {
                                     <span className="error-login-global">{erroresModal.nuevaPass ?? ""}</span>
 
                                     <label className="rc-label">Confirmar Contraseña</label>
-                                    <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
+                                    <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)}  />
                                     <span className="error-login-global">{erroresModal.confirmarPass ?? ""}</span>
 
                                     {/* Error general */}
