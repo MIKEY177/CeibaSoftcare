@@ -6,6 +6,7 @@ import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, Menu
 // Estilos e imágenes
 import "../styles/global_styles.css"
 import "../styles/ingreso_animales.css"
+import "../styles/ver_ingreso_animal.css"
 import editarIcon from "../images/icons/editar.png"
 import desactivarIcon from "../images/icons/desactivar.png"
 import lupaBusqueda from "../images/lupa_busqueda.png"
@@ -299,7 +300,7 @@ export const IngresoAnimales = () => {
       </main>
       <Footer/>
             
-      <div className="modales-ingreso-animales" style={{display: modalActiva ? "flex" : "none"}}>
+    <div className="modales-ingreso-animales" style={{display: modalActiva ? "flex" : "none"}}>
       
         {/* ── MODAL 1: Registrar Animal ──────────────────────────────────── */}
         {modalActiva === 1 && (
@@ -316,24 +317,24 @@ export const IngresoAnimales = () => {
             {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
             <form className="ar-form" onSubmit={(e) => handleRegistrar(e)}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-ingresos">
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ar-label" for="">Persona que reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input1" type="text" value={formRegistrar.persona_reporta} onChange={e => setFormRegistrar({...formRegistrar, persona_reporta: e.target.value})}/>
+                  <input className="ar-input1-ingreso" type="text" value={formRegistrar.persona_reporta} onChange={e => setFormRegistrar({...formRegistrar, persona_reporta: e.target.value})}/>
                    <span className="error-mensaje">{errores.persona_reporta ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt2"}}>
                   <label className="ar-label" for="">Dirección de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input2" type="text" value={formRegistrar.direccion_reporta} onChange={e => setFormRegistrar({...formRegistrar, direccion_reporta: e.target.value})}/>
+                  <input className="ar-input2-ingreso" type="text" value={formRegistrar.direccion_reporta} onChange={e => setFormRegistrar({...formRegistrar, direccion_reporta: e.target.value})}/>
                   <span className="error-mensaje">{errores.direccion_reporta ?? ""}</span> 
                 </div>
 
 
                 <div style={{gridArea: "divInpt4"}}>
                   <label className="ar-label" for="">Funcionario que Autoriza<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input4" type="text" value={formRegistrar.funcionario_autoriza} onChange={e => setFormRegistrar({...formRegistrar, funcionario_autoriza: e.target.value})}/>
+                  <input className="ar-input4-ingreso" type="text" value={formRegistrar.funcionario_autoriza} onChange={e => setFormRegistrar({...formRegistrar, funcionario_autoriza: e.target.value})}/>
                    <span className="error-mensaje">{errores.funcionario_autoriza ?? ""}</span> 
                 </div>
 
@@ -345,31 +346,32 @@ export const IngresoAnimales = () => {
 
                 <div style={{gridArea: "divInpt5"}}>
                   <label className="ar-label" for="">Cédula de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input5" type="text" value={formRegistrar.cedula_reporta} onChange={e => setFormRegistrar({...formRegistrar, cedula_reporta: e.target.value})}/>
+                  <input className="ar-input5-ingreso" type="text" value={formRegistrar.cedula_reporta} onChange={e => setFormRegistrar({...formRegistrar, cedula_reporta: e.target.value})}/>
                   <span className="error-mensaje">{errores.cedula_reporta ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt6"}}>
                   <label className="ar-label" for="">Telefono de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input6" type="text" value={formRegistrar.telefono_reporta} onChange={e => setFormRegistrar({...formRegistrar, telefono_reporta: e.target.value})}/>
+                  <input className="ar-input6-ingreso" type="text" value={formRegistrar.telefono_reporta} onChange={e => setFormRegistrar({...formRegistrar, telefono_reporta: e.target.value})}/>
                   <span className="error-mensaje">{errores.telefono_reporta ?? ""}</span>
                 </div>
 
                 <div className="label-and-input-container" style={{gridArea: "divInpt7"}}>
                   <label className="ar-label" for="">Persona que realiza</label>
-                    <input className="ar-input6" type="text" value={formRegistrar.persona_realiza} onChange={e => setFormRegistrar({...formRegistrar, persona_realiza: e.target.value})}/>
+                    <input className="ar-input6-ingreso" type="text" value={formRegistrar.persona_realiza} onChange={e => setFormRegistrar({...formRegistrar, persona_realiza: e.target.value})}/>
                     <span className="error-mensaje">{errores.persona_realiza ?? ""}</span>
-                  <label className="ar-label" for="">cédula de persona que realiza</label>
-                    <input className="ar-input6" type="text" value={formRegistrar.cedula_realiza} onChange={e => setFormRegistrar({...formRegistrar, cedula_realiza: e.target.value})}/>
-                    <span className="error-mensaje">{errores.cedula_realiza ?? ""}</span>
+                  
                 </div>
 
                 <div style={{gridArea: "divInpt8"}}>
+                  <label className="ar-label" for="">cédula de persona que realiza</label>
+                    <input className="ar-input6-ingreso" type="text" value={formRegistrar.cedula_realiza} onChange={e => setFormRegistrar({...formRegistrar, cedula_realiza: e.target.value})}/>
+                    <span className="error-mensaje">{errores.cedula_realiza ?? ""}</span>
                   <label className="ar-label" for="">Fecha y hora de ingreso<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input6" type="datetime-local" value={formRegistrar.fecha_hora_ingreso} onChange={(e) => setFormRegistrar({...formRegistrar, fecha_hora_ingreso: e.target.value })} /> 
+                  <input className="ar-input6-ingreso" type="datetime-local" value={formRegistrar.fecha_hora_ingreso} onChange={(e) => setFormRegistrar({...formRegistrar, fecha_hora_ingreso: e.target.value })} /> 
                   <span className="error-mensaje">{errores.fecha_hora_ingreso ?? ""}</span>
                   <label className="ar-label" for="">Verificación<h6 className="obligatorio">*</h6></label>
-                  <select className="ar-input6" value={formRegistrar.id_verificacion} onChange={(e) => setFormRegistrar({ ...formRegistrar, id_verificacion: e.target.value })}>
+                  <select className="ar-input6-ingreso" value={formRegistrar.id_verificacion} onChange={(e) => setFormRegistrar({ ...formRegistrar, id_verificacion: e.target.value })}>
                     <option value="" selected>Seleccione una verificación</option>
                     {verificaciones.map((verificacion) => (
                       <option key={verificacion.id_verificacion} value={verificacion.id_verificacion}>
@@ -407,20 +409,20 @@ export const IngresoAnimales = () => {
 
                 <div style={{gridArea: "divInpt1"}}>
                   <label className="ar-label" for="">Persona que reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input1" type="text" value={formEditar.persona_reporta} onChange={e => setFormEditar({ ...formEditar, persona_reporta: e.target.value })}/>
+                  <input className="ar-input1-ingreso" type="text" value={formEditar.persona_reporta} onChange={e => setFormEditar({ ...formEditar, persona_reporta: e.target.value })}/>
                    <span className="error-mensaje">{errores.persona_reporta ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt2"}}>
                   <label className="ar-label" for="">Dirección de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input2" type="text" value={formEditar.direccion_reporta} onChange={e => setFormEditar({ ...formEditar, direccion_reporta: e.target.value })}/>
+                  <input className="ar-input2-ingreso" type="text" value={formEditar.direccion_reporta} onChange={e => setFormEditar({ ...formEditar, direccion_reporta: e.target.value })}/>
                    <span className="error-mensaje">{errores.direccion_reporta ?? ""}</span>
                 </div>
 
 
                 <div style={{gridArea: "divInpt4"}}>
                   <label className="ar-label" for="">Funcionario que Autoriza<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input4" type="text" value={formEditar.funcionario_autoriza} onChange={e => setFormEditar({ ...formEditar, funcionario_autoriza: e.target.value })}/>
+                  <input className="ar-input4-ingreso" type="text" value={formEditar.funcionario_autoriza} onChange={e => setFormEditar({ ...formEditar, funcionario_autoriza: e.target.value })}/>
                    <span className="error-mensaje">{errores.funcionario_autoriza ?? ""}</span>
                 </div>
 
@@ -432,31 +434,31 @@ export const IngresoAnimales = () => {
 
                 <div style={{gridArea: "divInpt5"}}>
                   <label className="ar-label" for="">Cédula de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input5" type="text" value={formEditar.cedula_reporta} onChange={e => setFormEditar({ ...formEditar, cedula_reporta: e.target.value })}/>
+                  <input className="ar-input5-ingreso" type="text" value={formEditar.cedula_reporta} onChange={e => setFormEditar({ ...formEditar, cedula_reporta: e.target.value })}/>
                    <span className="error-mensaje">{errores.cedula_reporta ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt6"}}>
                   <label className="ar-label" for="">Telefono de quien reporta<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input6" type="text" value={formEditar.telefono_reporta} onChange={e => setFormEditar({ ...formEditar, telefono_reporta: e.target.value })}/>
+                  <input className="ar-input6-ingreso" type="text" value={formEditar.telefono_reporta} onChange={e => setFormEditar({ ...formEditar, telefono_reporta: e.target.value })}/>
                    <span className="error-mensaje">{errores.telefono_reporta ?? ""}</span>
                 </div>
 
                 <div className="label-and-input-container" style={{gridArea: "divInpt7"}}>
                   <label className="ar-label" for="">persona que realiza</label>
-                    <input className="ar-input6" type="text" value={formEditar.persona_realiza} onChange={(e)=>setFormEditar({...formEditar, persona_realiza: e.target.value})} />
+                    <input className="ar-input6-ingreso" type="text" value={formEditar.persona_realiza} onChange={(e)=>setFormEditar({...formEditar, persona_realiza: e.target.value})} />
                     <span className="error-mensaje">{errores.persona_realiza ?? ""}</span>
                   <label className="ar-label" for="">Cedula de quien realiza</label>
-                    <input className="ar-input6" type="text" value={formEditar.cedula_realiza}  onChange={(e)=>setFormEditar({...formEditar, cedula_realiza: e.target.value})}/>
+                    <input className="ar-input6-ingreso" type="text" value={formEditar.cedula_realiza}  onChange={(e)=>setFormEditar({...formEditar, cedula_realiza: e.target.value})}/>
                     <span className="error-mensaje">{errores.cedula_realiza ?? ""}</span>
                 </div>
 
                 <div style={{gridArea: "divInpt8"}}>
                   <label className="ar-label" for="">Fecha de ingreso<h6 className="obligatorio">*</h6></label>
-                  <input className="ar-input6" type="datetime-local" value={formEditar.fecha_hora_ingreso} onChange={(e)=>setFormEditar({...formEditar, fecha_hora_ingreso: e.target.value})}/>
+                  <input className="ar-input6-ingreso" type="datetime-local" value={formEditar.fecha_hora_ingreso} onChange={(e)=>setFormEditar({...formEditar, fecha_hora_ingreso: e.target.value})}/>
                     <span className="error-mensaje">{errores.fecha_hora_ingreso ?? ""}</span>
                   <label className="ar-label" for="">Verificación<h6 className="obligatorio">*</h6></label>
-                  <select className="ar-input6" value={String(formEditar.id_verificacion)} onChange={(e) => setFormEditar({ ...formEditar, id_verificacion: e.target.value })}>   
+                  <select className="ar-input6-ingreso" value={String(formEditar.id_verificacion)} onChange={(e) => setFormEditar({ ...formEditar, id_verificacion: e.target.value })}>   
                     <option value="">Seleccione una verificación</option>
                     {verificaciones.map((verificacion) => (
                       <option key={verificacion.id_verificacion} value={String(verificacion.id_verificacion)}>
@@ -472,7 +474,63 @@ export const IngresoAnimales = () => {
               <input className="ar-btn" type="submit" value="Guardar Cambios"/>
             </form>
           </aside>
+
         )}
+          {/* ── MODAL 3: Detalle de ingreso Animal ──────────────────────────────────── */}
+          
+          <aside className='modal-detalle-ingreso'>
+            <button className="volver-btn-ingreso-anim" onClick={cerrarModal}>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
+            </button>
+            <h1 className="modal-aed-titulo">
+              Ingreso del animal [nombre_animal]
+            </h1>
+            <table className="tabla-ver-ingreso-animal">
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Persona que reporta</td>
+                <td>Cédula de quien reporta</td>
+                <td>Dirección de quien reporta</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.persona_reporta}*/}</th>
+                <th>{/*{ingreso.cedula_reporta}*/}</th>
+                <th>{/*{ingreso.direccion_reporta}*/}</th>
+              </tr>
+            </tbody>
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Telefono de quien reporta</td>
+                <td>Funcionario que autoriza</td>
+                <td>Cédula del funcionario</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.telefono_reporta}*/}</th>
+                <th>{/*{ingreso.funcionario_autoriza}*/}</th>
+                <th>{/*{ingreso.cedula_realiza}*/}</th>
+              </tr>
+            </tbody>
+            <thead className="header-tabla-ingreso-animal">
+              <tr>
+                <td>Fecha de ingreso</td>
+                <td>Motivo de ingreso</td>
+                <td>Verificación</td>
+              </tr>
+            </thead>
+            <tbody className="body-tabla-ver-ingreso-animal">
+              <tr>
+                <th>{/*{ingreso.fecha_hora_ingreso}*/}</th>
+                <th>{/*{ingreso.motivo_ingreso}*/}</th>
+                <th>{/*[{ingreso.fecha}] {ingreso.nombre}*/}</th>
+              </tr>
+            </tbody>
+          </table>
+          </aside>
       </div>
     </>
   )
