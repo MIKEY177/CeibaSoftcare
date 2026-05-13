@@ -10,6 +10,7 @@ import animalesIcon from "../images/icons/animales-icon.png"
 import salidaIcon from "../images/icons/salida-animal-icon.png"
 import ingresoIcon from "../images/icons/ingreso-animal-icon.png"
 import eventosIcon from "../images/icons/eventos-icon.png"
+import verificacionIcon from "../images/icons/verificacion-icon.png"
 
 // Componentes
 import { Navbar } from '../components/Navbar'
@@ -109,6 +110,15 @@ export const Albergue = () => {
                       </figure>
                     </div>
                   </Link>
+
+                  <Link to="/verificaciones">
+                  <div className="modulo-verificaciones">
+                    <h4 className="titulo-modulo-verificaciones">Verificaciones</h4>
+                    <figure className="modulo-verificaciones-icono">
+                      <img className="modulo-verificaciones-img" src={verificacionIcon} alt=""/>
+                    </figure>
+                  </div>
+                </Link>
    
                   <Link to="/ingreso_animales">
                     <div className="modulo-entradas-productos">
@@ -127,10 +137,10 @@ export const Albergue = () => {
                     </figure>
                   </div>
                 </Link>
-    
+
                 <Link to="/historias_medicas">
                   <div className="modulo-eventos">
-                    <h4 className="titulo-modulo-eventos">Historias Clínicas</h4>
+                    <h4 className="titulo-modulo-eventos">Historias Médicas</h4>
                     <figure className="modulo-eventos-icono">
                       <img className="modulo-eventos-img" src={eventosIcon} alt=""/>
                     </figure>

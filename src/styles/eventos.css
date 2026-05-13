@@ -515,7 +515,6 @@
     position: absolute;
     z-index: 999;
     background: #fff;
-    border: 2px solid #0094A4;
     border-radius: 8px;
     width: 100%;
     max-height: 220px;
@@ -536,7 +535,7 @@
 }
 
 .buscador-dropdown::-webkit-scrollbar-thumb {
-    background-color: #0094A4;
+    background-color: #aeababbf;
     border-radius: 8px;
 }
 
