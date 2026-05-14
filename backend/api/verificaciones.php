@@ -6,17 +6,45 @@ require_once dirname(__DIR__) . '/config/session_config.php';
 header("Content-Type: application/json");
 
 $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'development'));
-
 $method = $_SERVER['REQUEST_METHOD'];
+if ($method === 'POST' && isset($_POST['_method']) && $_POST['_method'] === 'PUT') {
+    $method = 'PUT';
+}
 
-// ── GET: listar verificaciones ────────────────────────────────────────────────────
+$body = $_POST;
+
 if ($method === 'GET') {
-    $sql = "SELECT v.id_verificacion, v.id_animal, v.fecha, v.tipo_codigo, v.codigo,
+    // ── GET por id ───────────────────────────────────────────────
+    if (isset($_GET['id'])) {
+        $id = intval($_GET['id']);
+        $stmt = mysqli_prepare($conn,
+            "SELECT v.*, a.nombre FROM verificaciones v
+             INNER JOIN animales a ON v.id_animal1 = a.id_animal
+             WHERE v.id_verificacion = ?"
+        );
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+        $row = mysqli_fetch_assoc($result);
+        if ($row) {
+            echo json_encode(["success" => true, "data" => $row], JSON_UNESCAPED_UNICODE);
+        } else {
+            http_response_code(404);
+            echo json_encode(["success" => false, "error" => "❗Verificación no encontrada."], JSON_UNESCAPED_UNICODE);
+        }
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        exit;
+    }
+
+    // ── GET todos ────────────────────────────────────────────────
+    $sql = "SELECT v.id_verificacion, v.id_animal1, v.tipo_verificacion, v.fecha, v.tipo_codigo, v.codigo,
                    v.propietario, v.id_propietario, v.contacto, v.correo, v.direccion, v.descripcion,
-                   a.n_microchip, a.nombre, a.especie
+                   v.registro_fotografico, a.n_microchip, a.nombre, a.especie
             FROM verificaciones v
             INNER JOIN animales a ON v.id_animal1 = a.id_animal
-            INNER JOIN usuarios u ON a.id_usuario1 = u.id_usuario WHERE a.activo = 1 AND v.activo =1";
+            INNER JOIN usuarios u ON a.id_usuario1 = u.id_usuario
+            WHERE a.activo = 1 AND v.activo = 1";
 
     $result = mysqli_query($conn, $sql);
 
@@ -29,24 +57,14 @@ if ($method === 'GET') {
         exit;
     }
 
-    $animales = [];
+    $verificaciones = [];
     while ($row = mysqli_fetch_assoc($result)) {
-        $animales[] = $row;
+        $verificaciones[] = $row;
     }
 
-    echo json_encode(["success" => true, "data" => $animales], JSON_UNESCAPED_UNICODE);
+    echo json_encode(["success" => true, "data" => $verificaciones], JSON_UNESCAPED_UNICODE);
     mysqli_free_result($result);
     mysqli_close($conn);
-    exit;
-}
-
-// ── Leer body ───────────────────────────────────────────────────────────────
-$body = $_POST;
-$id_usuario = $_SESSION['user_id'] ?? null;
-
-if ($method !== 'GET' && $id_usuario === null) {
-    http_response_code(401);
-    echo json_encode(["success" => false, "errores" => ["sesion" => "❗No tienes una sesión activa. Por favor inicia sesión."]], JSON_UNESCAPED_UNICODE);
     exit;
 }
 
@@ -191,7 +209,7 @@ if ($method === 'PUT') {
     $errores = [];
 
     if ($tipo_verificacion === '') $errores['tipo_verificacion'] = "❗El tipo de verificación es obligatorio.";
-    if ($id_animal1 === '') $errores['id_animal1'] = "❗El animal es obligatorio.";
+    if ($id_animal1 <= 0) $errores['id_animal1'] = "❗El animal es obligatorio.";
     if ($fecha === '') $errores['fecha'] = "❗La fecha de verificación es obligatoria.";
     if ($tipo_codigo === '') $errores['tipo_codigo'] = "❗El tipo de código es obligatorio.";
     if ($codigo === '') {
@@ -230,20 +248,125 @@ if ($method === 'PUT') {
         echo json_encode(["success" => false, "errores" => $errores], JSON_UNESCAPED_UNICODE);
         exit;
     }
+    $registro_fotografico = null;
 
+if (
+    isset($_FILES['registro_fotografico']) &&
+    $_FILES['registro_fotografico']['error'] === UPLOAD_ERR_OK
+) {
 
-    if (!empty($errores)) {
+    $archivo = $_FILES['registro_fotografico'];
+
+    $extension = strtolower(
+        pathinfo($archivo['name'], PATHINFO_EXTENSION)
+    );
+
+    $permitidos = ['jpg', 'jpeg', 'png', 'webp'];
+
+    if (!in_array($extension, $permitidos)) {
+
         http_response_code(422);
-        echo json_encode(["success" => false, "errores" => $errores], JSON_UNESCAPED_UNICODE);
+
+        echo json_encode([
+            "success" => false,
+            "errores" => [
+                "registro_fotografico" =>
+                "❗Formato no permitido."
+            ]
+        ]);
+
         exit;
     }
+
+    $carpeta = dirname(__DIR__) . '/uploads/verificaciones/';
+
+    if (!is_dir($carpeta)) {
+        mkdir($carpeta, 0755, true);
+    }
+
+    $nombreArchivo =
+        uniqid('verif_', true) . '.' . $extension;
+
+    $rutaFinal = $carpeta . $nombreArchivo;
+
+    if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
+
+        http_response_code(500);
+
+        echo json_encode([
+            "success" => false,
+            "errores" => [
+                "registro_fotografico" =>
+                "❗Error al guardar la imagen."
+            ]
+        ]);
+
+        exit;
+    }
+
+    $registro_fotografico =
+        'uploads/verificaciones/' . $nombreArchivo;
+}
+
+// ── UPDATE ───────────────────────────────────────────────
+
+if ($registro_fotografico) {
 
     $stmt = mysqli_prepare(
         $conn,
         "UPDATE verificaciones
-         SET tipo_verificacion = ?, id_animal1 = ?, fecha = ?, tipo_codigo = ?, codigo = ?, propietario = ?, id_propietario = ?, contacto = ?, correo = ?, direccion = ?, descripcion = ?
+         SET tipo_verificacion = ?,
+             id_animal1 = ?,
+             fecha = ?,
+             tipo_codigo = ?,
+             codigo = ?,
+             propietario = ?,
+             id_propietario = ?,
+             contacto = ?,
+             correo = ?,
+             direccion = ?,
+             descripcion = ?,
+             registro_fotografico = ?
          WHERE id_verificacion = ?"
     );
+
+    mysqli_stmt_bind_param(
+        $stmt,
+        "sissssssssssi",
+        $tipo_verificacion,
+        $id_animal1,
+        $fecha,
+        $tipo_codigo,
+        $codigo,
+        $propietario,
+        $id_propietario,
+        $contacto,
+        $correo,
+        $direccion,
+        $descripcion,
+        $registro_fotografico,
+        $id_verificacion
+    );
+
+} else {
+
+    $stmt = mysqli_prepare(
+        $conn,
+        "UPDATE verificaciones
+         SET tipo_verificacion = ?,
+             id_animal1 = ?,
+             fecha = ?,
+             tipo_codigo = ?,
+             codigo = ?,
+             propietario = ?,
+             id_propietario = ?,
+             contacto = ?,
+             correo = ?,
+             direccion = ?,
+             descripcion = ?
+         WHERE id_verificacion = ?"
+    );
+
     mysqli_stmt_bind_param(
         $stmt,
         "sisssssssssi",
@@ -260,60 +383,32 @@ if ($method === 'PUT') {
         $descripcion,
         $id_verificacion
     );
+}
+if (mysqli_stmt_execute($stmt)) {
 
-    if (mysqli_stmt_execute($stmt)) {
-        if (mysqli_stmt_affected_rows($stmt) === 0) {
-            http_response_code(404);
-            echo json_encode(["success" => false, "errores" => ["general" => "❗Verificación no encontrada."]], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
-        }
-    } else {
-        http_response_code(500);
-        echo json_encode([
-            "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al actualizar la verificación."]
-        ], JSON_UNESCAPED_UNICODE);
-    }
+    echo json_encode([
+        "success" => true
+    ], JSON_UNESCAPED_UNICODE);
 
+} else {
+
+    http_response_code(500);
+
+    echo json_encode([
+        "success" => false,
+        "errores" => [
+            "general" =>
+                $debug
+                ? mysqli_stmt_error($stmt)
+                : "❗Error al actualizar la verificación."
+        ]
+    ], JSON_UNESCAPED_UNICODE);
+}
+    
     mysqli_stmt_close($stmt);
     mysqli_close($conn);
     exit;
 }
-
-// ── DELETE: desactivar verificación ──────────────────────────────────────────────
-if ($method === 'DELETE') {
-    $id_verificacion = intval($body['id_verificacion'] ?? 0);
-
-    if ($id_verificacion === 0) {
-        http_response_code(400);
-        echo json_encode(["success" => false, "errores" => ["general" => "ID de verificación inválido."]], JSON_UNESCAPED_UNICODE);
-        exit;
-    }
-
-    $stmt = mysqli_prepare($conn, "UPDATE verificaciones SET activa = 0 WHERE id_verificacion = ?");
-    mysqli_stmt_bind_param($stmt, "i", $id_verificacion);
-
-    if (mysqli_stmt_execute($stmt)) {
-        if (mysqli_stmt_affected_rows($stmt) === 0) {
-            http_response_code(404);
-            echo json_encode(["success" => false, "errores" => ["general" => "❗Verificación no encontrada."]], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
-        }
-    } else {
-        http_response_code(500);
-        echo json_encode([
-            "success" => false,
-            "errores" => ["general" => $debug ? mysqli_stmt_error($stmt) : "❗Error al desactivar la verificación."]
-        ], JSON_UNESCAPED_UNICODE);
-    }
-
-    mysqli_stmt_close($stmt);
-    mysqli_close($conn);
-    exit;
-}
-
 // ── Método no permitido ──────────────────────────────────────────────────────
 http_response_code(405);
 echo json_encode(["success" => false, "errores" => ["general" => "Método no permitido."]], JSON_UNESCAPED_UNICODE);

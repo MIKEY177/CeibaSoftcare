@@ -5,6 +5,7 @@ import { MenuAdminAlbergue, MenuVeterinario } from "../utils/menu.jsx";
 import campoRestringido from "../images/candado.png";
 import CustomSelect from "../components/CustomSelect";
 import subirIcon from "../images/subir.png";
+import flecha from "../images/flecha_salir.png";
 // Estilos
 import "../styles/global_styles.css";
 import "../styles/verificaciones.css";
@@ -181,6 +182,13 @@ export const RegistrarVerificacion = () => {
       <main className="main-registrar-verificacion">
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">
+          <button
+            className="volver-btn-anim"
+            onClick={() => navigate("/verificaciones")}
+          >
+            <img className="volver-icono" src={flecha} alt="" />
+            <h2>Volver</h2>
+          </button>
           <h1 className="titulo-registrar-verificacion">
             Registrar Verificación
           </h1>
