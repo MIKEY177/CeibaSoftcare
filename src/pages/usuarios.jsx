@@ -1,6 +1,7 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -209,9 +210,9 @@ export const Usuarios = () => {
   
   return (
     <>
-      <head>
+      <Helmet>
         <title>Usuarios - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">

@@ -1,6 +1,7 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import {
   MenuAdmin,
   MenuAdminFarmacia,
@@ -311,9 +312,9 @@ export const HistoriasMedicas = () => {
 
   return (
     <>
-      <head>
+      <Helmet>
         <title>Historias Médicas - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={MenuVeterinario} />
         <section className="secciones-area-gestion">

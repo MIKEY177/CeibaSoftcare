@@ -2,6 +2,7 @@
 
 import React, {useState, useEffect} from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
@@ -144,9 +145,9 @@ export const IniciarSesion = () => {
             }
         return (
             <>
-            <head>
+            <Helmet>
                 <title>Iniciar Sesión - Softcare</title>
-            </head>
+            </Helmet>
             <main className='main-inicio-de-sesion'>
                 <section className="area-grafica">
                     <figure className="logo-softcare">

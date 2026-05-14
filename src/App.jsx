@@ -1,5 +1,6 @@
 // Imports Base
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 import { LandingPage } from "./pages/landing_page.jsx";
 import { Inicio } from "./pages/inicio.jsx";
@@ -24,16 +25,16 @@ import { Usuarios } from "./pages/usuarios.jsx";
 function App() {
   return (
     <>
-      <head>
-        <meta charset="UTF-8" />
+      <Helmet>
+        <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
           rel="stylesheet"
         />
-      </head>
+      </Helmet>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />

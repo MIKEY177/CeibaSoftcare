@@ -9,6 +9,7 @@ import flecha from "../images/flecha_salir.png";
 import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 
@@ -441,6 +442,9 @@ const handleRegistrar = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>Eventos - Softcare</title>
+      </Helmet>
       <main>
         <Navbar menu={MenuAdmin} user={user} />
 

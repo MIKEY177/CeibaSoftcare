@@ -6,6 +6,7 @@ import campoRestringido from "../images/candado.png";
 import CustomSelect from "../components/CustomSelect";
 import subirIcon from "../images/subir.png";
 import flecha from "../images/flecha_salir.png";
+import { Helmet } from "react-helmet-async";
 
 // Estilos
 import "../styles/global_styles.css";
@@ -207,6 +208,9 @@ export const EditarVerificacion = () => {
 console.log(imagenActual);
   return (
     <>
+    <Helmet>
+      <title>Editar Verificación</title>
+    </Helmet>
       <main className="main-registrar-verificacion">
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">

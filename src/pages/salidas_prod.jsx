@@ -2,6 +2,7 @@
 import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef} from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -576,9 +577,9 @@ export const SalidasProd = () => {
 
   return (
     <>
-      <head>
+      <Helmet>
         <title>Salidas de Productos - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">

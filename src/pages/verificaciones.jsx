@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { MenuAdminAlbergue, MenuVeterinario } from "../utils/menu.jsx";
+import { Helmet } from "react-helmet-async";
 import editarIcon from "../images/icons/editar.png";
 import desactivarIcon from "../images/icons/desactivar.png";
 import lupaBusqueda from "../images/lupa_busqueda.png";
@@ -160,9 +161,9 @@ export const Verificaciones = () => {
 
   return (
     <>
-      <head>
+      <Helmet>
         <title>Verificaciones - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">
@@ -184,7 +185,6 @@ export const Verificaciones = () => {
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
             </form>
-            {/* 👇 Redirige a la página de registrar */}
             <button
               className="registrar-btn"
               onClick={() => navigate("/registrar_verificacion")}
@@ -228,7 +228,6 @@ export const Verificaciones = () => {
                         >
                           Ver
                         </button>
-                        {/* 👇 Editar — redirige a la página de editar */}
                         <figure
                           className="editar-icono"
                           onClick={() =>

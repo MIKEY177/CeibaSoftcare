@@ -5,7 +5,7 @@ import {
   MenuFarmaceutico,
   MenuVeterinario,
 } from "../utils/menu.jsx";
-
+import { Helmet } from "react-helmet-async";
 import flecha from "../images/flecha_salir.png";
 
 import lupaBusqueda from "../images/lupa_busqueda.png";
@@ -25,9 +25,9 @@ export const indexSelector = 6;
 export const VerHistoriaMedicas = () => {
   return (
     <>
-      <head>
+      <Helmet>
         <title>Ver Historias Médicas - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={MenuVeterinario} />
         <section className="secciones-area-gestion ver-historia-medica">

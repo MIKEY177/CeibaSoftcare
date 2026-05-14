@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { MenuAdminAlbergue } from "../utils/menu.jsx"
+import { Helmet } from "react-helmet-async";
 
 // Estilos e imágenes
 import "../styles/global_styles.css"
@@ -199,9 +200,9 @@ export const Animales = () => {
 
   return (
     <>
-      <head>
-        <title>Animales - Softcare</title>
-      </head>
+      <Helmet>
+          <title>Animales - Softcare</title>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
 

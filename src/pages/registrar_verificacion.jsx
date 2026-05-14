@@ -1,6 +1,7 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import { MenuAdminAlbergue, MenuVeterinario } from "../utils/menu.jsx";
 import campoRestringido from "../images/candado.png";
 import CustomSelect from "../components/CustomSelect";
@@ -176,9 +177,9 @@ export const RegistrarVerificacion = () => {
 
   return (
     <>
-      <head>
-        <title>Registrar Verificación - Softcare</title>
-      </head>
+    <Helmet>
+      <title>Registrar Verificación</title>
+    </Helmet>
       <main className="main-registrar-verificacion">
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">

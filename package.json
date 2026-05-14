@@ -16,6 +16,7 @@
     "react-avatar": "^5.0.4",
     "react-dom": "^19.2.6",
     "react-easy-crop": "^5.5.7",
+    "react-helmet-async": "^3.0.0",
     "react-name-initials-avatar": "^0.1.0",
     "react-router-dom": "^7.13.1",
     "react-select": "^5.10.2",

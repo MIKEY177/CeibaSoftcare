@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { data, Link, useNavigate } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 import "../styles/global_styles.css"
@@ -76,6 +77,9 @@ export const Inicio = () => {
   .slice(0, 5);
   return (
     <>
+      <Helmet>
+        <title>Inicio - Softcare</title>
+      </Helmet>
       <main>
         {/* determine menu based on role */}
         <Navbar user={user} menu={menuObj} />

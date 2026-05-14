@@ -1,6 +1,7 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 import Avatar from 'react-avatar';
 import Cropper from "react-easy-crop";
@@ -89,7 +90,7 @@ export const Ajustes = () => {
   const url = URL.createObjectURL(file);
   setPreview(url);
 
-  setMostrarCropper(true); // 🔥 activa el recorte
+  setMostrarCropper(true); 
   };
 
   const getCroppedImg = async (imageSrc, crop) => {
@@ -100,8 +101,6 @@ export const Ajustes = () => {
     await new Promise((resolve) => {
       image.onload = resolve;
     });
-
-    // 🔥 canvas DEFINIDO AQUÍ
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
 
@@ -119,8 +118,6 @@ export const Ajustes = () => {
       crop.width,
       crop.height
     );
-
-    // 🔥 canvas usado en el MISMO scope
     return new Promise((resolve) => {
       canvas.toBlob((blob) => {
         resolve(blob);
@@ -133,7 +130,7 @@ export const Ajustes = () => {
   setCroppedAreaPixels(croppedAreaPixels);
 
   const croppedImage = await getCroppedImg(preview, croppedAreaPixels);
-    setPreviewCropped(URL.createObjectURL(croppedImage)); // 🔥 aquí guardas la imagen recortada
+    setPreviewCropped(URL.createObjectURL(croppedImage)); 
   };
 
   
@@ -149,7 +146,7 @@ export const Ajustes = () => {
     setAbri(true);
     setModalId(modalId);
     if (modalId === 1) {
-      setNombre(userajustes.usuario); // Prellenar el nombre actual en el input
+      setNombre(userajustes.usuario); 
     }
 
   };
@@ -218,7 +215,7 @@ export const Ajustes = () => {
 
     const res = await fetch(API_USER, {
       method: "POST",
-      body: formData, // 🔥 SIN JSON.stringify
+      body: formData, 
       credentials: "include"
     });
       
@@ -243,7 +240,7 @@ export const Ajustes = () => {
     "farmaceutico": MenuFarmaceutico,
     "albergue": MenuAdminAlbergue,
     "farmacia": MenuAdminFarmacia
-  }[user?.rol] || MenuAdmin; // Fallback a MenuAdmin si el rol no coincide
+  }[user?.rol] || MenuAdmin; 
     
   const username = userajustes?.usuario; 
   const { bg, fg } = getColorFromName(username);  
@@ -254,14 +251,14 @@ export const Ajustes = () => {
     cargarSesion();
     setTimeout(() => {
       CerrarModal();
-      setMensajeExito(""); // 🔥 limpia el mensaje para la próxima vez
-    }, 1500); // más tiempo visible
+      setMensajeExito(""); 
+    }, 1500); 
   };
   return (
     <>
-      <head>
-        <title>Ajustes - Softcare</title>
-      </head>
+      <Helmet>
+          <title>Ajustes - Softcare</title>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
         <section className="secciones-area-gestion">

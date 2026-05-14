@@ -1,6 +1,7 @@
 // Imports Base
 import React, { useEffect, useState } from 'react'
 import { Link,useNavigate } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
@@ -85,9 +86,9 @@ export const Farmacia = () => {
 
   return (
     <>
-      <head>
+      <Helmet>
         <title>Farmacia - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar user={user} menu={menuObj} />
         <section className="secciones-area-gestion">
@@ -96,28 +97,47 @@ export const Farmacia = () => {
             <h3 className="titulo-area-gestion">Actividad Reciente</h3>
             <table className="tabla-actividad-reciente">
               <thead className="header-tabla-actividad-reciente">
-                <tr>
-                  <td>Producto</td>
-                  <td>Fecha</td>
-                  <td>Cantidad</td>
-                  <td>Actividad</td>
-                  <td>{/* Acciones */}</td>
-                </tr>
-              </thead>
-              <tbody class="body-tabla-actividad-reciente">
+  <tr>
+    <th>Producto</th>
+    <th>Fecha</th>
+    <th>Cantidad</th>
+    <th>Actividad</th>
+    <th>Acciones</th>
+  </tr>
+</thead>
+
+<tbody className="body-tabla-actividad-reciente">
                  {actividad.length === 0 ? (
-                <p>No hay actividad reciente.</p>
-              ) : (
-                actividad.map((activity) => (
-                <tr > 
-                  <td>{activity.producto}</td> 
-                  <td>{activity.fecha}</td> 
-                  <td>{activity.cantidad}</td>
-                  <td>{activity.actividad}</td>
-                  <td><button class="tabla-actividad-reciente-btn" onClick={()=>verActividad(activity.actividad,activity.fecha, activity.id, activity.producto)}>Ver</button></td>
-                </tr>
-                ))
-              )}
+  <tr>
+    <td colSpan="5" style={{ textAlign: "center" }}>
+      No hay actividad reciente.
+    </td>
+  </tr>
+) : (
+  actividad.map((activity, index) => (
+    <tr key={`${activity.id}-${index}`}>
+      <td>{activity.producto}</td>
+      <td>{activity.fecha}</td>
+      <td>{activity.cantidad}</td>
+      <td>{activity.actividad}</td>
+      <td>
+        <button
+          className="tabla-actividad-reciente-btn"
+          onClick={() =>
+            verActividad(
+              activity.actividad,
+              activity.fecha,
+              activity.id,
+              activity.producto
+            )
+          }
+        >
+          Ver
+        </button>
+      </td>
+    </tr>
+  ))
+)}
               </tbody>
             </table>
           </section>
