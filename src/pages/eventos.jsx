@@ -10,6 +10,7 @@ import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import CustomSelect from "../components/CustomSelect.jsx";
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 
@@ -64,7 +65,11 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   return (
     <div className="buscador-wrapper">
       <div className="buscador-input-row">
-        <input type="text" className="er-input1"placeholder="Buscar por nombre o código..." value={query} 
+        <input
+          type="text"
+          className="er-input1"
+          placeholder="Buscar por nombre o código..."
+          value={query}
           onChange={(e) => {
             setSeleccionado(null);
             setQuery(e.target.value);
@@ -78,15 +83,27 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
       {!seleccionado && resultados.length > 0 && (
         <ul className="buscador-dropdown">
           {resultados.map((prod) => (
-            <li key={prod.id_producto} onMouseDown={(e) => e.preventDefault()} onClick={() => elegir(prod)}>
+            <li
+              key={prod.id_producto}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => elegir(prod)}
+            >
               <span className="buscador-nombre">{prod.nombre}</span>
-              <span className="buscador-detalle"> {prod.cantidad_por_unidad} {prod.tipo_medida} </span>
+              <span className="buscador-detalle">
+                {" "}
+                {prod.cantidad_por_unidad} {prod.tipo_medida}{" "}
+              </span>
             </li>
           ))}
         </ul>
       )}
 
-      {query.length >= 1 && !cargando && resultados.length === 0 && !seleccionado && (<p className="buscador-sin-resultados">Sin resultados</p>)}
+      {query.length >= 1 &&
+        !cargando &&
+        resultados.length === 0 &&
+        !seleccionado && (
+          <p className="buscador-sin-resultados">Sin resultados</p>
+        )}
     </div>
   );
 };
@@ -96,6 +113,10 @@ export const Eventos = () => {
   const API = `api/eventos.php`;
   const navigate = useNavigate();
   const API_SESSION = `api/session.php`;
+  const opcionesRequiere = [
+    { value: 1, label: "Sí" },
+    { value: 0, label: "No" },
+  ];
 
   const [user, setUser] = useState({ nombre: "", rol: "" });
   const normalizarFecha = (f) => f.replace("T", " ").slice(0, 16);
@@ -208,7 +229,7 @@ export const Eventos = () => {
           .catch(console.error);
       } else {
         setListaProductos([]);
-        setProductosOriginales([]); 
+        setProductosOriginales([]);
       }
     }
     if (num === 3 && evento) {
@@ -233,7 +254,11 @@ export const Eventos = () => {
       .then((r) => r.json())
       .then((data) => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
+          setUser({
+            nombre: data.usuario,
+            rol: data.rol,
+            foto_perfil: data.foto_perfil,
+          });
           if (data.rol !== "administrador") navigate("/inicio");
         } else navigate("/iniciar_sesion");
       })
@@ -255,61 +280,61 @@ export const Eventos = () => {
       .catch(console.error);
   }, []);
 
-const btnRegistrarRef = useRef(null);
-const enviandoEvento = useRef(false);
+  const btnRegistrarRef = useRef(null);
+  const enviandoEvento = useRef(false);
 
-const handleRegistrar = () => {
-  if (enviandoEvento.current) return; // ← bloqueo inmediato
-  enviandoEvento.current = true;      // ← marca inmediatamente
+  const handleRegistrar = () => {
+    if (enviandoEvento.current) return; // ← bloqueo inmediato
+    enviandoEvento.current = true; // ← marca inmediatamente
 
-  const nuevosErrores = {};
-  if (formEvento.requiere_producto === 1 && listaProductos.length === 0) {
-    nuevosErrores.productos = "❗Debes agregar al menos un producto.";
-    setErrores(nuevosErrores);
-    enviandoEvento.current = false;
-    return;
-  }
-
-  setCargando(true);
-  setErrores({});
-
-  const data = {
-    ...formEvento,
-    fecha_hora: formEvento.fecha_hora.replace("T", " ") + ":00",
-    requiere_producto: Number(formEvento.requiere_producto),
-    productos:
-      formEvento.requiere_producto === 1
-        ? listaProductos.map((p) => ({
-            id_producto: p.id_producto,
-            cantidad_presentacion: p.cantidad_presentacion,
-            cantidad_total: p.cantidad_total,
-          }))
-        : [],
-  };
-
-  fetch(API, {
-    method: "POST",
-    credentials: "include",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  })
-    .then(async (r) => {
-      const res = await r.json();
-      if (!r.ok) {
-        setErrores(res.errores || {});
-        enviandoEvento.current = false;
-        return;
-      }
-      setEventos((prev) => [...prev, res.data]);
-      setMensajeExito("Evento registrado correctamente");
-      setTimeout(() => cerrarModal(), 1500);
-    })
-    .catch(() => {
-      setErrores({ general: "❗Error de conexión con el servidor." });
+    const nuevosErrores = {};
+    if (formEvento.requiere_producto === 1 && listaProductos.length === 0) {
+      nuevosErrores.productos = "❗Debes agregar al menos un producto.";
+      setErrores(nuevosErrores);
       enviandoEvento.current = false;
+      return;
+    }
+
+    setCargando(true);
+    setErrores({});
+
+    const data = {
+      ...formEvento,
+      fecha_hora: formEvento.fecha_hora.replace("T", " ") + ":00",
+      requiere_producto: Number(formEvento.requiere_producto),
+      productos:
+        formEvento.requiere_producto === 1
+          ? listaProductos.map((p) => ({
+              id_producto: p.id_producto,
+              cantidad_presentacion: p.cantidad_presentacion,
+              cantidad_total: p.cantidad_total,
+            }))
+          : [],
+    };
+
+    fetch(API, {
+      method: "POST",
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     })
-    .finally(() => setCargando(false));
-};
+      .then(async (r) => {
+        const res = await r.json();
+        if (!r.ok) {
+          setErrores(res.errores || {});
+          enviandoEvento.current = false;
+          return;
+        }
+        setEventos((prev) => [...prev, res.data]);
+        setMensajeExito("Evento registrado correctamente");
+        setTimeout(() => cerrarModal(), 1500);
+      })
+      .catch(() => {
+        setErrores({ general: "❗Error de conexión con el servidor." });
+        enviandoEvento.current = false;
+      })
+      .finally(() => setCargando(false));
+  };
   const handleEditar = (e) => {
     e.preventDefault();
     if (!hayCambios()) {
@@ -452,14 +477,30 @@ const handleRegistrar = () => {
           <h2 className="titulo-dashboard">Eventos</h2>
 
           <section className="seccion1-busqueda-agregar">
-            <form className="busqueda-form" onSubmit={(e) => e.preventDefault()}>
-              <input className="busqueda-input1" type="text" placeholder="Busca un evento" value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
+            <form
+              className="busqueda-form"
+              onSubmit={(e) => e.preventDefault()}
+            >
+              <input
+                className="busqueda-input1"
+                type="text"
+                placeholder="Busca un evento"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
               <button className="diff_busqueda-icono" type="button">
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
             </form>
 
-            <button className="diff_registrar-btn" type="button" onClick={() => abrirModal(1)}> Registrar nuevo Evento</button>
+            <button
+              className="diff_registrar-btn"
+              type="button"
+              onClick={() => abrirModal(1)}
+            >
+              {" "}
+              Registrar nuevo Evento
+            </button>
           </section>
 
           <table className="tabla-eventos">
@@ -475,7 +516,9 @@ const handleRegistrar = () => {
               {eventosFiltrados.length === 0 ? (
                 <tr>
                   <td colSpan="4">
-                    {busqueda ? "No se encontraron eventos." : "No hay eventos registrados."}
+                    {busqueda
+                      ? "No se encontraron eventos."
+                      : "No hay eventos registrados."}
                   </td>
                 </tr>
               ) : (
@@ -486,11 +529,27 @@ const handleRegistrar = () => {
                     <td>{evento.lugar}</td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
-                        <figure className="editar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(2, evento)}>
-                          <img className="editar-icono-img" src={editarIcon} alt="Editar"/>
+                        <figure
+                          className="editar-icono"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => abrirModal(2, evento)}
+                        >
+                          <img
+                            className="editar-icono-img"
+                            src={editarIcon}
+                            alt="Editar"
+                          />
                         </figure>
-                        <figure className="desactivar-icono" style={{ cursor: "pointer" }} onClick={() => abrirModal(3, evento)}>
-                          <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar"/>
+                        <figure
+                          className="desactivar-icono"
+                          style={{ cursor: "pointer" }}
+                          onClick={() => abrirModal(3, evento)}
+                        >
+                          <img
+                            className="desactivar-icono-img"
+                            src={desactivarIcon}
+                            alt="Desactivar"
+                          />
                         </figure>
                       </div>
                     </td>
@@ -501,7 +560,10 @@ const handleRegistrar = () => {
           </table>
         </section>
         <Footer />
-        <div className="modales-eventos" style={{ display: modalActivo ? "flex" : "none" }}>
+        <div
+          className="modales-eventos"
+          style={{ display: modalActivo ? "flex" : "none" }}
+        >
           {/* MODAL REGISTRAR */}
           {modalActivo === 1 && (
             <aside className="modal-eventos-registrar">
@@ -514,43 +576,83 @@ const handleRegistrar = () => {
               <p className="exito-mensaje">{mensajeExito ?? ""}</p>
               <span className="error-mensaje">{errores.general ?? ""}</span>
               <span className="error-mensaje">{errores.sesion ?? ""}</span>
-              <form className="er-form" onSubmit={e => e.preventDefault()}>
+              <form className="er-form" onSubmit={(e) => e.preventDefault()}>
                 <section className="er-form-inputs-area">
                   <div style={{ gridArea: "divInpt1" }}>
-                    <label className="er-label">  {" "} Nombre del Evento<h6 className="obligatorio">*</h6></label>
-                    <input className="er-input1" type="text" value={formEvento.nombre} onChange={(e) => setFormEvento({ ...formEvento, nombre: e.target.value })}/>
-                    <span className="error-mensaje">{errores.nombre ?? ""}</span>
+                    <label className="er-label">
+                      {" "}
+                      Nombre del Evento<h6 className="obligatorio">*</h6>
+                    </label>
+                    <input
+                      className="er-input1"
+                      type="text"
+                      value={formEvento.nombre}
+                      onChange={(e) =>
+                        setFormEvento({ ...formEvento, nombre: e.target.value })
+                      }
+                    />
+                    <span className="error-mensaje">
+                      {errores.nombre ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt2" }}>
                     <label className="er-label">Descripción</label>
-                    <textarea className="er-input2" value={formEvento.descripcion} onChange={(e) => setFormEvento({...formEvento,descripcion: e.target.value,})}/>
-                    <span className="error-mensaje">{errores.descripcion ?? ""}</span>
+                    <textarea
+                      className="er-input2"
+                      value={formEvento.descripcion}
+                      onChange={(e) =>
+                        setFormEvento({
+                          ...formEvento,
+                          descripcion: e.target.value,
+                        })
+                      }
+                    />
+                    <span className="error-mensaje">
+                      {errores.descripcion ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt3" }}>
                     <label className="er-label">¿Requiere producto?</label>
-                    <select className="er-input3" value={formEvento.requiere_producto} onChange={(e) => setFormEvento({...formEvento,requiere_producto: Number(e.target.value),}) } >
-                      <option value={0}>No</option>
-                      <option value={1}>Sí</option>
-                    </select>
+                    <CustomSelect
+                      options={opcionesRequiere}
+                      value={formEvento.requiere_producto}
+                      onChange={(val) =>
+                        setFormEvento((prev) => ({
+                          ...prev,
+                          requiere_producto: Number(val),
+                        }))
+                      }
+                    />
                   </div>
                   {formEvento.requiere_producto === 1 && (
-                    <div className="agregar-producto" style={{ gridArea: "divInpt6" }} >
-                      <button type="button" className="registrar-producto-btn"
+                    <div
+                      className="agregar-producto"
+                      style={{ gridArea: "divInpt6" }}
+                    >
+                      <button
+                        type="button"
+                        className="registrar-producto-btn"
                         onClick={() => {
                           setModalOrigen(1);
                           abrirModal(5);
                         }}
-                       >
+                      >
                         Ver productos ({listaProductos.length})
                       </button>
                     </div>
                   )}
 
                   <div style={{ gridArea: "divInpt4" }}>
-                    <label className="er-label">{" "} Fecha y Hora<span className="obligatorio">*</span></label>
-                    <input className="er-input4" type="datetime-local" value={formEvento.fecha_hora}
+                    <label className="er-label">
+                      {" "}
+                      Fecha y Hora<span className="obligatorio">*</span>
+                    </label>
+                    <input
+                      className="er-input4"
+                      type="datetime-local"
+                      value={formEvento.fecha_hora}
                       onChange={(e) =>
                         setFormEvento({
                           ...formEvento,
@@ -558,12 +660,20 @@ const handleRegistrar = () => {
                         })
                       }
                     />
-                    <span className="error-mensaje">{errores.fecha_hora ?? ""}</span>
+                    <span className="error-mensaje">
+                      {errores.fecha_hora ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt5" }}>
-                    <label className="er-label">{" "} Lugar<h6 className="obligatorio">*</h6></label>
-                    <input className="er-input5" type="text" value={formEvento.lugar}
+                    <label className="er-label">
+                      {" "}
+                      Lugar<h6 className="obligatorio">*</h6>
+                    </label>
+                    <input
+                      className="er-input5"
+                      type="text"
+                      value={formEvento.lugar}
                       onChange={(e) =>
                         setFormEvento({ ...formEvento, lugar: e.target.value })
                       }
@@ -571,7 +681,16 @@ const handleRegistrar = () => {
                     <span className="error-mensaje">{errores.lugar ?? ""}</span>
                   </div>
                 </section>
-                <button ref={btnRegistrarRef} className="er-btn" type="button"  onClick={handleRegistrar} disabled={cargando}> {cargando ? "Registrando..." : "Registrar Evento"} </button>
+                <button
+                  ref={btnRegistrarRef}
+                  className="er-btn"
+                  type="button"
+                  onClick={handleRegistrar}
+                  disabled={cargando}
+                >
+                  {" "}
+                  {cargando ? "Registrando..." : "Registrar Evento"}{" "}
+                </button>
               </form>
             </aside>
           )}
@@ -592,18 +711,27 @@ const handleRegistrar = () => {
               <form className="eed-form" onSubmit={handleEditar}>
                 <section className="eed-form-inputs-area">
                   <div style={{ gridArea: "divInpt1" }}>
-                    <label className="eed-label">{" "} Nombre del Evento<h6 className="obligatorio">*</h6></label>
-                    <input className="eed-input1" value={formEditar.nombre}
+                    <label className="eed-label">
+                      {" "}
+                      Nombre del Evento<h6 className="obligatorio">*</h6>
+                    </label>
+                    <input
+                      className="eed-input1"
+                      value={formEditar.nombre}
                       onChange={(e) =>
                         setFormEditar({ ...formEditar, nombre: e.target.value })
                       }
                     />
-                    <span className="error-mensaje">{errores.nombre ?? ""}</span>
+                    <span className="error-mensaje">
+                      {errores.nombre ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt2" }}>
                     <label className="eed-label">Descripción</label>
-                    <textarea className="eed-input2" value={formEditar.descripcion}
+                    <textarea
+                      className="eed-input2"
+                      value={formEditar.descripcion}
                       onChange={(e) =>
                         setFormEditar({
                           ...formEditar,
@@ -611,26 +739,33 @@ const handleRegistrar = () => {
                         })
                       }
                     />
-                    <span className="error-mensaje"> {" "}{errores.descripcion ?? ""}</span>
+                    <span className="error-mensaje">
+                      {" "}
+                      {errores.descripcion ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt3" }}>
                     <label className="er-label">¿Requiere producto?</label>
-                    <select className="eed-input3" value={formEditar.requiere_producto ?? 0}
-                      onChange={(e) =>
-                        setFormEditar({
-                          ...formEditar,
-                          requiere_producto: Number(e.target.value),
-                        })
+                    <CustomSelect
+                      options={opcionesRequiere}
+                      value={formEditar.requiere_producto}
+                      onChange={(val) =>
+                        setFormEditar((prev) => ({
+                          ...prev,
+                          requiere_producto: Number(val),
+                        }))
                       }
-                    >
-                      <option value={0}>No</option>
-                      <option value={1}>Sí</option>
-                    </select>
+                    />
                   </div>
                   {formEditar.requiere_producto === 1 && (
-                    <div className="agregar-producto" style={{ gridArea: "divInpt6" }}>
-                      <button type="button" className="registrar-producto-btn"
+                    <div
+                      className="agregar-producto"
+                      style={{ gridArea: "divInpt6" }}
+                    >
+                      <button
+                        type="button"
+                        className="registrar-producto-btn"
                         onClick={() => {
                           setModalOrigen(2);
                           abrirModal(5);
@@ -642,8 +777,14 @@ const handleRegistrar = () => {
                   )}
 
                   <div style={{ gridArea: "divInpt4" }}>
-                    <label className="eed-label">{" "} Fecha y Hora<span className="obligatorio">*</span></label>
-                    <input className="eed-input5" type="datetime-local" value={formEditar.fecha_hora}
+                    <label className="eed-label">
+                      {" "}
+                      Fecha y Hora<span className="obligatorio">*</span>
+                    </label>
+                    <input
+                      className="eed-input5"
+                      type="datetime-local"
+                      value={formEditar.fecha_hora}
                       onChange={(e) =>
                         setFormEditar({
                           ...formEditar,
@@ -651,12 +792,20 @@ const handleRegistrar = () => {
                         })
                       }
                     />
-                    <span className="error-mensaje"> {errores.fecha_hora ?? ""}</span>
+                    <span className="error-mensaje">
+                      {" "}
+                      {errores.fecha_hora ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt5" }}>
-                    <label className="eed-label"> {" "}Lugar<h6 className="obligatorio">*</h6></label>
-                    <input className="eed-input4" value={formEditar.lugar}
+                    <label className="eed-label">
+                      {" "}
+                      Lugar<h6 className="obligatorio">*</h6>
+                    </label>
+                    <input
+                      className="eed-input4"
+                      value={formEditar.lugar}
                       onChange={(e) =>
                         setFormEditar({ ...formEditar, lugar: e.target.value })
                       }
@@ -680,19 +829,34 @@ const handleRegistrar = () => {
               <h1 className="modal-eel-titulo">Desactivar Evento Registrado</h1>
 
               <h3 className="modal-eel-mensaje">
-                ¿Desea desactivar&nbsp; <span className="subrayar"> evento</span>?
+                ¿Desea desactivar&nbsp;{" "}
+                <span className="subrayar"> evento</span>?
               </h3>
 
               <section className="modal-buttons">
-                <button className="desactivar-btn" type="button" onClick={handleDesactivar} disabled={cargando}>{" "}{cargando ? "Desactivando..." : "Desactivar"}</button>
-                <button className="cancelar-btn" onClick={cerrarModal}>Cancelar</button>
+                <button
+                  className="desactivar-btn"
+                  type="button"
+                  onClick={handleDesactivar}
+                  disabled={cargando}
+                >
+                  {" "}
+                  {cargando ? "Desactivando..." : "Desactivar"}
+                </button>
+                <button className="cancelar-btn" onClick={cerrarModal}>
+                  Cancelar
+                </button>
               </section>
             </aside>
           )}
 
           {modalActivo === 4 && (
             <aside className="modal-eventos-rp">
-              <button className="volver-btn-even" type="button" onClick={() => setModalActivo(modalOrigen)}>
+              <button
+                className="volver-btn-even"
+                type="button"
+                onClick={() => setModalActivo(modalOrigen)}
+              >
                 <img className="volver-icono" src={flecha} alt="" />
                 <h2>Volver</h2>
               </button>
@@ -702,11 +866,14 @@ const handleRegistrar = () => {
               <form className="rp-form" onSubmit={handleGuardarProducto}>
                 <section className="rp-form-inputs-area">
                   <div style={{ gridArea: "divInpt1" }}>
-                    <label className="rp-label">{" "} Producto <span className="obligatorio">*</span> </label>
+                    <label className="rp-label">
+                      {" "}
+                      Producto <span className="obligatorio">*</span>{" "}
+                    </label>
                     <BuscadorProducto
                       valorInicial={formProducto.nombre}
                       onSeleccionar={(prod) => {
-                        setProductoElegido(prod); 
+                        setProductoElegido(prod);
                         if (prod) {
                           setFormProducto({
                             id_producto: prod.id_producto,
@@ -732,18 +899,34 @@ const handleRegistrar = () => {
                         }
                       }}
                     />
-                    <span className="error-mensaje">{" "} {errores.id_producto ?? ""}</span>
+                    <span className="error-mensaje">
+                      {" "}
+                      {errores.id_producto ?? ""}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt2" }}>
-                    <label className="rp-label"> {" "} Cantidad <span className="obligatorio">*</span>
+                    <label className="rp-label">
+                      {" "}
+                      Cantidad <span className="obligatorio">*</span>
                       {productoElegido && (
-                        <span style={{fontWeight: "normal", fontSize: 12, color: "#666", marginLeft: 6,}}>
+                        <span
+                          style={{
+                            fontWeight: "normal",
+                            fontSize: 12,
+                            color: "#666",
+                            marginLeft: 6,
+                          }}
+                        >
                           (frascos / cajas / unidades)
                         </span>
                       )}
                     </label>
-                    <input className="rp-input1" type="number" min="1" value={formProducto.cantidad_presentacion}
+                    <input
+                      className="rp-input1"
+                      type="number"
+                      min="1"
+                      value={formProducto.cantidad_presentacion}
                       onChange={(e) => {
                         const cantidad = e.target.value;
                         const total = productoElegido
@@ -758,7 +941,10 @@ const handleRegistrar = () => {
                         }));
                       }}
                     />
-                    <span className="error-mensaje"> {" "} {errores.cantidad_presentacion ?? ""} </span>
+                    <span className="error-mensaje">
+                      {" "}
+                      {errores.cantidad_presentacion ?? ""}{" "}
+                    </span>
 
                     {/* Stock disponible */}
                     {cargandoStock && (
@@ -800,7 +986,11 @@ const handleRegistrar = () => {
                       )}
                     </label>
 
-                    <input className="rp-input3" type="text" readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    <input
+                      className="rp-input3"
+                      type="text"
+                      readOnly
+                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
                       placeholder={
                         !productoElegido
                           ? "Selecciona un producto primero"
@@ -815,8 +1005,19 @@ const handleRegistrar = () => {
                   </div>
                 </section>
 
-                <div style={{display: "flex", gap: "16px", justifyContent: "center", marginTop: "10px",}} >
-                  <button type="submit" className="er-btn" style={{ marginTop: 0 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="er-btn"
+                    style={{ marginTop: 0 }}
+                  >
                     Agregar producto
                   </button>
                 </div>
@@ -825,14 +1026,26 @@ const handleRegistrar = () => {
           )}
           {modalActivo === 5 && (
             <aside className="modal-eventos-productos-lista">
-              <button className="volver-btn-even" type="button" onClick={() => setModalActivo(modalOrigen)}>
+              <button
+                className="volver-btn-even"
+                type="button"
+                onClick={() => setModalActivo(modalOrigen)}
+              >
                 <img className="volver-icono" src={flecha} alt="" />
                 <h2>Volver</h2>
               </button>
 
               <h1 className="modal-ep-titulo">Productos del evento</h1>
-              <div style={{ width: "100%", display: "flex", justifyContent: "flex-end",}}>
-                <button type="button" className="registrar-producto-btn"
+              <div
+                style={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <button
+                  type="button"
+                  className="registrar-producto-btn"
                   onClick={() => {
                     setErrores({});
                     setModalActivo(4);
@@ -863,7 +1076,9 @@ const handleRegistrar = () => {
                         </td>
                         <td>
                           <div className="last-td-flex-content-wrapper">
-                            <figure className="editar-icono" style={{ cursor: "pointer" }}
+                            <figure
+                              className="editar-icono"
+                              style={{ cursor: "pointer" }}
                               onClick={() => {
                                 setIndexEditandoProducto(i);
                                 setFormProducto(p);
@@ -889,16 +1104,26 @@ const handleRegistrar = () => {
                                 setModalActivo(6);
                               }}
                             >
-                              <img className="editar-icono-img" src={editarIcon} alt="Editar"/>
+                              <img
+                                className="editar-icono-img"
+                                src={editarIcon}
+                                alt="Editar"
+                              />
                             </figure>
-                            <figure className="desactivar-icono" style={{ cursor: "pointer" }}
+                            <figure
+                              className="desactivar-icono"
+                              style={{ cursor: "pointer" }}
                               onClick={() =>
                                 setListaProductos((prev) =>
                                   prev.filter((_, index) => index !== i),
                                 )
                               }
                             >
-                              <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar"/>
+                              <img
+                                className="desactivar-icono-img"
+                                src={desactivarIcon}
+                                alt="Desactivar"
+                              />
                             </figure>
                           </div>
                         </td>
@@ -911,14 +1136,23 @@ const handleRegistrar = () => {
           )}
           {modalActivo === 6 && (
             <aside className="modal-eventos-rp">
-              <button className="volver-btn-even"type="button"onClick={() => { setErrores({}); setModalActivo(5);}}>
+              <button
+                className="volver-btn-even"
+                type="button"
+                onClick={() => {
+                  setErrores({});
+                  setModalActivo(5);
+                }}
+              >
                 <img className="volver-icono" src={flecha} alt="" />
                 <h2>Volver</h2>
               </button>
 
               <h1 className="modal-rp-titulo">Editar producto del evento</h1>
 
-              <form className="rp-form" onSubmit={(e) => {
+              <form
+                className="rp-form"
+                onSubmit={(e) => {
                   e.preventDefault();
                   const nuevosErrores = {};
 
@@ -958,7 +1192,10 @@ const handleRegistrar = () => {
               >
                 <section className="rp-form-inputs-area">
                   <div style={{ gridArea: "divInpt1" }}>
-                    <label className="rp-label"> Producto <span className="obligatorio">*</span></label>
+                    <label className="rp-label">
+                      {" "}
+                      Producto <span className="obligatorio">*</span>
+                    </label>
                     <BuscadorProducto
                       valorInicial={formProducto.nombre}
                       onSeleccionar={(prod) => {
@@ -989,7 +1226,10 @@ const handleRegistrar = () => {
                         }
                       }}
                     />
-                    <span className="error-mensaje"> {errores.id_producto ?? ""} </span>
+                    <span className="error-mensaje">
+                      {" "}
+                      {errores.id_producto ?? ""}{" "}
+                    </span>
                   </div>
 
                   <div style={{ gridArea: "divInpt2" }}>
@@ -1009,7 +1249,11 @@ const handleRegistrar = () => {
                         </span>
                       )}
                     </label>
-                    <input className="rp-input1" type="number" min="1" value={formProducto.cantidad_presentacion}
+                    <input
+                      className="rp-input1"
+                      type="number"
+                      min="1"
+                      value={formProducto.cantidad_presentacion}
                       onChange={(e) => {
                         const cantidad = e.target.value;
                         const porUnidad =
@@ -1025,7 +1269,9 @@ const handleRegistrar = () => {
                         }));
                       }}
                     />
-                    <span className="error-mensaje">{errores.cantidad_presentacion ?? ""}</span>
+                    <span className="error-mensaje">
+                      {errores.cantidad_presentacion ?? ""}
+                    </span>
 
                     {cargandoStock && (
                       <p style={{ fontSize: 12, color: "#888", marginTop: 4 }}>
@@ -1070,7 +1316,11 @@ const handleRegistrar = () => {
                         </span>
                       )}
                     </label>
-                    <input className="rp-input3" type="text" readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    <input
+                      className="rp-input3"
+                      type="text"
+                      readOnly
+                      style={{ background: "#f5f5f5", cursor: "not-allowed" }}
                       placeholder={
                         !productoElegido && !formProducto.nombre
                           ? "Selecciona un producto primero"
@@ -1085,8 +1335,19 @@ const handleRegistrar = () => {
                   </div>
                 </section>
 
-                <div style={{ display: "flex", gap: "16px", justifyContent: "center", marginTop: "10px",}}>
-                  <button type="submit" className="er-btn" style={{ marginTop: 0 }} >
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "16px",
+                    justifyContent: "center",
+                    marginTop: "10px",
+                  }}
+                >
+                  <button
+                    type="submit"
+                    className="er-btn"
+                    style={{ marginTop: 0 }}
+                  >
                     Guardar cambios
                   </button>
                 </div>

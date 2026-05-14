@@ -221,7 +221,6 @@ export const Verificaciones = () => {
                     <td>{verificacion.nombre}</td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
-                        {/* 👇 Ver detalles — abre modal */}
                         <button
                           className="tabla-verificaciones-btn"
                           onClick={() => abrirModal(1, verificacion)}

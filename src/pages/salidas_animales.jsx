@@ -2,6 +2,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Helmet } from "react-helmet-async";
+import CustomSelect from '../components/CustomSelect.jsx';
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -36,6 +37,11 @@ export const SalidaAnimales = () => {
     const [mensajeExito, setMensajeExito] = useState("");
     const [salidaSeleccionada, setSalidaSeleccionada] = useState(null);
     const [animales, setAnimales] = useState([]);
+
+ const opcionesAnimal = animales.map((a) => ({
+    value: a.id_animal,
+    label: a.nombre,
+  }));
   
     const [formRegistrar, setFormRegistrar] = useState({
       fecha_salida: "", 
@@ -282,12 +288,16 @@ export const SalidaAnimales = () => {
 
                 <div style={{gridArea: "divInpt4"}}>
                   <label className="ar-label" for="">Animal<h6 className="obligatorio">*</h6></label>
-                  <select className="ar-input4" type="text" value={formRegistrar.animales_id_animales} onChange={e => setFormRegistrar({...formRegistrar, animales_id_animales: e.target.value})}>
-                    <option value="">Seleccione un animal</option>
-                    {animales.map(animal => (
-                      <option key={animal.id_animal} value={animal.id_animal}>{animal.nombre}</option>
-                    ))}
-                  </select>
+                  <CustomSelect
+                    options={opcionesAnimal}
+                    value={formRegistrar.animales_id_animales}
+                    onChange={(val) =>
+                      setFormRegistrar((prev) => ({
+                        ...prev,
+                        animales_id_animales: val,
+                      }))
+                    }
+                  />
                   <span className="error-mensaje">{errores.animales_id_animales ?? ""}</span>
                 </div>
 
@@ -334,12 +344,16 @@ export const SalidaAnimales = () => {
 
                 <div style={{gridArea: "divInpt4"}}>
                   <label className="aed-label" for="">Animal<h6 className="obligatorio">*</h6></label>
-                  <select className="aed-input4" type="text" value={formEditar.animales_id_animales} onChange={e => setFormEditar({...formEditar, animales_id_animales: e.target.value})}>
-                    <option value="">Seleccione un animal</option>
-                    {animales.map(animal => (
-                      <option key={animal.id_animal} value={animal.id_animal}>{animal.nombre}</option>
-                    ))}
-                  </select>
+                  <CustomSelect
+                    options={opcionesAnimal}
+                    value={formEditar.animales_id_animales}
+                    onChange={(val) =>
+                      setFormEditar((prev) => ({
+                        ...prev,
+                        animales_id_animales: val,
+                      }))
+                    }
+                  />
                   <span className="error-mensaje">{errores.animales_id_animales ?? ""}</span>
                 </div>
                 
