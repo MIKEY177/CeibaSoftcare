@@ -152,3 +152,80 @@
     width: 100%;
     height: 100%;
 }
+
+
+
+
+                /* RESPONSIVE FROM HERE */   
+                
+                
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media ( 1280px <= width <= 1919px) {
+    
+    .vertical-navbar{
+        width: 267px;
+    }
+
+    .vertical-navbar::after{
+        width: 267px;
+        height: 54px;
+    } 
+
+    .avatar{
+        width: 100px;
+        height: 100px;
+    }
+
+    .avatar::before{
+        width: 98px;
+        height: 98px;
+    }
+
+    .perfil-nombre{
+        font-size: 1.3rem;
+    }
+
+    .perfil-rol{
+        font-size: 0.5rem;
+        width: 150px;
+        height: 35px;        
+    }
+
+    .perfil-rol-img{
+        width: 150px;
+    }
+
+    .perfil-rol-texto{
+        width: 150px;
+    }
+
+    .contenedor-nav{
+        width: 187px;
+    }
+
+    .opcion-nav{
+        margin-bottom: 20px;
+        font-size: 1.17rem;
+        height: 30px;
+    }
+
+    .selector{
+        width: 187px;
+        height: 30px;
+    }
+
+    .cerrar-sesion-btn{
+        margin-bottom: 97px;
+        height: 35px;
+        width: 160px;
+        font-size: 1.1rem;
+    }
+
+    .ajustes{
+        width: 40px;
+        height: 40px;
+    }
+
+}
