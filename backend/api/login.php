@@ -29,7 +29,7 @@ if (!empty($errors)) {
 }
 
 $stmt = mysqli_prepare($conn, 
-    "SELECT u.id_usuario, u.nombre, u.contrasena, u.foto_perfil, r.nombre AS rol 
+    "SELECT u.id_usuario, u.nombre, u.contrasena, u.foto_perfil, u.cuenta_activa, r.nombre AS rol 
      FROM usuarios u 
      INNER JOIN roles r ON u.id_rol1 = r.id_rol 
      WHERE u.correo = ?"
@@ -56,6 +56,7 @@ if (mysqli_num_rows($resultado) > 0) {
         $_SESSION['user_name'] = $usuario['nombre'];
         $_SESSION['user_rol'] = $usuario['rol'];
         $_SESSION['foto_perfil'] = $usuario['foto_perfil'] ?? null;
+        $_SESSION['cuenta_activa'] = $usuario['cuenta_activa'];
 
         $login_exitoso = true;
         $respuesta = [

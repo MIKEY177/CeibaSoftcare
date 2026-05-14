@@ -42,6 +42,7 @@ function App() {
           <Route path="/farmacia" element={<Farmacia />} />
           <Route path="/iniciar_sesion" element={<IniciarSesion />} />
           <Route path="/productos" element={<Productos />} />
+          <Route path="/productos/:code/:op" element={<Productos />} />
           <Route path="/entradas_prod" element={<EntradasProd />} />
           <Route path="/entradas_prod/:id/:fecha/:nombre_producto" element={<EntradasProd />} />
           <Route path="/salidas_prod" element={<SalidasProd />} />
@@ -51,7 +52,9 @@ function App() {
           <Route path="/verificaciones" element={<Verificaciones />} />
           <Route  path="/registrar_verificacion" element={<RegistrarVerificacion />} />
           <Route path="/salida_animales" element={<SalidaAnimales />} />
+          <Route path="/salida_animales/:id/:fecha" element={<SalidaAnimales />} />
           <Route path="/ingreso_animales" element={<IngresoAnimales />} />
+          <Route path="/ingreso_animales/:id/:fecha" element={<IngresoAnimales />} />
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
           <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
           <Route path="/editar_verificacion/:id" element={<EditarVerificacion />} /> 

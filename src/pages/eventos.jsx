@@ -11,6 +11,7 @@ import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import CustomSelect from "../components/CustomSelect.jsx";
+import { Notificaciones } from '../components/Notificaciones'
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 
@@ -472,6 +473,7 @@ export const Eventos = () => {
       </Helmet>
       <main>
         <Navbar menu={MenuAdmin} user={user} />
+        <Notificaciones />
 
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Eventos</h2>

@@ -10,7 +10,7 @@ $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && 
 $method = $_SERVER['REQUEST_METHOD'];
 
 // ── GET: listar productos ────────────────────────────────────────────────────
-if ($method === 'GET') {
+if ($method === 'GET' && !isset($_GET['codigo'])) {
     $sql = "SELECT p.id_producto, p.nombre, p.descripcion, p.tipo_medida,
                    p.cantidad_por_unidad, u.nombre AS nombre_usuario, p.codigo_barras
             FROM productos p
@@ -249,6 +249,50 @@ if ($method === 'DELETE') {
     exit;
 }
 
+// ── GET: obtener producto por código de barras ───────────────────────────────────────────────
+if ($method === 'GET' && isset($_GET['codigo'])) {
+    $codigo_barras = trim($_GET['codigo']);
+
+    if ($codigo_barras === '') {
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => "El código de barras es obligatorio."]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $stmt = mysqli_prepare($conn, "SELECT id_producto, nombre, descripcion, tipo_medida, cantidad_por_unidad FROM productos WHERE codigo_barras = ? AND activo = 1");
+    mysqli_stmt_bind_param($stmt, "s", $codigo_barras);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => $debug ? mysqli_error($conn) : "❗Error en la consulta"]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if (mysqli_num_rows($result) === 0) {
+        http_response_code(404);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => "❗Producto no encontrado."]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $producto = mysqli_fetch_assoc($result);
+    echo json_encode(["success" => true, "data" => $producto], JSON_UNESCAPED_UNICODE);
+
+    mysqli_free_result($result);
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+    exit;
+}
 // ── Método no permitido ──────────────────────────────────────────────────────
 http_response_code(405);
 echo json_encode(["success" => false, "errores" => ["general" => "Método no permitido."]], JSON_UNESCAPED_UNICODE);

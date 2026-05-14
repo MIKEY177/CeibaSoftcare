@@ -1,15 +1,9 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import CustomSelect from "../components/CustomSelect.jsx";
-import {
-  MenuAdmin,
-  MenuAdminFarmacia,
-  MenuAdminAlbergue,
-  MenuFarmaceutico,
-  MenuVeterinario,
-} from "../utils/menu.jsx";
+import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
 import "../styles/global_styles.css";
@@ -23,9 +17,10 @@ import campoRestringido from "../images/candado.png";
 import flecha from "../images/flecha_salir.png";
 
 // Componentes
-import { Navbar } from "../components/Navbar.jsx";
-import { Footer } from "../components/Footer.jsx";
-import { Menu } from "../components/Menu.jsx";
+import { Navbar } from '../components/Navbar.jsx'
+import { Footer } from '../components/Footer.jsx'
+import { Menu } from '../components/Menu.jsx'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = `api/ingreso_animales.php`;
 const API_SESSION = `api/session.php`;
@@ -33,20 +28,37 @@ const API_VERIFICACIONES = `api/seleccionar_verificacion.php`;
 export const indexSelector = 4;
 
 export const IngresoAnimales = () => {
-  const [user, setUser] = useState({ nombre: "", rol: "" });
-  const navigate = useNavigate();
-
-  const [ingresos, setIngresos] = useState([]);
-  const [verificaciones, setVerificaciones] = useState([]);
-  const [modalActiva, setModalActiva] = useState(null);
-  const [errores, setErrores] = useState({});
-  const [cargando, setCargando] = useState(false);
-  const [mensajeExito, setMensajeExito] = useState("");
-  const [ingresoSeleccionado, setIngresoSeleccionado] = useState(null);
-  const ingresoVacio = () => {
-    const d = new Date();
-    d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
-    return {
+   const [user, setUser] = useState({ nombre: "", rol: "" });
+    const navigate = useNavigate();
+  
+    const [ingresos, setIngresos] = useState([]);
+    const [verificaciones, setVerificaciones] = useState([]);
+    const [modalActiva, setModalActiva] = useState(null);
+    const [errores, setErrores] = useState({});
+    const [cargando, setCargando] = useState(false);
+    const [mensajeExito, setMensajeExito] = useState("");
+    const [ingresoSeleccionado, setIngresoSeleccionado] = useState(null);
+    const { id, fecha } = useParams();
+    const ingresoVacio = () => {
+      const d = new Date();
+      d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
+      return { 
+        persona_reporta: "",
+        cedula_reporta: "",
+        direccion_reporta: "",
+        telefono_reporta: "",
+        funcionario_autoriza: "",
+        persona_realiza: "",
+        cedula_realiza: "",
+        motivo_ingreso: "",
+        fecha_hora_ingreso: d.toISOString().slice(0, 16),
+        id_verificacion: "",
+        id_usuario: "",
+      };
+       };
+  
+    const [formRegistrar, setFormRegistrar] = useState(ingresoVacio());
+    const [formEditar, setFormEditar] = useState({
       persona_reporta: "",
       cedula_reporta: "",
       direccion_reporta: "",
@@ -55,97 +67,16 @@ export const IngresoAnimales = () => {
       persona_realiza: "",
       cedula_realiza: "",
       motivo_ingreso: "",
-      fecha_hora_ingreso: d.toISOString().slice(0, 16),
+      fecha_hora_ingreso: "",
       id_verificacion: "",
       id_usuario: "",
-    };
-  };
+    });
 
-  const [formRegistrar, setFormRegistrar] = useState(ingresoVacio());
-  const [formEditar, setFormEditar] = useState({
-    persona_reporta: "",
-    cedula_reporta: "",
-    direccion_reporta: "",
-    telefono_reporta: "",
-    funcionario_autoriza: "",
-    persona_realiza: "",
-    cedula_realiza: "",
-    motivo_ingreso: "",
-    fecha_hora_ingreso: "",
-    id_verificacion: "",
-    id_usuario: "",
-  });
-
-  const opcionesVerificaciones = verificaciones.map((verificacion) => ({
+    const opcionesVerificaciones = verificaciones.map((verificacion) => ({
     value: verificacion.id_verificacion,
     label: `${verificacion.fecha} - ${verificacion.nombre}`,
   }));
   const [busqueda, setBusqueda] = useState("");
-
-  // ─── Helpers ────────────────────────────────────────────────────────────────
-
-  const abrirModal = (num, ingreso = null) => {
-    setErrores({});
-    setMensajeExito("");
-    setIngresoSeleccionado(ingreso);
-    if (num === 1) {
-      setFormRegistrar(ingresoVacio());
-    }
-    if (num === 2 && ingreso) {
-      setFormEditar({
-        persona_reporta: ingreso.persona_reporta ?? "",
-        cedula_reporta: ingreso.cedula_reporta ?? "",
-        direccion_reporta: ingreso.direccion_reporta ?? "",
-        telefono_reporta: ingreso.telefono_reporta ?? "",
-        funcionario_autoriza: ingreso.funcionario_autoriza ?? "",
-        persona_realiza: ingreso.persona_realiza ?? "",
-        cedula_realiza: ingreso.cedula_realiza ?? "",
-        motivo_ingreso: ingreso.motivo_ingreso ?? "",
-        fecha_hora_ingreso: ingreso.fecha_hora_ingreso
-          ? ingreso.fecha_hora_ingreso.replace(" ", "T").slice(0, 16)
-          : "",
-        id_verificacion: String(ingreso.id_verificacion1) ?? "",
-        id_usuario: ingreso.id_usuario ?? "",
-      });
-    }
-    setModalActiva(num);
-  };
-
-  const cerrarModal = () => {
-    setErrores({});
-    setMensajeExito("");
-    setModalActiva(null);
-    setIngresoSeleccionado(null);
-
-    setFormRegistrar({
-      persona_reporta: "",
-      cedula_reporta: "",
-      direccion_reporta: "",
-      telefono_reporta: "",
-      funcionario_autoriza: "",
-      persona_realiza: "",
-      cedula_realiza: "",
-      motivo_ingreso: "",
-      fecha_hora_ingreso: "",
-      id_verificacion: "",
-      id_usuario: "",
-    });
-
-    setFormEditar({
-      persona_reporta: "",
-      cedula_reporta: "",
-      direccion_reporta: "",
-      telefono_reporta: "",
-      funcionario_autoriza: "",
-      persona_realiza: "",
-      cedula_realiza: "",
-      motivo_ingreso: "",
-      fecha_hora_ingreso: "",
-      id_verificacion: "",
-      id_usuario: "",
-    });
-  };
-
   const cargarIngresos = () => {
     fetch(API, { credentials: "include" })
       .then((res) => res.json())
@@ -155,6 +86,38 @@ export const IngresoAnimales = () => {
       })
       .catch(console.error);
   };
+  const abrirModal = (modal, ingreso = null) => {
+  setModalActiva(modal);
+
+  if (ingreso) {
+    setIngresoSeleccionado(ingreso);
+
+    setFormEditar({
+      persona_reporta: ingreso.persona_reporta || "",
+      cedula_reporta: ingreso.cedula_reporta || "",
+      direccion_reporta: ingreso.direccion_reporta || "",
+      telefono_reporta: ingreso.telefono_reporta || "",
+      funcionario_autoriza: ingreso.funcionario_autoriza || "",
+      persona_realiza: ingreso.persona_realiza || "",
+      cedula_realiza: ingreso.cedula_realiza || "",
+      motivo_ingreso: ingreso.motivo_ingreso || "",
+      fecha_hora_ingreso: ingreso.fecha_hora_ingreso || "",
+      id_verificacion: ingreso.id_verificacion || "",
+      id_usuario: ingreso.id_usuario || "",
+    });
+  }
+};
+
+const cerrarModal = () => {
+  setModalActiva(null);
+  setIngresoSeleccionado(null);
+  setErrores({});
+  setMensajeExito("");
+};
+
+const handleVer = (ingreso) => {
+  abrirModal(3, ingreso);
+};
 
   const cargarVerificaciones = () => {
     fetch(API_VERIFICACIONES, { credentials: "include" })
@@ -218,66 +181,67 @@ export const IngresoAnimales = () => {
     (ingreso) =>
       ingreso.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       ingreso.motivo_ingreso.toLowerCase().includes(busqueda.toLowerCase()) ||
-      ingreso.fecha.includes(busqueda),
-  );
-
-  const handleBusqueda = (e) => {
-    e.preventDefault();
-    // La búsqueda es en tiempo real con onChange, pero mantenemos esto si quieren buscar con botón
-  };
-
-  // ─── Envío genérico al backend ───────────────────────────────────────────────
-
-  const enviar = (method, body, onExito) => {
-    setCargando(true);
-    setErrores({});
-    fetch(API, {
-      method,
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.success) {
-          cargarIngresos();
-          mostrarExito(onExito);
-        } else {
-          setErrores(response.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() =>
-        setErrores({ general: "Error de conexión con el servidor." }),
-      )
-      .finally(() => setCargando(false));
-  };
-
-  const handleRegistrar = (e) => {
-    e.preventDefault();
-    enviar("POST", formRegistrar, "¡Producto registrado correctamente!");
-  };
-
-  const handleEditar = (e) => {
-    e.preventDefault();
-    enviar(
-      "PUT",
-      { id_ingreso: ingresoSeleccionado.id_ingreso, ...formEditar },
-      "¡Producto actualizado correctamente!",
+      (busqueda === fecha ? ingreso.id_ingreso === id : ingreso.fecha.includes(busqueda))
+      
     );
-  };
+  
+    const handleBusqueda = (e) => {
+      e.preventDefault();
+      // La búsqueda es en tiempo real con onChange, pero mantenemos esto si quieren buscar con botón
+    };
+  
+    // ─── Envío genérico al backend ───────────────────────────────────────────────
+  
+    const enviar = (method, body, onExito) => {
+      setCargando(true);
+      setErrores({});
+      fetch(API, {
+        method,
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      })
+        .then(res => res.json())
+        .then(response => {
+          if (response.success) {
+            cargarIngresos();
+            mostrarExito(onExito);
+          } else {
+            setErrores(response.errores ?? { general: "Error desconocido." });
+          }
+        })
+        .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
+        .finally(() => setCargando(false));
+    };
+  
+    const handleRegistrar = (e) => {
+      e.preventDefault();
+      enviar("POST", formRegistrar, "¡Producto registrado correctamente!");
+    };
+  
+    const handleEditar = (e) => {
+      e.preventDefault();
+      enviar("PUT", { id_ingreso: ingresoSeleccionado.id_ingreso, ...formEditar }, "¡Producto actualizado correctamente!");
+    };
 
-  const handleVer = (e) => {
-    navigate("/ver_ingreso_animales/" + e.id_ingreso);
-  };
-  // ─── Render ──────────────────────────────────────────────────────────────────
+      useEffect(() => {
+    
+        if (!id || ingresos.length === 0) return;
+    
+        setBusqueda(fecha);
+    
+      }, [id, fecha, ingresos]);
 
+    // ─── Render ──────────────────────────────────────────────────────────────────
+  
   return (
     <>
       <Helmet>
         <title>Ingreso Animales - Softcare</title>
       </Helmet>
       <main>
-        <Navbar menu={menuObj} user={user} />
+        <Navbar menu={menuObj} user={user}/>
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Ingreso Animales</h2>
           <section className="seccion1-busqueda-agregar">
@@ -325,14 +289,7 @@ export const IngresoAnimales = () => {
                     <td>{ingreso.nombre}</td>
                     <td>{ingreso.motivo_ingreso}</td>
                     <td>{ingreso.fecha}</td>
-                    <td>
-                      <button
-                        class="ver-detalles-btn"
-                        onClick={() => handleVer(ingreso)}
-                      >
-                        Ver
-                      </button>
-                    </td>
+                    <td><button className="ver-detalles-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
                         <figure
@@ -805,17 +762,18 @@ export const IngresoAnimales = () => {
             </form>
           </aside>
         )}
-        {/* ── MODAL 3: Detalle de ingreso Animal ──────────────────────────────────── */}
-
-        <aside className="modal-detalle-ingreso">
-          <button className="volver-btn-ingreso-anim" onClick={cerrarModal}>
-            <img className="volver-icono" src={flecha} alt="" />
-            <h2>Volver</h2>
-          </button>
-          <h1 className="modal-aed-titulo">
-            Ingreso del animal [nombre_animal]
-          </h1>
-          <table className="tabla-ver-ingreso-animal">
+          {/* ── MODAL 3: Detalle de ingreso Animal ──────────────────────────────────── */}
+        {modalActiva === 3 && ingresoSeleccionado && (
+          
+          <aside className='modal-detalle-ingreso'>
+            <button className="volver-btn-ingreso-anim" onClick={cerrarModal}>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
+            </button>
+            <h1 className="modal-aed-titulo">
+              Ingreso del animal [{ingresoSeleccionado.nombre}]
+            </h1>
+            <table className="tabla-ver-ingreso-animal">
             <thead className="header-tabla-ingreso-animal">
               <tr>
                 <td>Persona que reporta</td>
@@ -825,9 +783,9 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.persona_reporta}*/}</th>
-                <th>{/*{ingreso.cedula_reporta}*/}</th>
-                <th>{/*{ingreso.direccion_reporta}*/}</th>
+                <th>{ingresoSeleccionado.persona_reporta}</th>
+                <th>{ingresoSeleccionado.cedula_reporta}</th>
+                <th>{ingresoSeleccionado.direccion_reporta}</th>
               </tr>
             </tbody>
             <thead className="header-tabla-ingreso-animal">
@@ -839,9 +797,9 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.telefono_reporta}*/}</th>
-                <th>{/*{ingreso.funcionario_autoriza}*/}</th>
-                <th>{/*{ingreso.cedula_realiza}*/}</th>
+                <th>{ingresoSeleccionado.telefono_reporta}</th>
+                <th>{ingresoSeleccionado.funcionario_autoriza}</th>
+                <th>{ingresoSeleccionado.cedula_realiza}</th>
               </tr>
             </tbody>
             <thead className="header-tabla-ingreso-animal">
@@ -853,13 +811,14 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.fecha_hora_ingreso}*/}</th>
-                <th>{/*{ingreso.motivo_ingreso}*/}</th>
-                <th>{/*[{ingreso.fecha}] {ingreso.nombre}*/}</th>
+                <th>{ingresoSeleccionado.fecha_hora_ingreso}</th>
+                <th>{ingresoSeleccionado.motivo_ingreso}</th>
+                <th>{`[${ingresoSeleccionado.fecha}] ${ingresoSeleccionado.nombre}`}</th>
               </tr>
             </tbody>
           </table>
-        </aside>
+          </aside>
+        )}
       </div>
     </>
   );

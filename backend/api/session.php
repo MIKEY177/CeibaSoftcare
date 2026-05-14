@@ -13,6 +13,7 @@ if (isset($_SESSION['user_id'])) {
         "usuario" => $_SESSION['user_name'],
         "rol" => $_SESSION['user_rol'],
         "foto_perfil" => $_SESSION['foto_perfil'],
+        "cuenta_activa" => $_SESSION['cuenta_activa']
     ]);
 } else {
     http_response_code(401);

@@ -1,7 +1,7 @@
 // Imports Base
-import React, { useEffect, useState } from 'react'
-import { Link,useNavigate } from 'react-router-dom'
 import { Helmet } from "react-helmet-async";
+import React, { useEffect, useState, useRef } from 'react'
+import { Link,useNavigate} from 'react-router-dom'
 
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
@@ -15,15 +15,23 @@ import eventosIcon from "../images/icons/eventos-icon.png"
 // Componentes
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { Notificaciones } from '../components/Notificaciones'
 
 export const indexSelector = 1;
 
 export const Farmacia = () => {
   const [actividad, setActividad] = useState([]);
   const [user, setUser] = useState({ nombre: "", rol: "" });
+  const [modalActiva, setModalActiva] = useState(false);
+  const [codigoEscaneado, setCodigoEscaneado] = useState("");
+  const scannedCodeRef = useRef("");
+  const isScanningRef = useRef(false);
+  const lastKeyTimeRef = useRef(0);
+  const scanTimeoutRef = useRef(null);
   const navigate = useNavigate();
   const API_SESSION = `api/session.php`;
   const API_ACT = `api/actividad_reciente.php`;
+  const API_PRODUCTOS = `api/inventario.php`;
 
   useEffect(() => {
       fetch(API_ACT,{
@@ -60,7 +68,112 @@ export const Farmacia = () => {
         navigate("/iniciar_sesion");
       });
     }, []);
+     const abrirModalEscaneo = (codigo) => {
+        setModalActiva(true);
+        setCodigoEscaneado(codigo);
+      };
 
+      const cerrarModalEscaneo = () => {
+        setModalActiva(false);
+        setCodigoEscaneado("");
+      };
+
+      const buscarProductoPorCodigo = async (codigo) => {
+
+        try {
+
+          const res = await fetch(`${API_PRODUCTOS}?codigo=${codigo}`, {
+            credentials: "include"
+          });
+
+          const data = await res.json();
+
+          console.log("Respuesta API:", data);
+
+          if (res.ok && data.success === true) {
+
+            navigate(`/productos/${codigo}/1`);
+
+          } else {
+
+            abrirModalEscaneo(codigo);
+          }
+
+        } catch (error) {
+
+          console.error("Error al buscar producto:", error);
+
+          abrirModalEscaneo(codigo);
+        }
+      };
+
+      useEffect(() => {
+
+        const applyScannedCode = () => {
+
+          const code = scannedCodeRef.current;
+
+          // Validar longitud mínima
+          if (code.length < 6) {
+            scannedCodeRef.current = "";
+            return;
+          }
+
+          console.log("Código escaneado:", code);
+
+          buscarProductoPorCodigo(code);
+
+          scannedCodeRef.current = "";
+        };
+
+
+        const handleKeyDown = (e) => {
+
+          // ENTER del lector
+          if (e.key === "Enter") {
+
+            if (scanTimeoutRef.current) {
+              clearTimeout(scanTimeoutRef.current);
+            }
+
+            applyScannedCode();
+            return;
+          }
+
+          // Solo números
+          if (/^[0-9]$/.test(e.key)) {
+
+            // Evita escribir visible
+            e.preventDefault();
+
+            // Acumula código
+            scannedCodeRef.current += e.key;
+
+            // Reinicia timeout
+            if (scanTimeoutRef.current) {
+              clearTimeout(scanTimeoutRef.current);
+            }
+
+            // Algunos lectores no envían ENTER
+            scanTimeoutRef.current = setTimeout(() => {
+              applyScannedCode();
+            }, 300);
+          }
+        };
+
+
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+
+          document.removeEventListener("keydown", handleKeyDown);
+
+          if (scanTimeoutRef.current) {
+            clearTimeout(scanTimeoutRef.current);
+          }
+        };
+
+      }, []);
 
   const verActividad = (actividad, fecha, id, nombre_producto) => {
     const path = actividad === "Entrada" 
@@ -91,6 +204,7 @@ export const Farmacia = () => {
       </Helmet>
       <main>
         <Navbar user={user} menu={menuObj} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Módulo Farmacia</h2>
           <section className="seccion1-actividad-reciente">
@@ -190,9 +304,25 @@ export const Farmacia = () => {
         </section>
       </main>
       <Footer/>
+      <div className="modales-dashboards" style={{ display: modalActiva ? "flex" : "none" }}>
+      {modalActiva && (
+        <aside className="modal-codigo">
+            <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
+            {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
+            <h3 className="modal-c-mensaje">¿Desea registrar nuevo producto <span class="second-line"> con código <h6 className="subrayar-c">{codigoEscaneado}</h6>? </span></h3>
+            <section className="modal-c-buttons">
+              <button className="registrar-c-btn" onClick={() => {
+                navigate(`/productos/${codigoEscaneado}/2`);
+              }}>
+                Registrar
+              </button>
+              <button className="cancelar-c-btn" onClick={()=>cerrarModalEscaneo()} >Cancelar</button>
+            </section>
+        </aside> 
+      )}
+      </div>
     </>
   )
 }
 
-
-// Arreglar la lista para navegar 
