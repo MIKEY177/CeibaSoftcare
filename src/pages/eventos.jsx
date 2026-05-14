@@ -9,6 +9,7 @@ import flecha from "../images/flecha_salir.png";
 import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
+import { Notificaciones } from '../components/Notificaciones'
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 
@@ -443,6 +444,7 @@ const handleRegistrar = () => {
     <>
       <main>
         <Navbar menu={MenuAdmin} user={user} />
+        <Notificaciones />
 
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Eventos</h2>

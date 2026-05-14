@@ -15,6 +15,8 @@ import flecha from "../images/flecha_salir.png"
 // Componentes
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
+import { Menu } from '../components/Menu.jsx'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API         = `api/animales.php`;
 const API_SESSION = `api/session.php`;
@@ -204,7 +206,7 @@ export const Animales = () => {
       </head>
       <main>
         <Navbar menu={menuObj} user={user} />
-
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Registro Animales</h2>
 

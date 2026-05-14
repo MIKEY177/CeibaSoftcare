@@ -17,10 +17,12 @@ import flecha from "../images/flecha_salir.png"
 // Componentes
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = '/api/salidas_completas.php';
 const API_DET = '/api/detalles_salidas.php';
 const API_PRODUCTOS = '/api/productos_stock_busqueda.php';
+const API_PROD_COD = `/api/inventario.php`
 const API_SESSION = '/api/session.php';
 
 export const indexSelector = 4;
@@ -53,7 +55,9 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
-
+  useEffect(() => {
+      setQuery(initialValue || "");
+    }, [initialValue]);
   useEffect(() => {
     if (primeraVez.current) {
       primeraVez.current = false;
@@ -158,6 +162,8 @@ export const SalidasProd = () => {
   const [detalleSeleccionado, setDetalleSeleccionado] = useState(null);
   
   // ── Formularios ─────────────────────────────────────────────────────────────
+  const [codigoEscaneado, setCodigoEscaneado] = useState("");
+
   const [formSalida,      setFormSalida]      = useState(salidaVacia());
   const [listaDetalles,    setListaDetalles]    = useState([]);
   const [formDetalle,      setFormDetalle]      = useState(detalleVacio);
@@ -172,6 +178,10 @@ export const SalidasProd = () => {
   const fechaSalida = fecha || null;
   const nombreProducto = nombre_producto || null;
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
+  const scannedCodeRef = useRef("");
+  const isScanningRef = useRef(false);
+  const lastKeyTimeRef = useRef(0);
+  const scanTimeoutRef = useRef(null);
 
   
   const volver = () => {
@@ -552,10 +562,161 @@ export const SalidasProd = () => {
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const salidasFiltradas = salidas.filter(e =>
     ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) &&
-    (e.id_salida === (idu || e.id_salida))
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) 
   );
 
+ const buscarProductoPorCodigo = (codigo) => {
+ 
+   fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
+     credentials: "include"
+   })
+     .then(response => response.json())
+     .then(data => {
+ 
+     console.log("Respuesta escáner:", data);
+ 
+     if (data.success) {
+ 
+       const prod = data.data;
+ 
+       // Modal registrar
+       if (modalActivo === 4) {
+ 
+         setProductoElegido(prod);
+ 
+         setFormDetalle(prev => ({
+           ...prev,
+           id_producto1: prod.id_producto,
+           nombre_producto: prod.nombre,
+           tipo_medida: prod.tipo_medida,
+           cantidad_por_unidad: prod.cantidad_por_unidad,
+           cantidad_presentacion: "",
+           cantidad_total: "",
+         }));
+ 
+       }
+ 
+       // Modal editar
+       if (modalActivo === 5) {
+ 
+         setProductoElegidoEditar(prod);
+ 
+         setFormEditarDetalle(prev => ({
+           ...prev,
+           id_producto1: prod.id_producto,
+           nombre_producto: prod.nombre,
+           tipo_medida: prod.tipo_medida,
+           cantidad_por_unidad: prod.cantidad_por_unidad,
+           cantidad_presentacion: "",
+           cantidad_total: "",
+         }));
+       }
+ 
+       if (modalActivo !== 4 && modalActivo !== 5){
+           navigate(`/productos/${codigo}/1`)
+       }
+ 
+       setErrores({});
+ 
+     } else {
+ 
+       setErrores({
+         general: `No se encontró el producto con código ${codigo}`
+       });
+       if (modalActivo !== 4 && modalActivo !== 5){
+         setCodigoEscaneado(codigo);
+         abrirModal(8);
+       }
+     }
+   })
+   };
+   useEffect(() => {
+ 
+   const applyScannedCode = () => {
+     console.log("APPLY", scannedCodeRef.current);
+ 
+     if (scannedCodeRef.current.length < 6) {
+ 
+       scannedCodeRef.current = "";
+       return;
+     }
+ 
+     const code = scannedCodeRef.current;
+ 
+     buscarProductoPorCodigo(code);
+ 
+     scannedCodeRef.current = "";
+     isScanningRef.current = false;
+   };
+ 
+   const handleKeyDown = (e) => {
+ 
+     console.log("TECLA:", e.key);
+ 
+     // ENTER
+     if (e.key === "Enter") {
+ 
+       if (scanTimeoutRef.current) {
+         clearTimeout(scanTimeoutRef.current);
+       }
+ 
+       applyScannedCode();
+       return;
+     }
+ 
+     // SOLO números
+     if (!/^[0-9]$/.test(e.key)) return;
+ 
+     const now = Date.now();
+ 
+     // Primera tecla
+     if (lastKeyTimeRef.current === 0) {
+ 
+       isScanningRef.current = true;
+ 
+     } else {
+ 
+       const interval = now - lastKeyTimeRef.current;
+ 
+       console.log("INTERVAL:", interval);
+ 
+       // Escritura humana
+       if (interval > 120) {
+ 
+         scannedCodeRef.current = "";
+       }
+     }
+ 
+     lastKeyTimeRef.current = now;
+ 
+     scannedCodeRef.current += e.key;
+ 
+     console.log("CODIGO:", scannedCodeRef.current);
+ 
+     // Timeout
+     if (scanTimeoutRef.current) {
+       clearTimeout(scanTimeoutRef.current);
+     }
+ 
+     scanTimeoutRef.current = setTimeout(() => {
+ 
+       applyScannedCode();
+ 
+     }, 150);
+   };
+ 
+   document.addEventListener("keydown", handleKeyDown);
+ 
+   return () => {
+ 
+     document.removeEventListener("keydown", handleKeyDown);
+ 
+     if (scanTimeoutRef.current) {
+       clearTimeout(scanTimeoutRef.current);
+     }
+   };
+ 
+ }, [modalActivo]);
  useEffect(() => {
  
      if (!idu || salidas.length === 0) return;
@@ -569,7 +730,7 @@ export const SalidasProd = () => {
  
      if (salida && modalActivo !== 7) {
        setSalidaSeleccionada(salida);
-       setModalActivo(7);
+       abrirModal(7, salida);
      }
  
    }, [idu, fechaSalida, salidas]);
@@ -581,6 +742,7 @@ export const SalidasProd = () => {
       </head>
       <main>
         <Navbar menu={menuObj} user={user} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Salidas de Productos</h2>
         
@@ -842,6 +1004,7 @@ export const SalidasProd = () => {
               <div style={{ gridArea: "divInpt1" }}>
                 <label className="sdpr-label">Producto <span className="obligatorio">*</span></label>
                           <BuscadorProducto
+                            initialValue={formDetalle.nombre_producto}
                             onSeleccionar={(prod) => {
                               setProductoElegido(prod);
                               if (prod) {
@@ -1122,6 +1285,22 @@ export const SalidasProd = () => {
           </section>
         </aside>
         )}  
+        {modalActivo === 8 && (
+                      <aside className="modal-codigo">
+                          <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
+                          {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+                          {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
+                          <h3 className="modal-c-mensaje">¿Desea registrar nuevo producto <span class="second-line"> con código <h6 className="subrayar-c">{codigoEscaneado}</h6>? </span></h3>
+                          <section className="modal-c-buttons">
+                            <button className="registrar-c-btn" onClick={() => {
+                              navigate(`/productos/${codigoEscaneado}/2`);
+                            }}>
+                              Registrar
+                            </button>
+                            <button className="cancelar-c-btn" onClick={()=>cerrarModal()} >Cancelar</button>
+                          </section>
+                      </aside> 
+        )}
       </div>
     </>
   )

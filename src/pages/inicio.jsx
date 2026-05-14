@@ -10,16 +10,24 @@ import usuariosIcon from "../images/icons/usuarios-icon.png"
 
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { Notificaciones } from '../components/Notificaciones'
 
 export const indexSelector = 0;
 
 export const Inicio = () => {
   const [eventos, setEventos] = useState([]);
   const [user, setUser] = useState({ nombre: "", rol: "" });
+  const [modalActiva, setModalActiva] = useState(false);
+  const [nuevaPass, setNuevaPass] = useState("");
+  const [confirmarPass, setConfirmarPass] = useState("");
+  const [erroresModal, setErroresModal] = useState({});
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const API_SESSION = `api/session.php`;
   const API_EVE =  `api/eventos.php`;
+  const API_CAMBIAR_PASS = `api/cambiar_contrasena.php`;
+  const API_CS         = `api/logout.php`;
   useEffect(() => {
     // consultar eventos
     fetch(API_EVE, {
@@ -43,7 +51,8 @@ export const Inicio = () => {
     .then(data => {
       console.log("Datos de sesión:", data);
       if (data.status === "ok") {
-        setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
+        setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil, cuenta_activa: data.cuenta_activa });
+
       } else {
         navigate("/iniciar_sesion");
       }
@@ -53,9 +62,70 @@ export const Inicio = () => {
       navigate("/iniciar_sesion");
     });
 
+    
   }, []);
+  
+  useEffect(() => {
+    if (user.cuenta_activa === 0) {
+      abrirModal();
+    }
+  }, [user]);
 
+  const abrirModal = () => {
+    setModalActiva(true);
+  }
 
+  const cerrarModal = () => {
+    setModalActiva(false);
+    setNuevaPass("");
+    setConfirmarPass("");
+    setErroresModal({});
+    cerrarSesion();
+  }
+
+  const handleCambiarPass = (e) => {
+    e.preventDefault();
+    fetch(API_CAMBIAR_PASS, {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        nuevaPass: nuevaPass,
+        confirmarPass: confirmarPass
+      })
+    })
+    .then(res => res.json())
+    .then(response => {
+      if (response.success) {
+        mostrarExito();
+      } else {
+        setErroresModal(response.errors);
+      }
+    })
+    .catch(error => console.error(error));
+  };
+
+  
+  const cerrarSesion = async () => {
+    try {
+      const response = await fetch(API_CS, {
+        credentials: "include"
+      });
+      const data = await response.json();
+      if (data.status === "success") {
+        navigate("/iniciar_sesion");
+      }
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
+  };
+
+  const mostrarExito = () => {
+    setMessage("Contraseña cambiada exitosamente. Por favor, inicie sesión nuevamente.");
+    setTimeout(() => cerrarModal(), 1500);
+  }
   // compute menu object based on user role
   const menuObj = (() => {
     switch (user.rol) {
@@ -79,6 +149,7 @@ export const Inicio = () => {
       <main>
         {/* determine menu based on role */}
         <Navbar user={user} menu={menuObj} />
+        <Notificaciones />
         <section className="secciones-dashboard">
           <h2 className="titulo-dashboard">¡Bienvenido al Dashboard!</h2>
           <section className="seccion1-proximas-eventos">
@@ -143,6 +214,33 @@ export const Inicio = () => {
         </section>
       </main>
       <Footer/>
+      <div className="modales-dashboards" style={{display: modalActiva ? 'flex' : 'none'}}>
+        {modalActiva && (
+        <aside className="modal-p">
+            <section className="modal-p-area">
+              <h1 className="modal-p-titulo">Cambiar contraseña</h1>
+                <h3 className="modal-p-mensaje">Por motivos de seguridad y privacidad le sugerimos que  cambie su contraseña a continuación.</h3>
+                <span className="exito-login-p">{message}</span>
+                <form className="p-form" onSubmit={(e) => {
+                  handleCambiarPass(e);
+                }}>
+                  <label className="p-label">Nueva Contraseña</label>
+                    <input className="p-input4" type="password" value ={nuevaPass} onChange={(e)=>setNuevaPass(e.target.value)}/>
+                    <span className="error-login-p">{erroresModal.nuevaPass ?? ""}</span>
+
+                    <label className="p-label">Confirmar Contraseña</label>
+                    <input className="p-input4" type="password" value ={confirmarPass} onChange={(e)=>setConfirmarPass(e.target.value)}/>
+                    <span className="error-login-p">{erroresModal.confirmarPass ?? ""}</span>
+
+                    {/* Error general */}
+                    <span className="error-login-p">{erroresModal.general ?? ""}</span>
+
+                    <input className="p-btn" type="submit" value="Cambiar Contraseña" />
+              </form>
+            </section>
+        </aside>
+        )}
+      </div>
     </>
   )
 }

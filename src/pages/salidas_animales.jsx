@@ -1,6 +1,6 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -18,6 +18,7 @@ import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
 import { form } from 'framer-motion/m'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = `api/salidas_animales.php`;
 const API_SESSION = `api/session.php`;
@@ -35,6 +36,7 @@ export const SalidaAnimales = () => {
     const [mensajeExito, setMensajeExito] = useState("");
     const [salidaSeleccionada, setSalidaSeleccionada] = useState(null);
     const [animales, setAnimales] = useState([]);
+    const { id, fecha } = useParams();
   
     const [formRegistrar, setFormRegistrar] = useState({
       fecha_salida: "", 
@@ -143,7 +145,8 @@ export const SalidaAnimales = () => {
     const salidasFiltradas = salidas.filter(salida => 
       salida.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       salida.motivo_salida.toLowerCase().includes(busqueda.toLowerCase()) ||
-      salida.responsable_salida.toLowerCase().includes(busqueda.toLowerCase())    
+      salida.responsable_salida.toLowerCase().includes(busqueda.toLowerCase()) ||
+      (busqueda === fecha ? salida.id_salida === id : salida.fecha_salida.includes(busqueda))
     );
   
     const handleBusqueda = (e) => {
@@ -188,6 +191,14 @@ export const SalidaAnimales = () => {
     const handleEliminar = () => {
       enviar("DELETE", { id_salida: salidaSeleccionada.id_salida }, "¡Salida eliminada correctamente!");
     };
+
+    useEffect(() => {
+        
+            if (!id || salidas.length === 0) return;
+        
+            setBusqueda(fecha);
+        
+      }, [id, fecha, salidas]);
   
 //     // ─── Render ──────────────────────────────────────────────────────────────────
   
@@ -198,6 +209,7 @@ export const SalidaAnimales = () => {
       </head>
       <main>
         <Navbar menu={menu} user={user} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Salidas Animales</h2>
           <section className="seccion1-busqueda-agregar">

@@ -14,62 +14,73 @@ import eventosIcon from "../images/icons/eventos-icon.png"
 // Componentes
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { Notificaciones } from '../components/Notificaciones'
 
 export const indexSelector = 1;
 
 export const Albergue = () => {
-//   const [actividad, setActividad] = useState([]);
-//   const [user, setUser] = useState({ nombre: "", rol: "" });
-//   const navigate = useNavigate();
-//   const API_SESSION = `api/session.php`;
-//   const API_ACT = `api/actividad_reciente.php`;
+  const [actividad, setActividad] = useState([]);
+  const [user, setUser] = useState({ nombre: "", rol: "" });
+  const navigate = useNavigate();
+  const API_SESSION = `api/session.php`;
+  const API_ACT = `api/actividad_reciente_albergue.php`;
 
-//   useEffect(() => {
-//       fetch(API_ACT,{
-//       credentials: "include"
-//       })
-//       .then(res => res.json())
-//       .then(response => {
-//         if (response.success) {
-//           setActividad(response.data);
-//         } else {
-//           console.error(response.error);
-//         }
-//       })
-//       .catch(error => console.error(error));
+  useEffect(() => {
+      fetch(API_ACT,{
+      credentials: "include"
+      })
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          setActividad(response.data);
+        } else {
+          console.error(response.error);
+        }
+      })
+      .catch(error => console.error(error));
 
-//       // consultar sesión
-//       fetch(API_SESSION, {
-//         credentials: "include"
-//       })
-//       .then(res => res.json())
-//       .then(data => {
-//         console.log("Datos de sesión:", data);
-//         if (data.status === "ok") {
-//           setUser({ nombre: data.usuario, rol: data.rol });
-//           if (data.rol !== "administrador" && data.rol !== "farmacéutico") {
-//             navigate("/inicio");
-//           }
-//         } else {
-//           navigate("/iniciar_sesion");
-//         }
-//       })
-//       .catch(error => {
-//         console.error("Error al obtener sesión:", error);
-//         navigate("/iniciar_sesion");
-//       });
-//     }, []);
+      // consultar sesión
+      fetch(API_SESSION, {
+        credentials: "include"
+      })
+      .then(res => res.json())
+      .then(data => {
+        console.log("Datos de sesión:", data);
+        if (data.status === "ok") {
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
+          if (data.rol !== "administrador" && data.rol !== "veterinario") {
+            navigate("/inicio");
+          }
+        } else {
+          navigate("/iniciar_sesion");
+        }
+      })
+      .catch(error => {
+        console.error("Error al obtener sesión:", error);
+        navigate("/iniciar_sesion");
+      });
+    }, []);
 
-//      const menuObj = (() => {
-//         switch (user.rol) {
-//           case "administrador":
-//             return MenuAdminAlbergue;
-//           case "farmacéutico":
-//             return MenuFarmaceutico;
-//           default:
-//             return {};
-//         }
-//       })();
+    const verActividad = (actividad, id,fecha) => {
+    const path = actividad === "Ingreso" 
+      ? "/ingreso_animales" 
+      : "/salida_animales";
+
+    navigate(
+    `${path}/${id}/${encodeURIComponent(fecha)}`
+   );
+   };  
+
+     const menuObj = (() => {
+        switch (user.rol) {
+          case "administrador":
+            return MenuAdminAlbergue;
+          case "veterinario":
+            return MenuAdminAlbergue;
+          default:
+            return {};
+        }
+      })();
 
   return (
     <>
@@ -77,7 +88,8 @@ export const Albergue = () => {
         <title>Albergue - Softcare</title>
       </head>
       <main>
-        <Navbar menu={MenuVeterinario} />
+        <Navbar menu={menuObj} user={user}/>
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Módulo Albergue</h2>
           <section className="seccion1-actividad-reciente">
@@ -93,7 +105,21 @@ export const Albergue = () => {
                 </tr>
               </thead>
               <tbody class="body-tabla-actividad-reciente">
-                 
+                 {actividad.length > 0 ? (
+                    actividad.map((item, index) => (
+                      <tr key={index}>
+                        <td>{item.animal}</td>
+                        <td>{item.fecha}</td>
+                        <td>{item.motivo}</td>
+                        <td>{item.actividad}</td>
+                        <td><button class="tabla-actividad-reciente-btn" onClick={()=>verActividad(item.actividad, item.id, item.fecha)}>Ver</button></td>
+                      </tr>
+                    ))
+                  ) : (
+                    <tr>
+                      <td colSpan="5">No hay actividad reciente</td>
+                    </tr>
+                  )}
               </tbody>
             </table>
           </section>

@@ -1,6 +1,6 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -17,6 +17,7 @@ import flecha from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = `api/inventario.php`;
 const API_SESSION = `api/session.php`;
@@ -32,6 +33,8 @@ export const Productos = () => {
     const [cargando, setCargando] = useState(false);
     const [mensajeExito, setMensajeExito] = useState("");
     const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+    const { code, op} = useParams();
+    const [codigoEscaneado, setCodigoEscaneado] = useState("");
   
     const [formRegistrar, setFormRegistrar] = useState({
       nombre: "", 
@@ -57,6 +60,10 @@ export const Productos = () => {
       setErrores({});
       setMensajeExito("");
       setProductoSeleccionado(producto);
+      if (code && num === 1) {
+        setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
+      }
+
       if (num === 2 && producto) {
         setFormEditar({
           nombre:      producto.nombre      ?? "",
@@ -128,17 +135,16 @@ export const Productos = () => {
     useEffect(() => {
   
     const applyScannedCode = () => {
-  
-      // Ignorar si no es escaneo real
-      if (!isScanningRef.current || scannedCodeRef.current.length < 6) {
+
+      const code = scannedCodeRef.current;
+
+      if (!code || code.length < 3) {
         scannedCodeRef.current = "";
         return;
       }
-  
-      const code = scannedCodeRef.current;
-  
-      console.log("Código escaneado automáticamente:", code);
-  
+
+      console.log("Código escaneado:", code);
+
       if (modalActiva === 1) {
         setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
       } 
@@ -148,87 +154,42 @@ export const Productos = () => {
       else {
         setBusqueda(code);
       }
-  
+
       scannedCodeRef.current = "";
-      isScanningRef.current = false;
     };
-  
-  
+
     const handleKeyDown = (e) => {
-      
-      const now = Date.now();
-      const interval = now - lastKeyTimeRef.current;
-      lastKeyTimeRef.current = now;
-  
-      // Si la velocidad es lenta se considera humano
-      if (interval > 80) {
-        scannedCodeRef.current = "";
-        isScanningRef.current = false;
-  
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
-        }
-      }
-  
-      if (e.key === "Enter") {
-  
-        if (isScanningRef.current) {
-          e.preventDefault();
-        }
-  
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
-        }
-  
-        applyScannedCode();
-        return;
-      }
-  
+
+    // Solo números
+    if (!/^[0-9]$/.test(e.key) && e.key !== "Enter") return;
+
+    // Si es número → acumular
       if (/^[0-9]$/.test(e.key)) {
-  
-        if (scannedCodeRef.current === "") {
-          isScanningRef.current = interval < 80;
-        }
-  
-        if (isScanningRef.current) {
-  
-          e.preventDefault();
-  
-          scannedCodeRef.current += e.key;
-  
-          if (scanTimeoutRef.current) {
-            clearTimeout(scanTimeoutRef.current);
-          }
-  
-          scanTimeoutRef.current = setTimeout(() => {
-            applyScannedCode();
-          }, 120);
-        }
-  
-      } 
-      else if (e.key === "Backspace") {
-  
-        if (isScanningRef.current) {
-          e.preventDefault();
-          scannedCodeRef.current = scannedCodeRef.current.slice(0, -1);
-        }
-  
-      } 
-      else {
-  
-        scannedCodeRef.current = "";
-        isScanningRef.current = false;
-  
+
+        scannedCodeRef.current += e.key;
+
+        // Reinicia timeout
         if (scanTimeoutRef.current) {
           clearTimeout(scanTimeoutRef.current);
-          scanTimeoutRef.current = null;
         }
+
+        // Si no llega ENTER, igual procesa
+        scanTimeoutRef.current = setTimeout(() => {
+          applyScannedCode();
+        }, 200);
+      }
+
+      // Si el lector manda ENTER (muchos lo hacen)
+      if (e.key === "Enter") {
+
+        if (scanTimeoutRef.current) {
+          clearTimeout(scanTimeoutRef.current);
+        }
+
+        applyScannedCode();
       }
     };
-  
-  
+    
     document.addEventListener("keydown", handleKeyDown);
   
     return () => {
@@ -238,8 +199,11 @@ export const Productos = () => {
         clearTimeout(scanTimeoutRef.current);
       }
     };
+
+
   
   }, [modalActiva]);
+  
   
     // ─── Menú ────────────────────────────────────────────────────────────────────
   
@@ -302,6 +266,19 @@ export const Productos = () => {
     const handleEliminar = () => {
       enviar("DELETE", { id_producto: productoSeleccionado.id_producto }, "¡Producto desactivado correctamente!");
     };
+
+    useEffect(() => {
+     
+        if (code && op) {
+          if (op === "1"){
+            setCodigoEscaneado(code);
+            setBusqueda(code);
+          }else if (op === "2") {
+            abrirModal(1)
+          };
+          
+        }
+      }, [code, op, productos]);
   
     // ─── Render ──────────────────────────────────────────────────────────────────
   
@@ -312,6 +289,7 @@ export const Productos = () => {
       </head>
       <main>
         <Navbar user={user} menu={menuObj} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Productos</h2>
           <section className="seccion1-busqueda-agregar">

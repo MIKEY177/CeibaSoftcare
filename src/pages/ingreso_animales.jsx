@@ -1,6 +1,6 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -18,6 +18,7 @@ import flecha from "../images/flecha_salir.png"
 import { Navbar } from '../components/Navbar.jsx'
 import { Footer } from '../components/Footer.jsx'
 import { Menu } from '../components/Menu.jsx'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = `api/ingreso_animales.php`;
 const API_SESSION = `api/session.php`;
@@ -35,6 +36,7 @@ export const IngresoAnimales = () => {
     const [cargando, setCargando] = useState(false);
     const [mensajeExito, setMensajeExito] = useState("");
     const [ingresoSeleccionado, setIngresoSeleccionado] = useState(null);
+    const { id, fecha } = useParams();
     const ingresoVacio = () => {
       const d = new Date();
       d.setMinutes(d.getMinutes() - d.getTimezoneOffset());
@@ -196,7 +198,8 @@ export const IngresoAnimales = () => {
     const ingresosFiltrados = ingresos.filter(ingreso =>
       ingreso.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       ingreso.motivo_ingreso.toLowerCase().includes(busqueda.toLowerCase()) ||
-      ingreso.fecha.includes(busqueda) 
+      (busqueda === fecha ? ingreso.id_ingreso === id : ingreso.fecha.includes(busqueda))
+      
     );
   
     const handleBusqueda = (e) => {
@@ -237,11 +240,15 @@ export const IngresoAnimales = () => {
       e.preventDefault();
       enviar("PUT", { id_ingreso: ingresoSeleccionado.id_ingreso, ...formEditar }, "¡Producto actualizado correctamente!");
     };
-  
-    const handleVer = (e) => {
-      navigate("/ver_ingreso_animales/" + e.id_ingreso);
-      
-    };
+
+      useEffect(() => {
+    
+        if (!id || ingresos.length === 0) return;
+    
+        setBusqueda(fecha);
+    
+      }, [id, fecha, ingresos]);
+
     // ─── Render ──────────────────────────────────────────────────────────────────
   
   return (
@@ -251,6 +258,7 @@ export const IngresoAnimales = () => {
       </head>
       <main>
         <Navbar menu={menuObj} user={user}/>
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Ingreso Animales</h2>
           <section className="seccion1-busqueda-agregar">
@@ -283,7 +291,7 @@ export const IngresoAnimales = () => {
                     <td>{ingreso.nombre}</td>
                     <td>{ingreso.motivo_ingreso}</td>
                     <td>{ingreso.fecha}</td>
-                    <td><button class="ver-detalles-btn" onClick={()=>handleVer(ingreso)}>Ver</button></td>
+                    <td><button class="ver-detalles-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
                     <td>
                       <div className='last-td-flex-content-wrapper'>
                         <figure className="editar-icono" onClick={() => abrirModal(2, ingreso)} style={{ cursor: "pointer" }}>
@@ -477,6 +485,7 @@ export const IngresoAnimales = () => {
 
         )}
           {/* ── MODAL 3: Detalle de ingreso Animal ──────────────────────────────────── */}
+        {modalActiva === 3 && ingresoSeleccionado && (
           
           <aside className='modal-detalle-ingreso'>
             <button className="volver-btn-ingreso-anim" onClick={cerrarModal}>
@@ -484,7 +493,7 @@ export const IngresoAnimales = () => {
               <h2>Volver</h2>
             </button>
             <h1 className="modal-aed-titulo">
-              Ingreso del animal [nombre_animal]
+              Ingreso del animal [{ingresoSeleccionado.nombre}]
             </h1>
             <table className="tabla-ver-ingreso-animal">
             <thead className="header-tabla-ingreso-animal">
@@ -496,9 +505,9 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.persona_reporta}*/}</th>
-                <th>{/*{ingreso.cedula_reporta}*/}</th>
-                <th>{/*{ingreso.direccion_reporta}*/}</th>
+                <th>{ingresoSeleccionado.persona_reporta}</th>
+                <th>{ingresoSeleccionado.cedula_reporta}</th>
+                <th>{ingresoSeleccionado.direccion_reporta}</th>
               </tr>
             </tbody>
             <thead className="header-tabla-ingreso-animal">
@@ -510,9 +519,9 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.telefono_reporta}*/}</th>
-                <th>{/*{ingreso.funcionario_autoriza}*/}</th>
-                <th>{/*{ingreso.cedula_realiza}*/}</th>
+                <th>{ingresoSeleccionado.telefono_reporta}</th>
+                <th>{ingresoSeleccionado.funcionario_autoriza}</th>
+                <th>{ingresoSeleccionado.cedula_realiza}</th>
               </tr>
             </tbody>
             <thead className="header-tabla-ingreso-animal">
@@ -524,13 +533,14 @@ export const IngresoAnimales = () => {
             </thead>
             <tbody className="body-tabla-ver-ingreso-animal">
               <tr>
-                <th>{/*{ingreso.fecha_hora_ingreso}*/}</th>
-                <th>{/*{ingreso.motivo_ingreso}*/}</th>
-                <th>{/*[{ingreso.fecha}] {ingreso.nombre}*/}</th>
+                <th>{ingresoSeleccionado.fecha_hora_ingreso}</th>
+                <th>{ingresoSeleccionado.motivo_ingreso}</th>
+                <th>{`[${ingresoSeleccionado.fecha}] ${ingresoSeleccionado.nombre}`}</th>
               </tr>
             </tbody>
           </table>
           </aside>
+        )}
       </div>
     </>
   )

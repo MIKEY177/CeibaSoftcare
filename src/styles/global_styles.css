@@ -606,3 +606,245 @@ footer{
     font-weight: 400;
     align-self: center;
 }
+
+.modales-dashboards{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    display: flex;
+    background-color: #00000065;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-codigo{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 1300px;
+    height: 700px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;   
+}
+
+.modal-codigo{
+    width: 500px;
+    height: 300px;
+}
+
+.volver-btn-prod{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    border: none;
+    padding: 5px 12px;
+    align-self: flex-start; 
+    cursor: pointer;
+}
+
+.volver-icono{
+    height: 14px;
+    width: 9px;
+    align-self: center;
+    margin-right: 10px;
+    transform: scale(1);
+}
+
+.modal-c-titulo{
+    color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 20px;  
+}
+
+
+.registrar-c-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 20px;
+    background-color: #eaaa49de;
+    color: #875000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1);
+    transition: transform 0.2s ease-in-out;
+}
+
+.registrar-c-btn{
+    transform: scale(1.15);
+}
+
+.cancelar-c-btn{
+    margin-top: 20px;
+    height: 40px;
+    width: max-content;
+    padding: 0 25px;
+    background-color: #e66377d7;
+    color: #740000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1.15);
+    transition: transform 0.2s ease-in-out;
+}
+
+
+
+.cancelar-c-btn:hover, .registrar-c-btn:hover{
+    transform: scale(1.2);
+    transition: transform 0.2s ease-in-out;
+}
+
+.modal-c-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 320px;
+}
+
+.modal-c-mensaje{
+    color: #212427;
+    font-size: 1.3rem;
+}
+
+.second-line{
+    display: flex;
+    color: #212427;
+    font-size: 1.3rem;
+}
+
+.subrayar-c{
+    font-size: 1.3rem;
+    margin: 0 5px;
+    text-decoration: underline;
+}
+
+.modal-p{
+    margin: auto;
+    background-color: #FFFFFF;
+    width: 700px;
+    height: 480px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px 4px #21242779;
+    padding: 30px;
+}
+
+.modal-p a{
+    display: flex;
+    width: max-content;
+    text-decoration: none;
+    color: #003338;
+    font-family: 'lato';
+    font-size: 0.8rem;
+    background-color: #0094a421;
+    border-radius: 10px;
+    padding: 5px 12px;
+}
+
+.modal-p-area{
+    width: 100%;
+    height: calc(100% - 100px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 50px 0;
+}
+
+.modal-p-titulo{
+    color: #048F9F;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.modal-p-mensaje{
+    color: #212427;
+    font-size: 1.2rem;
+    font-family: 'lato';
+    width: 505px;
+    height: 120px;
+}
+
+.p-form{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 500px;
+    margin-top: 20px;
+}
+
+.p-label{
+    color: #212427;
+    font-size: 1.3rem;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-left: 5px;
+}
+
+.p-input1, .p-input2, .p-input4 {
+    height: 40px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 10px;
+    z-index: 2;
+}
+
+.p-input3{
+    height: 40px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    text-decoration: none;
+    background-color: #F8F8F8;
+    margin-bottom: 20px;
+}
+
+.p-btn{
+    height: 40px;
+    width: max-content;
+    padding: 0 10px;
+    background-color: #eaaa49de;
+    color: #875000;
+    border-radius: 8px;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    align-self: center;
+    transform: scale(1);
+    transition: transform 0.1s ease-in-out;
+}
+
+.exito-login-p {
+    font-size: 1rem;
+    color: green;
+}
+
+.error-login-p {
+    font-size: 1rem;
+    color: red;
+}
