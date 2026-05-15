@@ -8,6 +8,12 @@ import { indexSelector as productosIndex} from "../pages/productos.jsx"
 import { indexSelector as entradasIndex } from '../pages/entradas_prod.jsx'
 import { indexSelector as salidasIndex} from "../pages/salidas_prod.jsx"
 import { indexSelector as eventosIndex } from '../pages/eventos.jsx'
+import { indexSelector as animalesIndex } from '../pages/animales.jsx'
+import { indexSelector as ajustesIndex } from '../pages/ajustes.jsx'
+import { indexSelector as usuariosIndex } from '../pages/usuarios.jsx'
+import { indexSelector as albergueIndex } from '../pages/albergue.jsx'
+import { indexSelector as ingresoanimalesIndex } from '../pages/ingreso_animales.jsx'
+import { indexSelector as salidasanimalesIndex } from '../pages/salidas_animales.jsx'
 
 export const Menu = (props) => {
 
@@ -21,7 +27,12 @@ export const Menu = (props) => {
   else if (pathname === '/entradas_prod') indexSelector = entradasIndex
   else if (pathname === '/salidas_prod') indexSelector = salidasIndex
   else if (pathname === '/eventos') indexSelector = eventosIndex
-  
+  else if (pathname === '/animales') indexSelector = animalesIndex
+  else if (pathname === '/ajustes') indexSelector = ajustesIndex
+  else if (pathname === '/usuarios') indexSelector = usuariosIndex
+  else if (pathname === '/albergue') indexSelector = albergueIndex
+  else if (pathname === '/ingreso_animales') indexSelector = ingresoanimalesIndex
+  else if (pathname === '/salida_animales') indexSelector = salidasanimalesIndex
 
   return (
     <>

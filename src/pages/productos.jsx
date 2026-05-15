@@ -1,286 +1,329 @@
 // Imports Base
-import React, { useEffect, useState, useRef } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import React, { useEffect, useState, useRef } from "react";
+import { Helmet } from "react-helmet-async";
+import CustomSelect from "../components/CustomSelect";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  MenuAdmin,
+  MenuAdminFarmacia,
+  MenuAdminAlbergue,
+  MenuFarmaceutico,
+  MenuVeterinario,
+} from "../utils/menu.jsx";
 
 // Estilos e imágenes
-import "../styles/global_styles.css"
-import "../styles/productos.css"
-import editarIcon from "../images/icons/editar.png"
-import desactivarIcon from "../images/icons/desactivar.png"
-import lupaBusqueda from "../images/lupa_busqueda.png"
-import barrasBusqueda from "../images/codigo_barras.png"
-import campoRestringido from "../images/candado.png"
-import flecha from "../images/flecha_salir.png"
+import "../styles/global_styles.css";
+import "../styles/productos.css";
+import editarIcon from "../images/icons/editar.png";
+import desactivarIcon from "../images/icons/desactivar.png";
+import lupaBusqueda from "../images/lupa_busqueda.png";
+import barrasBusqueda from "../images/codigo_barras.png";
+import campoRestringido from "../images/candado.png";
+import flecha from "../images/flecha_salir.png";
 
 // Componentes
-import { Navbar } from '../components/Navbar.jsx'
-import { Footer } from '../components/Footer.jsx'
-import { Menu } from '../components/Menu.jsx'
+import { Navbar } from "../components/Navbar.jsx";
+import { Footer } from "../components/Footer.jsx";
+import { Menu } from "../components/Menu.jsx";
+import { Notificaciones } from "../components/Notificaciones";
 
 const API = `api/inventario.php`;
 const API_SESSION = `api/session.php`;
 export const indexSelector = 2;
 
 export const Productos = () => {
-   const [user, setUser] = useState({ nombre: "", rol: "" });
-    const navigate = useNavigate();
-  
-    const [productos, setProductos] = useState([]);
-    const [modalActiva, setModalActiva] = useState(null);
-    const [errores, setErrores] = useState({});
-    const [cargando, setCargando] = useState(false);
-    const [mensajeExito, setMensajeExito] = useState("");
-    const [productoSeleccionado, setProductoSeleccionado] = useState(null);
-  
-    const [formRegistrar, setFormRegistrar] = useState({
-      nombre: "", 
-      descripcion: "", 
-      tipo_medida: "",
-    });
-    const [formEditar, setFormEditar] = useState({
-      nombre: "", 
-      descripcion: "", 
-      tipo_medida: "",
-    });
-  
-    const [busqueda, setBusqueda] = useState("");
-  
-    const scanTimeoutRef = useRef(null);
-    const scannedCodeRef = useRef("");
-    const lastKeyTimeRef = useRef(0); // timestamp of previous keystroke
-    const isScanningRef = useRef(false); // whether current sequence is treated as scanned input
-  
-    // ─── Helpers ────────────────────────────────────────────────────────────────
-  
-    const abrirModal = (num, producto = null) => {
-      setErrores({});
-      setMensajeExito("");
-      setProductoSeleccionado(producto);
-      if (num === 2 && producto) {
-        setFormEditar({
-          nombre:      producto.nombre      ?? "",
-          descripcion: producto.descripcion ?? "",
-          tipo_medida: producto.tipo_medida ?? "",
-          codigo_barras: producto.codigo_barras ?? "",
-          cantidad_por_unidad: producto.cantidad_por_unidad ?? "",
-        });
-      }
-      setModalActiva(num);
-    };
-  
-    const cerrarModal = () => {
-      setErrores({});
-      setMensajeExito("");
-      setModalActiva(null);
-      setProductoSeleccionado(null);
-  
-      setFormRegistrar({ 
-        nombre: "", 
-        descripcion: "", 
-        tipo_medida: "", 
-        codigo_barras: "", 
-        cantidad_por_unidad: "" 
+  const [user, setUser] = useState({ nombre: "", rol: "" });
+  const navigate = useNavigate();
+
+  const [productos, setProductos] = useState([]);
+  const [modalActiva, setModalActiva] = useState(null);
+  const [errores, setErrores] = useState({});
+  const [cargando, setCargando] = useState(false);
+  const [mensajeExito, setMensajeExito] = useState("");
+  const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const { code, op} = useParams();
+  const [codigoEscaneado, setCodigoEscaneado] = useState("");
+
+  const opcionesTipoMedida = [
+    { value: "ml", label: "ml" },
+    { value: "mg", label: "mg" },
+    { value: "g", label: "g" },
+    { value: "kg", label: "kg" },
+    { value: "L", label: "L" },
+    { value: "Unidades", label: "Unidades" },
+  ];
+
+  const [formRegistrar, setFormRegistrar] = useState({
+    nombre: "",
+    descripcion: "",
+    tipo_medida: "",
+    codigo_barras: "",
+    cantidad_por_unidad: "",
+  });
+  const [formEditar, setFormEditar] = useState({
+    nombre: "",
+    descripcion: "",
+    tipo_medida: "",
+    codigo_barras: "",
+    cantidad_por_unidad: "",
+  });
+
+  const [busqueda, setBusqueda] = useState("");
+
+  const scanTimeoutRef = useRef(null);
+  const scannedCodeRef = useRef("");
+
+  // ─── Helpers ────────────────────────────────────────────────────────────────
+
+  const abrirModal = (num, producto = null) => {
+    setErrores({});
+    setMensajeExito("");
+    setProductoSeleccionado(producto);
+    if (code && num === 1) {
+      setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
+    }
+    if (num === 2 && producto) {
+      setFormEditar({
+        nombre: producto.nombre ?? "",
+        descripcion: producto.descripcion ?? "",
+        tipo_medida: producto.tipo_medida ?? "",
+        codigo_barras: producto.codigo_barras ?? "",
+        cantidad_por_unidad: producto.cantidad_por_unidad ?? "",
       });
-  
-      setFormEditar({   
-        nombre: "", 
-        descripcion: "", 
-        tipo_medida: "", 
-        codigo_barras: "", 
-        cantidad_por_unidad: "" 
-      });
-    };
-  
-    const cargarProductos = () => {
-      fetch(API, { credentials: "include" })
-        .then(res => res.json())
-        .then(response => {
-          if (response.success) setProductos(response.data);
-          else console.error(response.error);
-        })
-        .catch(console.error);
-    };
-  
-    const mostrarExito = (msg) => {
-      setMensajeExito(msg);
-      setTimeout(() => cerrarModal(), 1500);
-    };
-  
-    // ─── Sesión ──────────────────────────────────────────────────────────────────
-  
-    useEffect(() => {
-      fetch(API_SESSION, { credentials: "include" })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "ok") {
-            setUser({ nombre: data.usuario, rol: data.rol });
-            if (data.rol === "veterinario") navigate("/farmacia");
-          } else {
-            navigate("/iniciar_sesion");
-          }
-        })
-        .catch(() => navigate("/iniciar_sesion"));
-    }, []);
-  
-    useEffect(() => { cargarProductos(); }, []);
-  
-    useEffect(() => {
-  
+    }
+    setModalActiva(num);
+  };
+
+  const cerrarModal = () => {
+    setErrores({});
+    setMensajeExito("");
+    setModalActiva(null);
+    setProductoSeleccionado(null);
+    setFormRegistrar({
+      nombre: "",
+      descripcion: "",
+      tipo_medida: "",
+      codigo_barras: "",
+      cantidad_por_unidad: "",
+    });
+    setFormEditar({
+      nombre: "",
+      descripcion: "",
+      tipo_medida: "",
+      codigo_barras: "",
+      cantidad_por_unidad: "",
+    });
+  };
+
+  const cargarProductos = () => {
+    fetch(API, { credentials: "include" })
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.success) setProductos(response.data);
+        else console.error(response.error);
+      })
+      .catch(console.error);
+  };
+
+  const mostrarExito = (msg) => {
+    setMensajeExito(msg);
+    setTimeout(() => cerrarModal(), 1500);
+  };
+
+  // ─── Sesión ──────────────────────────────────────────────────────────────────
+
+  useEffect(() => {
+    fetch(API_SESSION, { credentials: "include" })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.status === "ok") {
+          setUser({
+            nombre: data.usuario,
+            rol: data.rol,
+            foto_perfil: data.foto_perfil,
+          });
+          if (data.rol === "veterinario") navigate("/farmacia");
+        } else {
+          navigate("/iniciar_sesion");
+        }
+      })
+      .catch(() => navigate("/iniciar_sesion"));
+  }, []);
+
+  useEffect(() => {
+    cargarProductos();
+  }, []);
+
+  useEffect(() => {
     const applyScannedCode = () => {
-
       const code = scannedCodeRef.current;
-
       if (!code || code.length < 3) {
         scannedCodeRef.current = "";
         return;
       }
-
       console.log("Código escaneado:", code);
-
       if (modalActiva === 1) {
-        setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
-      } 
-      else if (modalActiva === 2) {
-        setFormEditar(prev => ({ ...prev, codigo_barras: code }));
-      } 
-      else {
+        setFormRegistrar((prev) => ({ ...prev, codigo_barras: code }));
+      } else if (modalActiva === 2) {
+        setFormEditar((prev) => ({ ...prev, codigo_barras: code }));
+      } else {
         setBusqueda(code);
       }
-
       scannedCodeRef.current = "";
     };
 
     const handleKeyDown = (e) => {
+      if (!/^[0-9]$/.test(e.key) && e.key !== "Enter") return;
 
-    // Solo números
-    if (!/^[0-9]$/.test(e.key) && e.key !== "Enter") return;
-
-    // Si es número → acumular
       if (/^[0-9]$/.test(e.key)) {
-
         scannedCodeRef.current += e.key;
-
-        // Reinicia timeout
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-        }
-
-        // Si no llega ENTER, igual procesa
+        if (scanTimeoutRef.current) clearTimeout(scanTimeoutRef.current);
         scanTimeoutRef.current = setTimeout(() => {
           applyScannedCode();
         }, 200);
       }
 
-      // Si el lector manda ENTER (muchos lo hacen)
       if (e.key === "Enter") {
-
-        if (scanTimeoutRef.current) {
-          clearTimeout(scanTimeoutRef.current);
-        }
-
+        if (scanTimeoutRef.current) clearTimeout(scanTimeoutRef.current);
         applyScannedCode();
       }
     };
-    
+
     document.addEventListener("keydown", handleKeyDown);
-  
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-  
-      if (scanTimeoutRef.current) {
-        clearTimeout(scanTimeoutRef.current);
-      }
+      if (scanTimeoutRef.current) clearTimeout(scanTimeoutRef.current);
     };
-
-
-  
   }, [modalActiva]);
-  
-    // ─── Menú ────────────────────────────────────────────────────────────────────
-  
-    const menuObj = (() => {
-      switch (user.rol) {
-        case "administrador": return MenuAdminFarmacia;
-        case "farmacéutico":  return MenuFarmaceutico;
-        default:              return {};
-      }
-    })();
-  
-    // ─── Búsqueda ─────────────────────────────────────────────────────────────────
-  
-    const productosFiltrados = productos.filter(producto =>
+
+  // ─── Menú ────────────────────────────────────────────────────────────────────
+
+  const menuObj = (() => {
+    switch (user.rol) {
+      case "administrador":
+        return MenuAdminFarmacia;
+      case "farmacéutico":
+        return MenuFarmaceutico;
+      default:
+        return {};
+    }
+  })();
+
+  // ─── Búsqueda ─────────────────────────────────────────────────────────────────
+
+  const productosFiltrados = productos.filter(
+    (producto) =>
       producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       producto.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
       producto.tipo_medida.toLowerCase().includes(busqueda.toLowerCase()) ||
-      producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase())
-    );
-  
-    const handleBusqueda = (e) => {
-      e.preventDefault();
-      // La búsqueda es en tiempo real con onChange, pero mantenemos esto si quieren buscar con botón
-    };
-  
-    // ─── Envío genérico al backend ───────────────────────────────────────────────
-  
-    const enviar = (method, body, onExito) => {
-      setCargando(true);
-      setErrores({});
-      fetch(API, {
-        method,
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
+      producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase()),
+  );
+
+  const handleBusqueda = (e) => {
+    e.preventDefault();
+  };
+
+  // ─── Envío genérico al backend ───────────────────────────────────────────────
+  const enviar = (method, body, onExito) => {
+    setCargando(true);
+    setErrores({});
+    fetch(API, {
+      method,
+      credentials: "include",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((response) => {
+        if (response.success) {
+          cargarProductos();
+          mostrarExito(onExito);
+        } else {
+          setErrores(response.errores ?? { general: "Error desconocido." });
+        }
       })
-        .then(res => res.json())
-        .then(response => {
-          if (response.success) {
-            cargarProductos();
-            mostrarExito(onExito);
-          } else {
-            setErrores(response.errores ?? { general: "Error desconocido." });
-          }
-        })
-        .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
-        .finally(() => setCargando(false));
-    };
-  
-    const handleRegistrar = (e) => {
-      e.preventDefault();
-      enviar("POST", formRegistrar, "¡Producto registrado correctamente!");
-    };
-  
-    const handleEditar = (e) => {
-      e.preventDefault();
-      enviar("PUT", { id_producto: productoSeleccionado.id_producto, ...formEditar }, "¡Producto actualizado correctamente!");
-    };
-  
-    const handleEliminar = () => {
-      enviar("DELETE", { id_producto: productoSeleccionado.id_producto }, "¡Producto desactivado correctamente!");
-    };
-  
-    // ─── Render ──────────────────────────────────────────────────────────────────
-  
+      .catch(() =>
+        setErrores({ general: "Error de conexión con el servidor." }),
+      )
+      .finally(() => setCargando(false));
+  };
+
+  const handleRegistrar = (e) => {
+    e.preventDefault();
+    enviar("POST", formRegistrar, "¡Producto registrado correctamente!");
+  };
+
+  const handleEditar = (e) => {
+    e.preventDefault();
+    enviar(
+      "PUT",
+      { id_producto: productoSeleccionado.id_producto, ...formEditar },
+      "¡Producto actualizado correctamente!",
+    );
+  };
+
+  const handleEliminar = () => {
+    enviar(
+      "DELETE",
+      { id_producto: productoSeleccionado.id_producto },
+      "¡Producto desactivado correctamente!",
+    );
+  };
+
+  useEffect(() => {
+     
+        if (code && op) {
+          if (op === "1"){
+            setCodigoEscaneado(code);
+            setBusqueda(code);
+          }else if (op === "2") {
+            abrirModal(1)
+          };
+          
+        }
+  }, [code, op, productos]);
+
+  // ✅ Se eliminó el useEffect con variables inexistentes (code, op, setCodigoEscaneado)
+
+  // ─── Render ──────────────────────────────────────────────────────────────────
+
   return (
     <>
-      <head>
+      <Helmet>
         <title>Productos - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar user={user} menu={menuObj} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Productos</h2>
           <section className="seccion1-busqueda-agregar">
             <form className="busqueda-form" onSubmit={handleBusqueda}>
-              <input className="busqueda-input1" type="text" name="busqueda" placeholder="Busca un producto" value={busqueda} onChange={(e) => setBusqueda(e.target.value)}/>
+              <input
+                className="busqueda-input1"
+                type="text"
+                name="busqueda"
+                placeholder="Busca un producto"
+                value={busqueda}
+                onChange={(e) => setBusqueda(e.target.value)}
+              />
               <button className="busqueda-icono" type="submit">
-                <img className="busqueda-icono-img" src={lupaBusqueda} alt=""/>
+                <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
-                <figure className="busqueda-barras-icono" style={{ cursor: "pointer" }}>
-                  <img className="busqueda-barras-icono-img" src={barrasBusqueda} alt=""/>
-                </figure>
+              <figure
+                className="busqueda-barras-icono"
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  className="busqueda-barras-icono-img"
+                  src={barrasBusqueda}
+                  alt=""
+                />
+              </figure>
             </form>
-              <button className="registrar-btn" onClick={() => abrirModal(1)}>Registrar Producto</button>
+            <button className="registrar-btn" onClick={() => abrirModal(1)}>
+              Registrar Producto
+            </button>
           </section>
 
           <table className="tabla-productos">
@@ -296,201 +339,457 @@ export const Productos = () => {
             <tbody className="body-tabla-productos">
               {productosFiltrados.length === 0 ? (
                 <tr>
-                  <td colSpan="6">{busqueda ? "No se encontraron productos que coincidan." : "No hay productos registrados."}</td>
+                  <td colSpan="6">
+                    {busqueda
+                      ? "No se encontraron productos que coincidan."
+                      : "No hay productos registrados."}
+                  </td>
                 </tr>
               ) : (
-                  productosFiltrados.map((producto) => (
-                <tr key={producto.id_producto}>
+                productosFiltrados.map((producto) => (
+                  <tr key={producto.id_producto}>
                     <td>{producto.nombre}</td>
                     <td>{producto.descripcion}</td>
-                    <td>{producto.cantidad_por_unidad} {producto.tipo_medida}</td>
+                    <td>
+                      {producto.cantidad_por_unidad} {producto.tipo_medida}
+                    </td>
                     <td>{producto.nombre_usuario}</td>
                     <td>
-                      <div className='last-td-flex-content-wrapper'>
-                        <figure className="editar-icono" onClick={() => abrirModal(2, producto)} style={{ cursor: "pointer" }}>
-                          <img className="editar-icono-img" src={editarIcon} alt="Editar" />
+                      <div className="last-td-flex-content-wrapper">
+                        <figure
+                          className="editar-icono"
+                          onClick={() => abrirModal(2, producto)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <img
+                            className="editar-icono-img"
+                            src={editarIcon}
+                            alt="Editar"
+                          />
                         </figure>
-                        <figure className="desactivar-icono" onClick={() => abrirModal(3, producto)} style={{ cursor: "pointer" }}>
-                          <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
+                        <figure
+                          className="desactivar-icono"
+                          onClick={() => abrirModal(3, producto)}
+                          style={{ cursor: "pointer" }}
+                        >
+                          <img
+                            className="desactivar-icono-img"
+                            src={desactivarIcon}
+                            alt="Desactivar"
+                          />
                         </figure>
                       </div>
                     </td>
-                 </tr>
+                  </tr>
                 ))
               )}
             </tbody>
           </table>
         </section>
       </main>
-    <Footer />
-             
-      <div className="modales-productos"style={{ display: modalActiva ? 'flex' : 'none' }}>
+      <Footer />
 
-        {modalActiva === 1 &&(
+      <div
+        className="modales-productos"
+        style={{ display: modalActiva ? "flex" : "none" }}
+      >
+        {modalActiva === 1 && (
           <aside className="modal-productos-registrar">
             <button className="volver-btn-prod" onClick={cerrarModal}>
-               <img className="volver-icono" src={flecha} alt="" />
-                <h2>Volver</h2>
+              <img className="volver-icono" src={flecha} alt="" />
+              <h2>Volver</h2>
             </button>
-            <h1 className="modal-ir-titulo">
-              Registre un nuevo Producto
-            </h1>
-            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
-            {errores.sesion  && <p style={{ color: "red" }}>{errores.sesion}</p>}
+            <h1 className="modal-ir-titulo">Registre un nuevo Producto</h1>
+            {mensajeExito && (
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
+            )}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
+            {errores.sesion && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
             <form className="ir-form" onSubmit={handleRegistrar}>
               <section className="ir-form-inputs-area">
-
-                <div style={{gridArea: "divInpt1"}}>
-                  <label className="ir-label" for="">Nombre del Producto<h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input1" type="text" value={formRegistrar.nombre} onChange={e => setFormRegistrar({ ...formRegistrar, nombre: e.target.value})}/>
+                <div style={{ gridArea: "divInpt1" }}>
+                  <label className="ir-label" htmlFor="">
+                    Nombre del Producto<h6 className="obligatorio">*</h6>
+                  </label>
+                  <input
+                    className="ir-input1"
+                    type="text"
+                    value={formRegistrar.nombre}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        nombre: e.target.value,
+                      })
+                    }
+                  />
                   <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
-                <div style={{gridArea: "divInpt2"}}>
-                  <label className="ir-label" for="">Descripción del Producto</label>
-                  <textarea className="ir-input2" name="ir-descripcion" value={formRegistrar.descripcion} onChange={e => setFormRegistrar({ ...formRegistrar, descripcion: e.target.value })}/>
-                  <span className="error-mensaje">{errores.descripcion ?? ""}</span>
+
+                <div style={{ gridArea: "divInpt2" }}>
+                  <label className="ir-label" htmlFor="">
+                    Descripción del Producto
+                  </label>
+                  <textarea
+                    className="ir-input2"
+                    name="ir-descripcion"
+                    value={formRegistrar.descripcion}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        descripcion: e.target.value,
+                      })
+                    }
+                  />
+                  <span className="error-mensaje">
+                    {errores.descripcion ?? ""}
+                  </span>
                 </div>
-                <div className="label-and-input-container" style={{gridArea: "divInpt3"}}> 
-                  <label className="ir-label" for="">Unidad de Medida<h6 className="obligatorio">*</h6></label>
-                  <select className="ir-input3" value={formRegistrar.tipo_medida} onChange={e => setFormRegistrar({ ...formRegistrar, tipo_medida: e.target.value })}>
-                    <option value="">-- Selecciona --</option>
-                    <option value="ml">ml</option>
-                    <option value="mg">mg</option>
-                    <option value="g">g</option>
-                    <option value="kg">kg</option>
-                    <option value="L">L</option>
-                    <option value="unidades">Unidades</option>
-                  </select>
-                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt3" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Unidad de Medida<h6 className="obligatorio">*</h6>
+                  </label>
+                  <CustomSelect
+                    options={opcionesTipoMedida}
+                    value={formRegistrar.tipo_medida}
+                    onChange={(value) =>
+                      setFormRegistrar((prev) => ({
+                        ...prev,
+                        tipo_medida: value,
+                      }))
+                    }
+                  />
+                  <span className="error-mensaje">
+                    {errores.tipo_medida ?? ""}
+                  </span>
                 </div>
-                <div className="label-and-input-container" style={{gridArea: "divInpt4"}}>
-                  <label className="ir-label" for="">Usuario que Registra</label>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt4" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Usuario que Registra
+                  </label>
                   <div className="union-input-icono">
-                    <input className="ir-input4" type="text" value={user.nombre} readOnly />
+                    <input
+                      className="ir-input4"
+                      type="text"
+                      value={user.nombre}
+                      readOnly
+                    />
                     <figure className="candado-icono">
-                      <img className="candado-icono-img" src={campoRestringido} alt=""/>
+                      <img
+                        className="candado-icono-img"
+                        src={campoRestringido}
+                        alt=""
+                      />
                     </figure>
                   </div>
                 </div>
-                <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
-                  <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input5" type="text" nvalue={formRegistrar.cantidad_por_unidad} onChange={e => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
-                  <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt5" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Cantidad por Unidad<h6 className="obligatorio">*</h6>
+                  </label>
+                  <input
+                    className="ir-input5"
+                    type="text"
+                    value={formRegistrar.cantidad_por_unidad}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        cantidad_por_unidad: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) => {
+                      if (
+                        !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                          e.key,
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                  <span className="error-mensaje">
+                    {errores.cantidad_por_unidad ?? ""}
+                  </span>
                 </div>
-                <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-    <label className="ir-label" htmlFor="">Código de Barras<h6 className="obligatorio">*</h6></label>
-    <div className="input-con-icono">
-        <input className="ir-input6 scan-capture" type="text"
-            value={formRegistrar.codigo_barras} 
-            onChange={e => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })} 
-            onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}
-        />
-        <figure className="codigo-barras-icono">
-            <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
-        </figure>
-    </div>
-    <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
-</div>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt6" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Código de Barras<h6 className="obligatorio">*</h6>
+                  </label>
+                  <div className="input-con-icono">
+                    <input
+                      className="ir-input6 scan-capture"
+                      type="text"
+                      value={formRegistrar.codigo_barras}
+                      onChange={(e) =>
+                        setFormRegistrar({
+                          ...formRegistrar,
+                          codigo_barras: e.target.value,
+                        })
+                      }
+                      onKeyDown={(e) => {
+                        if (
+                          !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                            e.key,
+                          )
+                        ) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    <figure className="codigo-barras-icono">
+                      <img
+                        className="codigo-barras-icono-img"
+                        src={barrasBusqueda}
+                        alt=""
+                      />
+                    </figure>
+                  </div>
+                  <span className="error-mensaje">
+                    {errores.codigo_barras ?? ""}
+                  </span>
+                </div>
               </section>
-              <input className="ir-btn" type="submit" value="Registrar Producto"/>
+              <input
+                className="ir-btn"
+                type="submit"
+                value="Registrar Producto"
+              />
             </form>
           </aside>
-        )}    
-        {modalActiva === 2 &&(
+        )}
+
+        {modalActiva === 2 && (
           <aside className="modal-productos-editar">
             <button className="volver-btn-prod" onClick={cerrarModal}>
               <img className="volver-icono" src={flecha} alt="" />
               <h2>Volver</h2>
             </button>
-            <h1 className="modal-ied-titulo">
-              Editar Producto Registrado
-            </h1>
+            <h1 className="modal-ied-titulo">Editar Producto Registrado</h1>
 
-            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+            {mensajeExito && (
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
+            )}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
 
             <form className="ied-form" onSubmit={handleEditar}>
               <section className="ied-form-inputs-area">
-                <div style={{gridArea: "divInpt1"}}>
-                  <label className="ied-label" for="">Nombre del Producto<h6 className="obligatorio">*</h6></label>
-                  <input className="ied-input1" type="text"value={formEditar.nombre} onChange={e => setFormEditar({ ...formEditar, nombre: e.target.value })}/>
+                <div style={{ gridArea: "divInpt1" }}>
+                  <label className="ied-label" htmlFor="">
+                    Nombre del Producto<h6 className="obligatorio">*</h6>
+                  </label>
+                  <input
+                    className="ied-input1"
+                    type="text"
+                    value={formEditar.nombre}
+                    onChange={(e) =>
+                      setFormEditar({ ...formEditar, nombre: e.target.value })
+                    }
+                  />
                   <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
 
-                <div style={{gridArea: "divInpt2"}}>
-                  <label className="ied-label" for="">Descripción del Producto</label>
-                  <textarea className="ied-input2" value={formEditar.descripcion} onChange={e => setFormEditar({ ...formEditar, descripcion: e.target.value })}/>
-                   <span className="error-mensaje">{errores.descripcion ?? ""}</span>
+                <div style={{ gridArea: "divInpt2" }}>
+                  <label className="ied-label" htmlFor="">
+                    Descripción del Producto
+                  </label>
+                  <textarea
+                    className="ied-input2"
+                    value={formEditar.descripcion}
+                    onChange={(e) =>
+                      setFormEditar({
+                        ...formEditar,
+                        descripcion: e.target.value,
+                      })
+                    }
+                  />
+                  <span className="error-mensaje">
+                    {errores.descripcion ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{gridArea: "divInpt3"}}>
-                  <label className="ied-label" for="">Unidad de Medida<h6 className="obligatorio">*</h6></label>
-                  <select className="ied-input5" value={formEditar.tipo_medida} onChange={e => setFormEditar({ ...formEditar, tipo_medida: e.target.value })}>
-                    <option value="">-- Selecciona --</option>
-                    <option value="ml">ml</option>
-                    <option value="mg">mg</option>
-                    <option value="g">g</option>
-                    <option value="kg">kg</option>
-                    <option value="L">L</option>
-                    <option value="unidades">Unidades</option>
-                  </select>
-                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt3" }}
+                >
+                  <label className="ied-label" htmlFor="">
+                    Unidad de Medida<h6 className="obligatorio">*</h6>
+                  </label>
+                  <CustomSelect
+                    options={opcionesTipoMedida}
+                    value={formEditar.tipo_medida}
+                    onChange={(value) =>
+                      setFormEditar({
+                        ...formEditar,
+                        tipo_medida: value,
+                      })
+                    }
+                  />
+                  <span className="error-mensaje">
+                    {errores.tipo_medida ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{gridArea: "divInpt4"}}>
-                  <label className="ied-label" for="">Usuario que Registra</label>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt4" }}
+                >
+                  <label className="ied-label" htmlFor="">
+                    Usuario que Registra
+                  </label>
                   <div className="union-input-icono">
-                    <input className="ied-input4" type="text"  value={user.nombre} readOnly />
+                    <input
+                      className="ied-input4"
+                      type="text"
+                      value={user.nombre}
+                      readOnly
+                    />
                     <figure className="candado-icono">
-                      <img className="candado-icono-img" src={campoRestringido}alt=""/>
+                      <img
+                        className="candado-icono-img"
+                        src={campoRestringido}
+                        alt=""
+                      />
                     </figure>
                   </div>
                 </div>
-              
-                <div className="label-and-input-container" style={{gridArea: "divInpt5"}}> 
-                  <label className="ir-label" for="">Cantidad por Unidad<h6 className="obligatorio">*</h6></label>
-                  <input className="ir-input5" type="text" value={formEditar.cantidad_por_unidad}
-                    onChange={e => setFormEditar({ ...formEditar, cantidad_por_unidad: e.target.value })} onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {e.preventDefault();}}}/>
-                    <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt5" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Cantidad por Unidad<h6 className="obligatorio">*</h6>
+                  </label>
+                  <input
+                    className="ir-input5"
+                    type="text"
+                    value={formEditar.cantidad_por_unidad}
+                    onChange={(e) =>
+                      setFormEditar({
+                        ...formEditar,
+                        cantidad_por_unidad: e.target.value,
+                      })
+                    }
+                    onKeyDown={(e) => {
+                      if (
+                        !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                          e.key,
+                        )
+                      ) {
+                        e.preventDefault();
+                      }
+                    }}
+                  />
+                  <span className="error-mensaje">
+                    {errores.cantidad_por_unidad ?? ""}
+                  </span>
                 </div>
-              
-    <div className="label-and-input-container" style={{gridArea: "divInpt6"}}> 
-    <label className="ir-label" htmlFor=""> Código de Barras<h6 className="obligatorio">*</h6></label>
-    <div className="input-con-icono">
-        <input className="ied-input6 scan-capture" type="text"
-            value={formEditar.codigo_barras} 
-            onChange={e => setFormEditar({ ...formEditar, codigo_barras: e.target.value })} 
-            onKeyDown={e => { if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) { e.preventDefault(); } }}
-        />
-        <figure className="codigo-barras-icono">
-            <img className="codigo-barras-icono-img" src={barrasBusqueda} alt=""/>
-        </figure>
-    </div>
-    <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
-</div>
+
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt6" }}
+                >
+                  <label className="ir-label" htmlFor="">
+                    Código de Barras<h6 className="obligatorio">*</h6>
+                  </label>
+                  <div className="input-con-icono">
+                    <input
+                      className="ied-input6 scan-capture"
+                      type="text"
+                      value={formEditar.codigo_barras}
+                      onChange={(e) =>
+                        setFormEditar({
+                          ...formEditar,
+                          codigo_barras: e.target.value,
+                        })
+                      }
+                      onKeyDown={(e) => {
+                        if (
+                          !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                            e.key,
+                          )
+                        ) {
+                          e.preventDefault();
+                        }
+                      }}
+                    />
+                    <figure className="codigo-barras-icono">
+                      <img
+                        className="codigo-barras-icono-img"
+                        src={barrasBusqueda}
+                        alt=""
+                      />
+                    </figure>
+                  </div>
+                  <span className="error-mensaje">
+                    {errores.codigo_barras ?? ""}
+                  </span>
+                </div>
               </section>
-              <input className="ied-btn" type="submit"  value={cargando ? "Guardando..." : "Realizar Cambios"} disabled={cargando} />
+              <input
+                className="ied-btn"
+                type="submit"
+                value={cargando ? "Guardando..." : "Realizar Cambios"}
+                disabled={cargando}
+              />
             </form>
           </aside>
         )}
 
-        {modalActiva === 3 &&(
+        {modalActiva === 3 && (
           <aside className="modal-productos-desactivar">
             <h1 className="modal-iel-titulo">Desactivar Producto Registrado</h1>
-            {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
-            <h3 className="modal-iel-mensaje">¿Desea desactivar &nbsp;<h6 className="subrayar">{productoSeleccionado?.nombre}</h6>?</h3>
+            {mensajeExito && (
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
+            )}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
+            <h3 className="modal-iel-mensaje">
+              ¿Desea desactivar &nbsp;
+              <h6 className="subrayar">{productoSeleccionado?.nombre}</h6>?
+            </h3>
             <section className="modal-buttons">
-              <button className="desactivar-btn" onClick={handleEliminar} disabled={cargando}>
+              <button
+                className="desactivar-btn"
+                onClick={handleEliminar}
+                disabled={cargando}
+              >
                 {cargando ? "Desactivando..." : "Desactivar"}
               </button>
-              <button className="cancelar-btn" onClick={cerrarModal}>Cancelar</button>
+              <button className="cancelar-btn" onClick={cerrarModal}>
+                Cancelar
+              </button>
             </section>
-          </aside> 
+          </aside>
         )}
       </div>
     </>
-  )
-}   
+  );
+};

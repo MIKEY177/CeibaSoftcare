@@ -1,27 +1,16 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
+require_once dirname(__DIR__) . '/config/session_config.php';
 
 header("Content-Type: application/json");
-
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal,
-    'httponly' => true,
-    'samesite' => 'Lax'
-]);
-session_start();
 
 $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && $_SERVER['APP_ENV'] === 'development'));
 
 $method = $_SERVER['REQUEST_METHOD'];
 
 // ── GET: listar productos ────────────────────────────────────────────────────
-if ($method === 'GET') {
+if ($method === 'GET' && !isset($_GET['codigo'])) {
     $sql = "SELECT p.id_producto, p.nombre, p.descripcion, p.tipo_medida,
                    p.cantidad_por_unidad, u.nombre AS nombre_usuario, p.codigo_barras
             FROM productos p
@@ -78,8 +67,8 @@ if ($method === 'POST') {
 
     if ($nombre === '') {
         $errores['nombre'] = "❗El nombre del producto es obligatorio.";
-    } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
+    } elseif (strlen($nombre) > 100) {
+        $errores['nombre'] = "❗El nombre no puede superar los 100 caracteres.";
     } else {
         $stmt_check = mysqli_prepare($conn, "SELECT id_producto FROM productos WHERE nombre = ? AND codigo_barras = ? AND activo = 1");
         mysqli_stmt_bind_param($stmt_check, "ss", $nombre, $codigo_barras);
@@ -91,8 +80,8 @@ if ($method === 'POST') {
         mysqli_stmt_close($stmt_check);
     }
 
-    if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
+    if (strlen($descripcion) > 100) {
+        $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
 
     if ($tipo_medida === '') {
@@ -111,9 +100,10 @@ if ($method === 'POST') {
         }
         mysqli_stmt_close($stmt_check_codigo);
     }
-
     if ($cantidad_por_unidad === '') {
-        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+      $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+    } elseif (!is_numeric($cantidad_por_unidad) || floatval($cantidad_por_unidad) <= 0) {
+      $errores['cantidad_por_unidad'] = "❗La cantidad por unidad debe ser un número positivo.";
     }
 
     if (!empty($errores)) {
@@ -155,14 +145,18 @@ if ($method === 'PUT') {
 
     if ($nombre === '') {
         $errores['nombre'] = "❗El nombre del producto es obligatorio.";
-    } elseif (strlen($nombre) > 150) {
-        $errores['nombre'] = "❗El nombre no puede superar los 150 caracteres.";
+    } elseif (strlen($nombre) > 100) {
+        $errores['nombre'] = "❗El nombre no puede superar los 100 caracteres.";
     }
 
-    if (strlen($descripcion) > 500) {
-        $errores['descripcion'] = "❗La descripción no puede superar los 500 caracteres.";
+    if (strlen($descripcion) > 100) {
+        $errores['descripcion'] = "❗La descripción no puede superar los 100 caracteres.";
     }
-
+    if ($cantidad_por_unidad ===''){
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
+    } elseif (!is_numeric($cantidad_por_unidad) || floatval($cantidad_por_unidad) <= 0) {
+        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad debe ser un número positivo.";
+    }
     if ($tipo_medida === '') {
         $errores['tipo_medida'] = "❗El tipo de medida es obligatorio.";
     }
@@ -180,10 +174,6 @@ if ($method === 'PUT') {
         mysqli_stmt_close($stmt_check_codigo);
     }
 
-    if ($cantidad_por_unidad === '') {
-        $errores['cantidad_por_unidad'] = "❗La cantidad por unidad es obligatoria.";
-    }
-
     if (!empty($errores)) {
         http_response_code(422);
         echo json_encode(["success" => false, "errores" => $errores], JSON_UNESCAPED_UNICODE);
@@ -197,14 +187,16 @@ if ($method === 'PUT') {
 
     if (mysqli_stmt_execute($stmt)) {
         if (mysqli_stmt_affected_rows($stmt) === 0) {
-            http_response_code(404);
-            echo json_encode([
-                "success" => false,
-                "errores" => ["general" => "❗Producto no encontrado."]
-            ], JSON_UNESCAPED_UNICODE);
-        } else {
-            echo json_encode(["success" => true], JSON_UNESCAPED_UNICODE);
-        }
+        echo json_encode([
+            "success" => true,
+            "mensaje" => "No se realizaron cambios."
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode([
+            "success" => true,
+            "mensaje" => "Producto actualizado correctamente."
+        ], JSON_UNESCAPED_UNICODE);
+    }
     } else {
         http_response_code(500);
         echo json_encode([
@@ -257,6 +249,50 @@ if ($method === 'DELETE') {
     exit;
 }
 
+// ── GET: obtener producto por código de barras ───────────────────────────────────────────────
+if ($method === 'GET' && isset($_GET['codigo'])) {
+    $codigo_barras = trim($_GET['codigo']);
+
+    if ($codigo_barras === '') {
+        http_response_code(400);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => "El código de barras es obligatorio."]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $stmt = mysqli_prepare($conn, "SELECT id_producto, nombre, descripcion, tipo_medida, cantidad_por_unidad FROM productos WHERE codigo_barras = ? AND activo = 1");
+    mysqli_stmt_bind_param($stmt, "s", $codigo_barras);
+    mysqli_stmt_execute($stmt);
+    $result = mysqli_stmt_get_result($stmt);
+
+    if (!$result) {
+        http_response_code(500);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => $debug ? mysqli_error($conn) : "❗Error en la consulta"]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    if (mysqli_num_rows($result) === 0) {
+        http_response_code(404);
+        echo json_encode([
+            "success" => false,
+            "errores" => ["general" => "❗Producto no encontrado."]
+        ], JSON_UNESCAPED_UNICODE);
+        exit;
+    }
+
+    $producto = mysqli_fetch_assoc($result);
+    echo json_encode(["success" => true, "data" => $producto], JSON_UNESCAPED_UNICODE);
+
+    mysqli_free_result($result);
+    mysqli_stmt_close($stmt);
+    mysqli_close($conn);
+    exit;
+}
 // ── Método no permitido ──────────────────────────────────────────────────────
 http_response_code(405);
 echo json_encode(["success" => false, "errores" => ["general" => "Método no permitido."]], JSON_UNESCAPED_UNICODE);

@@ -3,29 +3,12 @@
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
 require_once dirname(__DIR__) . "/config/env.php";
-
-// Detectar entorno local
-$isLocal = (
-    $_SERVER['REMOTE_ADDR'] === '127.0.0.1' ||
-    $_SERVER['REMOTE_ADDR'] === '::1'
-);
-
-// Configuración de sesión segura
-session_set_cookie_params([
-    'lifetime' => 3600,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // HTTPS en Render
-    'httponly' => true,
-    'samesite' => 'lax' 
-]);
-
-session_start();
+require_once dirname(__DIR__) . "/config/session_config.php";
 
 header("Content-Type: application/json");
 
 // Cargar variables de entorno si existen
-$envFile = __DIR__ . "/../.env";
+$envFile = __DIR__ . "/../../.env.development";
 if (file_exists($envFile)) {
     loadEnv($envFile);
 }
@@ -95,12 +78,13 @@ function sendToN8n($email, $code) {
     ]);
 
     curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($payload));
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
     $response = curl_exec($ch);
     $error = curl_error($ch);
     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    curl_close($ch);
 
     if ($error) {
         return ["success" => false, "error" => $error];

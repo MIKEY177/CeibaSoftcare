@@ -1,0 +1,88 @@
+.secciones-area-gestion-examenes-fisicos{
+    width: 1000px;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly; /* se puede quitar y cambiar si se quiere posicionar mas precisamente */
+    align-items: center;
+    padding: 0 50px;
+}
+
+.seccion1-ver-historia-medica{
+    width: 95%;
+    justify-content: end;
+    margin: 0 0 2rem 0;
+}
+
+.titulo-examenes-fisicos-modal{
+    margin: 2rem;
+}
+
+.tabla-detalles-examenes-fisicos {
+    width: 90%;
+    max-width: 1000px;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 3px solid #D49538;
+    border-radius: 15px;
+    overflow: hidden;
+    font-family: 'Lato', sans-serif;
+}
+
+.header-tabla-detalles-examenes-fisicos {
+    background-color: #FFF8E2;
+}
+
+.header-tabla-detalles-examenes-fisicos td {
+    height: 70px;
+    padding: 15px 20px;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: #212427;
+    border-bottom: 2px solid #D49538;
+    border-right: 2px solid #D49538;
+    background-color: #FFF8E2;
+}
+
+.header-tabla-detalles-examenes-fisicos td:last-child {
+    border-right: none;
+}
+
+
+.body-tabla-detalles-examenes-fisicos {
+    background-color: #FFFFFF;
+}
+
+.body-tabla-detalles-examenes-fisicos th {
+    padding: 20px;
+    border-bottom: 2px solid #D49538;
+    border-right: 2px solid #D49538;
+    background-color: #FFFFFF;
+    font-weight: normal;
+    height: 150px;
+}
+
+.body-tabla-detalles-examenes-fisicos th:last-child {
+    border-right: none;
+}
+
+.body-tabla-detalles-examenes-fisicos:last-child th {
+    border-bottom: none;
+}
+
+.header-tabla-detalles-examenes-fisicos:first-child td:first-child {
+    border-top-left-radius: 12px;
+}
+
+.header-tabla-detalles-examenes-fisicos:first-child td:last-child {
+    border-top-right-radius: 12px;
+}
+
+.body-tabla-detalles-examenes-fisicos:last-child th:first-child {
+    border-bottom-left-radius: 12px;
+}
+
+.body-tabla-detalles-examenes-fisicos:last-child th:last-child {
+    border-bottom-right-radius: 12px;
+}

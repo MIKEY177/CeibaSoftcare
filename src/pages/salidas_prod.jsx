@@ -1,6 +1,8 @@
 // Imports Base
+import { motion } from "framer-motion"
 import React, { useEffect, useState, useRef} from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
+import { Helmet } from "react-helmet-async";
 import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
 
 // Estilos e imágenes
@@ -16,10 +18,12 @@ import flecha from "../images/flecha_salir.png"
 // Componentes
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
+import { Notificaciones } from '../components/Notificaciones'
 
 const API = '/api/salidas_completas.php';
 const API_DET = '/api/detalles_salidas.php';
 const API_PRODUCTOS = '/api/productos_stock_busqueda.php';
+const API_PROD_COD = `/api/inventario.php`
 const API_SESSION = '/api/session.php';
 
 export const indexSelector = 4;
@@ -52,7 +56,9 @@ const BuscadorProducto = ({ onSeleccionar, initialValue }) => {
   const [mostrarResultados, setMostrarResultados] = useState(false);
   const primeraVez = useRef(true);
   const wrapperRef = useRef(null);
-
+  useEffect(() => {
+      setQuery(initialValue || "");
+    }, [initialValue]);
   useEffect(() => {
     if (primeraVez.current) {
       primeraVez.current = false;
@@ -157,6 +163,8 @@ export const SalidasProd = () => {
   const [detalleSeleccionado, setDetalleSeleccionado] = useState(null);
   
   // ── Formularios ─────────────────────────────────────────────────────────────
+  const [codigoEscaneado, setCodigoEscaneado] = useState("");
+
   const [formSalida,      setFormSalida]      = useState(salidaVacia());
   const [listaDetalles,    setListaDetalles]    = useState([]);
   const [formDetalle,      setFormDetalle]      = useState(detalleVacio);
@@ -166,9 +174,17 @@ export const SalidasProd = () => {
   const [formEditarDetalle, setFormEditarDetalle] = useState(detalleVacio);
   const [historial, setHistorial] = useState([]);
   const [productoElegidoEditar, setProductoElegidoEditar] = useState(null);
-  
+  const { id, fecha, nombre_producto } = useParams();
+  const idu = id || null;
+  const fechaSalida = fecha || null;
+  const nombreProducto = nombre_producto || null;
   const [origenDetalle, setOrigenDetalle] = useState(null); // 'memoria' | 'bd'
+  const scannedCodeRef = useRef("");
+  const isScanningRef = useRef(false);
+  const lastKeyTimeRef = useRef(0);
+  const scanTimeoutRef = useRef(null);
 
+  
   const volver = () => {
     if (historial.length === 0) return;
       const anterior = historial[historial.length - 1];
@@ -181,7 +197,7 @@ export const SalidasProd = () => {
       .then(r => r.json())
       .then(data => {
         if (data.status === "ok") {
-          setUser({ nombre: data.usuario, rol: data.rol });
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "farmacéutico") navigate("/inicio");
         } else navigate("/iniciar_sesion");
       })
@@ -383,43 +399,53 @@ export const SalidasProd = () => {
   };
 
   // ── POST: registrar salida + detalles ───────────────────────────────────────
-  const handleRegistrar = (e) => {
-    e.preventDefault();
-    const errs = {};
-    if (!formSalida.fecha_hora)    errs.fecha_hora = "❗La fecha es obligatoria.";
-    if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
-    if (Object.keys(errs).length > 0) { 
-      setErrores(errs); return; 
+  const btnRegistrarRef = useRef(null);
+ const handleRegistrar = () => {
+  if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = true;
+
+  const errs = {};
+  if (!formSalida.fecha_hora)     errs.fecha_hora = "❗La fecha es obligatoria.";
+  if (listaDetalles.length === 0) errs.detalles   = "❗Agrega al menos un producto.";
+  if (Object.keys(errs).length > 0) {
+    setErrores(errs);
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+    return;
+  }
+
+  setCargando(true);
+  setErrores({});
+
+  fetch(API, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      fecha_hora:    formSalida.fecha_hora,
+      observaciones: formSalida.observaciones,
+      detalles: listaDetalles.map(d => ({
+        id_producto1:          d.id_producto1,
+        cantidad_presentacion: d.cantidad_presentacion,
+        cantidad_total:        d.cantidad_total,
+        motivo:                d.motivo,
+      })),
+    }),
+  })
+  .then(r => r.json())
+  .then(res => {
+    if (res.success) {
+      cargarSalidas();
+      mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
+    } else {
+      setErrores(res.errores ?? { general: "Error desconocido." });
+      if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
     }
-    setCargando(true);
-    setErrores({});
-    fetch(API, {
-      method: "POST",
-      credentials: "include",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fecha_hora:    formSalida.fecha_hora,
-        observaciones: formSalida.observaciones,
-        detalles: listaDetalles.map(d => ({
-          id_producto1:          d.id_producto1,
-          cantidad_presentacion: d.cantidad_presentacion,
-          cantidad_total:        d.cantidad_total,
-          motivo:                d.motivo,
-        })),
-      }),
-    })
-    .then(r => r.json())
-    .then(res => {
-        if (res.success) {
-          cargarSalidas();
-          mostrarExito(`¡Salida registrada con ${res.detalles_registrados} producto(s)!`, cerrarModal);
-        } else {
-          setErrores(res.errores ?? { general: "Error desconocido." });
-        }
-      })
-      .catch(() => setErrores({ general: "❗Error de conexión con el servidor." }))
-      .finally(() => setCargando(false));
-  };
+  })
+  .catch(() => {
+    setErrores({ general: "❗Error de conexión con el servidor." });
+    if (btnRegistrarRef.current) btnRegistrarRef.current.disabled = false;
+  })
+  .finally(() => setCargando(false));
+};
 
   // ── PUT: editar cabecera de salida ──────────────────────────────────────────
   const handleEditar = (e) => {
@@ -536,17 +562,203 @@ export const SalidasProd = () => {
 
   // ── Filtro tabla principal ───────────────────────────────────────────────────
   const salidasFiltradas = salidas.filter(e =>
-    (e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase())
+    ((e.fecha_hora    ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
+    (e.observaciones ?? "").toLowerCase().includes(busqueda.toLowerCase()) ) 
   );
+
+ const buscarProductoPorCodigo = (codigo) => {
+ 
+   fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
+     credentials: "include"
+   })
+     .then(response => response.json())
+     .then(data => {
+ 
+     console.log("Respuesta escáner:", data);
+ 
+     if (data.success) {
+ 
+       const prod = data.data;
+
+       if (modalActivo === 1 || modalActivo === 2) {
+          abrirModal(4);
+          setProductoElegido(prod);
+
+          setFormDetalle(prev => ({
+            ...prev,
+            id_producto1: prod.id_producto,
+            nombre_producto: prod.nombre,
+            tipo_medida: prod.tipo_medida,
+            cantidad_por_unidad: prod.cantidad_por_unidad,
+            cantidad_presentacion: "",
+            cantidad_total: "",
+          }));
+      }
+ 
+       // Modal registrar
+       if (modalActivo === 4) {
+ 
+         setProductoElegido(prod);
+ 
+         setFormDetalle(prev => ({
+           ...prev,
+           id_producto1: prod.id_producto,
+           nombre_producto: prod.nombre,
+           tipo_medida: prod.tipo_medida,
+           cantidad_por_unidad: prod.cantidad_por_unidad,
+           cantidad_presentacion: "",
+           cantidad_total: "",
+         }));
+ 
+       }
+ 
+       // Modal editar
+       if (modalActivo === 5) {
+ 
+         setProductoElegidoEditar(prod);
+ 
+         setFormEditarDetalle(prev => ({
+           ...prev,
+           id_producto1: prod.id_producto,
+           nombre_producto: prod.nombre,
+           tipo_medida: prod.tipo_medida,
+           cantidad_por_unidad: prod.cantidad_por_unidad,
+           cantidad_presentacion: "",
+           cantidad_total: "",
+         }));
+       }
+ 
+       if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 1 && modalActivo !== 2) {
+           navigate(`/productos/${codigo}/1`)
+       }
+ 
+       setErrores({});
+ 
+     } else {
+ 
+       setErrores({
+         general: `No se encontró el producto con código ${codigo}`
+       });
+       if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 1 && modalActivo !== 2) {
+         setCodigoEscaneado(codigo);
+         abrirModal(8);
+       }
+     }
+   })
+   };
+   useEffect(() => {
+ 
+   const applyScannedCode = () => {
+     console.log("APPLY", scannedCodeRef.current);
+ 
+     if (scannedCodeRef.current.length < 6) {
+ 
+       scannedCodeRef.current = "";
+       return;
+     }
+ 
+     const code = scannedCodeRef.current;
+ 
+     buscarProductoPorCodigo(code);
+ 
+     scannedCodeRef.current = "";
+     isScanningRef.current = false;
+   };
+ 
+   const handleKeyDown = (e) => {
+ 
+     console.log("TECLA:", e.key);
+ 
+     // ENTER
+     if (e.key === "Enter") {
+ 
+       if (scanTimeoutRef.current) {
+         clearTimeout(scanTimeoutRef.current);
+       }
+ 
+       applyScannedCode();
+       return;
+     }
+ 
+     // SOLO números
+     if (!/^[0-9]$/.test(e.key)) return;
+ 
+     const now = Date.now();
+ 
+     // Primera tecla
+     if (lastKeyTimeRef.current === 0) {
+ 
+       isScanningRef.current = true;
+ 
+     } else {
+ 
+       const interval = now - lastKeyTimeRef.current;
+ 
+       console.log("INTERVAL:", interval);
+ 
+       // Escritura humana
+       if (interval > 120) {
+ 
+         scannedCodeRef.current = "";
+       }
+     }
+ 
+     lastKeyTimeRef.current = now;
+ 
+     scannedCodeRef.current += e.key;
+ 
+     console.log("CODIGO:", scannedCodeRef.current);
+ 
+     // Timeout
+     if (scanTimeoutRef.current) {
+       clearTimeout(scanTimeoutRef.current);
+     }
+ 
+     scanTimeoutRef.current = setTimeout(() => {
+ 
+       applyScannedCode();
+ 
+     }, 150);
+   };
+ 
+   document.addEventListener("keydown", handleKeyDown);
+ 
+   return () => {
+ 
+     document.removeEventListener("keydown", handleKeyDown);
+ 
+     if (scanTimeoutRef.current) {
+       clearTimeout(scanTimeoutRef.current);
+     }
+   };
+ 
+ }, [modalActivo]);
+ useEffect(() => {
+ 
+     if (!idu || salidas.length === 0) return;
+ 
+     setBusqueda(fechaSalida || "");
+ 
+     const salida = salidas.find(
+       (e) => Number(e.id_salida) === Number(idu)
+     );
+     
+ 
+     if (salida && modalActivo !== 7) {
+       setSalidaSeleccionada(salida);
+       abrirModal(7, salida);
+     }
+ 
+   }, [idu, fechaSalida, salidas]);
 
   return (
     <>
-      <head>
+      <Helmet>
         <title>Salidas de Productos - Softcare</title>
-      </head>
+      </Helmet>
       <main>
         <Navbar menu={menuObj} user={user} />
+        <Notificaciones />
         <section className="secciones-area-gestion">
           <h2 className="titulo-dashboard">Salidas de Productos</h2>
         
@@ -605,7 +817,7 @@ export const SalidasProd = () => {
         {/* ── MODAL 1: Registrar Salida ──────────────────────────────────── */}
         {modalActivo === 1 && (
         <aside className="modal-salida-registrar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-re" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -615,7 +827,7 @@ export const SalidasProd = () => {
           <span className="error-mensaje">{errores.general ?? ""}</span>
           <span className="error-mensaje">{errores.sesion ?? ""}</span>
         
-          <form className="spr-form" onSubmit={handleRegistrar}>
+          <form className="spr-form" onSubmit={e => e.preventDefault()}>
             <section className="spr-form-inputs-area">
               <div style={{ gridArea: "divInpt1" }}>
                 <label className="spr-label">Fecha y Hora de Salida <span className="obligatorio">*</span></label>
@@ -632,7 +844,7 @@ export const SalidasProd = () => {
                 <span className="error-mensaje">{errores.observaciones ?? ""}</span>
               </div>
               <section style={{ gridArea: "divInpt3" }} className="spr-form-detalles-area">
-                <div className="spr-form-detalles-header">
+                <div className="spr-form-detalles-header-re">
                   <h2>Productos de la Salida</h2>
                   <button type="button" className="spr-agregar-detalles-btn" onClick={() => abrirModal(4)}>
                     Agregar Producto
@@ -678,18 +890,24 @@ export const SalidasProd = () => {
                 </table>
               </section>
             </section>
-            <input className="epr-btn" type="submit"
-                value={cargando ? "Registrando..."
-                  : `Registrar Salida${listaDetalles.length > 0 ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})` : ""}`}
-                disabled={cargando}
-            />
+            <button
+  ref={btnRegistrarRef}
+  className="epr-btn"
+  type="button"
+  onClick={handleRegistrar}
+>
+  {cargando ? "Registrando..."
+    : `Registrar Salida${listaDetalles.length > 0
+        ? ` (${listaDetalles.length} producto${listaDetalles.length > 1 ? "s" : ""})`
+        : ""}`}
+</button>
           </form>
         </aside>
         )}
         {/* ── MODAL 2: Ver / Editar Salida ──────────────────────────────── */}
         {modalActivo === 2 && (
         <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={cerrarModal}>
+          <button className="volver-btn-sal-prod-ed" type="button" onClick={cerrarModal}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -768,8 +986,8 @@ export const SalidasProd = () => {
         {modalActivo === 3 && (
         <aside className="modal-salida-desactivar">
           <h1 className="modal-epel-titulo">Desactivar Salida Registrada</h1>
-          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°{salidaSeleccionada?.id_salida}
-            <span className="subrayar">{""}</span>?
+          <h3 className="modal-epel-mensaje"> ¿Desea desactivar la Salida N°
+            <span className="subrayar">{salidaSeleccionada?.id_salida}</span>?
           </h3>
 
           {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}       
@@ -802,6 +1020,7 @@ export const SalidasProd = () => {
               <div style={{ gridArea: "divInpt1" }}>
                 <label className="sdpr-label">Producto <span className="obligatorio">*</span></label>
                           <BuscadorProducto
+                            initialValue={formDetalle.nombre_producto}
                             onSeleccionar={(prod) => {
                               setProductoElegido(prod);
                               if (prod) {
@@ -864,7 +1083,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{  cursor: "not-allowed" }}
                     placeholder={productoElegido ? "Ingresa la cantidad" : "Selecciona un producto primero"}
                     value={formDetalle.cantidad_total !== ""
                       ? `${formDetalle.cantidad_total} ${productoElegido?.tipo_medida ?? ""}` : "" }
@@ -962,7 +1181,7 @@ export const SalidasProd = () => {
                 </label>
                 <div className="union-input-icono">
                   <input className="sdpr-input6" type="text" readOnly
-                    style={{ background: "#f5f5f5", cursor: "not-allowed" }}
+                    style={{cursor: "not-allowed" }}
                     value={formEditarDetalle.cantidad_total !== "" 
                       ? `${formEditarDetalle.cantidad_total} ${formEditarDetalle.tipo_medida ?? ''}` : ''}
                   />
@@ -1014,8 +1233,8 @@ export const SalidasProd = () => {
         )}
         {/* modal 7 */}
         {modalActivo === 7 && (
-        <aside className="modal-salida-editar">
-          <button className="volver-btn-sal-prod" type="button" onClick={volver}>
+        <aside className="modal-salida-ver">
+          <button className="volver-btn-sal-prod-ver" type="button" onClick={volver}>
             <img className="volver-icono" src={flecha} alt="" />
             <h2>Volver</h2>
           </button>
@@ -1024,12 +1243,12 @@ export const SalidasProd = () => {
           <section className="sped-form-inputs-area">
             <div style={{ gridArea: "divInpt1" }}>
               <label className="sped-label">Fecha y Hora</label>
-              <input className="sped-input1" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
+              <input className="sped-input1-ver" type="datetime-local" value={salidaSeleccionada?.fecha_hora ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed" }} />
             </div>
         
             <div style={{ gridArea: "divInpt2" }}>
               <label className="sped-label">Observaciones</label>
-              <textarea className="sped-input2" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
+              <textarea className="sped-input2-ver" value={salidaSeleccionada?.observaciones ?? ""} readOnly style={{ background: "#f5f5f5", cursor: "not-allowed", resize: "none" }} />
             </div>
         
             <section style={{ gridArea: "divInpt3" }} className="sped-form-detalles-area">
@@ -1052,14 +1271,29 @@ export const SalidasProd = () => {
                       <td colSpan="5">No hay detalles disponibles</td>
                     </tr>
                   ) : (
-                    salidaSeleccionada?.detalles?.map((detalle, index) => (
-                      <tr key={index}>
-                        <td>{detalle.nombre_producto}</td>
-                        <td>{detalle.cantidad_presentacion}</td>
-                        <td>{detalle.cantidad_total}</td>
-                        <td>{detalle.motivo}</td>
-                      </tr>
-                    ))
+                    salidaSeleccionada?.detalles?.map(det => {
+                      const esResaltadoBusqueda = nombreProducto && det.nombre_producto.toLowerCase().includes(nombreProducto.toLowerCase());
+                      const sinFiltro = !nombreProducto;
+                      if (esResaltadoBusqueda) {
+                        return (
+                          <motion.tr key={det.id_detalle_salida} initial={{ backgroundColor: "#3693a8b7" }} animate={{ backgroundColor: "#ffffff" }} transition={{ duration: 0.7, delay: 0.5, ease: "easeOut" }}>
+                            <td>{det.nombre_producto}</td>
+                            <td>{det.cantidad_presentacion}</td>
+                            <td>{det.cantidad_total}</td>
+                            <td>{det.motivo}</td>
+                          </motion.tr>
+                        );
+                      }else if (sinFiltro) {  
+                        return (
+                        <tr key={det.id_detalle_salida}>
+                          <td>{det.nombre_producto}</td>
+                          <td>{det.cantidad_presentacion}</td>
+                          <td>{det.cantidad_total}</td>
+                          <td>{det.motivo}</td>
+                        </tr>
+                        );
+                    }
+                    })
                   )}
                 </tbody>
               </table>
@@ -1067,6 +1301,22 @@ export const SalidasProd = () => {
           </section>
         </aside>
         )}  
+        {modalActivo === 8 && (
+                      <aside className="modal-codigo">
+                          <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
+                          {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+                          {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
+                          <h3 className="modal-c-mensaje">¿Desea registrar nuevo producto <span class="second-line"> con código <h6 className="subrayar-c">{codigoEscaneado}</h6>? </span></h3>
+                          <section className="modal-c-buttons">
+                            <button className="registrar-c-btn" onClick={() => {
+                              navigate(`/productos/${codigoEscaneado}/2`);
+                            }}>
+                              Registrar
+                            </button>
+                            <button className="cancelar-c-btn" onClick={()=>cerrarModal()} >Cancelar</button>
+                          </section>
+                      </aside> 
+        )}
       </div>
     </>
   )

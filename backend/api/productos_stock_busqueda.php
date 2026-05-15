@@ -1,20 +1,9 @@
 <?php
 require_once dirname(__DIR__) . '/config/cors.php';
 require_once dirname(__DIR__) . '/config/conexion.php';
+require_once dirname(__DIR__) . '/config/session_config.php';
 
 header("Content-Type: application/json");
-$host = $_SERVER['HTTP_HOST'] ?? '';
-$isLocal = strpos($host, 'localhost') !== false;
-$isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
-
-session_set_cookie_params([
-    'lifetime' => 0 ,
-    'path' => '/',
-    'domain' => $isLocal ? '' : $_SERVER['HTTP_HOST'],
-    'secure' => !$isLocal, // True en Render (HTTPS), False en Local
-    'httponly' => true,
-    'samesite' =>'Lax' // None es necesario para Cross-Site en Render
-]);
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
