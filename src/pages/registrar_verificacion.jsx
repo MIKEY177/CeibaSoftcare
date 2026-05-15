@@ -128,6 +128,7 @@ export const RegistrarVerificacion = () => {
       descripcion: "",
     });
     setImagen(null);
+    setTimeout(() => navigate("/verificaciones"), 1500);
   };
 
   // ─── Envío al backend ─────────────────────────────────────────────────────────
@@ -408,11 +409,10 @@ export const RegistrarVerificacion = () => {
                   htmlFor="registro_fotografico"
                 >
                   {imagen ? (
-                    <figure className="subir-icono-rft">
+                    <figure className="subir-icono-prev">
                       <img
                         src={URL.createObjectURL(imagen)}
-                        className="subir-icono-img"
-                        style={{ maxHeight: 115, borderRadius: 8 }}
+                        alt="Registro fotográfico a subir"
                       />
                     </figure>
                   ) : (

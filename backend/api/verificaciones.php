@@ -139,19 +139,35 @@ if ($method === 'POST') {
             exit;
         }
 
-        $carpeta = dirname(__DIR__) . '/uploads/verificaciones/';
-        if (!is_dir($carpeta)) mkdir($carpeta, 0755, true);
+            $file = $_FILES['registro_fotografico']['tmp_name'];
+            $cloud_name = env('CLOUDINARY_CLOUD_NAME');
+            $upload_preset = env('CLOUDINARY_UPLOAD_PRESET_REGISTROS'); // sin firma (unsigned)
 
-        $nombreArchivo = uniqid('verif_', true) . '.' . $extension;
-        $rutaFinal     = $carpeta . $nombreArchivo;
+            $url = "https://api.cloudinary.com/v1_1/$cloud_name/image/upload";
 
-        if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
-            http_response_code(500);
-            echo json_encode(["success" => false, "errores" => ["registro_fotografico" => "❗Error al guardar la imagen."]], JSON_UNESCAPED_UNICODE);
-            exit;
-        }
+            $postFields = [
+                'file' => new CURLFile($file),
+                'upload_preset' => $upload_preset
+            ];
 
-        $registro_fotografico = 'uploads/verificaciones/' . $nombreArchivo;
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
+
+
+            $response = curl_exec($ch);
+            
+                if (curl_errno($ch)) {
+                    echo json_encode(["status" => "error", "message" => curl_error($ch)]);
+                    exit;
+                }
+            
+            $registro_fotografico = json_decode($response, true)['secure_url'] ?? null;
     }
 
     $stmt = mysqli_prepare(
@@ -277,35 +293,37 @@ if (
 
         exit;
     }
+    $file = $_FILES['registro_fotografico']['tmp_name'];
+    $cloud_name = env('CLOUDINARY_CLOUD_NAME');
+    $upload_preset = env('CLOUDINARY_UPLOAD_PRESET_REGISTROS'); // sin firma (unsigned)
 
-    $carpeta = dirname(__DIR__) . '/uploads/verificaciones/';
+    $url = "https://api.cloudinary.com/v1_1/$cloud_name/image/upload";
 
-    if (!is_dir($carpeta)) {
-        mkdir($carpeta, 0755, true);
-    }
+    $postFields = [
+        'file' => new CURLFile($file),
+        'upload_preset' => $upload_preset
+    ];
 
-    $nombreArchivo =
-        uniqid('verif_', true) . '.' . $extension;
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
-    $rutaFinal = $carpeta . $nombreArchivo;
 
-    if (!move_uploaded_file($archivo['tmp_name'], $rutaFinal)) {
 
-        http_response_code(500);
+    $response = curl_exec($ch);
+    
+        if (curl_errno($ch)) {
+            echo json_encode(["status" => "error", "message" => curl_error($ch)]);
+            exit;
+        }
+    
+    $registro_fotografico = json_decode($response, true)['secure_url'] ?? null;
 
-        echo json_encode([
-            "success" => false,
-            "errores" => [
-                "registro_fotografico" =>
-                "❗Error al guardar la imagen."
-            ]
-        ]);
-
-        exit;
-    }
-
-    $registro_fotografico =
-        'uploads/verificaciones/' . $nombreArchivo;
+    
 }
 
 // ── UPDATE ───────────────────────────────────────────────
