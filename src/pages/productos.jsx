@@ -41,6 +41,8 @@ export const Productos = () => {
   const [cargando, setCargando] = useState(false);
   const [mensajeExito, setMensajeExito] = useState("");
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
+  const { code, op} = useParams();
+  const [codigoEscaneado, setCodigoEscaneado] = useState("");
 
   const opcionesTipoMedida = [
     { value: "ml", label: "ml" },
@@ -77,6 +79,9 @@ export const Productos = () => {
     setErrores({});
     setMensajeExito("");
     setProductoSeleccionado(producto);
+    if (code && num === 1) {
+      setFormRegistrar(prev => ({ ...prev, codigo_barras: code }));
+    }
     if (num === 2 && producto) {
       setFormEditar({
         nombre: producto.nombre ?? "",
@@ -264,6 +269,21 @@ export const Productos = () => {
       "¡Producto desactivado correctamente!",
     );
   };
+
+  useEffect(() => {
+     
+        if (code && op) {
+          if (op === "1"){
+            setCodigoEscaneado(code);
+            setBusqueda(code);
+          }else if (op === "2") {
+            abrirModal(1)
+          };
+          
+        }
+  }, [code, op, productos]);
+
+  // ✅ Se eliminó el useEffect con variables inexistentes (code, op, setCodigoEscaneado)
 
   // ─── Render ──────────────────────────────────────────────────────────────────
 

@@ -580,6 +580,20 @@ export const EntradasProd = () => {
     if (data.success) {
 
       const prod = data.data;
+      if (modalActiva === 1 || modalActiva === 2) {
+          abrirModal(4);
+          setProductoElegido(prod);
+
+          setFormDetalle(prev => ({
+            ...prev,
+            id_producto1: prod.id_producto,
+            nombre_producto: prod.nombre,
+            tipo_medida: prod.tipo_medida,
+            cantidad_por_unidad: prod.cantidad_por_unidad,
+            cantidad_presentacion: "",
+            cantidad_total: "",
+          }));
+      }
 
       // Modal registrar
       if (modalActiva === 4) {
@@ -614,7 +628,7 @@ export const EntradasProd = () => {
         }));
       }
 
-      if (modalActiva !== 4 && modalActiva !== 5){
+      if (modalActiva !== 4 && modalActiva !== 5 && modalActiva !== 1 && modalActiva !== 2) {
           navigate(`/productos/${codigo}/1`)
       }
 
@@ -625,7 +639,7 @@ export const EntradasProd = () => {
       setErrores({
         general: `No se encontró el producto con código ${codigo}`
       });
-      if (modalActiva !== 4 && modalActiva !== 5){
+      if (modalActiva !== 4 && modalActiva !== 5 && modalActiva !== 1 && modalActiva !== 2) {
         setCodigoEscaneado(codigo);
         abrirModal(8);
       }

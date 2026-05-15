@@ -35,6 +35,7 @@ export const Verificaciones = () => {
     useState(null);
   const [busqueda, setBusqueda] = useState("");
   const enviandoRef = useRef(false);
+  const [imagenAmpliada, setImagenAmpliada] = useState(null);
 
   // ─── Sesión ──────────────────────────────────────────────────────────────────
 
@@ -327,15 +328,42 @@ export const Verificaciones = () => {
                 </div>
                 {verificacionSeleccionada?.registro_fotografico && (
                   <div className="img-registro-fotografico">
+                    <strong>Registro Fotográfico:</strong>
                     <img
-                      src={`http://localhost/CeibaSoftcare/backend/${verificacionSeleccionada.registro_fotografico}`}
+                      src={verificacionSeleccionada.registro_fotografico}
                       alt="Registro fotográfico"
+                      className="img-preview-verificacion"
+                      onClick={() =>
+                        setImagenAmpliada(verificacionSeleccionada.registro_fotografico)
+                      }
                     />
                   </div>
                 )}
               </div>
             </div>
           </aside>
+        )}
+        {imagenAmpliada && (
+          <div
+            className="modal-imagen-overlay"
+            onClick={() => setImagenAmpliada(null)}
+          >
+            <div
+              className="modal-imagen-contenido"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button className="volver-btn-anim" onClick={() => setImagenAmpliada(null)}>
+                <img className="volver-icono" src={flecha} alt="" />
+                <h2>Volver</h2>
+              </button>
+
+              <img
+                src={imagenAmpliada}
+                alt="Imagen ampliada"
+                className="imagen-ampliada"
+              />
+            </div>
+          </div>
         )}
       </div>
     </>

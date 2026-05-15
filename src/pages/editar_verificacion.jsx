@@ -444,11 +444,10 @@ console.log(imagenActual);
                       />
                     </figure>
                   ) : imagenActual ? (
-                    <figure className="subir-icono-rft">
+                    <figure className="subir-icono-prev">
                       <img
-                        src={`http://localhost/CeibaSoftcare/backend/${imagenActual}`}
-                        className="subir-icono-img"
-                        style={{ maxHeight: 115, borderRadius: 8 }}
+                        src={imagenActual}
+                        alt="Registro fotográfico actual"
                       />
                     </figure>
                   ) : (
