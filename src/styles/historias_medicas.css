@@ -452,16 +452,3 @@
     width: 100%;
     height: 100%;
 }
-/* Fin Modales */
-
-.modales-historias-medicas{
-    display: none;
-}
-
-.modal-historias-medicas-registrar{
-    display: none;
-}  
-
-.modal-historias-medicas-editar{
-    display: none;
-}

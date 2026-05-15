@@ -20,6 +20,7 @@ const estilosBase = {
       border: '3px solid #0094A4',
     },
   }),
+
   menu: (base) => ({
     ...base,
     borderRadius: '8px',
@@ -28,24 +29,29 @@ const estilosBase = {
     fontFamily: 'inherit',
     marginTop: '2px',
   }),
+
   menuList: (base) => ({
     ...base,
     maxHeight: '220px',
     overflowY: 'auto',
     padding: 0,
     borderRadius: '8px',
+
     '::-webkit-scrollbar': {
       width: '6px',
     },
+
     '::-webkit-scrollbar-track': {
       background: '#f0f0f0',
       borderRadius: '8px',
     },
+
     '::-webkit-scrollbar-thumb': {
       backgroundColor: '#aeababbf',
       borderRadius: '8px',
     },
   }),
+
   option: (base, state) => ({
     ...base,
     backgroundColor: state.isFocused ? '#f5f5f5' : 'white',
@@ -54,23 +60,36 @@ const estilosBase = {
     fontFamily: 'inherit',
     fontSize: '1.15rem',
   }),
+
   singleValue: (base) => ({
     ...base,
     fontFamily: 'inherit',
     fontSize: '1.15rem',
     color: '#212427',
   }),
+
   placeholder: (base) => ({
     ...base,
     fontFamily: 'inherit',
     fontSize: '1.15rem',
     color: '#aaa',
   }),
+
   indicatorSeparator: () => ({ display: 'none' }),
 };
-export default function CustomSelect({ onChange, value, options, placeholder = "Seleccionar...", ...props }) {
-  // Convierte el value string a objeto { value, label } que espera react-select
-  const valorActual = options.find(o => o.value === value) ?? null;
+
+export default function CustomSelect({
+  onChange,
+  value,
+  options = [],
+  placeholder = "Seleccionar...",
+  ...props
+}) {
+
+  const valorActual =
+    options.find(
+      (o) => String(o.value) === String(value)
+    ) || null;
 
   return (
     <Select
@@ -79,7 +98,9 @@ export default function CustomSelect({ onChange, value, options, placeholder = "
       placeholder={placeholder}
       noOptionsMessage={() => 'Sin resultados'}
       value={valorActual}
-      onChange={(opcion) => onChange(opcion ? opcion.value : '')}
+      onChange={(opcion) =>
+        onChange(opcion ? opcion.value : '')
+      }
       className="ied-select"
       classNamePrefix="custom-select"
       {...props}

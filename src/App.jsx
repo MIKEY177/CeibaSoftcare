@@ -19,7 +19,7 @@ import { IngresoAnimales } from "./pages/ingreso_animales.jsx";
 import { HistoriasMedicas } from "./pages/historias_medicas.jsx";
 import { VerHistoriaMedicas } from "./pages/ver_historias_medicas.jsx";
 import { Albergue } from "./pages/albergue.jsx";
-import {Ajustes} from "./pages/ajustes.jsx";
+import { Ajustes } from "./pages/ajustes.jsx";
 import { Usuarios } from "./pages/usuarios.jsx";
 
 function App() {
@@ -29,7 +29,11 @@ function App() {
         <meta charSet="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous"/>
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
           rel="stylesheet"
@@ -44,20 +48,41 @@ function App() {
           <Route path="/productos" element={<Productos />} />
           <Route path="/productos/:code/:op" element={<Productos />} />
           <Route path="/entradas_prod" element={<EntradasProd />} />
-          <Route path="/entradas_prod/:id/:fecha/:nombre_producto" element={<EntradasProd />} />
+          <Route
+            path="/entradas_prod/:id/:fecha/:nombre_producto"
+            element={<EntradasProd />}
+          />
           <Route path="/salidas_prod" element={<SalidasProd />} />
-          <Route path="/salidas_prod/:id/:fecha/:nombre_producto" element={<SalidasProd />} />
+          <Route
+            path="/salidas_prod/:id/:fecha/:nombre_producto"
+            element={<SalidasProd />}
+          />
           <Route path="/eventos" element={<Eventos />} />
           <Route path="/animales" element={<Animales />} />
           <Route path="/verificaciones" element={<Verificaciones />} />
-          <Route  path="/registrar_verificacion" element={<RegistrarVerificacion />} />
+          <Route
+            path="/registrar_verificacion"
+            element={<RegistrarVerificacion />}
+          />
           <Route path="/salida_animales" element={<SalidaAnimales />} />
-          <Route path="/salida_animales/:id/:fecha" element={<SalidaAnimales />} />
+          <Route
+            path="/salida_animales/:id/:fecha"
+            element={<SalidaAnimales />}
+          />
           <Route path="/ingreso_animales" element={<IngresoAnimales />} />
-          <Route path="/ingreso_animales/:id/:fecha" element={<IngresoAnimales />} />
+          <Route
+            path="/ingreso_animales/:id/:fecha"
+            element={<IngresoAnimales />}
+          />
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
-          <Route path="/ver_historias_medicas" element={<VerHistoriaMedicas />} />
-          <Route path="/editar_verificacion/:id" element={<EditarVerificacion />} /> 
+          <Route
+            path="/ver_historias_medicas/:id"
+            element={<VerHistoriaMedicas />}
+          />
+          <Route
+            path="/editar_verificacion/:id"
+            element={<EditarVerificacion />}
+          />
           <Route path="/albergue" element={<Albergue />} />
           <Route path="/ajustes" element={<Ajustes />} />
           <Route path="/usuarios" element={<Usuarios />} />
