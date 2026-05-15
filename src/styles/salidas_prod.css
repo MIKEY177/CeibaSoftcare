@@ -635,4 +635,54 @@
     min-height: 20px;
     display: block;
 }
-/* Fin Modales */
+            /* RESPONSIVE FROM HERE */
+
+
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media (1280px <= width <=1919px) {
+
+    .busqueda-input1 {
+        width: 300px;
+    }
+
+    .tabla-salidas {
+        height: 555px;
+    }
+
+    .header-tabla-salidas {
+        font-size: 1.2rem;
+    }
+
+    .body-tabla-salidas {
+        height: 500px;
+    }
+
+    .body-tabla-salidas td{
+        font-size: 0.95rem;
+    }
+
+    .ver-detalles-btn {
+        width: 110px;
+        height: 30px;
+        font-size: 1rem;
+    }
+
+    .modal-salida-registrar, .modal-salida-editar, .modal-salida-ver {
+        width: 1200px;
+    }
+
+    .volver-btn-sal-prod-re, .volver-btn-sal-prod-ed, .volver-btn-sal-prod-ver {
+        transform: translate(-530px, -30px);
+    }
+
+    .volver-btn-sal-prod-re{
+        transform: translate(-530px, -15px); 
+    }
+
+    .spr-form, .sped-form {
+        width: 1150px;
+    }
+
+}

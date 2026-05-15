@@ -289,10 +289,6 @@
     transform: translate(-580px, -15px); 
 }
 
-.volver-btn-entr-prod-ver{
-    transform: translate(-580px, -30px); 
-}
-
 .volver-btn-entr-det-prod{
     display: flex;
     width: max-content;
@@ -634,3 +630,57 @@
     display: block;
 }
 /* Fin Modales */
+
+
+
+            /* RESPONSIVE FROM HERE */
+
+
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media (1280px <= width <=1919px) {
+
+    .busqueda-input1 {
+        width: 300px;
+    }
+
+    .tabla-entradas {
+        height: 555px;
+    }
+
+    .header-tabla-entradas {
+        font-size: 1.2rem;
+    }
+
+    .body-tabla-entradas {
+        height: 500px;
+    }
+
+    .body-tabla-entradas td{
+        font-size: 0.95rem;
+    }
+
+    .ver-detalles-btn {
+        width: 110px;
+        height: 30px;
+        font-size: 1rem;
+    }
+
+    .modal-entrada-registrar, .modal-entrada-editar, .modal-entrada-ver {
+        width: 1200px;
+    }
+
+    .volver-btn-entr-prod-re, .volver-btn-entr-prod-ed, .volver-btn-entr-prod-ver {
+        transform: translate(-530px, -30px);
+    }
+
+    .volver-btn-entr-prod-re{
+        transform: translate(-530px, -15px); 
+    }
+
+    .epr-form, .eped-form {
+        width: 1150px;
+    }
+
+}

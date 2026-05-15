@@ -709,3 +709,44 @@
 } */
 /* Fin Modales */
 
+
+
+            /* RESPONSIVE FROM HERE */
+
+
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media (1280px <= width <=1919px) {
+
+    .busqueda-input1 {
+        width: 300px;
+    }
+
+    .tabla-eventos {
+        height: 555px;
+    }
+
+    .header-tabla-eventos {
+        font-size: 1.2rem;
+    }
+
+    .body-tabla-eventos {
+        height: 500px;
+    }
+
+    .body-tabla-eventos td{
+        font-size: 0.95rem;
+    }
+
+    .er-form, .eed-form {
+        width: 850px;
+    }
+
+    .er-form-inputs-area, .eed-form-inputs-area {
+        gap: 5px 50px;
+        align-self: center;
+        width: 850px;
+    }
+
+}
