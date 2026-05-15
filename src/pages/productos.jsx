@@ -2,8 +2,14 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Helmet } from "react-helmet-async";
 import CustomSelect from "../components/CustomSelect";
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { MenuAdmin, MenuAdminFarmacia, MenuAdminAlbergue, MenuFarmaceutico, MenuVeterinario } from "../utils/menu.jsx"
+import { Link, useNavigate, useParams } from "react-router-dom";
+import {
+  MenuAdmin,
+  MenuAdminFarmacia,
+  MenuAdminAlbergue,
+  MenuFarmaceutico,
+  MenuVeterinario,
+} from "../utils/menu.jsx";
 
 // Estilos e imágenes
 import "../styles/global_styles.css";
@@ -16,10 +22,10 @@ import campoRestringido from "../images/candado.png";
 import flecha from "../images/flecha_salir.png";
 
 // Componentes
-import { Navbar } from '../components/Navbar.jsx'
-import { Footer } from '../components/Footer.jsx'
-import { Menu } from '../components/Menu.jsx'
-import { Notificaciones } from '../components/Notificaciones'
+import { Navbar } from "../components/Navbar.jsx";
+import { Footer } from "../components/Footer.jsx";
+import { Menu } from "../components/Menu.jsx";
+import { Notificaciones } from "../components/Notificaciones";
 
 const API = `api/inventario.php`;
 const API_SESSION = `api/session.php`;
@@ -44,7 +50,7 @@ export const Productos = () => {
     { value: "g", label: "g" },
     { value: "kg", label: "kg" },
     { value: "L", label: "L" },
-    { value: "unidades", label: "Unidades" },
+    { value: "Unidades", label: "Unidades" },
   ];
 
   const [formRegistrar, setFormRegistrar] = useState({
@@ -194,19 +200,23 @@ export const Productos = () => {
 
   const menuObj = (() => {
     switch (user.rol) {
-      case "administrador": return MenuAdminFarmacia;
-      case "farmacéutico":  return MenuFarmaceutico;
-      default:              return {};
+      case "administrador":
+        return MenuAdminFarmacia;
+      case "farmacéutico":
+        return MenuFarmaceutico;
+      default:
+        return {};
     }
   })();
 
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
 
-  const productosFiltrados = productos.filter(producto =>
-    producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-    producto.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
-    producto.tipo_medida.toLowerCase().includes(busqueda.toLowerCase()) ||
-    producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase()),
+  const productosFiltrados = productos.filter(
+    (producto) =>
+      producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
+      producto.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
+      producto.tipo_medida.toLowerCase().includes(busqueda.toLowerCase()) ||
+      producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase()),
   );
 
   const handleBusqueda = (e) => {
@@ -214,8 +224,6 @@ export const Productos = () => {
   };
 
   // ─── Envío genérico al backend ───────────────────────────────────────────────
-
-  // ✅ Se eliminó la cadena .then() duplicada que causaba error en runtime
   const enviar = (method, body, onExito) => {
     setCargando(true);
     setErrores({});
@@ -234,7 +242,9 @@ export const Productos = () => {
           setErrores(response.errores ?? { general: "Error desconocido." });
         }
       })
-      .catch(() => setErrores({ general: "Error de conexión con el servidor." }))
+      .catch(() =>
+        setErrores({ general: "Error de conexión con el servidor." }),
+      )
       .finally(() => setCargando(false));
   };
 
@@ -245,11 +255,19 @@ export const Productos = () => {
 
   const handleEditar = (e) => {
     e.preventDefault();
-    enviar("PUT", { id_producto: productoSeleccionado.id_producto, ...formEditar }, "¡Producto actualizado correctamente!");
+    enviar(
+      "PUT",
+      { id_producto: productoSeleccionado.id_producto, ...formEditar },
+      "¡Producto actualizado correctamente!",
+    );
   };
 
   const handleEliminar = () => {
-    enviar("DELETE", { id_producto: productoSeleccionado.id_producto }, "¡Producto desactivado correctamente!");
+    enviar(
+      "DELETE",
+      { id_producto: productoSeleccionado.id_producto },
+      "¡Producto desactivado correctamente!",
+    );
   };
 
   useEffect(() => {
@@ -292,8 +310,15 @@ export const Productos = () => {
               <button className="busqueda-icono" type="submit">
                 <img className="busqueda-icono-img" src={lupaBusqueda} alt="" />
               </button>
-              <figure className="busqueda-barras-icono" style={{ cursor: "pointer" }}>
-                <img className="busqueda-barras-icono-img" src={barrasBusqueda} alt="" />
+              <figure
+                className="busqueda-barras-icono"
+                style={{ cursor: "pointer" }}
+              >
+                <img
+                  className="busqueda-barras-icono-img"
+                  src={barrasBusqueda}
+                  alt=""
+                />
               </figure>
             </form>
             <button className="registrar-btn" onClick={() => abrirModal(1)}>
@@ -325,7 +350,9 @@ export const Productos = () => {
                   <tr key={producto.id_producto}>
                     <td>{producto.nombre}</td>
                     <td>{producto.descripcion}</td>
-                    <td>{producto.cantidad_por_unidad} {producto.tipo_medida}</td>
+                    <td>
+                      {producto.cantidad_por_unidad} {producto.tipo_medida}
+                    </td>
                     <td>{producto.nombre_usuario}</td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
@@ -334,14 +361,22 @@ export const Productos = () => {
                           onClick={() => abrirModal(2, producto)}
                           style={{ cursor: "pointer" }}
                         >
-                          <img className="editar-icono-img" src={editarIcon} alt="Editar" />
+                          <img
+                            className="editar-icono-img"
+                            src={editarIcon}
+                            alt="Editar"
+                          />
                         </figure>
                         <figure
                           className="desactivar-icono"
                           onClick={() => abrirModal(3, producto)}
                           style={{ cursor: "pointer" }}
                         >
-                          <img className="desactivar-icono-img" src={desactivarIcon} alt="Desactivar" />
+                          <img
+                            className="desactivar-icono-img"
+                            src={desactivarIcon}
+                            alt="Desactivar"
+                          />
                         </figure>
                       </div>
                     </td>
@@ -366,9 +401,13 @@ export const Productos = () => {
             </button>
             <h1 className="modal-ir-titulo">Registre un nuevo Producto</h1>
             {mensajeExito && (
-              <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
             )}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
             {errores.sesion && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
             <form className="ir-form" onSubmit={handleRegistrar}>
@@ -381,7 +420,12 @@ export const Productos = () => {
                     className="ir-input1"
                     type="text"
                     value={formRegistrar.nombre}
-                    onChange={(e) => setFormRegistrar({ ...formRegistrar, nombre: e.target.value })}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        nombre: e.target.value,
+                      })
+                    }
                   />
                   <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
@@ -394,36 +438,68 @@ export const Productos = () => {
                     className="ir-input2"
                     name="ir-descripcion"
                     value={formRegistrar.descripcion}
-                    onChange={(e) => setFormRegistrar({ ...formRegistrar, descripcion: e.target.value })}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        descripcion: e.target.value,
+                      })
+                    }
                   />
-                  <span className="error-mensaje">{errores.descripcion ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.descripcion ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt3" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt3" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Unidad de Medida<h6 className="obligatorio">*</h6>
                   </label>
                   <CustomSelect
                     options={opcionesTipoMedida}
                     value={formRegistrar.tipo_medida}
-                    onChange={(val) => setFormRegistrar((prev) => ({ ...prev, tipo_medida: val }))}
+                    onChange={(value) =>
+                      setFormRegistrar((prev) => ({
+                        ...prev,
+                        tipo_medida: value,
+                      }))
+                    }
                   />
-                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.tipo_medida ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt4" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt4" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Usuario que Registra
                   </label>
                   <div className="union-input-icono">
-                    <input className="ir-input4" type="text" value={user.nombre} readOnly />
+                    <input
+                      className="ir-input4"
+                      type="text"
+                      value={user.nombre}
+                      readOnly
+                    />
                     <figure className="candado-icono">
-                      <img className="candado-icono-img" src={campoRestringido} alt="" />
+                      <img
+                        className="candado-icono-img"
+                        src={campoRestringido}
+                        alt=""
+                      />
                     </figure>
                   </div>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt5" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt5" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Cantidad por Unidad<h6 className="obligatorio">*</h6>
                   </label>
@@ -431,17 +507,31 @@ export const Productos = () => {
                     className="ir-input5"
                     type="text"
                     value={formRegistrar.cantidad_por_unidad}
-                    onChange={(e) => setFormRegistrar({ ...formRegistrar, cantidad_por_unidad: e.target.value })}
+                    onChange={(e) =>
+                      setFormRegistrar({
+                        ...formRegistrar,
+                        cantidad_por_unidad: e.target.value,
+                      })
+                    }
                     onKeyDown={(e) => {
-                      if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {
+                      if (
+                        !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                          e.key,
+                        )
+                      ) {
                         e.preventDefault();
                       }
                     }}
                   />
-                  <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.cantidad_por_unidad ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt6" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt6" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Código de Barras<h6 className="obligatorio">*</h6>
                   </label>
@@ -450,21 +540,40 @@ export const Productos = () => {
                       className="ir-input6 scan-capture"
                       type="text"
                       value={formRegistrar.codigo_barras}
-                      onChange={(e) => setFormRegistrar({ ...formRegistrar, codigo_barras: e.target.value })}
+                      onChange={(e) =>
+                        setFormRegistrar({
+                          ...formRegistrar,
+                          codigo_barras: e.target.value,
+                        })
+                      }
                       onKeyDown={(e) => {
-                        if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {
+                        if (
+                          !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                            e.key,
+                          )
+                        ) {
                           e.preventDefault();
                         }
                       }}
                     />
                     <figure className="codigo-barras-icono">
-                      <img className="codigo-barras-icono-img" src={barrasBusqueda} alt="" />
+                      <img
+                        className="codigo-barras-icono-img"
+                        src={barrasBusqueda}
+                        alt=""
+                      />
                     </figure>
                   </div>
-                  <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.codigo_barras ?? ""}
+                  </span>
                 </div>
               </section>
-              <input className="ir-btn" type="submit" value="Registrar Producto" />
+              <input
+                className="ir-btn"
+                type="submit"
+                value="Registrar Producto"
+              />
             </form>
           </aside>
         )}
@@ -478,9 +587,13 @@ export const Productos = () => {
             <h1 className="modal-ied-titulo">Editar Producto Registrado</h1>
 
             {mensajeExito && (
-              <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
             )}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
 
             <form className="ied-form" onSubmit={handleEditar}>
               <section className="ied-form-inputs-area">
@@ -492,7 +605,9 @@ export const Productos = () => {
                     className="ied-input1"
                     type="text"
                     value={formEditar.nombre}
-                    onChange={(e) => setFormEditar({ ...formEditar, nombre: e.target.value })}
+                    onChange={(e) =>
+                      setFormEditar({ ...formEditar, nombre: e.target.value })
+                    }
                   />
                   <span className="error-mensaje">{errores.nombre ?? ""}</span>
                 </div>
@@ -504,36 +619,68 @@ export const Productos = () => {
                   <textarea
                     className="ied-input2"
                     value={formEditar.descripcion}
-                    onChange={(e) => setFormEditar({ ...formEditar, descripcion: e.target.value })}
+                    onChange={(e) =>
+                      setFormEditar({
+                        ...formEditar,
+                        descripcion: e.target.value,
+                      })
+                    }
                   />
-                  <span className="error-mensaje">{errores.descripcion ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.descripcion ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt3" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt3" }}
+                >
                   <label className="ied-label" htmlFor="">
                     Unidad de Medida<h6 className="obligatorio">*</h6>
                   </label>
                   <CustomSelect
                     options={opcionesTipoMedida}
                     value={formEditar.tipo_medida}
-                    onChange={(value) => setFormEditar({ ...formEditar, tipo_medida: value })}
+                    onChange={(value) =>
+                      setFormEditar({
+                        ...formEditar,
+                        tipo_medida: value,
+                      })
+                    }
                   />
-                  <span className="error-mensaje">{errores.tipo_medida ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.tipo_medida ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt4" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt4" }}
+                >
                   <label className="ied-label" htmlFor="">
                     Usuario que Registra
                   </label>
                   <div className="union-input-icono">
-                    <input className="ied-input4" type="text" value={user.nombre} readOnly />
+                    <input
+                      className="ied-input4"
+                      type="text"
+                      value={user.nombre}
+                      readOnly
+                    />
                     <figure className="candado-icono">
-                      <img className="candado-icono-img" src={campoRestringido} alt="" />
+                      <img
+                        className="candado-icono-img"
+                        src={campoRestringido}
+                        alt=""
+                      />
                     </figure>
                   </div>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt5" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt5" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Cantidad por Unidad<h6 className="obligatorio">*</h6>
                   </label>
@@ -541,17 +688,31 @@ export const Productos = () => {
                     className="ir-input5"
                     type="text"
                     value={formEditar.cantidad_por_unidad}
-                    onChange={(e) => setFormEditar({ ...formEditar, cantidad_por_unidad: e.target.value })}
+                    onChange={(e) =>
+                      setFormEditar({
+                        ...formEditar,
+                        cantidad_por_unidad: e.target.value,
+                      })
+                    }
                     onKeyDown={(e) => {
-                      if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {
+                      if (
+                        !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                          e.key,
+                        )
+                      ) {
                         e.preventDefault();
                       }
                     }}
                   />
-                  <span className="error-mensaje">{errores.cantidad_por_unidad ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.cantidad_por_unidad ?? ""}
+                  </span>
                 </div>
 
-                <div className="label-and-input-container" style={{ gridArea: "divInpt6" }}>
+                <div
+                  className="label-and-input-container"
+                  style={{ gridArea: "divInpt6" }}
+                >
                   <label className="ir-label" htmlFor="">
                     Código de Barras<h6 className="obligatorio">*</h6>
                   </label>
@@ -560,18 +721,33 @@ export const Productos = () => {
                       className="ied-input6 scan-capture"
                       type="text"
                       value={formEditar.codigo_barras}
-                      onChange={(e) => setFormEditar({ ...formEditar, codigo_barras: e.target.value })}
+                      onChange={(e) =>
+                        setFormEditar({
+                          ...formEditar,
+                          codigo_barras: e.target.value,
+                        })
+                      }
                       onKeyDown={(e) => {
-                        if (!/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(e.key)) {
+                        if (
+                          !/[0-9]|Backspace|Delete|ArrowLeft|ArrowRight|Tab/.test(
+                            e.key,
+                          )
+                        ) {
                           e.preventDefault();
                         }
                       }}
                     />
                     <figure className="codigo-barras-icono">
-                      <img className="codigo-barras-icono-img" src={barrasBusqueda} alt="" />
+                      <img
+                        className="codigo-barras-icono-img"
+                        src={barrasBusqueda}
+                        alt=""
+                      />
                     </figure>
                   </div>
-                  <span className="error-mensaje">{errores.codigo_barras ?? ""}</span>
+                  <span className="error-mensaje">
+                    {errores.codigo_barras ?? ""}
+                  </span>
                 </div>
               </section>
               <input
@@ -588,15 +764,23 @@ export const Productos = () => {
           <aside className="modal-productos-desactivar">
             <h1 className="modal-iel-titulo">Desactivar Producto Registrado</h1>
             {mensajeExito && (
-              <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>
+              <p style={{ color: "green", fontWeight: "bold" }}>
+                {mensajeExito}
+              </p>
             )}
-            {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
+            {errores.general && (
+              <p style={{ color: "red" }}>{errores.general}</p>
+            )}
             <h3 className="modal-iel-mensaje">
               ¿Desea desactivar &nbsp;
               <h6 className="subrayar">{productoSeleccionado?.nombre}</h6>?
             </h3>
             <section className="modal-buttons">
-              <button className="desactivar-btn" onClick={handleEliminar} disabled={cargando}>
+              <button
+                className="desactivar-btn"
+                onClick={handleEliminar}
+                disabled={cargando}
+              >
                 {cargando ? "Desactivando..." : "Desactivar"}
               </button>
               <button className="cancelar-btn" onClick={cerrarModal}>
