@@ -4,14 +4,14 @@ import React from 'react'
 
 // Estilos e imágenes
 import "../styles/compsStyles/Footer.css"
-import softcareLogo from "../images/ceiba_logo.png"
-import ceibaLogo from "../images/softcare_logo.png"
+import softcareLogo from "../images/softcare_logo.png"
+import ceibaLogo from "../images/ceiba_logo.png"
 
 export const Footer = (props) => {
   return (
     <>
     <footer {...props}>
-        <p>© Derechos Reservados.</p>
+        <p>© 2025 - Ceiba Softcare, <br/>Derechos Reservados.</p>
         <section className="asociaciones">
             <div className="softcare">
                 <figure className="softcare-logo">
