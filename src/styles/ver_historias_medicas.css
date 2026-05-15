@@ -350,8 +350,8 @@
 }
 
 .modal-registrar-evento-clinico .ar-form,
-.modal-editar-evento-clinico .ar-form
-.modal-detalle-examen-fisico{
+.modal-editar-evento-clinico .ar-form,
+.modal-detalle-examen-fisico .ar-form{
     width: 750px;
     align-items: center;
 }
@@ -400,7 +400,7 @@
     color: #212427;
     text-decoration: none;
     background-color: #F8F8F8;
-    margin-bottom: 30px;
+    margin-bottom: 5px;
 }
 
 /* .ar-input3 {
@@ -523,31 +523,4 @@
 .input-con-icono {
     position: relative;
     width: max-content;
-}
-
-/* Fin Modales */
-
-.modales-historias-medicas-detalle  {
-    display: none;
-}
-
-.modal-registrar-examen-fisico{
-    display: none;
-} 
-
-.modal-editar-examen-fisico{
-    display: none;
-}
-
-
-.modal-registrar-evento-clinico{
-    display: none;
-}
-
-.modal-editar-evento-clinico{
-    display: none;
-}
-
-.modal-detalle-examen-fisico{
-    display: none;
 }

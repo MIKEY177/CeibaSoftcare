@@ -18,7 +18,7 @@ body{
     flex-direction: column;
     justify-content: space-evenly; /* se puede quitar y cambiar si se quiere posicionar mas precisamente */
     align-items: center;
-    padding: 0 50px;
+    padding: 50px;
 }
 
 .titulo-dashboard{

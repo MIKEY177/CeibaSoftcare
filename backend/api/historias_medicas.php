@@ -9,18 +9,55 @@ $debug = (getenv('APP_ENV') === 'development' || (isset($_SERVER['APP_ENV']) && 
 
 $method = $_SERVER['REQUEST_METHOD'];
 
-// ── GET: listar historias médicas ─────────────────────────────────────────────
+// ── GET: listar historias médicas o una sola ──────────────────────────────────
 if ($method === 'GET') {
+
+    // Si viene id_historia_medica → devolver una sola historia
+    if (isset($_GET['id_historia_medica']) && intval($_GET['id_historia_medica']) > 0) {
+        $id = intval($_GET['id_historia_medica']);
+
+        $sql  = "SELECT 
+                    h.id_historia_medica,
+                    h.id_animal1,
+                    a.nombre AS nombre_animal,
+                    a.especie,
+                    h.fecha_creacion
+                 FROM historias_medicas h
+                 INNER JOIN animales a ON h.id_animal1 = a.id_animal
+                 WHERE h.id_historia_medica = ?";
+
+        $stmt = mysqli_prepare($conn, $sql);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
+
+        if (!$result || mysqli_num_rows($result) === 0) {
+            http_response_code(404);
+            echo json_encode([
+                "success" => false,
+                "error"   => "Historia médica no encontrada."
+            ], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
+
+        $historia = mysqli_fetch_assoc($result);
+        echo json_encode(["success" => true, "data" => $historia], JSON_UNESCAPED_UNICODE);
+        mysqli_stmt_close($stmt);
+        mysqli_close($conn);
+        exit;
+    }
+
+    // Sin id → devolver todas las historias
     $sql = "SELECT 
-            h.id_historia_medica,
-            h.id_animal1,
-            a.nombre AS nombre_animal,
-            a.especie,
-            h.fecha_creacion
-        FROM historias_medicas h
-        INNER JOIN animales a ON h.id_animal1 = a.id_animal
-        INNER JOIN usuarios u ON a.id_usuario1 = u.id_usuario
-        WHERE a.activo = 1";
+                h.id_historia_medica,
+                h.id_animal1,
+                a.nombre AS nombre_animal,
+                a.especie,
+                h.fecha_creacion
+            FROM historias_medicas h
+            INNER JOIN animales a ON h.id_animal1 = a.id_animal
+            INNER JOIN usuarios u ON a.id_usuario1 = u.id_usuario
+            WHERE a.activo = 1";
 
     $result = mysqli_query($conn, $sql);
 

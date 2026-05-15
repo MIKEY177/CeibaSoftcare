@@ -76,7 +76,7 @@ function App() {
           />
           <Route path="/historias_medicas" element={<HistoriasMedicas />} />
           <Route
-            path="/ver_historias_medicas/:id"
+            path="/ver_historias_medicas/:id_historia_medica"
             element={<VerHistoriaMedicas />}
           />
           <Route
