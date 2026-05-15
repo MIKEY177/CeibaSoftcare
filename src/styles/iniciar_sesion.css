@@ -278,3 +278,19 @@
 }
 
 /* Fin Ventanas Modales */
+
+
+
+                /* RESPONSIVE FROM HERE */   
+                
+                
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media ( 1280px <= width <= 1919px) {
+    
+    .main-inicio-de-sesion {
+        height: calc(100vh - 54px);
+    }
+
+}
