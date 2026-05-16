@@ -118,6 +118,9 @@ if($_SERVER['REQUEST_METHOD'] === 'PUT' && isset($body['campo']) && $body['campo
     if (!filter_var($body['valor'], FILTER_VALIDATE_EMAIL)) {
         $errores['correo'] = "El correo no es válido";
     }
+    if (!filter_var($body['valor_2'], FILTER_VALIDATE_EMAIL)) {
+        $errores['newcorreo'] = "El nuevo correo no es válido";
+    }
     if ($body['valor'] === $body['valor_2']) {
         $errores['newcorreo'] = "El nuevo correo no puede ser igual al actual";
     }

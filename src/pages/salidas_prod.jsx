@@ -313,8 +313,10 @@ export const SalidasProd = () => {
       e.cantidad_presentacion = "❗Ingresa una cantidad válida.";
     if (form.cantidad_total === "" || parseFloat(form.cantidad_total) <= 0)
       e.cantidad_total = "❗La cantidad total debe ser mayor a 0.";
-    else if (form.cantidad_actual !== "" && parseFloat(form.cantidad_total) > parseFloat(form.cantidad_actual))
+    if (form.cantidad_actual !== "" && parseFloat(form.cantidad_total) > parseFloat(form.cantidad_actual))
       e.cantidad_total = `❗La cantidad total no puede exceder el stock disponible máximo (${form.cantidad_actual}).`;
+    if (((parseFloat(form.cantidad_actual)-parseFloat(form.cantidad_total))/parseFloat(form.cantidad_por_unidad)) < 5)
+      e.cantidad_total = `❗Stock crítico (${((parseFloat(form.cantidad_actual)-parseFloat(form.cantidad_total))/parseFloat(form.cantidad_por_unidad))} unidades disponibles al realizar salida). Realiza una nueva entrada de este producto para continuar.`;
     if (!form.motivo.trim())
       e.motivo = "❗El motivo es obligatorio.";
     return e;

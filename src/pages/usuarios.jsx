@@ -161,7 +161,8 @@ export const Usuarios = () => {
   
     const usuariosFiltrados = usuarios.filter(usuario =>
       usuario.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
-      usuario.correo.toLowerCase().includes(busqueda.toLowerCase())
+      usuario.correo.toLowerCase().includes(busqueda.toLowerCase()) ||
+      usuario.rol.toLowerCase().includes(busqueda.toLowerCase())
     );
   
     const handleBusqueda = (e) => {

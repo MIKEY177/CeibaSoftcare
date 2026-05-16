@@ -210,13 +210,15 @@ export const Productos = () => {
   })();
 
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
-
+  const cant_u = producto => `${producto.cantidad_por_unidad} ${producto.tipo_medida}`;
   const productosFiltrados = productos.filter(
     (producto) =>
       producto.nombre.toLowerCase().includes(busqueda.toLowerCase()) ||
       producto.descripcion.toLowerCase().includes(busqueda.toLowerCase()) ||
       producto.tipo_medida.toLowerCase().includes(busqueda.toLowerCase()) ||
-      producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase()),
+      producto.codigo_barras.toLowerCase().includes(busqueda.toLowerCase()) ||
+      producto.nombre_usuario.toLowerCase().includes(busqueda.toLowerCase()) ||
+      cant_u(producto).toLowerCase().includes(busqueda.toLowerCase()),
   );
 
   const handleBusqueda = (e) => {

@@ -84,16 +84,22 @@ export const Ajustes = () => {
 
   const handleFileChange = (e) => {
   const file = e.target.files[0];
+  if(!file.type.startsWith("image/")) {
+    setErrores({ general: "Archivo no válido. Por favor, selecciona una imagen." });
+    return;
+  }
   if (!file) return;
-
+  
   setFile(file);
   const url = URL.createObjectURL(file);
   setPreview(url);
 
   setMostrarCropper(true); 
+  setErrores({});
   };
 
   const getCroppedImg = async (imageSrc, crop) => {
+    if (!crop || !imageSrc) return null;
     const image = new Image();
     image.src = imageSrc;
     image.crossOrigin = "anonymous";
