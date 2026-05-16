@@ -1,7 +1,7 @@
 // Imports Base
 import React, { useEffect, useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { MenuAdminAlbergue, MenuVeterinario } from "../utils/menu.jsx";
+import { MenuAdminAlbergue} from "../utils/menu.jsx";
 import { Helmet } from "react-helmet-async";
 import editarIcon from "../images/icons/editar.png";
 import desactivarIcon from "../images/icons/desactivar.png";
@@ -27,15 +27,11 @@ export const Verificaciones = () => {
   const navigate = useNavigate();
 
   const [verificaciones, setVerificaciones] = useState([]);
-  const [modalActiva, setModalActiva] = useState(null);
   const [errores, setErrores] = useState({});
   const [cargando, setCargando] = useState(false);
   const [mensajeExito, setMensajeExito] = useState("");
-  const [verificacionSeleccionada, setVerificacionSeleccionada] =
-    useState(null);
   const [busqueda, setBusqueda] = useState("");
   const enviandoRef = useRef(false);
-  const [imagenAmpliada, setImagenAmpliada] = useState(null);
 
   // ─── Sesión ──────────────────────────────────────────────────────────────────
 
@@ -95,21 +91,6 @@ export const Verificaciones = () => {
       cargarVerificaciones();
     }, 1500);
   };
-
-  const abrirModal = (num, verificacion = null) => {
-    setErrores({});
-    setMensajeExito("");
-    setVerificacionSeleccionada(verificacion);
-    setModalActiva(num);
-  };
-
-  const cerrarModal = () => {
-    setErrores({});
-    setMensajeExito("");
-    setModalActiva(null);
-    setVerificacionSeleccionada(null);
-  };
-
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
 
   const verificacionesFiltradas = verificaciones.filter(
@@ -159,7 +140,6 @@ export const Verificaciones = () => {
       "¡Verificación desactivada correctamente!",
     );
   };
-
   // ─── Render ──────────────────────────────────────────────────────────────────
 
   return (
@@ -226,11 +206,13 @@ export const Verificaciones = () => {
                     <td>{verificacion.nombre}</td>
                     <td>
                       <button
-                        className="tabla-verificaciones-btn"
-                        onClick={() => abrirModal(1, verificacion)}
-                      >
-                        Ver
-                      </button>
+  className="tabla-verificaciones-btn"
+  onClick={() =>
+    navigate(`/detalle_verificacion/${verificacion.id_verificacion}`)
+  }
+>
+  Ver
+</button>
                     </td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
@@ -259,121 +241,6 @@ export const Verificaciones = () => {
         </section>
       </main>
       <Footer />
-
-      <div
-        className="modales-verificaciones"
-        style={{ display: modalActiva ? "flex" : "none" }}
-      >
-        {/* ── MODAL 1: Ver detalles ──────────────────────────────────── */}
-        {modalActiva === 1 && (
-          <aside className="modal-verificaciones-detalle">
-            <button className="volver-btn-anim" onClick={cerrarModal}>
-              <img className="volver-icono" src={flecha} alt="" />
-              <h2>Volver</h2>
-            </button>
-            <h1 className="titulo-detalle-verificacion">
-              Detalle de Verificación
-            </h1>
-
-            <div className="detalles-verificacion">
-              <div className="datos-verificacion">
-                <h5>Información General</h5>
-                <div className="campo-verificaciones">
-                  <strong>Tipo:</strong>
-                  <p>{verificacionSeleccionada?.tipo_verificacion}</p>
-                </div>
-                <div className="campo-verificaciones">
-                  <strong>Fecha:</strong>
-                  <p>{verificacionSeleccionada?.fecha}</p>
-                </div>
-                <div className="campo-verificaciones">
-                  <strong>Animal:</strong>
-                  <p>{verificacionSeleccionada?.nombre}</p>
-                </div>
-                <div className="campo-verificaciones">
-                  <strong>Tipo Código:</strong>
-                  <p>{verificacionSeleccionada?.tipo_codigo}</p>
-                </div>
-                <div className="campo-verificaciones">
-                  <strong>Código:</strong>
-                  <p>{verificacionSeleccionada?.codigo}</p>
-                </div>
-              </div>
-
-              <div className="datos-verificacion-propietario">
-                <h5>Propietario</h5>
-                <div className="campo-verificaciones propietario">
-                  <strong>Nombre:</strong>
-                  <p>{verificacionSeleccionada?.propietario}</p>
-                </div>
-                <div className="campo-verificaciones propietario">
-                  <strong>Identificación:</strong>
-                  <p>{verificacionSeleccionada?.id_propietario}</p>
-                </div>
-                <div className="campo-verificaciones propietario">
-                  <strong>Contacto:</strong>
-                  <p>{verificacionSeleccionada?.contacto}</p>
-                </div>
-                <div className="campo-verificaciones propietario">
-                  <strong>Correo:</strong>
-                  <p>{verificacionSeleccionada?.correo}</p>
-                </div>
-                <div className="campo-verificaciones propietario">
-                  <strong>Dirección:</strong>
-                  <p>{verificacionSeleccionada?.direccion}</p>
-                </div>
-              </div>
-
-              <div className="datos-verificacion-especificaciones">
-                <h5>Descripción</h5>
-                <div className="campo-verificaciones especificacion-descripcion">
-                  <p>{verificacionSeleccionada?.descripcion}</p>
-                </div>
-                {verificacionSeleccionada?.registro_fotografico && (
-                  <div className="img-registro-fotografico">
-                    <strong>Registro Fotográfico:</strong>
-                    <img
-                      src={verificacionSeleccionada.registro_fotografico}
-                      alt="Registro fotográfico"
-                      className="img-preview-verificacion"
-                      onClick={() =>
-                        setImagenAmpliada(
-                          verificacionSeleccionada.registro_fotografico,
-                        )
-                      }
-                    />
-                  </div>
-                )}
-              </div>
-            </div>
-          </aside>
-        )}
-        {imagenAmpliada && (
-          <div
-            className="modal-imagen-overlay"
-            onClick={() => setImagenAmpliada(null)}
-          >
-            <div
-              className="modal-imagen-contenido"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <button
-                className="volver-btn-anim"
-                onClick={() => setImagenAmpliada(null)}
-              >
-                <img className="volver-icono" src={flecha} alt="" />
-                <h2>Volver</h2>
-              </button>
-
-              <img
-                src={imagenAmpliada}
-                alt="Imagen ampliada"
-                className="imagen-ampliada"
-              />
-            </div>
-          </div>
-        )}
-      </div>
     </>
   );
 };

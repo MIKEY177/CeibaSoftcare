@@ -18,9 +18,16 @@ if ($method === 'GET') {
     if (isset($_GET['id'])) {
         $id = intval($_GET['id']);
         $stmt = mysqli_prepare($conn,
-            "SELECT v.*, a.nombre FROM verificaciones v
-             INNER JOIN animales a ON v.id_animal1 = a.id_animal
-             WHERE v.id_verificacion = ?"
+"SELECT 
+    v.*,
+    a.nombre,
+    u.nombre AS responsable
+ FROM verificaciones v
+ INNER JOIN animales a 
+    ON v.id_animal1 = a.id_animal
+ INNER JOIN usuarios u 
+    ON a.id_usuario1 = u.id_usuario
+ WHERE v.id_verificacion = ?"
         );
         mysqli_stmt_bind_param($stmt, "i", $id);
         mysqli_stmt_execute($stmt);
@@ -38,13 +45,30 @@ if ($method === 'GET') {
     }
 
     // ── GET todos ────────────────────────────────────────────────
-    $sql = "SELECT v.id_verificacion, v.id_animal1, v.tipo_verificacion, v.fecha, v.tipo_codigo, v.codigo,
-                   v.propietario, v.id_propietario, v.contacto, v.correo, v.direccion, v.descripcion,
-                   v.registro_fotografico, a.n_microchip, a.nombre, a.especie
-            FROM verificaciones v
-            INNER JOIN animales a ON v.id_animal1 = a.id_animal
-            INNER JOIN usuarios u ON a.id_usuario1 = u.id_usuario
-            WHERE a.activo = 1 AND v.activo = 1";
+    $sql ="SELECT 
+            v.id_verificacion,
+            v.id_animal1,
+            v.tipo_verificacion,
+            v.fecha,
+            v.tipo_codigo,
+            v.codigo,
+            v.propietario,
+            v.id_propietario,
+            v.contacto,
+            v.correo,
+            v.direccion,
+            v.descripcion,
+            v.registro_fotografico,
+            a.n_microchip,
+            a.nombre,
+            a.especie,
+            u.nombre AS responsable
+        FROM verificaciones v
+        INNER JOIN animales a 
+            ON v.id_animal1 = a.id_animal
+        LEFT JOIN usuarios u 
+            ON a.id_usuario1 = u.id_usuario
+        WHERE a.activo = 1 ";
 
     $result = mysqli_query($conn, $sql);
 

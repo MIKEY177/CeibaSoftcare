@@ -84,6 +84,10 @@ function App() {
             path="/editar_verificacion/:id"
             element={<EditarVerificacion />}
           />
+          <Route
+            path="/detalle_verificacion/:id"
+            element={<DetalleVerificacion />}
+          />
           <Route path="/albergue" element={<Albergue />} />
           <Route path="/ajustes" element={<Ajustes />} />
           <Route path="/usuarios" element={<Usuarios />} />
