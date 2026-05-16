@@ -811,7 +811,7 @@ export const VerHistoriaMedicas = () => {
             )}
 
             <form className="ar-form" onSubmit={handleRegistrarExamen}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-examen-fisico">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label">Historia Médica</label>
                   <div className="union-input-icono">
@@ -1051,7 +1051,7 @@ export const VerHistoriaMedicas = () => {
             )}
 
             <form className="ar-form" onSubmit={handleEditarExamen}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-examen-fisico">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label">Historia Médica</label>
                   <div className="union-input-icono">
@@ -1227,8 +1227,8 @@ export const VerHistoriaMedicas = () => {
             )}
             {errores.sesion && <p style={{ color: "red" }}>{errores.sesion}</p>}
 
-            <form className="ar-form" onSubmit={(e) => e.preventDefault()}>
-              <section className="ar-form-inputs-area">
+            <form className="ar-form-registrar-evento-clinico" onSubmit={(e) => e.preventDefault()}>
+              <section className="ar-form-inputs-area-registrar-evento-clinico">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label">
                     Fecha <h6 className="obligatorio">*</h6>
@@ -1351,8 +1351,8 @@ export const VerHistoriaMedicas = () => {
               <p style={{ color: "red" }}>{errores.general}</p>
             )}
 
-            <form className="ar-form" onSubmit={handleEditarEvento}>
-              <section className="ar-form-inputs-area">
+            <form className="ar-form-registrar-evento-clinico" onSubmit={handleEditarEvento}>
+              <section className="ar-form-inputs-area-registrar-evento-clinico">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label">
                     Fecha <h6 className="obligatorio">*</h6>

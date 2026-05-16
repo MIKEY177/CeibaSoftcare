@@ -263,14 +263,14 @@
     margin-bottom: 20px;  
 }
 
-.ar-form, .aed-form{
-    display: flex;
-    flex-direction: column;
+.ar-form-inputs-area-salida-animal, .aed-form{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     width: 900px;
     height: auto;          
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area-salida-animal, .aed-form-inputs-area-salida-animal{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
