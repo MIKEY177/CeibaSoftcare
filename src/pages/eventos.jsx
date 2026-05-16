@@ -477,7 +477,7 @@ export const Eventos = () => {
        .then(response => response.json())
        .then(data => {
    
-       console.log("Respuesta escáner:", data);
+       
    
        if (data.success) {
    
@@ -552,7 +552,7 @@ export const Eventos = () => {
      useEffect(() => {
    
      const applyScannedCode = () => {
-       console.log("APPLY", scannedCodeRef.current);
+       
    
        if (scannedCodeRef.current.length < 6) {
    
@@ -570,8 +570,7 @@ export const Eventos = () => {
    
      const handleKeyDown = (e) => {
    
-       console.log("TECLA:", e.key);
-   
+       
        // ENTER
        if (e.key === "Enter") {
    
@@ -597,7 +596,7 @@ export const Eventos = () => {
    
          const interval = now - lastKeyTimeRef.current;
    
-         console.log("INTERVAL:", interval);
+         
    
          // Escritura humana
          if (interval > 120) {
@@ -610,7 +609,7 @@ export const Eventos = () => {
    
        scannedCodeRef.current += e.key;
    
-       console.log("CODIGO:", scannedCodeRef.current);
+       
    
        // Timeout
        if (scanTimeoutRef.current) {

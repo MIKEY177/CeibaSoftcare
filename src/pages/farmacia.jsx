@@ -59,7 +59,7 @@ export const Farmacia = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("Datos de sesión:", data);
+        
         if (data.status === "ok") {
           setUser({
             nombre: data.usuario,
@@ -96,7 +96,7 @@ export const Farmacia = () => {
 
       const data = await res.json();
 
-      console.log("Respuesta API:", data);
+      
 
       if (res.ok && data.success === true) {
         navigate(`/productos/${codigo}/1`);
@@ -120,7 +120,7 @@ export const Farmacia = () => {
         return;
       }
 
-      console.log("Código escaneado:", code);
+      
 
       buscarProductoPorCodigo(code);
 

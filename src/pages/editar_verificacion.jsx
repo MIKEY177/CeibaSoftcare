@@ -205,7 +205,7 @@ export const EditarVerificacion = () => {
       });
   };
   // ─── Render ───────────────────────────────────────────────────────────────────
-console.log(imagenActual);
+
   return (
     <>
     <Helmet>

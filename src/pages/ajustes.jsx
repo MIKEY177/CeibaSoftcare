@@ -227,7 +227,7 @@ export const Ajustes = () => {
       
         
     const data = await res.json();
-    console.log(data);
+    
 
       if (data.status === "ok") {
         mostrarExito("Imagen de perfil actualizada con éxito");

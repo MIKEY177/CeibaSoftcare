@@ -47,7 +47,7 @@ export const Albergue = () => {
       })
       .then(res => res.json())
       .then(data => {
-        console.log("Datos de sesión:", data);
+        
         if (data.status === "ok") {
           setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "veterinario") {

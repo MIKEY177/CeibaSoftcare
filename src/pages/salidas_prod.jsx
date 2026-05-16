@@ -576,7 +576,7 @@ export const SalidasProd = () => {
      .then(response => response.json())
      .then(data => {
  
-     console.log("Respuesta escáner:", data);
+     
  
      if (data.success) {
  
@@ -651,7 +651,7 @@ export const SalidasProd = () => {
    useEffect(() => {
  
    const applyScannedCode = () => {
-     console.log("APPLY", scannedCodeRef.current);
+     
  
      if (scannedCodeRef.current.length < 6) {
  
@@ -669,7 +669,7 @@ export const SalidasProd = () => {
  
    const handleKeyDown = (e) => {
  
-     console.log("TECLA:", e.key);
+    
  
      // ENTER
      if (e.key === "Enter") {
@@ -696,7 +696,7 @@ export const SalidasProd = () => {
  
        const interval = now - lastKeyTimeRef.current;
  
-       console.log("INTERVAL:", interval);
+       
  
        // Escritura humana
        if (interval > 120) {
@@ -709,7 +709,7 @@ export const SalidasProd = () => {
  
      scannedCodeRef.current += e.key;
  
-     console.log("CODIGO:", scannedCodeRef.current);
+     
  
      // Timeout
      if (scanTimeoutRef.current) {

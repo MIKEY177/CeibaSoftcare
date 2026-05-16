@@ -50,7 +50,7 @@ export const Inicio = () => {
     })
     .then(res => res.json())
     .then(data => {
-      console.log("Datos de sesión:", data);
+      
       if (data.status === "ok") {
         setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil, cuenta_activa: data.cuenta_activa });
 

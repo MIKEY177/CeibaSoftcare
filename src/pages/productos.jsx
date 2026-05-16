@@ -161,7 +161,7 @@ export const Productos = () => {
         scannedCodeRef.current = "";
         return;
       }
-      console.log("Código escaneado:", code);
+      
       if (modalActiva === 1) {
         setFormRegistrar((prev) => ({ ...prev, codigo_barras: code }));
       } else if (modalActiva === 2) {
