@@ -169,14 +169,19 @@ export const HistoriasMedicas = () => {
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
 
   const historiasFiltradas = historias.filter(
-    (historia) =>
-      (historia.nombre_animal ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()) ||
-      (historia.fecha_creacion ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()),
-  );
+  (historia) =>
+    (historia.nombre_animal ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase()) ||
+
+    (historia.fecha_creacion ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase()) ||
+
+    (historia.especie ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+);
 
   const handleBusqueda = (e) => {
     e.preventDefault();

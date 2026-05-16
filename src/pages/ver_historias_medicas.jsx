@@ -30,7 +30,7 @@ const API_HISTORIA = `api/historias_medicas.php`;
 const API_EXAMENES = `api/examenes_fisicos.php`;
 const API_EVENTOS = `api/eventos_clinicos.php`;
 const API_BUSQUEDA = `api/productos_busqueda.php`;
-const API_PROD_COD = `/api/inventario.php`
+const API_PROD_COD = `/api/inventario.php`;
 
 export const indexSelector = 6;
 
@@ -40,10 +40,10 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [seleccionado, setSeleccionado] = useState(valorInicial ? true : null);
   const [cargando, setCargando] = useState(false);
   const skipSearch = useRef(false);
-  
+
   useEffect(() => {
-          setQuery(valorInicial || "");
-    }, [valorInicial]);
+    setQuery(valorInicial || "");
+  }, [valorInicial]);
 
   useEffect(() => {
     if (skipSearch.current) {
@@ -601,7 +601,7 @@ export const VerHistoriaMedicas = () => {
         setCargando(false);
       });
   };
-  
+
   const handleGuardarProducto = (e) => {
     e.preventDefault();
     const nuevosErrores = {};
@@ -621,8 +621,6 @@ export const VerHistoriaMedicas = () => {
       setErrores(nuevosErrores);
       return;
     }
-
-     
 
     setErrores({});
     setListaProductos((prev) => [...prev, formProducto]);
@@ -1458,7 +1456,12 @@ export const VerHistoriaMedicas = () => {
                       className="registrar-producto-btn"
                       onClick={() => {
                         setModalOrigen(4);
-                        setModalActiva(6);
+
+                        if (listaProductos.length === 0) {
+                          abrirModal(7);
+                        } else {
+                          abrirModal(6);
+                        }
                       }}
                     >
                       Ver productos ({listaProductos.length})
@@ -1582,7 +1585,12 @@ export const VerHistoriaMedicas = () => {
                       className="registrar-producto-btn"
                       onClick={() => {
                         setModalOrigen(5);
-                        setModalActiva(6);
+
+                        if (listaProductos.length === 0) {
+                          abrirModal(7);
+                        } else {
+                          abrirModal(6);
+                        }
                       }}
                     >
                       Ver productos ({listaProductos.length})
