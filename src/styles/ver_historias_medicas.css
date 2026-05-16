@@ -342,21 +342,14 @@
     margin-bottom: 20px;  
 }
 
-.ar-form, .aed-form{
-    display: flex;
-    flex-direction: column;
-    width: 900px;
-    height: auto;          
-}
-
-.modal-registrar-evento-clinico .ar-form,
-.modal-editar-evento-clinico .ar-form,
+.modal-registrar-evento-clinico,
+.modal-editar-evento-clinico,
 .modal-detalle-examen-fisico .ar-form{
-    width: 750px;
+    width: 1000px;
     align-items: center;
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area-examen-fisico{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
@@ -365,6 +358,17 @@
     "divInpt2 divInpt6"
     "divInpt4 divInpt7"
     "divInpt3 divInpt8";
+    gap: 5px 0;
+}
+
+.ar-form-inputs-area-registrar-evento-clinico{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "divInpt1 divInpt2"
+    "divInpt3 divInpt4" 
+    "divInpt6 divInpt7";
     gap: 5px 0;
 }
 
@@ -442,8 +446,9 @@
     transform: translate(-40px, 4px);
 }
 
-.ar-btn, .aed-btn, .cancelar-btn{
-    margin-top: 20px;
+.ar-btn, .aed-btn{
+    display: block;
+    margin: auto 0;
     height: 40px;
     width: max-content;
     padding: 0 20px;
@@ -456,35 +461,11 @@
     align-self: center;
     transform: scale(1);
     transition: transform 0.2s ease-in-out;
-}
 
-.cancelar-btn{
-    transform: scale(1.15);
-}
-
-.desactivar-btn{
-    margin-top: 20px;
-    height: 40px;
-    width: max-content;
-    padding: 0 25px;
-    background-color: #e66377d7;
-    color: #740000;
-    border-radius: 8px;
-    border: none;
-    font-size: 1.2rem;
-    cursor: pointer;
-    align-self: center;
-    transform: scale(1.15);
-    transition: transform 0.2s ease-in-out;
 }
 
 .ar-btn:hover, .aed-btn:hover{
     transform: scale(1.05);
-    transition: transform 0.2s ease-in-out;
-}
-
-.cancelar-btn:hover, .desactivar-btn:hover{
-    transform: scale(1.2);
     transition: transform 0.2s ease-in-out;
 }
 

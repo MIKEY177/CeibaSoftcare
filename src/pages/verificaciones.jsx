@@ -16,7 +16,7 @@ import "../styles/verificaciones.css";
 import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { Menu } from "../components/Menu.jsx";
-import { Notificaciones } from '../components/Notificaciones'
+import { Notificaciones } from "../components/Notificaciones";
 
 const API = `api/verificaciones.php`;
 const API_SESSION = `api/session.php`;
@@ -171,7 +171,7 @@ export const Verificaciones = () => {
         <Navbar user={user} menu={menuObj} />
         <Notificaciones />
         <section className="secciones-area-gestion">
-          <h2 className="titulo-dashboard">Verificaciones</h2>
+          <h2 className="titulo-dashboard titulo-verificaciones">Verificaciones</h2>
 
           <section className="seccion1-busqueda-agregar">
             <form
@@ -204,7 +204,8 @@ export const Verificaciones = () => {
                 <td>Código</td>
                 <td>Fecha</td>
                 <td>Animal</td>
-                <td>Acciones</td>
+                <td></td>
+                <td>Editar</td>
               </tr>
             </thead>
             <tbody className="body-tabla-verificaciones">
@@ -224,13 +225,15 @@ export const Verificaciones = () => {
                     <td>{verificacion.fecha}</td>
                     <td>{verificacion.nombre}</td>
                     <td>
+                      <button
+                        className="tabla-verificaciones-btn"
+                        onClick={() => abrirModal(1, verificacion)}
+                      >
+                        Ver
+                      </button>
+                    </td>
+                    <td>
                       <div className="last-td-flex-content-wrapper">
-                        <button
-                          className="tabla-verificaciones-btn"
-                          onClick={() => abrirModal(1, verificacion)}
-                        >
-                          Ver
-                        </button>
                         <figure
                           className="editar-icono"
                           onClick={() =>
@@ -334,7 +337,9 @@ export const Verificaciones = () => {
                       alt="Registro fotográfico"
                       className="img-preview-verificacion"
                       onClick={() =>
-                        setImagenAmpliada(verificacionSeleccionada.registro_fotografico)
+                        setImagenAmpliada(
+                          verificacionSeleccionada.registro_fotografico,
+                        )
                       }
                     />
                   </div>
@@ -352,7 +357,10 @@ export const Verificaciones = () => {
               className="modal-imagen-contenido"
               onClick={(e) => e.stopPropagation()}
             >
-              <button className="volver-btn-anim" onClick={() => setImagenAmpliada(null)}>
+              <button
+                className="volver-btn-anim"
+                onClick={() => setImagenAmpliada(null)}
+              >
                 <img className="volver-icono" src={flecha} alt="" />
                 <h2>Volver</h2>
               </button>
