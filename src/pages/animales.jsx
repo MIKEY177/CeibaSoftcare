@@ -115,7 +115,9 @@ export const Animales = () => {
     fetch(API, { credentials: "include" })
       .then((res) => res.json())
       .then((response) => {
-        if (response.success) setAnimales(response.data);
+        if (response.success) {
+          setAnimales(response.data);
+        }
         else console.error(response.error);
       })
       .catch(console.error);
@@ -169,23 +171,45 @@ export const Animales = () => {
   })();
 
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
+const textoBusqueda = busqueda.trim().toLowerCase();
 
-  const animalesFiltrados = animales.filter(
-    (animal) =>
-      (animal.n_microchip?.toString() ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()) ||
-      (animal.nombre ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-      (animal.especie ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-      (animal.sexo ?? "").toLowerCase().includes(busqueda.toLowerCase()) ||
-      (animal.fecha_nac_estimada ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()) ||
-      (animal.observaciones ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()),
+const animalesFiltrados = animales.filter((animal) => {
+  const tipo = (animal.tipo ?? "").trim().toLowerCase();
+  if (textoBusqueda === "albergado") {
+    return tipo === "albergado";
+  }
+
+  if (textoBusqueda === "no albergado") {
+    return tipo === "no albergado";
+  }
+  return (
+    (animal.n_microchip?.toString() ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    (animal.nombre ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    (animal.especie ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    (animal.sexo ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    (animal.fecha_nac_estimada ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    (animal.observaciones ?? "")
+      .toLowerCase()
+      .includes(textoBusqueda) ||
+
+    tipo.includes(textoBusqueda)
   );
-
+});
   const handleBusqueda = (e) => {
     e.preventDefault();
   };

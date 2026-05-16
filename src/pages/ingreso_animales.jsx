@@ -72,10 +72,10 @@ export const IngresoAnimales = () => {
       id_usuario: "",
     });
 
-    const opcionesVerificaciones = verificaciones.map((verificacion) => ({
-    value: verificacion.id_verificacion,
-    label: `${verificacion.fecha} - ${verificacion.nombre}`,
-  }));
+const opcionesVerificaciones = verificaciones.map((verificacion) => ({
+  value: String(verificacion.id_verificacion),
+  label: `${verificacion.fecha} - ${verificacion.nombre}`,
+}));
   const [busqueda, setBusqueda] = useState("");
   const cargarIngresos = () => {
     fetch(API, { credentials: "include" })
@@ -102,7 +102,7 @@ export const IngresoAnimales = () => {
       cedula_realiza: ingreso.cedula_realiza || "",
       motivo_ingreso: ingreso.motivo_ingreso || "",
       fecha_hora_ingreso: ingreso.fecha_hora_ingreso || "",
-      id_verificacion: ingreso.id_verificacion || "",
+      id_verificacion: String(ingreso.id_verificacion || ""),
       id_usuario: ingreso.id_usuario || "",
     });
   }
@@ -519,17 +519,17 @@ const handleVer = (ingreso) => {
                   <label className="ar-label" for="">
                     Verificación<h6 className="obligatorio">*</h6>
                   </label>
-                  <CustomSelect
-                    options={opcionesVerificaciones}
-                    value={formRegistrar.id_verificacion}
-                    placeholder="Seleccione una verificación"
-                    onChange={(val) =>
-                      setFormRegistrar({
-                        ...formRegistrar,
-                        id_verificacion: Number(val),
-                      })
-                    }
-                  />
+                <CustomSelect
+  options={opcionesVerificaciones}
+  value={formRegistrar.id_verificacion}
+  placeholder="Seleccione una verificación"
+  onChange={(val) =>
+    setFormRegistrar({
+      ...formRegistrar,
+      id_verificacion: String(val),
+    })
+  }
+/>
                   <span className="error-mensaje">
                     {errores.id_verificacion ?? ""}
                   </span>
@@ -745,17 +745,17 @@ const handleVer = (ingreso) => {
                   <label className="ar-label" for="">
                     Verificación<h6 className="obligatorio">*</h6>
                   </label>
-                  <CustomSelect
-                    options={opcionesVerificaciones}
-                    value={formEditar.id_verificacion}
-                    placeholder="Seleccione una verificación"
-                    onChange={(val) =>
-                      setFormEditar({
-                        ...formEditar,
-                        id_verificacion: Number(val),
-                      })
-                    }
-                  />
+<CustomSelect
+  options={opcionesVerificaciones}
+  value={formEditar.id_verificacion}
+  placeholder="Seleccione una verificación"
+  onChange={(val) =>
+    setFormEditar({
+      ...formEditar,
+      id_verificacion: String(val),
+    })
+  }
+/>
                 </div>
               </section>
               <input className="ar-btn" type="submit" value="Guardar Cambios" />

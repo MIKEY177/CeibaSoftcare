@@ -19,7 +19,7 @@ function response($data, $code = 200) {
 if ($_GET['id'] ?? false) {
    $sql = "SELECT ia.id_ingreso, ia.persona_reporta, ia.cedula_reporta, ia.direccion_reporta,
                    ia.telefono_reporta, ia.funcionario_autoriza, ia.persona_realiza, ia.cedula_realiza,
-                   ia.motivo_ingreso, ia.fecha_hora_ingreso, ia.id_verificacion1,
+                   ia.motivo_ingreso, ia.fecha_hora_ingreso, ia.id_verificacion1 AS id_verificacion,
                    a.nombre, v.fecha
             FROM ingresos_animales ia
             INNER JOIN verificaciones v ON v.id_verificacion = ia.id_verificacion1
@@ -52,7 +52,7 @@ if ($method === 'GET') {
 
     $sql_one = "SELECT ia.id_ingreso, ia.persona_reporta, ia.cedula_reporta, ia.direccion_reporta,
                    ia.telefono_reporta, ia.funcionario_autoriza, ia.persona_realiza, ia.cedula_realiza,
-                   ia.motivo_ingreso, ia.fecha_hora_ingreso, ia.id_verificacion1,
+                   ia.motivo_ingreso, ia.fecha_hora_ingreso, ia.id_verificacion1 AS id_verificacion,
                    a.nombre, v.fecha
             FROM ingresos_animales ia
             INNER JOIN verificaciones v ON v.id_verificacion = ia.id_verificacion1

@@ -30,7 +30,7 @@ const API_HISTORIA = `api/historias_medicas.php`;
 const API_EXAMENES = `api/examenes_fisicos.php`;
 const API_EVENTOS = `api/eventos_clinicos.php`;
 const API_BUSQUEDA = `api/productos_busqueda.php`;
-const API_PROD_COD = `/api/inventario.php`
+const API_PROD_COD = `/api/inventario.php`;
 
 export const indexSelector = 6;
 
@@ -40,10 +40,10 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [seleccionado, setSeleccionado] = useState(valorInicial ? true : null);
   const [cargando, setCargando] = useState(false);
   const skipSearch = useRef(false);
-  
+
   useEffect(() => {
-          setQuery(valorInicial || "");
-    }, [valorInicial]);
+    setQuery(valorInicial || "");
+  }, [valorInicial]);
 
   useEffect(() => {
     if (skipSearch.current) {
@@ -601,7 +601,7 @@ export const VerHistoriaMedicas = () => {
         setCargando(false);
       });
   };
-  
+
   const handleGuardarProducto = (e) => {
     e.preventDefault();
     const nuevosErrores = {};
@@ -622,8 +622,6 @@ export const VerHistoriaMedicas = () => {
       return;
     }
 
-     
-
     setErrores({});
     setListaProductos((prev) => [...prev, formProducto]);
     setFormProducto(productoVacio);
@@ -633,163 +631,143 @@ export const VerHistoriaMedicas = () => {
   };
 
   const buscarProductoPorCodigo = (codigo) => {
-       
-         fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
-           credentials: "include"
-         })
-           .then(response => response.json())
-           .then(data => {
-       
-           console.log("Respuesta escáner:", data);
-       
-           if (data.success) {
-       
-             const prod = data.data;
-      
-             if (modalActiva === 6) {
-              setModalActiva(7);
-    
-              setProductoElegido(prod);
-    
-              setFormProducto({
-                  id_producto: prod.id_producto,
-                  nombre: prod.nombre,
-                  tipo_medida: prod.tipo_medida,
-                  cantidad_por_unidad: prod.cantidad_por_unidad,
-                  cantidad_presentacion: "",
-                  cantidad_total: "",
-              });
-            }
-       
-             // Modal registrar
-             if (modalActiva === 7) {
-       
-               setProductoElegido(prod);
-       
-               setFormProducto(prev => ({
-                 ...prev,
-                 id_producto: prod.id_producto,
-                 nombre: prod.nombre,
-                 tipo_medida: prod.tipo_medida,
-                 cantidad_por_unidad: prod.cantidad_por_unidad,
-                 cantidad_presentacion: "",
-                 cantidad_total: "",
-               }));
-       
-             }
-       
-             // Modal editar
-             if (modalActiva === 8) {
-       
-               setProductoElegido(prod);
-       
-               setFormProducto(prev => ({
-                 ...prev,
-                 id_producto: prod.id_producto,
-                 nombre: prod.nombre,
-                 tipo_medida: prod.tipo_medida,
-                 cantidad_por_unidad: prod.cantidad_por_unidad,
-                 cantidad_presentacion: "",
-                 cantidad_total: "",
-               }));
-             }
-             setErrores({});
-       
-           } else {
-       
-             setErrores({
-               general: `No se encontró el producto con código ${codigo}`
-             });
-           }
-         })
-         };
-         useEffect(() => {
-       
-         const applyScannedCode = () => {
-           console.log("APPLY", scannedCodeRef.current);
-       
-           if (scannedCodeRef.current.length < 6) {
-       
-             scannedCodeRef.current = "";
-             return;
-           }
-       
-           const code = scannedCodeRef.current;
-       
-           buscarProductoPorCodigo(code);
-       
-           scannedCodeRef.current = "";
-           isScanningRef.current = false;
-         };
-       
-         const handleKeyDown = (e) => {
-       
-           console.log("TECLA:", e.key);
-       
-           // ENTER
-           if (e.key === "Enter") {
-       
-             if (scanTimeoutRef.current) {
-               clearTimeout(scanTimeoutRef.current);
-             }
-       
-             applyScannedCode();
-             return;
-           }
-       
-           // SOLO números
-           if (!/^[0-9]$/.test(e.key)) return;
-       
-           const now = Date.now();
-       
-           // Primera tecla
-           if (lastKeyTimeRef.current === 0) {
-       
-             isScanningRef.current = true;
-       
-           } else {
-       
-             const interval = now - lastKeyTimeRef.current;
-       
-             console.log("INTERVAL:", interval);
-       
-             // Escritura humana
-             if (interval > 120) {
-       
-               scannedCodeRef.current = "";
-             }
-           }
-       
-           lastKeyTimeRef.current = now;
-       
-           scannedCodeRef.current += e.key;
-       
-           console.log("CODIGO:", scannedCodeRef.current);
-       
-           // Timeout
-           if (scanTimeoutRef.current) {
-             clearTimeout(scanTimeoutRef.current);
-           }
-       
-           scanTimeoutRef.current = setTimeout(() => {
-       
-             applyScannedCode();
-       
-           }, 150);
-         };
-       
-         document.addEventListener("keydown", handleKeyDown);
-       
-         return () => {
-       
-           document.removeEventListener("keydown", handleKeyDown);
-       
-           if (scanTimeoutRef.current) {
-             clearTimeout(scanTimeoutRef.current);
-           }
-         };
-       
-       }, [modalActiva]);
+    fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Respuesta escáner:", data);
+
+        if (data.success) {
+          const prod = data.data;
+
+          if (modalActiva === 6) {
+            setModalActiva(7);
+
+            setProductoElegido(prod);
+
+            setFormProducto({
+              id_producto: prod.id_producto,
+              nombre: prod.nombre,
+              tipo_medida: prod.tipo_medida,
+              cantidad_por_unidad: prod.cantidad_por_unidad,
+              cantidad_presentacion: "",
+              cantidad_total: "",
+            });
+          }
+
+          // Modal registrar
+          if (modalActiva === 7) {
+            setProductoElegido(prod);
+
+            setFormProducto((prev) => ({
+              ...prev,
+              id_producto: prod.id_producto,
+              nombre: prod.nombre,
+              tipo_medida: prod.tipo_medida,
+              cantidad_por_unidad: prod.cantidad_por_unidad,
+              cantidad_presentacion: "",
+              cantidad_total: "",
+            }));
+          }
+
+          // Modal editar
+          if (modalActiva === 8) {
+            setProductoElegido(prod);
+
+            setFormProducto((prev) => ({
+              ...prev,
+              id_producto: prod.id_producto,
+              nombre: prod.nombre,
+              tipo_medida: prod.tipo_medida,
+              cantidad_por_unidad: prod.cantidad_por_unidad,
+              cantidad_presentacion: "",
+              cantidad_total: "",
+            }));
+          }
+          setErrores({});
+        } else {
+          setErrores({
+            general: `No se encontró el producto con código ${codigo}`,
+          });
+        }
+      });
+  };
+  useEffect(() => {
+    const applyScannedCode = () => {
+      console.log("APPLY", scannedCodeRef.current);
+
+      if (scannedCodeRef.current.length < 6) {
+        scannedCodeRef.current = "";
+        return;
+      }
+
+      const code = scannedCodeRef.current;
+
+      buscarProductoPorCodigo(code);
+
+      scannedCodeRef.current = "";
+      isScanningRef.current = false;
+    };
+
+    const handleKeyDown = (e) => {
+      console.log("TECLA:", e.key);
+
+      // ENTER
+      if (e.key === "Enter") {
+        if (scanTimeoutRef.current) {
+          clearTimeout(scanTimeoutRef.current);
+        }
+
+        applyScannedCode();
+        return;
+      }
+
+      // SOLO números
+      if (!/^[0-9]$/.test(e.key)) return;
+
+      const now = Date.now();
+
+      // Primera tecla
+      if (lastKeyTimeRef.current === 0) {
+        isScanningRef.current = true;
+      } else {
+        const interval = now - lastKeyTimeRef.current;
+
+        console.log("INTERVAL:", interval);
+
+        // Escritura humana
+        if (interval > 120) {
+          scannedCodeRef.current = "";
+        }
+      }
+
+      lastKeyTimeRef.current = now;
+
+      scannedCodeRef.current += e.key;
+
+      console.log("CODIGO:", scannedCodeRef.current);
+
+      // Timeout
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+      }
+
+      scanTimeoutRef.current = setTimeout(() => {
+        applyScannedCode();
+      }, 150);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+      }
+    };
+  }, [modalActiva]);
 
   // ─── Render ──────────────────────────────────────────────────────────────────
   return (
@@ -1458,7 +1436,12 @@ export const VerHistoriaMedicas = () => {
                       className="registrar-producto-btn"
                       onClick={() => {
                         setModalOrigen(4);
-                        setModalActiva(6);
+
+                        if (listaProductos.length === 0) {
+                          abrirModal(7);
+                        } else {
+                          abrirModal(6);
+                        }
                       }}
                     >
                       Ver productos ({listaProductos.length})
@@ -1582,7 +1565,12 @@ export const VerHistoriaMedicas = () => {
                       className="registrar-producto-btn"
                       onClick={() => {
                         setModalOrigen(5);
-                        setModalActiva(6);
+
+                        if (listaProductos.length === 0) {
+                          abrirModal(7);
+                        } else {
+                          abrirModal(6);
+                        }
                       }}
                     >
                       Ver productos ({listaProductos.length})

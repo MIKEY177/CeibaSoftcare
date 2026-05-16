@@ -9,12 +9,13 @@ import flecha from "../images/flecha_salir.png";
 import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
-import { Helmet } from "react-helmet-async";7501234567893
+import { Helmet } from "react-helmet-async";
+7501234567893;
 import CustomSelect from "../components/CustomSelect.jsx";
-import { Notificaciones } from '../components/Notificaciones'
+import { Notificaciones } from "../components/Notificaciones";
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
-const API_PROD_COD = `/api/inventario.php`
+const API_PROD_COD = `/api/inventario.php`;
 
 const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [query, setQuery] = useState(valorInicial);
@@ -23,7 +24,7 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [cargando, setCargando] = useState(false);
   const skipSearch = useRef(false);
   useEffect(() => {
-        setQuery(valorInicial || "");
+    setQuery(valorInicial || "");
   }, [valorInicial]);
   useEffect(() => {
     if (skipSearch.current) {
@@ -173,14 +174,12 @@ export const Eventos = () => {
   const [indexEditandoProducto, setIndexEditandoProducto] = useState(null);
   const menuObj = user.rol === "administrador";
 
-
   const [productosOriginales, setProductosOriginales] = useState([]);
   const scannedCodeRef = useRef("");
   const isScanningRef = useRef(false);
   const lastKeyTimeRef = useRef(0);
   const scanTimeoutRef = useRef(null);
   const [codigoEscaneado, setCodigoEscaneado] = useState("");
-
 
   const hayCambios = () => {
     const camposEvento =
@@ -470,172 +469,152 @@ export const Eventos = () => {
   );
 
   const buscarProductoPorCodigo = (codigo) => {
-   
-     fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
-       credentials: "include"
-     })
-       .then(response => response.json())
-       .then(data => {
-   
-       console.log("Respuesta escáner:", data);
-   
-       if (data.success) {
-   
-         const prod = data.data;
-  
-         if (modalActivo === 5) {
-          setModalActivo(4);
+    fetch(`${API_PROD_COD}?codigo=${encodeURIComponent(codigo)}`, {
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Respuesta escáner:", data);
 
-          setProductoElegido(prod);
+        if (data.success) {
+          const prod = data.data;
 
-          setFormProducto({
+          if (modalActivo === 5) {
+            setModalActivo(4);
+
+            setProductoElegido(prod);
+
+            setFormProducto({
               id_producto: prod.id_producto,
               nombre: prod.nombre,
               tipo_medida: prod.tipo_medida,
               cantidad_por_unidad: prod.cantidad_por_unidad,
               cantidad_presentacion: "",
               cantidad_total: "",
+            });
+          }
+
+          // Modal registrar
+          if (modalActivo === 4) {
+            setProductoElegido(prod);
+
+            setFormProducto((prev) => ({
+              ...prev,
+              id_producto: prod.id_producto,
+              nombre: prod.nombre,
+              tipo_medida: prod.tipo_medida,
+              cantidad_por_unidad: prod.cantidad_por_unidad,
+              cantidad_presentacion: "",
+              cantidad_total: "",
+            }));
+          }
+
+          // Modal editar
+          if (modalActivo === 6) {
+            setProductoElegido(prod);
+
+            setFormProducto((prev) => ({
+              ...prev,
+              id_producto: prod.id_producto,
+              nombre: prod.nombre,
+              tipo_medida: prod.tipo_medida,
+              cantidad_por_unidad: prod.cantidad_por_unidad,
+              cantidad_presentacion: "",
+              cantidad_total: "",
+            }));
+          }
+
+          if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 6) {
+            navigate(`/productos/${codigo}/1`);
+          }
+
+          setErrores({});
+        } else {
+          setErrores({
+            general: `No se encontró el producto con código ${codigo}`,
           });
+          if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 6) {
+            setCodigoEscaneado(codigo);
+            abrirModal(8);
+          }
         }
-   
-         // Modal registrar
-         if (modalActivo === 4) {
-   
-           setProductoElegido(prod);
-   
-           setFormProducto(prev => ({
-             ...prev,
-             id_producto: prod.id_producto,
-             nombre: prod.nombre,
-             tipo_medida: prod.tipo_medida,
-             cantidad_por_unidad: prod.cantidad_por_unidad,
-             cantidad_presentacion: "",
-             cantidad_total: "",
-           }));
-   
-         }
-   
-         // Modal editar
-         if (modalActivo === 6) {
-   
-           setProductoElegido(prod);
-   
-           setFormProducto(prev => ({
-             ...prev,
-             id_producto: prod.id_producto,
-             nombre: prod.nombre,
-             tipo_medida: prod.tipo_medida,
-             cantidad_por_unidad: prod.cantidad_por_unidad,
-             cantidad_presentacion: "",
-             cantidad_total: "",
-           }));
-         }
-   
-         if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 6 ) {
-             navigate(`/productos/${codigo}/1`)
-         }
-   
-         setErrores({});
-   
-       } else {
-   
-         setErrores({
-           general: `No se encontró el producto con código ${codigo}`
-         });
-         if (modalActivo !== 4 && modalActivo !== 5 && modalActivo !== 6 ) {
-           setCodigoEscaneado(codigo);
-           abrirModal(8);
-         }
-       }
-     })
-     };
-     useEffect(() => {
-   
-     const applyScannedCode = () => {
-       console.log("APPLY", scannedCodeRef.current);
-   
-       if (scannedCodeRef.current.length < 6) {
-   
-         scannedCodeRef.current = "";
-         return;
-       }
-   
-       const code = scannedCodeRef.current;
-   
-       buscarProductoPorCodigo(code);
-   
-       scannedCodeRef.current = "";
-       isScanningRef.current = false;
-     };
-   
-     const handleKeyDown = (e) => {
-   
-       console.log("TECLA:", e.key);
-   
-       // ENTER
-       if (e.key === "Enter") {
-   
-         if (scanTimeoutRef.current) {
-           clearTimeout(scanTimeoutRef.current);
-         }
-   
-         applyScannedCode();
-         return;
-       }
-   
-       // SOLO números
-       if (!/^[0-9]$/.test(e.key)) return;
-   
-       const now = Date.now();
-   
-       // Primera tecla
-       if (lastKeyTimeRef.current === 0) {
-   
-         isScanningRef.current = true;
-   
-       } else {
-   
-         const interval = now - lastKeyTimeRef.current;
-   
-         console.log("INTERVAL:", interval);
-   
-         // Escritura humana
-         if (interval > 120) {
-   
-           scannedCodeRef.current = "";
-         }
-       }
-   
-       lastKeyTimeRef.current = now;
-   
-       scannedCodeRef.current += e.key;
-   
-       console.log("CODIGO:", scannedCodeRef.current);
-   
-       // Timeout
-       if (scanTimeoutRef.current) {
-         clearTimeout(scanTimeoutRef.current);
-       }
-   
-       scanTimeoutRef.current = setTimeout(() => {
-   
-         applyScannedCode();
-   
-       }, 150);
-     };
-   
-     document.addEventListener("keydown", handleKeyDown);
-   
-     return () => {
-   
-       document.removeEventListener("keydown", handleKeyDown);
-   
-       if (scanTimeoutRef.current) {
-         clearTimeout(scanTimeoutRef.current);
-       }
-     };
-   
-   }, [modalActivo]);
+      });
+  };
+  useEffect(() => {
+    const applyScannedCode = () => {
+      console.log("APPLY", scannedCodeRef.current);
+
+      if (scannedCodeRef.current.length < 6) {
+        scannedCodeRef.current = "";
+        return;
+      }
+
+      const code = scannedCodeRef.current;
+
+      buscarProductoPorCodigo(code);
+
+      scannedCodeRef.current = "";
+      isScanningRef.current = false;
+    };
+
+    const handleKeyDown = (e) => {
+      console.log("TECLA:", e.key);
+
+      // ENTER
+      if (e.key === "Enter") {
+        if (scanTimeoutRef.current) {
+          clearTimeout(scanTimeoutRef.current);
+        }
+
+        applyScannedCode();
+        return;
+      }
+
+      // SOLO números
+      if (!/^[0-9]$/.test(e.key)) return;
+
+      const now = Date.now();
+
+      // Primera tecla
+      if (lastKeyTimeRef.current === 0) {
+        isScanningRef.current = true;
+      } else {
+        const interval = now - lastKeyTimeRef.current;
+
+        console.log("INTERVAL:", interval);
+
+        // Escritura humana
+        if (interval > 120) {
+          scannedCodeRef.current = "";
+        }
+      }
+
+      lastKeyTimeRef.current = now;
+
+      scannedCodeRef.current += e.key;
+
+      console.log("CODIGO:", scannedCodeRef.current);
+
+      // Timeout
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+      }
+
+      scanTimeoutRef.current = setTimeout(() => {
+        applyScannedCode();
+      }, 150);
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+
+      if (scanTimeoutRef.current) {
+        clearTimeout(scanTimeoutRef.current);
+      }
+    };
+  }, [modalActivo]);
 
   const mostrarExito = (msg, cb) => {
     setMensajeExito(msg);
@@ -816,7 +795,12 @@ export const Eventos = () => {
                         className="registrar-producto-btn"
                         onClick={() => {
                           setModalOrigen(1);
-                          abrirModal(5);
+
+                          if (listaProductos.length === 0) {
+                            abrirModal(4);
+                          } else {
+                            abrirModal(5);
+                          }
                         }}
                       >
                         Ver productos ({listaProductos.length})
@@ -948,7 +932,12 @@ export const Eventos = () => {
                         className="registrar-producto-btn"
                         onClick={() => {
                           setModalOrigen(2);
-                          abrirModal(5);
+
+                          if (listaProductos.length === 0) {
+                            abrirModal(4);
+                          } else {
+                            abrirModal(5);
+                          }
                         }}
                       >
                         Ver productos ({listaProductos.length})
@@ -1542,21 +1531,36 @@ export const Eventos = () => {
             </aside>
           )}
           {modalActivo === 8 && (
-                      <aside className="modal-codigo">
-                          <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
-                          {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
+            <aside className="modal-codigo">
+              <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
+              {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
                           {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
-                          <h3 className="modal-c-mensaje">¿Desea registrar nuevo producto <span class="second-line"> con código <h6 className="subrayar-c">{codigoEscaneado}</h6>? </span></h3>
-                          <section className="modal-c-buttons">
-                            <button className="registrar-c-btn" onClick={() => {
-                              navigate(`/productos/${codigoEscaneado}/2`);
-                            }}>
-                              Registrar
-                            </button>
-                            <button className="cancelar-c-btn" onClick={()=>cerrarModal()} >Cancelar</button>
-                          </section>
-                      </aside> 
-        )}
+              <h3 className="modal-c-mensaje">
+                ¿Desea registrar nuevo producto{" "}
+                <span class="second-line">
+                  {" "}
+                  con código <h6 className="subrayar-c">{codigoEscaneado}</h6>
+                  ?{" "}
+                </span>
+              </h3>
+              <section className="modal-c-buttons">
+                <button
+                  className="registrar-c-btn"
+                  onClick={() => {
+                    navigate(`/productos/${codigoEscaneado}/2`);
+                  }}
+                >
+                  Registrar
+                </button>
+                <button
+                  className="cancelar-c-btn"
+                  onClick={() => cerrarModal()}
+                >
+                  Cancelar
+                </button>
+              </section>
+            </aside>
+          )}
         </div>
       </main>
     </>
