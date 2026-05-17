@@ -47,7 +47,7 @@ export const Albergue = () => {
       })
       .then(res => res.json())
       .then(data => {
-        console.log("Datos de sesión:", data);
+        
         if (data.status === "ok") {
           setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil });
           if (data.rol !== "administrador" && data.rol !== "veterinario") {
@@ -103,7 +103,7 @@ export const Albergue = () => {
                   <td>Fecha</td>
                   <td>Motivo</td>
                   <td>Actividad</td>
-                  <td>{/* Acciones */}</td>
+                  <td>Acciones</td>
                 </tr>
               </thead>
               <tbody class="body-tabla-actividad-reciente">
@@ -166,10 +166,10 @@ export const Albergue = () => {
                 </Link>
 
                 <Link to="/historias_medicas">
-                  <div className="modulo-eventos">
-                    <h4 className="titulo-modulo-eventos">Historias Médicas</h4>
-                    <figure className="modulo-eventos-icono">
-                      <img className="modulo-eventos-img" src={eventosIcon} alt=""/>
+                  <div className="modulo-medicas">
+                    <h4 className="titulo-modulo-medicas">Historias Médicas</h4>
+                    <figure className="modulo-medicas-icono">
+                      <img className="modulo-medicas-img" src={eventosIcon} alt=""/>
                     </figure>
                   </div>
                 </Link> 

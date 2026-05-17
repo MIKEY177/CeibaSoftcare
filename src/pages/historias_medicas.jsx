@@ -24,7 +24,7 @@ import { Notificaciones } from "../components/Notificaciones";
 const API = `api/historias_medicas.php`;
 const API_SESSION = `api/session.php`;
 const API_ANIMALES = `api/animales.php`;
-export const indexSelector = 6;
+export const indexSelector = 7;
 
 export const HistoriasMedicas = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });
@@ -169,14 +169,19 @@ export const HistoriasMedicas = () => {
   // ─── Búsqueda ─────────────────────────────────────────────────────────────────
 
   const historiasFiltradas = historias.filter(
-    (historia) =>
-      (historia.nombre_animal ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()) ||
-      (historia.fecha_creacion ?? "")
-        .toLowerCase()
-        .includes(busqueda.toLowerCase()),
-  );
+  (historia) =>
+    (historia.nombre_animal ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase()) ||
+
+    (historia.fecha_creacion ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase()) ||
+
+    (historia.especie ?? "")
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+);
 
   const handleBusqueda = (e) => {
     e.preventDefault();

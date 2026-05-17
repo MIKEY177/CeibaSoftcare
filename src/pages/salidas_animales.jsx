@@ -25,7 +25,7 @@ import { Notificaciones } from '../components/Notificaciones'
 const API = `api/salidas_animales.php`;
 const API_SESSION = `api/session.php`;
 const API_ANIMALES = `api/animales.php`;
-export const indexSelector = 3;
+export const indexSelector = 5;
 
 export const SalidaAnimales = () => {
    const [user, setUser] = useState({ nombre: "", rol: "" });
@@ -338,7 +338,7 @@ export const SalidaAnimales = () => {
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
 
-            <form className="aed-form" onSubmit={handleEditar}>
+            <form className="aed-form-editar-salida-animal" onSubmit={handleEditar}>
               <section className="aed-form-inputs-area-salida-animal">
 
                 <div style={{gridArea: "divInpt1"}}>

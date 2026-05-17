@@ -446,11 +446,10 @@
     transform: translate(-40px, 4px);
 }
 
-.ar-btn, .aed-btn{
+.ar-btn-registrar-evento-clinico, .aed-btn{
     display: block;
-    margin: auto 0;
+    margin: auto;
     height: 40px;
-    width: max-content;
     padding: 0 20px;
     background-color: #eaaa49de;
     color: #875000;

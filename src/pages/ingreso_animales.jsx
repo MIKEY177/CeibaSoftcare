@@ -72,10 +72,10 @@ export const IngresoAnimales = () => {
       id_usuario: "",
     });
 
-    const opcionesVerificaciones = verificaciones.map((verificacion) => ({
-    value: verificacion.id_verificacion,
-    label: `${verificacion.fecha} - ${verificacion.nombre}`,
-  }));
+const opcionesVerificaciones = verificaciones.map((verificacion) => ({
+  value: String(verificacion.id_verificacion),
+  label: `${verificacion.fecha} - ${verificacion.nombre}`,
+}));
   const [busqueda, setBusqueda] = useState("");
   const cargarIngresos = () => {
     fetch(API, { credentials: "include" })
@@ -102,7 +102,7 @@ export const IngresoAnimales = () => {
       cedula_realiza: ingreso.cedula_realiza || "",
       motivo_ingreso: ingreso.motivo_ingreso || "",
       fecha_hora_ingreso: ingreso.fecha_hora_ingreso || "",
-      id_verificacion: ingreso.id_verificacion || "",
+      id_verificacion: String(ingreso.id_verificacion || ""),
       id_usuario: ingreso.id_usuario || "",
     });
   }
@@ -289,7 +289,7 @@ const handleVer = (ingreso) => {
                     <td>{ingreso.nombre}</td>
                     <td>{ingreso.motivo_ingreso}</td>
                     <td>{ingreso.fecha}</td>
-                    <td><button className="ver-detalles-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
+                    <td><button className="tabla-ingresos-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
                         <figure
@@ -483,7 +483,7 @@ const handleVer = (ingreso) => {
 
                 <div style={{ gridArea: "divInpt8" }}>
                   <label className="ar-label" for="">
-                    cédula de persona que realiza
+                    Cédula de persona que realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"
@@ -519,17 +519,17 @@ const handleVer = (ingreso) => {
                   <label className="ar-label" for="">
                     Verificación<h6 className="obligatorio">*</h6>
                   </label>
-                  <CustomSelect
-                    options={opcionesVerificaciones}
-                    value={formRegistrar.id_verificacion}
-                    placeholder="Seleccione una verificación"
-                    onChange={(val) =>
-                      setFormRegistrar({
-                        ...formRegistrar,
-                        id_verificacion: Number(val),
-                      })
-                    }
-                  />
+                <CustomSelect
+  options={opcionesVerificaciones}
+  value={formRegistrar.id_verificacion}
+  placeholder="Seleccione una verificación"
+  onChange={(val) =>
+    setFormRegistrar({
+      ...formRegistrar,
+      id_verificacion: String(val),
+    })
+  }
+/>
                   <span className="error-mensaje">
                     {errores.id_verificacion ?? ""}
                   </span>
@@ -563,7 +563,7 @@ const handleVer = (ingreso) => {
             )}
 
             <form className="ar-form" onSubmit={(e) => handleEditar(e)}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-ingresos">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label" for="">
                     Persona que reporta<h6 className="obligatorio">*</h6>
@@ -689,7 +689,7 @@ const handleVer = (ingreso) => {
                   style={{ gridArea: "divInpt7" }}
                 >
                   <label className="ar-label" for="">
-                    persona que realiza
+                    Persona que realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"
@@ -706,7 +706,7 @@ const handleVer = (ingreso) => {
                     {errores.persona_realiza ?? ""}
                   </span>
                   <label className="ar-label" for="">
-                    Cedula de quien realiza
+                    Cédula de quien realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"
@@ -745,17 +745,17 @@ const handleVer = (ingreso) => {
                   <label className="ar-label" for="">
                     Verificación<h6 className="obligatorio">*</h6>
                   </label>
-                  <CustomSelect
-                    options={opcionesVerificaciones}
-                    value={formEditar.id_verificacion}
-                    placeholder="Seleccione una verificación"
-                    onChange={(val) =>
-                      setFormEditar({
-                        ...formEditar,
-                        id_verificacion: Number(val),
-                      })
-                    }
-                  />
+<CustomSelect
+  options={opcionesVerificaciones}
+  value={formEditar.id_verificacion}
+  placeholder="Seleccione una verificación"
+  onChange={(val) =>
+    setFormEditar({
+      ...formEditar,
+      id_verificacion: String(val),
+    })
+  }
+/>
                 </div>
               </section>
               <input className="ar-btn" type="submit" value="Guardar Cambios" />
@@ -771,7 +771,7 @@ const handleVer = (ingreso) => {
               <h2>Volver</h2>
             </button>
             <h1 className="modal-aed-titulo">
-              Ingreso del animal [{ingresoSeleccionado.nombre}]
+              Ingreso del animal <span className="subrayar2">{ingresoSeleccionado.nombre}</span>
             </h1>
             <table className="tabla-ver-ingreso-animal">
             <thead className="header-tabla-ingreso-animal">

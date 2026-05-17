@@ -1319,7 +1319,7 @@ export const VerHistoriaMedicas = () => {
               </section>
               <button
                 ref={btnRegistrarEventoRef}
-                className="ar-btn"
+                className="ar-btn-registrar-evento-clinico"
                 type="button"
                 onClick={handleRegistrarEvento}
                 disabled={cargando}
@@ -1441,7 +1441,7 @@ export const VerHistoriaMedicas = () => {
                   </span>
                 </div>
               </section>
-              <button className="ar-btn" type="submit" disabled={cargando}>
+              <button className="ar-btn-registrar-evento-clinico" type="submit" disabled={cargando}>
                 {cargando ? "Guardando..." : "Guardar Cambios"}
               </button>
             </form>

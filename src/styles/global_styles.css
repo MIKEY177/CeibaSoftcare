@@ -74,7 +74,7 @@ body{
     all: unset;
 }
 
-.modulo-eventos, .modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos, .modulo-verificaciones{
+.modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos, .modulo-verificaciones, .modulo-medicas{
     border-radius: 20px;
     width: 250px;
     height: 125px;
@@ -89,7 +89,7 @@ body{
 
 
 
-.modulo-farmacia, .modulo-albergue, .modulo-usuarios{
+.modulo-farmacia, .modulo-albergue, .modulo-usuarios, .modulo-eventos{
     border-radius: 20px;
     width: 290px;
     height: 155px;
@@ -102,7 +102,7 @@ body{
     transition: transform 0.2s ease-in-out;
 }
 
-.modulo-farmacia:hover, .modulo-albergue:hover, .modulo-usuarios:hover, .modulo-eventos:hover, .modulo-productos:hover, .modulo-salidas-productos:hover, .modulo-entradas-productos:hover, .modulo-verificaciones:hover{
+.modulo-farmacia:hover, .modulo-albergue:hover, .modulo-usuarios:hover, .modulo-eventos:hover, .modulo-productos:hover, .modulo-salidas-productos:hover, .modulo-entradas-productos:hover, .modulo-verificaciones:hover, .modulo-medicas:hover{
     transform: scale(1.05);
 }
 
@@ -110,7 +110,7 @@ body{
     width: 270px;
 }
 
-.modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4, .modulo-verificaciones h4{
+.modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4, .modulo-verificaciones h4, .modulo-medicas h4{
     font-family: "Ubuntu";
     font-size: 1.6rem;
     font-weight: 400;
@@ -121,7 +121,7 @@ body{
     font-weight: 300;
 } */
 
-.modulo-farmacia, .modulo-eventos{
+.modulo-farmacia, .modulo-eventos, .modulo-medicas{
     border: 2px solid #0094A4;
     background-color: #0094a41c;
     color: #0094A4;
@@ -166,7 +166,7 @@ body{
 /* Fin Módulos y sub-módulos de gestión  */
 /* Imágenes e Iconos */
 
-.modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono, .modulo-verificaciones-icono{
+.modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono, .modulo-verificaciones-icono, .modulo-medicas-icono{
     width: 50px;
     height: 50px;
 }
@@ -186,7 +186,7 @@ body{
     height: 54px;
 }
 
-.modulo-farmacia-img, .modulo-albergue-img, .modulo-usuarios-img, .modulo-eventos-img, .modulo-productos-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img, .modulo-verificaciones-img{
+.modulo-farmacia-img, .modulo-albergue-img, .modulo-usuarios-img, .modulo-eventos-img, .modulo-productos-img, .modulo-salidas-productos-img, .modulo-entradas-productos-img, .modulo-verificaciones-img, .modulo-medicas-img{
     width: 100%;
     height: 100%;
 }
@@ -886,12 +886,12 @@ footer{
         height: 150px;
     } */
 
-    .modulo-eventos, .modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos{
-        width: 180px;
+    .modulo-productos, .modulo-salidas-productos, .modulo-entradas-productos, .modulo-medicas, .modulo-verificaciones{
+        width: 160px;
         height: 100px;
     }
 
-    .modulo-farmacia, .modulo-albergue, .modulo-usuarios{
+    .modulo-farmacia, .modulo-albergue, .modulo-usuarios, .modulo-eventos{
         width: 193px;
         height: 120px;
     }
@@ -900,18 +900,18 @@ footer{
         width: 180px;
     }
 
-    .modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4{
-        font-size: 1.2rem;
+    .modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-productos h4, .modulo-salidas-productos h4, .modulo-entradas-productos h4, .modulo-medicas h4, .modulo-verificaciones h4{
+        font-size: 1.18rem;
     }
 
-    .modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4{
+    .modulo-farmacia h4, .modulo-albergue h4, .modulo-usuarios h4, .modulo-eventos h4{
         font-size: 1.6rem;
     }
 
     /* Fin Módulos y sub-módulos de gestión  */
     /* Imágenes e Iconos */
 
-    .modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono{
+    .modulo-farmacia-icono, .modulo-albergue-icono, .modulo-usuarios-icono, .modulo-eventos-icono, .modulo-productos-icono, .modulo-medicas-icono, .modulo-verificaciones-icono{
         width: 33px;
         height: 33px;
     }
