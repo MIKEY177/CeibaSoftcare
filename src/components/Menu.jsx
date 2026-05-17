@@ -14,6 +14,8 @@ import { indexSelector as usuariosIndex } from '../pages/usuarios.jsx'
 import { indexSelector as albergueIndex } from '../pages/albergue.jsx'
 import { indexSelector as ingresoanimalesIndex } from '../pages/ingreso_animales.jsx'
 import { indexSelector as salidasanimalesIndex } from '../pages/salidas_animales.jsx'
+import { indexSelector as verificacionesIndex } from '../pages/verificaciones.jsx'
+import { indexSelector as historiasIndex } from '../pages/historias_medicas.jsx'
 
 export const Menu = (props) => {
 
@@ -33,6 +35,8 @@ export const Menu = (props) => {
   else if (pathname === '/albergue') indexSelector = albergueIndex
   else if (pathname === '/ingreso_animales') indexSelector = ingresoanimalesIndex
   else if (pathname === '/salida_animales') indexSelector = salidasanimalesIndex
+  else if (pathname === '/verificaciones') indexSelector = verificacionesIndex
+  else if (pathname === '/historias_medicas') indexSelector = historiasIndex
 
   return (
     <>

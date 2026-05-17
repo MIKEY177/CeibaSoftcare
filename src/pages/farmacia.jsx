@@ -203,11 +203,11 @@ export const Farmacia = () => {
             <table className="tabla-actividad-reciente">
               <thead className="header-tabla-actividad-reciente">
                 <tr>
-                  <th>Producto</th>
-                  <th>Fecha</th>
-                  <th>Cantidad</th>
-                  <th>Actividad</th>
-                  <th>Acciones</th>
+                  <td>Producto</td>
+                  <td>Fecda</td>
+                  <td>Cantidad</td>
+                  <td>Actividad</td>
+                  <td>Acciones</td>
                 </tr>
               </thead>
 
@@ -293,22 +293,6 @@ export const Farmacia = () => {
                       <img
                         className="modulo-salidas-productos-img"
                         src={salidaIcon}
-                        alt=""
-                      />
-                    </figure>
-                  </div>
-                </Link>
-              ) : (
-                ""
-              )}
-              {user.rol === "administrador" ? (
-                <Link to="/eventos">
-                  <div className="modulo-eventos">
-                    <h4 className="titulo-modulo-eventos">Eventos</h4>
-                    <figure className="modulo-eventos-icono">
-                      <img
-                        className="modulo-eventos-img"
-                        src={eventosIcon}
                         alt=""
                       />
                     </figure>

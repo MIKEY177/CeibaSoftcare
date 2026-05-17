@@ -234,6 +234,10 @@
     gap: 0px;          
 }
 
+.modal-eventos-rp{
+    height: 480px;        
+}
+
 .modal-eventos-desactivar{
     width: 500px;
     height: 300px;
@@ -346,6 +350,7 @@
     background-color: #F8F8F8;
     margin-bottom: 10px;
 }
+
 
 /* .er-input3 {
     

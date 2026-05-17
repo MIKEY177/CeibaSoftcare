@@ -194,7 +194,7 @@
     /* border: 2px solid red; */
 }
 
-.tabla-historias-medicas-btn{
+.tabla-historias-medicas-btn, .tabla-ingresos-btn{
     background-color: #D49538;
     padding: 5px 30px;
     font-size: 1rem;
@@ -222,7 +222,7 @@
     margin: auto;
     background-color: #FFFFFF;
     width: 700px;
-    height: auto;      
+    height: 450px;      
     max-height: 95vh;   
     overflow-y: auto;  
     border-radius: 10px;

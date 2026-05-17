@@ -289,7 +289,19 @@
     height: auto;          
 }
 
-.ar-form-inputs-area, .aed-form-inputs-area{
+.ar-form-inputs-area{
+    display: grid;
+    grid-template-columns: 500px 1fr;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+    "divInpt1 divInpt4"
+    "divInpt2 divInpt5"
+    "divInpt3 divInpt6"
+    "divInpt3 divInpt8";
+    gap: 5px 0;
+}
+
+.aed-form-inputs-area{
     display: grid;
     grid-template-columns: 500px 1fr;
     grid-template-rows: auto auto auto auto;
@@ -437,6 +449,12 @@
     font-size: 1.3rem;
     text-decoration: underline;
 }
+
+.subrayar2{
+    font-size: 1.8rem;
+    text-decoration: underline;
+}
+
 .error-mensaje {
     display: block;
     color: #c0392b;

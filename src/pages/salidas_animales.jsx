@@ -25,7 +25,7 @@ import { Notificaciones } from '../components/Notificaciones'
 const API = `api/salidas_animales.php`;
 const API_SESSION = `api/session.php`;
 const API_ANIMALES = `api/animales.php`;
-export const indexSelector = 3;
+export const indexSelector = 5;
 
 export const SalidaAnimales = () => {
    const [user, setUser] = useState({ nombre: "", rol: "" });

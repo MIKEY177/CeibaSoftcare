@@ -20,7 +20,7 @@ import { Notificaciones } from "../components/Notificaciones";
 
 const API = `api/verificaciones.php`;
 const API_SESSION = `api/session.php`;
-export const indexSelector = 6;
+export const indexSelector = 3;
 
 export const Verificaciones = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });

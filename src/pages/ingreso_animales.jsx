@@ -289,7 +289,7 @@ const handleVer = (ingreso) => {
                     <td>{ingreso.nombre}</td>
                     <td>{ingreso.motivo_ingreso}</td>
                     <td>{ingreso.fecha}</td>
-                    <td><button className="ver-detalles-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
+                    <td><button className="tabla-ingresos-btn" onClick={()=>abrirModal(3, ingreso)}>Ver</button></td>
                     <td>
                       <div className="last-td-flex-content-wrapper">
                         <figure
@@ -771,7 +771,7 @@ const handleVer = (ingreso) => {
               <h2>Volver</h2>
             </button>
             <h1 className="modal-aed-titulo">
-              Ingreso del animal [{ingresoSeleccionado.nombre}]
+              Ingreso del animal <span className="subrayar2">{ingresoSeleccionado.nombre}</span>
             </h1>
             <table className="tabla-ver-ingreso-animal">
             <thead className="header-tabla-ingreso-animal">

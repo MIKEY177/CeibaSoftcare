@@ -8,6 +8,7 @@ import "../styles/inicio.css"
 import farmaciaIcon from "../images/icons/farmacia-icon.png"
 import albergueIcon from "../images/icons/albergue-icon.png"
 import usuariosIcon from "../images/icons/usuarios-icon.png"
+import eventosIcon from "../images/icons/eventos-icon.png";
 
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
@@ -26,46 +27,46 @@ export const Inicio = () => {
   const navigate = useNavigate();
 
   const API_SESSION = `api/session.php`;
-  const API_EVE =  `api/eventos.php`;
+  const API_EVE = `api/eventos.php`;
   const API_CAMBIAR_PASS = `api/cambiar_contrasena.php`;
-  const API_CS         = `api/logout.php`;
+  const API_CS = `api/logout.php`;
   useEffect(() => {
     // consultar eventos
     fetch(API_EVE, {
       credentials: "include"
     })
-    .then(res => res.json())
-    .then(response => {
-      if (response.success) {
-        setEventos(response.data);
-      } else {
-        console.error(response.error);
-      }
-    })
-    .catch(error => console.error(error));
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          setEventos(response.data);
+        } else {
+          console.error(response.error);
+        }
+      })
+      .catch(error => console.error(error));
 
     // consultar sesión
     fetch(API_SESSION, {
       credentials: "include"
     })
-    .then(res => res.json())
-    .then(data => {
-      
-      if (data.status === "ok") {
-        setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil, cuenta_activa: data.cuenta_activa });
+      .then(res => res.json())
+      .then(data => {
 
-      } else {
+        if (data.status === "ok") {
+          setUser({ nombre: data.usuario, rol: data.rol, foto_perfil: data.foto_perfil, cuenta_activa: data.cuenta_activa });
+
+        } else {
+          navigate("/iniciar_sesion");
+        }
+      })
+      .catch(error => {
+        console.error("Error al obtener sesión:", error);
         navigate("/iniciar_sesion");
-      }
-    })
-    .catch(error => {
-      console.error("Error al obtener sesión:", error);
-      navigate("/iniciar_sesion");
-    });
+      });
 
-    
+
   }, []);
-  
+
   useEffect(() => {
     if (user.cuenta_activa === 0) {
       abrirModal();
@@ -97,18 +98,18 @@ export const Inicio = () => {
         confirmarPass: confirmarPass
       })
     })
-    .then(res => res.json())
-    .then(response => {
-      if (response.success) {
-        mostrarExito();
-      } else {
-        setErroresModal(response.errors);
-      }
-    })
-    .catch(error => console.error(error));
+      .then(res => res.json())
+      .then(response => {
+        if (response.success) {
+          mostrarExito();
+        } else {
+          setErroresModal(response.errors);
+        }
+      })
+      .catch(error => console.error(error));
   };
 
-  
+
   const cerrarSesion = async () => {
     try {
       const response = await fetch(API_CS, {
@@ -142,9 +143,9 @@ export const Inicio = () => {
   })();
 
   const eventosOrdenados = [...eventos]
-  .filter(ev => new Date(ev.fecha_hora) > new Date())
-  .sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora))
-  .slice(0, 5);
+    .filter(ev => new Date(ev.fecha_hora) > new Date())
+    .sort((a, b) => new Date(a.fecha_hora) - new Date(b.fecha_hora))
+    .slice(0, 5);
   return (
     <>
       <Helmet>
@@ -188,7 +189,7 @@ export const Inicio = () => {
                   <div className="modulo-farmacia">
                     <h4 className="titulo-modulo-farmacia">Farmacia</h4>
                     <figure className="modulo-farmacia-icono">
-                      <img className="modulo-farmacia-img" src={farmaciaIcon} alt=""/>
+                      <img className="modulo-farmacia-img" src={farmaciaIcon} alt="" />
                     </figure>
                   </div>
                 </Link>
@@ -198,7 +199,7 @@ export const Inicio = () => {
                   <div className="modulo-albergue">
                     <h4 className="titulo-modulo-albergue">Albergue</h4>
                     <figure className="modulo-albergue-icono">
-                      <img className="modulo-albergue-img" src={albergueIcon} alt=""/>
+                      <img className="modulo-albergue-img" src={albergueIcon} alt="" />
                     </figure>
                   </div>
                 </Link>
@@ -208,41 +209,57 @@ export const Inicio = () => {
                   <div className="modulo-usuarios">
                     <h4 className="titulo-modulo-usuarios">Usuarios</h4>
                     <figure className="modulo-usuarios-icono">
-                      <img className="modulo-usuarios-img" src={usuariosIcon} alt=""/>
+                      <img className="modulo-usuarios-img" src={usuariosIcon} alt="" />
                     </figure>
                   </div>
                 </Link>
-              ): ''}
+              ) : ''}
+              {user.rol === "administrador" ? (
+                <Link to="/eventos">
+                  <div className="modulo-eventos">
+                    <h4 className="titulo-modulo-eventos">Eventos</h4>
+                    <figure className="modulo-eventos-icono">
+                      <img
+                        className="modulo-eventos-img"
+                        src={eventosIcon}
+                        alt=""
+                      />
+                    </figure>
+                  </div>
+                </Link>
+              ) : (
+                ""
+              )}
             </section>
           </section>
         </section>
       </main>
-      <Footer/>
-      <div className="modales-dashboards" style={{display: modalActiva ? 'flex' : 'none'}}>
+      <Footer />
+      <div className="modales-dashboards" style={{ display: modalActiva ? 'flex' : 'none' }}>
         {modalActiva && (
-        <aside className="modal-p">
+          <aside className="modal-p">
             <section className="modal-p-area">
               <h1 className="modal-p-titulo">Cambiar contraseña</h1>
-                <h3 className="modal-p-mensaje">Por motivos de seguridad y privacidad le sugerimos que  cambie su contraseña a continuación.</h3>
-                <span className="exito-login-p">{message}</span>
-                <form className="p-form" onSubmit={(e) => {
-                  handleCambiarPass(e);
-                }}>
-                  <label className="p-label">Nueva Contraseña</label>
-                    <input className="p-input4" type="password" value ={nuevaPass} onChange={(e)=>setNuevaPass(e.target.value)}/>
-                    <span className="error-login-p">{erroresModal.nuevaPass ?? ""}</span>
+              <h3 className="modal-p-mensaje">Por motivos de seguridad y privacidad le sugerimos que  cambie su contraseña a continuación.</h3>
+              <span className="exito-login-p">{message}</span>
+              <form className="p-form" onSubmit={(e) => {
+                handleCambiarPass(e);
+              }}>
+                <label className="p-label">Nueva Contraseña</label>
+                <input className="p-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
+                <span className="error-login-p">{erroresModal.nuevaPass ?? ""}</span>
 
-                    <label className="p-label">Confirmar Contraseña</label>
-                    <input className="p-input4" type="password" value ={confirmarPass} onChange={(e)=>setConfirmarPass(e.target.value)}/>
-                    <span className="error-login-p">{erroresModal.confirmarPass ?? ""}</span>
+                <label className="p-label">Confirmar Contraseña</label>
+                <input className="p-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
+                <span className="error-login-p">{erroresModal.confirmarPass ?? ""}</span>
 
-                    {/* Error general */}
-                    <span className="error-login-p">{erroresModal.general ?? ""}</span>
+                {/* Error general */}
+                <span className="error-login-p">{erroresModal.general ?? ""}</span>
 
-                    <input className="p-btn" type="submit" value="Cambiar Contraseña" />
+                <input className="p-btn" type="submit" value="Cambiar Contraseña" />
               </form>
             </section>
-        </aside>
+          </aside>
         )}
       </div>
     </>
