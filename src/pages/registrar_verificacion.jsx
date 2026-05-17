@@ -18,8 +18,7 @@ import { Footer } from "../components/Footer.jsx";
 const API = `api/verificaciones.php`;
 const API_SESSION = `api/session.php`;
 const API_ANIMALES = `api/animales.php`;
-
-export const indexSelector = 6;
+export const indexSelector = 2;
 
 export const RegistrarVerificacion = () => {
   const [user, setUser] = useState({ nombre: "", rol: "" });

@@ -8,7 +8,9 @@ import "../styles/inicio.css"
 import farmaciaIcon from "../images/icons/farmacia-icon.png"
 import albergueIcon from "../images/icons/albergue-icon.png"
 import usuariosIcon from "../images/icons/usuarios-icon.png"
-import eventosIcon from "../images/icons/eventos-icon.png";
+import eventosIcon from "../images/icons/eventos-icon.png"
+import closeEye from "../images/password_close_eye.png"
+import openEye from "../images/password_open_eye.png"
 
 import { Navbar } from '../components/Navbar'
 import { Footer } from '../components/Footer'
@@ -24,6 +26,8 @@ export const Inicio = () => {
   const [confirmarPass, setConfirmarPass] = useState("");
   const [erroresModal, setErroresModal] = useState({});
   const [message, setMessage] = useState("");
+  const [showNueva, setShowNueva] = useState(false);
+  const [showConfirmar, setShowConfirmar] = useState(false);
   const navigate = useNavigate();
 
   const API_SESSION = `api/session.php`;
@@ -242,21 +246,77 @@ export const Inicio = () => {
               <h1 className="modal-p-titulo">Cambiar contraseña</h1>
               <h3 className="modal-p-mensaje">Por motivos de seguridad y privacidad le sugerimos que  cambie su contraseña a continuación.</h3>
               <span className="exito-login-p">{message}</span>
-              <form className="p-form" onSubmit={(e) => {
-                handleCambiarPass(e);
-              }}>
-                <label className="p-label">Nueva Contraseña</label>
-                <input className="p-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
-                <span className="error-login-p">{erroresModal.nuevaPass ?? ""}</span>
+              <form
+                className="p-form"
+                onSubmit={(e) => {
+                  handleCambiarPass(e);
+                }}
+              >
 
-                <label className="p-label">Confirmar Contraseña</label>
-                <input className="p-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)} />
-                <span className="error-login-p">{erroresModal.confirmarPass ?? ""}</span>
+                <label className="p-label">
+                  Nueva Contraseña
+                </label>
 
-                {/* Error general */}
-                <span className="error-login-p">{erroresModal.general ?? ""}</span>
+                <div className="p-password-container">
 
-                <input className="p-btn" type="submit" value="Cambiar Contraseña" />
+                  <input
+                    className="p-input4"
+                    type={showNueva ? "text" : "password"}
+                    value={nuevaPass}
+                    onChange={(e) => setNuevaPass(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="p-eye"
+                    onClick={() => setShowNueva(!showNueva)}
+                  >
+                    <figure class="p-eye-fig"><img src={showNueva ? openEye : closeEye}/></figure>
+                  </button>
+
+                </div>
+
+                <span className="error-login-p">
+                  {erroresModal.nuevaPass ?? ""}
+                </span>
+
+                <label className="p-label">
+                  Confirmar Contraseña
+                </label>
+
+                <div className="p-password-container">
+
+                  <input
+                    className="p-input4"
+                    type={showConfirmar ? "text" : "password"}
+                    value={confirmarPass}
+                    onChange={(e) => setConfirmarPass(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="p-eye"
+                    onClick={() => setShowConfirmar(!showConfirmar)}
+                  >
+                    <figure class="p-eye-fig"><img src={showConfirmar ? openEye : closeEye}/></figure>
+                  </button>
+
+                </div>
+
+                <span className="error-login-p">
+                  {erroresModal.confirmarPass ?? ""}
+                </span>
+
+                <span className="error-login-p">
+                  {erroresModal.general ?? ""}
+                </span>
+
+                <input
+                  className="p-btn"
+                  type="submit"
+                  value="Cambiar Contraseña"
+                />
+
               </form>
             </section>
           </aside>

@@ -14,6 +14,8 @@ import subirIcon from "../images/subir.png"
 import campoRestringido from "../images/candado.png"
 import flecha from "../images/flecha_salir.png"
 import pfpPlaceholder from "../../images/pfp_placeholder.png"
+import closeEye from "../images/password_close_eye.png"
+import openEye from "../images/password_open_eye.png"
 
 // Componentes
 import { Navbar } from '../components/Navbar.jsx'
@@ -49,6 +51,9 @@ export const Ajustes = () => {
   const [confirmarContrasenaNueva, setConfirmarContrasenaNueva] = useState("");
   const [loadingCodigo, setLoadingCodigo] = useState(false);
   const enviandoRef = useRef(false);
+  const [showActual, setShowActual] = useState(false);
+  const [showNueva, setShowNueva] = useState(false);
+  const [showConfirmar, setShowConfirmar] = useState(false);
 
   const cargarSesion = async () => {
     fetch(API_SESSION, {
@@ -422,21 +427,99 @@ export const Ajustes = () => {
             <section className="ajustes-form-inputs-area3">
 
               <div style={{ gridArea: "divInpt1" }}>
-                <label className="ajustes-label" for="">Contraseña Actual<h6 className="obligatorio">*</h6></label>
-                <input className="ajustes-input3" type="password" value={contrasenaActual} onChange={(e)=>setContrasenaActual(e.target.value)} />
-                <span className="error-mensaje">{errores.contraseña ?? ""}</span>
+
+                <label className="ajustes-label">
+                  Contraseña Actual
+                  <h6 className="obligatorio">*</h6>
+                </label>
+
+                <div className="ajustes-password-container">
+
+                  <input
+                    className="ajustes-input3"
+                    type={showActual ? "text" : "password"}
+                    value={contrasenaActual}
+                    onChange={(e)=>setContrasenaActual(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="ajustes-eye"
+                    onClick={() => setShowActual(!showActual)}
+                  >
+                    <figure className="ajustes-eye-fig">  <img src={showActual ? openEye : closeEye}/></figure>
+                  </button>
+
+                </div>
+
+                <span className="error-mensaje">
+                  {errores.contraseña ?? ""}
+                </span>
+
               </div>
 
               <div style={{ gridArea: "divInpt2" }}>
-                <label className="ajustes-label" for="">Nueva Contraseña<h6 className="obligatorio">*</h6></label>
-                <input className="ajustes-input3" type="password" value={contrasenaNueva} onChange={(e)=>setContrasenaNueva(e.target.value)} />
-                <span className="error-mensaje">{errores.newcontraseña ?? ""}</span>
+
+                <label className="ajustes-label">
+                  Nueva Contraseña
+                  <h6 className="obligatorio">*</h6>
+                </label>
+
+                <div className="ajustes-password-container">
+
+                  <input
+                    className="ajustes-input3"
+                    type={showNueva ? "text" : "password"}
+                    value={contrasenaNueva}
+                    onChange={(e)=>setContrasenaNueva(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="ajustes-eye"
+                    onClick={() => setShowNueva(!showNueva)}
+                  >
+                    <figure className="ajustes-eye-fig">  <img src={showNueva ? openEye : closeEye}/></figure>
+                  </button>
+
+                </div>
+
+                <span className="error-mensaje">
+                  {errores.newcontraseña ?? ""}
+                </span>
+
               </div>
 
               <div style={{ gridArea: "divInpt3" }}>
-                <label className="ajustes-label" for="">Confirmar Contraseña Nueva<h6 className="obligatorio">*</h6></label>
-                <input className="ajustes-input3" type="password" value={confirmarContrasenaNueva} onChange={(e)=>setConfirmarContrasenaNueva(e.target.value)} />
-                <span className="error-mensaje">{errores.confirmarnewcontraseña ?? ""}</span>
+
+                <label className="ajustes-label">
+                  Confirmar Contraseña Nueva
+                  <h6 className="obligatorio">*</h6>
+                </label>
+
+                <div className="ajustes-password-container">
+
+                  <input
+                    className="ajustes-input3"
+                    type={showConfirmar ? "text" : "password"}
+                    value={confirmarContrasenaNueva}
+                    onChange={(e)=>setConfirmarContrasenaNueva(e.target.value)}
+                  />
+
+                  <button
+                    type="button"
+                    className="ajustes-eye"
+                    onClick={() => setShowConfirmar(!showConfirmar)}
+                  >
+                    <figure className="ajustes-eye-fig">  <img src={showConfirmar ? openEye : closeEye}/></figure>
+                  </button>
+
+                </div>
+
+                <span className="error-mensaje">
+                  {errores.confirmarnewcontraseña ?? ""}
+                </span>
+
               </div>
 
             </section>

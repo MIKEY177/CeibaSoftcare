@@ -14,7 +14,7 @@ import { Notificaciones } from "../components/Notificaciones";
 
 const API = "/api/verificaciones.php";
 const API_SESSION = "/api/session.php";
-
+export const indexSelector = 2;
 export const DetalleVerificacion = () => {
   const { id } = useParams();
   const [user, setUser] = useState({ nombre: "", rol: "" });

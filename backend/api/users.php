@@ -106,7 +106,18 @@ if ($method === 'POST') {
         $errores['correo'] = "❗el correo es obligatorio.";
     }elseif(!filter_var( $correo, FILTER_VALIDATE_EMAIL)){
         $errores['correo'] = "❗el correo es invalido.";
+    }else{
+        $stmt_check = mysqli_prepare($conn, "SELECT id_usuario FROM usuarios WHERE correo = ? AND activo = 1");
+        mysqli_stmt_bind_param($stmt_check, "s", $correo);
+        mysqli_stmt_execute($stmt_check);
+        mysqli_stmt_store_result($stmt_check);
+        if (mysqli_stmt_num_rows($stmt_check) > 0) {
+            $errores['correo'] = "❗Ya existe un usuario activo con el mismo correo";
+        }
+        mysqli_stmt_close($stmt_check);
     }
+
+
 
     if ($rol === '' || $rol === null) {
         $errores['rol'] = "❗El rol es obligatorio.";
@@ -225,6 +236,15 @@ if ($method === 'PUT') {
         $errores['correo'] = "❗el correo es obligatorio.";
     }elseif(!filter_var( $correo, FILTER_VALIDATE_EMAIL)){
         $errores['correo'] = "❗el correo es invalido.";
+    }else{
+        $stmt_check = mysqli_prepare($conn, "SELECT id_usuario FROM usuarios WHERE correo = ? AND activo = 1");
+        mysqli_stmt_bind_param($stmt_check, "s", $correo);
+        mysqli_stmt_execute($stmt_check);
+        mysqli_stmt_store_result($stmt_check);
+        if (mysqli_stmt_num_rows($stmt_check) > 0) {
+            $errores['correo'] = "❗Ya existe un usuario activo con el mismo correo";
+        }
+        mysqli_stmt_close($stmt_check);
     }
 
     if ($rol === '' || $rol === null) {

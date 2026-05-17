@@ -10,12 +10,12 @@ import { Navbar } from "../components/Navbar.jsx";
 import { Footer } from "../components/Footer.jsx";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
-7501234567893;
 import CustomSelect from "../components/CustomSelect.jsx";
 import { Notificaciones } from "../components/Notificaciones";
 
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 const API_PROD_COD = `/api/inventario.php`;
+export const indexSelector = 4;
 
 const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   const [query, setQuery] = useState(valorInicial);
@@ -113,7 +113,7 @@ const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {
   );
 };
 
-export const indexSelector = 5;
+
 export const Eventos = () => {
   const API = `api/eventos.php`;
   const navigate = useNavigate();
@@ -482,7 +482,18 @@ const buscarProductoPorCodigo = (codigo) => {
 
         // Modal lista -> abrir modal agregar
         if (modalActivo === 5) {
+          setErrores({});
           setModalActivo(4);
+          setProductoElegido(prod);
+          setFormProducto(prev => ({
+            ...prev,
+            id_producto: prod.id_producto,
+            nombre: prod.nombre,
+            tipo_medida: prod.tipo_medida,
+            cantidad_por_unidad: prod.cantidad_por_unidad,
+            cantidad_presentacion: "",
+            cantidad_total: "",
+          }));
         }
 
         // Modal registrar
@@ -516,15 +527,7 @@ const buscarProductoPorCodigo = (codigo) => {
             cantidad_total: "",
           }));
         }
-
-        // Navegar si no hay modal abierto
-        if (
-          modalActivo !== 4 &&
-          modalActivo !== 5 &&
-          modalActivo !== 6
-        ) {
-          navigate(`/productos/${codigo}/1`);
-        }
+        
 
         setErrores({});
 
@@ -534,14 +537,6 @@ const buscarProductoPorCodigo = (codigo) => {
           general: `No se encontró el producto con código ${codigo}`
         });
 
-        if (
-          modalActivo !== 4 &&
-          modalActivo !== 5 &&
-          modalActivo !== 6
-        ) {
-          setCodigoEscaneado(codigo);
-          abrirModal(8);
-        }
       }
     })
     .catch(console.error);
@@ -1547,37 +1542,7 @@ const buscarProductoPorCodigo = (codigo) => {
               </form>
             </aside>
           )}
-          {modalActivo === 8 && (
-            <aside className="modal-codigo">
-              <h1 className="modal-c-titulo">Registrar Nuevo Producto</h1>
-              {/* {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
-                          {errores.general && <p style={{ color: "red" }}>{errores.general}</p>} */}
-              <h3 className="modal-c-mensaje">
-                ¿Desea registrar nuevo producto{" "}
-                <span class="second-line">
-                  {" "}
-                  con código <h6 className="subrayar-c">{codigoEscaneado}</h6>
-                  ?{" "}
-                </span>
-              </h3>
-              <section className="modal-c-buttons">
-                <button
-                  className="registrar-c-btn"
-                  onClick={() => {
-                    navigate(`/productos/${codigoEscaneado}/2`);
-                  }}
-                >
-                  Registrar
-                </button>
-                <button
-                  className="cancelar-c-btn"
-                  onClick={() => cerrarModal()}
-                >
-                  Cancelar
-                </button>
-              </section>
-            </aside>
-          )}
+          
         </div>
       </main>
     </>

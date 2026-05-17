@@ -31,7 +31,6 @@ const API_EXAMENES = `api/examenes_fisicos.php`;
 const API_EVENTOS = `api/eventos_clinicos.php`;
 const API_BUSQUEDA = `api/productos_busqueda.php`;
 const API_PROD_COD = `/api/inventario.php`;
-
 export const indexSelector = 6;
 
 const BuscadorProducto = ({ onSeleccionar, valorInicial = "" }) => {

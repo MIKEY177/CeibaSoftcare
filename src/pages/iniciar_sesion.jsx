@@ -10,6 +10,8 @@ import "../styles/iniciar_sesion.css"
 import logoSoftcare from "../images/logo_softcare.png"
 import disenoPrincipal from "../images/diseno_principal.png"
 import flecha from "../images/flecha_salir.png"
+import closeEye from "../images/password_close_eye.png"
+import openEye from "../images/password_open_eye.png"
 
 // Componentes
 import { Footer } from '../components/Footer'
@@ -38,6 +40,9 @@ export const IniciarSesion = () => {
         const [errores, setErrores] = useState({})           // login
         const [erroresModal, setErroresModal] = useState({}) // modales
         const [loadingCodigo, setLoadingCodigo] = useState(false);
+        const [showPassword, setShowPassword] = useState(false);
+        const [showNueva, setShowNueva] = useState(false);
+        const [showConfirmar, setShowConfirmar] = useState(false);
 
         // Verificar si hay sesión activa al cargar
         useEffect(() => {
@@ -164,8 +169,11 @@ export const IniciarSesion = () => {
                         <input className="iniciar-sesion-input1" type="text" placeholder="ejemplo@email.com" name="correo" value={correo} onChange={(e) => setcorreo(e.target.value)} autoComplete="username"/>
 
                         <label className="iniciar-sesion-label" htmlFor="contrasena">Contraseña</label>
-                        <input className="iniciar-sesion-input2" type="password" placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}  autoComplete="current-password"/>
-
+                        <div className="iniciar-sesion-password">
+                            <input className="iniciar-sesion-input2" type={showPassword ? "text" : "password"} placeholder="Contraseña123" name="contrasena" value={contrasena} onChange={(e) => setcontrasena(e.target.value)}  autoComplete="current-password"/>
+                            <button className="iniciar-sesion-input2-eye" type="button" onClick={()=>setShowPassword(!showPassword)}><figure className="iniciar-sesion-input2-eye-fig"><img src={showPassword ? openEye : closeEye }/></figure></button>
+                        </div>
+                        
                         <a className="olvido-contra" href="" onClick={(e) => {e.preventDefault(); abrirModal(1);}}>¿Olvidó su contraseña?</a>
 
                         <div className="error-login-container">
@@ -231,22 +239,83 @@ export const IniciarSesion = () => {
                                 <h2>Volver</h2>
                             </a>
                             <section className="modal-rc-area">
-                                <h1 className="modal-rc-titulo">Recuperar contraseña - 3er paso</h1>
-                                <h3 className="modal-rc-mensaje">El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.</h3>
+
+                                <h1 className="modal-rc-titulo">
+                                    Recuperar contraseña - 3er paso
+                                </h1>
+
+                                <h3 className="modal-rc-mensaje">
+                                    El código digitado es correcto. Digite una nueva contraseña segura y fácil de recordar.
+                                </h3>
+
                                 <form className="rc-form" onSubmit={cambiarPassword}>
-                                  <label className="rc-label">Nueva Contraseña</label>
-                                    <input className="rc-input4" type="password" value={nuevaPass} onChange={(e) => setNuevaPass(e.target.value)} />
-                                    <span className="error-login-global">{erroresModal.nuevaPass ?? ""}</span>
 
-                                    <label className="rc-label">Confirmar Contraseña</label>
-                                    <input className="rc-input4" type="password" value={confirmarPass} onChange={(e) => setConfirmarPass(e.target.value)}  />
-                                    <span className="error-login-global">{erroresModal.confirmarPass ?? ""}</span>
+                                    <label className="rc-label">
+                                        Nueva Contraseña
+                                    </label>
 
-                                    {/* Error general */}
-                                    <span className="error-login-global">{erroresModal.general ?? ""}</span>
+                                    <div className="rc-password-container">
 
-                                    <input className="rc-btn" type="submit" value="Cambiar Contraseña" />
-                              </form>
+                                        <input
+                                            className="rc-input4"
+                                            type={showNueva ? "text" : "password"}
+                                            value={nuevaPass}
+                                            onChange={(e) => setNuevaPass(e.target.value)}
+                                        />
+
+                                        <button
+                                            type="button"
+                                            className="rc-eye"
+                                            onClick={() => setShowNueva(!showNueva)}
+                                        >
+                                            <figure class="rc-eye-fig"><img src={showNueva ? openEye : closeEye}/></figure>
+                                        </button>
+
+                                    </div>
+
+                                    <span className="error-login-global">
+                                        {erroresModal.nuevaPass ?? ""}
+                                    </span>
+
+                                    <label className="rc-label">
+                                        Confirmar Contraseña
+                                    </label>
+
+                                    <div className="rc-password-container">
+
+                                        <input
+                                            className="rc-input4"
+                                            type={showConfirmar ? "text" : "password"}
+                                            value={confirmarPass}
+                                            onChange={(e) => setConfirmarPass(e.target.value)}
+                                        />
+
+                                        <button
+                                            type="button"
+                                            className="rc-eye"
+                                            onClick={() => setShowConfirmar(!showConfirmar)}
+                                        >
+                                            <figure class="rc-eye-fig"><img src={showConfirmar ? openEye : closeEye}/></figure>
+                                        </button>
+
+                                    </div>
+
+                                    <span className="error-login-global">
+                                        {erroresModal.confirmarPass ?? ""}
+                                    </span>
+
+                                    <span className="error-login-global">
+                                        {erroresModal.general ?? ""}
+                                    </span>
+
+                                    <input
+                                        className="rc-btn"
+                                        type="submit"
+                                        value="Cambiar Contraseña"
+                                    />
+
+                                </form>
+
                             </section>
                         </aside>
                     )}
