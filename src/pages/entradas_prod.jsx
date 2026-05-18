@@ -146,7 +146,6 @@ export const EntradasProd = () => {
   const navigate = useNavigate();
   const [user,     setUser]     = useState({ nombre: "", rol: "" });
   const [entradas, setEntradas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   // ── UI ──────────────────────────────────────────────────────────────────────

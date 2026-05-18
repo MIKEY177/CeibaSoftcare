@@ -153,7 +153,6 @@ export const SalidasProd = () => {
 
   const [user, setUser] = useState({nombre: "", rol: ""}); 
   const [salidas, setSalidas] = useState([]);
-  const [params] = useSearchParams();
   const [busqueda, setBusqueda] = useState("");
 
   const [modalActivo, setModalActivo] = useState(null); 
