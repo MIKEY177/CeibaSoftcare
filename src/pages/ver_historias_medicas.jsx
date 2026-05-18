@@ -837,7 +837,7 @@ export const VerHistoriaMedicas = () => {
                   />
                 </button>
               </form>
-              <button className="registrar-btn" onClick={() => abrirModal(1)}>
+              <button className="btn-registrar-examen" onClick={() => abrirModal(1)}>
                 Registrar un Examen Físico
               </button>
             </section>
@@ -900,7 +900,7 @@ export const VerHistoriaMedicas = () => {
                   />
                 </button>
               </form>
-              <button className="registrar-btn" onClick={() => abrirModal(4)}>
+              <button className="btn-registrar-evento" onClick={() => abrirModal(4)}>
                 Registrar Evento Clínico
               </button>
             </section>
@@ -1157,7 +1157,7 @@ export const VerHistoriaMedicas = () => {
               </h2>
               <section className="seccion1-busqueda-agregar seccion1-ver-historia-medica">
                 <button
-                  className="registrar-btn"
+                  className="btn-editar-examen"
                   onClick={() => abrirModal(3, examenSeleccionado)}
                 >
                   Editar Examen

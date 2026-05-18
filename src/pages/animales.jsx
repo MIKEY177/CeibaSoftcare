@@ -561,8 +561,8 @@ const animalesFiltrados = animales.filter((animal) => {
               <p style={{ color: "red" }}>{errores.general}</p>
             )}
 
-            <form className="aed-form" onSubmit={handleEditar} noValidate>
-              <section className="aed-form-inputs-area">
+            <form className="ar-form" onSubmit={handleEditar} noValidate>
+              <section className="ar-form-inputs-area">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="aed-label">
                     Nombre del Animal <h6 className="obligatorio">*</h6>

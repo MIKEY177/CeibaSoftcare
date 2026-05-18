@@ -68,8 +68,8 @@
     margin-top: 3px;
 }
 
-.registrar-btn{
-    width: 290px;
+.btn-registrar-examen, .btn-registrar-evento, .btn-editar-examen{
+    width: 300px;
     height: 40px;
     font-size: 1.3rem;
     font-family: "ubuntu";
@@ -83,7 +83,12 @@
     transition: transform 0.1s ease-in-out;
 }
 
-.registrar-btn:hover{
+.btn-editar-examen{
+    width: 200px;
+    margin-left: auto;
+}
+
+.btn-registrar-examen:hover{
     transform: scale(1.05);
     transition: transform 0.1s ease-in-out;
 }

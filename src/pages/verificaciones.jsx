@@ -170,7 +170,7 @@ export const Verificaciones = () => {
               </button>
             </form>
             <button
-              className="registrar-btn"
+              className="registrar-verificacion-btn"
               onClick={() => navigate("/registrar_verificacion")}
             >
               Registrar Verificación

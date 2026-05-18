@@ -458,7 +458,7 @@ export const HistoriasMedicas = () => {
             )}
 
             <form className="ar-form" onSubmit={handleEditar}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-historias">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label" htmlFor="">
                     Nombre del Animal
