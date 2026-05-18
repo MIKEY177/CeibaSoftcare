@@ -483,7 +483,7 @@ const handleVer = (ingreso) => {
 
                 <div style={{ gridArea: "divInpt8" }}>
                   <label className="ar-label" for="">
-                    cédula de persona que realiza
+                    Cédula de persona que realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"
@@ -563,7 +563,7 @@ const handleVer = (ingreso) => {
             )}
 
             <form className="ar-form" onSubmit={(e) => handleEditar(e)}>
-              <section className="ar-form-inputs-area">
+              <section className="ar-form-inputs-area-ingresos">
                 <div style={{ gridArea: "divInpt1" }}>
                   <label className="ar-label" for="">
                     Persona que reporta<h6 className="obligatorio">*</h6>
@@ -689,7 +689,7 @@ const handleVer = (ingreso) => {
                   style={{ gridArea: "divInpt7" }}
                 >
                   <label className="ar-label" for="">
-                    persona que realiza
+                    Persona que realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"
@@ -706,7 +706,7 @@ const handleVer = (ingreso) => {
                     {errores.persona_realiza ?? ""}
                   </span>
                   <label className="ar-label" for="">
-                    Cedula de quien realiza
+                    Cédula de quien realiza
                   </label>
                   <input
                     className="ar-input6-ingreso"

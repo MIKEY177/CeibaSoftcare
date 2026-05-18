@@ -338,7 +338,7 @@ export const SalidaAnimales = () => {
             {mensajeExito    && <p style={{ color: "green", fontWeight: "bold" }}>{mensajeExito}</p>}
             {errores.general && <p style={{ color: "red" }}>{errores.general}</p>}
 
-            <form className="aed-form" onSubmit={handleEditar}>
+            <form className="aed-form-editar-salida-animal" onSubmit={handleEditar}>
               <section className="aed-form-inputs-area-salida-animal">
 
                 <div style={{gridArea: "divInpt1"}}>
