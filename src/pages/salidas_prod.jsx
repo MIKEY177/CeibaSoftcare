@@ -204,15 +204,6 @@ export const SalidasProd = () => {
       .catch(() => navigate("/iniciar_sesion"));
   }, []);
 
-  useEffect(() => {
-    setBusqueda(params.get("b") || "");
-    const url = new URL(window.location);
-    if (busqueda) {
-      url.searchParams.set("b", busqueda);
-    } else {
-      url.searchParams.delete("b");
-    }
-  }, []);
 
   useEffect(() => { cargarSalidas(); }, []);
 
