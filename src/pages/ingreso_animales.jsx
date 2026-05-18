@@ -86,27 +86,6 @@ const opcionesVerificaciones = verificaciones.map((verificacion) => ({
       })
       .catch(console.error);
   };
-  const abrirModal = (modal, ingreso = null) => {
-  setModalActiva(modal);
-
-  if (ingreso) {
-    setIngresoSeleccionado(ingreso);
-
-    setFormEditar({
-      persona_reporta: ingreso.persona_reporta || "",
-      cedula_reporta: ingreso.cedula_reporta || "",
-      direccion_reporta: ingreso.direccion_reporta || "",
-      telefono_reporta: ingreso.telefono_reporta || "",
-      funcionario_autoriza: ingreso.funcionario_autoriza || "",
-      persona_realiza: ingreso.persona_realiza || "",
-      cedula_realiza: ingreso.cedula_realiza || "",
-      motivo_ingreso: ingreso.motivo_ingreso || "",
-      fecha_hora_ingreso: ingreso.fecha_hora_ingreso || "",
-      id_verificacion: String(ingreso.id_verificacion || ""),
-      id_usuario: ingreso.id_usuario || "",
-    });
-  }
-};
 
 const cerrarModal = () => {
   setModalActiva(null);
@@ -119,19 +98,41 @@ const handleVer = (ingreso) => {
   abrirModal(3, ingreso);
 };
 
-  const cargarVerificaciones = () => {
-    fetch(API_VERIFICACIONES, { credentials: "include" })
-      .then((res) => res.json())
-      .then((response) => {
-        if (response.success) {
-          setVerificaciones(response.data);
-        } else {
-          console.error(response.error);
-        }
-      })
-      .catch(console.error);
-  };
+ const cargarVerificaciones = (idIngresoExcluir = null) => {
+  const url = idIngresoExcluir
+    ? `${API_VERIFICACIONES}?excluir_ingreso=${idIngresoExcluir}`
+    : API_VERIFICACIONES;
 
+  fetch(url, { credentials: "include" })
+    .then((res) => res.json())
+    .then((response) => {
+      if (response.success) setVerificaciones(response.data);
+    })
+    .catch(console.error);
+};
+
+const abrirModal = (modal, ingreso = null) => {
+  setModalActiva(modal);
+
+  if (ingreso) {
+    if (modal === 2) cargarVerificaciones(ingreso.id_ingreso);
+
+    setIngresoSeleccionado(ingreso);
+    setFormEditar({
+      persona_reporta: ingreso.persona_reporta || "",
+      cedula_reporta: ingreso.cedula_reporta || "",
+      direccion_reporta: ingreso.direccion_reporta || "",
+      telefono_reporta: ingreso.telefono_reporta || "",
+      funcionario_autoriza: ingreso.funcionario_autoriza || "",
+      persona_realiza: ingreso.persona_realiza || "",
+      cedula_realiza: ingreso.cedula_realiza || "",
+      motivo_ingreso: ingreso.motivo_ingreso || "",
+      fecha_hora_ingreso: (ingreso.fecha_hora_ingreso || "").replace(" ", "T").slice(0, 16),
+      id_verificacion: String(ingreso.id_verificacion || "").trim(),
+      id_usuario: ingreso.id_usuario || "",
+    });
+  }
+};
   const mostrarExito = (msg) => {
     setMensajeExito(msg);
     setTimeout(() => cerrarModal(), 1500);
