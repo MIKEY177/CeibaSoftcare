@@ -94,3 +94,48 @@ main{
 }
 
 /* Fin Scrollbar */
+
+
+
+            /* RESPONSIVE FROM HERE */
+
+
+
+/* Laptop (Basada en 1280x800 [16:10] ) */
+
+@media (1280px <= width <=1919px) {
+
+    .seccion1-proximas-eventos{
+        height: 320px;
+    }
+
+    .area-eventos{
+        height: 280px;
+    }
+
+    .fecha{
+        font-size: 1.1rem;
+    }
+
+    .articulo-evento{
+        width: 280px;
+        height: 200px;
+    }
+
+    .articulo-evento h5{
+        font-size: 1.2rem;
+    }
+
+    .articulo-evento h6{
+        font-size: 1rem;
+    }
+
+    .articulo-evento p{
+        font-size: 1rem;
+    }
+
+    .separador-vertical{
+        height: 230px;
+    }
+
+}

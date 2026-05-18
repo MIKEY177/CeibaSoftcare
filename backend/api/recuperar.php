@@ -8,7 +8,7 @@ require_once dirname(__DIR__) . "/config/session_config.php";
 header("Content-Type: application/json");
 
 // Cargar variables de entorno si existen
-$envFile = __DIR__ . "/../.env";
+$envFile = __DIR__ . "/../../.env.development";
 if (file_exists($envFile)) {
     loadEnv($envFile);
 }
@@ -70,8 +70,10 @@ function sendToN8n($email, $code) {
     curl_setopt($ch, CURLOPT_POST, true);
 
     // Seguridad activa (NO desactivar SSL)
-    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, true);
-    curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 2);
+    $isLocal = ($_SERVER['REMOTE_ADDR'] === '127.0.0.1' || $_SERVER['REMOTE_ADDR'] === '::1');
+
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, !$isLocal);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, $isLocal ? 0 : 2);
 
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         "Content-Type: application/json"
@@ -83,7 +85,6 @@ function sendToN8n($email, $code) {
     $error = curl_error($ch);
     $statusCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
-    curl_close($ch);
 
     if ($error) {
         return ["success" => false, "error" => $error];

@@ -85,7 +85,7 @@
     color: white;
 }
 
-.iniciar-sesion-input1, .iniciar-sesion-input2{
+.iniciar-sesion-input1{
     margin-top: 15px;
     margin-bottom: 70px;
     height: 40px;
@@ -100,8 +100,54 @@
     z-index: 2;
 }
 
-.iniciar-sesion-input2{
+.iniciar-sesion-password{
     margin-bottom: 10px;
+    margin-top: 15px;
+
+    display: flex;
+    align-items: center;
+
+    height: 40px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 3px 3px 4px #00000065;
+    overflow: hidden;
+}
+
+.iniciar-sesion-input2{
+    flex: 1;
+    height: 100%;
+    border: 0;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+}
+
+.iniciar-sesion-input2-eye{
+    width: 50px;
+    height: 100%;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.2rem;
+    color: #212427;
+}
+
+.iniciar-sesion-input2-eye-fig{
+    width: 70%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.iniciar-sesion-input2-eye-fig img{
+    width: 100%;
+    height: 100%;
 }
 
 .iniciar-sesion-input1::placeholder, .iniciar-sesion-input2::placeholder, .rc-input1::placeholder{
@@ -235,7 +281,7 @@
     padding-left: 5px;
 }
 
-.rc-input1, .rc-input2, .rc-input4 {
+.rc-input1, .rc-input2{
     height: 40px;
     border-radius: 10px;
     border: 3px solid #0094A4;
@@ -249,6 +295,54 @@
     z-index: 2;
 }
 
+.rc-password-container{
+    display: flex;
+    align-items: center;
+
+    height: 40px;
+    border-radius: 10px;
+    border: 3px solid #0094A4;
+    background-color: #F8F8F8;
+
+    margin-bottom: 10px;
+    overflow: hidden;
+}
+
+.rc-input4{
+    flex: 1;
+    height: 100%;
+    border: none;
+    outline: none;
+    padding: 0 10px;
+    font-size: 1.15rem;
+    color: #212427;
+    background: transparent;
+}
+
+.rc-eye{
+    width: 50px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.2rem;
+}
+
+.rc-eye-fig{
+    width: 70%;
+    height: 80%;
+    overflow: hidden;
+}
+
+.rc-eye-fig img{
+   width: 100%;
+   height: 100%;
+}
 .rc-input3{
     height: 40px;
     border-radius: 10px;
@@ -278,3 +372,191 @@
 }
 
 /* Fin Ventanas Modales */
+
+
+
+                /* RESPONSIVE FROM HERE */   
+                
+                
+
+/* ── LAPTOP (1280px – 1919px) ─────────────────────────────────────────────── */
+
+@media (1280px <= width <= 1919px) {
+
+    .main-inicio-de-sesion {
+        height: calc(100vh - 54px);
+    }
+
+    .area-grafica {
+        width: 500px;
+        height: 500px;
+    }
+
+    .logo-softcare {
+        width: 420px;
+        height: 150px;
+    }
+
+    .diseno-principal {
+        width: 350px;
+        height: 350px;
+    }
+
+    .inicio-sesion-vertical-navbar {
+        width: 420px;
+        height: 580px;
+        padding: 40px 0;
+    }
+
+    .titulo-inicio-sesion {
+        font-size: 1.4rem;
+    }
+
+    .iniciar-sesion-form {
+        margin-top: 50px;
+    }
+
+    .iniciar-sesion-label {
+        font-size: 1.3rem;
+    }
+
+    .iniciar-sesion-input1, .iniciar-sesion-input2 {
+        height: 36px;
+        font-size: 1rem;
+    }
+
+    .iniciar-sesion-btn {
+        font-size: 1.2rem;
+        height: 44px;
+        margin: 0 70px;
+    }
+}
+
+/* ── MOBILE (hasta 768px) ─────────────────────────────────────────────────── */
+
+@media (max-width: 768px) {
+
+    .main-inicio-de-sesion {
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        min-height: 100vh;
+        padding: 30px 20px;
+        gap: 24px;
+        overflow-x: hidden;
+    }
+
+    /* Ocultar la sección gráfica en móvil */
+    .area-grafica {
+        display: none;
+    }
+
+    .inicio-sesion-vertical-navbar {
+        width: 100%;
+        max-width: 420px;
+        height: auto;
+        padding: 40px 20px;
+        border-radius: 20px;
+    }
+
+    .titulo-inicio-sesion {
+        font-size: 1.2rem;
+        width: 90%;
+    }
+
+    .iniciar-sesion-form {
+        width: 90%;
+        margin-top: 40px;
+    }
+
+    .iniciar-sesion-label {
+        font-size: 1.2rem;
+    }
+
+    .iniciar-sesion-input1, .iniciar-sesion-input2 {
+        height: 44px;
+        font-size: 1rem;
+        margin-bottom: 40px;
+    }
+
+    .iniciar-sesion-input2 {
+        margin-bottom: 10px;
+    }
+
+    .iniciar-sesion-btn {
+        margin: 0 40px;
+        height: 46px;
+        font-size: 1.2rem;
+    }
+
+    /* Modales */
+    .modal-recuperar-contrasena {
+        width: 92%;
+        height: auto;
+        padding: 20px;
+        margin: auto 4%;
+    }
+
+    .modal-rc-titulo {
+        font-size: 1.3rem;
+        text-align: center;
+    }
+
+    .modal-rc-mensaje {
+        width: 100%;
+        height: auto;
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .rc-form {
+        width: 100%;
+    }
+
+    .rc-label {
+        font-size: 1.1rem;
+    }
+
+    .modal-rc-area {
+        padding: 20px 0;
+        gap: 16px;
+    }
+}
+
+/* ── MOBILE pequeño (hasta 480px) ────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+
+    .main-inicio-de-sesion {
+        padding: 20px 15px;
+    }
+
+    .inicio-sesion-vertical-navbar {
+        padding: 30px 15px;
+        border-radius: 16px;
+    }
+
+    .titulo-inicio-sesion {
+        font-size: 1rem;
+    }
+
+    .iniciar-sesion-form {
+        width: 95%;
+        margin-top: 30px;
+    }
+
+    .iniciar-sesion-btn {
+        margin: 0 20px;
+        font-size: 1.1rem;
+    }
+
+    .modal-recuperar-contrasena {
+        width: 95%;
+        margin: auto 2.5%;
+    }
+
+    .modal-rc-titulo {
+        font-size: 1.1rem;
+    }
+}
