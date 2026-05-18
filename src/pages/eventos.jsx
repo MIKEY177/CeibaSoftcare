@@ -675,7 +675,7 @@ const handleRegistrar = () => {
               <h1 className="modal-eel-titulo">Desactivar Evento Registrado</h1>
 
               <h3 className="modal-eel-mensaje">
-                ¿Desea desactivar <span className="subrayar">evento</span>?
+                ¿Desea desactivar&nbsp; <span className="subrayar"> evento</span>?
               </h3>
 
               <section className="modal-buttons">
